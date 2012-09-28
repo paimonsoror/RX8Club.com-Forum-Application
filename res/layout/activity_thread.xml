@@ -1,0 +1,176 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="vertical"
+    tools:context=".ThreadActivity" >
+
+    <TableLayout
+        android:id="@+id/myTableLayoutThread"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:spacing="40dip" >
+
+        <ImageView
+            android:id="@+id/imageViewThread"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="0px"
+            android:layout_marginBottom="0px"
+            android:layout_marginLeft="0px"
+            android:layout_marginRight="0px"
+            android:layout_marginTop="0px"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:padding="0px"
+            android:paddingBottom="0px"
+            android:paddingLeft="0px"
+            android:paddingRight="0px"
+            android:paddingTop="0px"
+            android:scaleType="centerCrop"
+            android:src="@drawable/rx8club_logo" />
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="@android:color/darker_gray"
+            android:paddingTop="5dip" >
+
+            <Button
+                android:id="@+id/profileButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/profileButton"
+                android:textSize="10dip" />
+
+            <Button
+                android:id="@+id/newTopicsButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/newTopics"
+                android:textSize="10dip" />
+
+            <Button
+                android:id="@+id/newPmButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/newPms"
+                android:textSize="10dip" />
+
+            <Button
+                android:id="@+id/searchButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/searchButton"
+                android:textSize="10dip" />
+
+            <Button
+                android:id="@+id/liveButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Live"
+                android:textSize="10dip" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/threadRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/controlsRow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="10dip"
+            android:layout_weight="0" >
+
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+                <TableRow
+                    android:id="@+id/paginationRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" >
+                    
+                    <Button
+                        android:id="@+id/firstButton"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="First"
+                        android:textSize="10dip" />
+                    <Button
+                        android:id="@+id/previousButton"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="50dip"
+                        android:text="Prev"
+                        android:textSize="10dip" />
+                    <TextView
+                        android:id="@+id/paginationText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/pageXofY" />
+                    <Button
+                        android:id="@+id/nextButton"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="50dip"
+                        android:text="Next"
+                        android:textSize="10dip" />
+                    
+                    <Button
+                        android:id="@+id/lastButton"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Last"
+                        android:textSize="10dip" />
+
+                </TableRow>
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/commentText" />
+
+                <EditText
+                    android:id="@+id/postBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textMultiLine" />
+
+                <Button
+                    android:id="@+id/submitButton"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Submit" />
+            </TableLayout>
+        </TableRow>
+    </TableLayout>
+
+</ScrollView>

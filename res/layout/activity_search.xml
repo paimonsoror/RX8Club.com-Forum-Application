@@ -1,0 +1,181 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="vertical" >
+    
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    xmlns:tools="http://schemas.android.com/tools"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+		android:background="@android:color/darker_gray"
+		android:orientation="vertical">
+		
+	    <ImageView
+	            android:id="@+id/imageView1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_margin="0px"
+	            android:layout_marginBottom="0px"
+	            android:layout_marginLeft="0px"
+	            android:layout_marginRight="0px"
+	            android:layout_marginTop="0px"
+	            android:adjustViewBounds="true"
+	            android:cropToPadding="true"
+	            android:padding="0px"
+	            android:paddingBottom="0px"
+	            android:paddingLeft="0px"
+	            android:paddingRight="0px"
+	            android:paddingTop="0px"
+	            android:scaleType="centerCrop"
+	            android:src="@drawable/rx8club_logo" />
+	    
+	    <TableRow
+	        android:id="@+id/tableRow1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="left"
+	        android:background="@android:color/darker_gray"
+	        android:paddingTop="5dip" >
+            
+            <Button
+                android:id="@+id/profileButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/profileButton"
+                android:textSize="10dip" />
+
+            <Button
+                android:id="@+id/newTopicsButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/newTopics"
+                android:textSize="10dip" />
+
+            <Button
+                android:id="@+id/newPmButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/newPms"
+                android:textSize="10dip" />
+
+            <Button
+                android:id="@+id/searchButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/searchButton"
+                android:textSize="10dip" />
+            
+            <Button
+                android:id="@+id/liveButton"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Live"
+                android:textSize="10dip" />
+
+
+        </TableRow>
+	
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="25dip"
+	        android:text="@string/searchString"
+	        tools:context=".SearchActivity" />
+	
+	    <EditText
+	        android:id="@+id/searchText"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:ems="10"
+	        android:inputType="text" >
+	
+	        <requestFocus android:layout_width="wrap_content" />
+	
+	    </EditText>
+	
+	    <Button
+	        android:id="@+id/searchSubmitButton"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/searchButton" />
+	
+	    <TextView
+	        android:id="@+id/textView2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="10dip"
+	        android:text="Advanced Options:"
+	        android:textAppearance="?android:attr/textAppearanceMedium" />
+	
+	    <TextView
+	        android:id="@+id/textView1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="5dip"
+	        android:text="@string/searchType" />
+	
+	    <RadioGroup
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content" >
+	
+		    <RadioButton
+		        android:id="@+id/threadContentButton"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:checked="true"
+		        android:text="@string/threadContentSearch"
+		        android:textSize="10dip" />
+		
+		    <RadioButton
+		        android:id="@+id/threadTitleButton"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/threadTitleSearch"
+		        android:textSize="10dip" />
+		
+		    <RadioButton
+		        android:id="@+id/userNameButton"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/userNameSearch"
+		        android:textSize="10dip" />
+	
+		</RadioGroup>
+	
+	    <TextView
+	        android:id="@+id/textView3"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Search Date: " />
+	
+	    <Spinner
+	        android:id="@+id/searchDateSpinner"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:entries="@array/searchDateArray" />
+	    
+	    <TextView
+	        android:id="@+id/textView4"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Search Sort: " />
+	
+	    <Spinner
+	        android:id="@+id/searchSortSpinner"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:entries="@array/searchSortArray" />
+	
+	</LinearLayout>
+
+</ScrollView>
