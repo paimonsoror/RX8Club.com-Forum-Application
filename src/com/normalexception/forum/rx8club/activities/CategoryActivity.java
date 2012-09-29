@@ -57,7 +57,6 @@ import com.normalexception.forum.rx8club.view.ViewContents;
 public class CategoryActivity extends ForumBaseActivity implements OnClickListener {
 	
 	private static final String TAG = "Application:Category";
-	private static TableLayout tl;
 	private static String link;
 	
 	private static char lpad = '«';

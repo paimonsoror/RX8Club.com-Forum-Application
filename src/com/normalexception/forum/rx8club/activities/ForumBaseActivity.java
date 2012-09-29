@@ -36,6 +36,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TableLayout;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
@@ -53,6 +54,8 @@ public abstract class ForumBaseActivity extends Activity {
 	protected static final int LOGOFF_MENU = 0;
 	
 	private static String TAG = "ForumBaseActivity";
+	
+	protected static TableLayout tl = null;
 	
 	/*
 	 * (non-Javadoc)

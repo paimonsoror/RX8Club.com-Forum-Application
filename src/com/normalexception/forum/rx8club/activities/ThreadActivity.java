@@ -26,7 +26,7 @@ package com.normalexception.forum.rx8club.activities;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.StringTokenizer;
 
 import org.apache.http.client.ClientProtocolException;
 import org.jsoup.nodes.Document;
@@ -48,16 +48,15 @@ import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebSettings.TextSize;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
@@ -69,7 +68,7 @@ import com.normalexception.forum.rx8club.view.ViewContents;
 public class ThreadActivity extends ForumBaseActivity implements OnClickListener {
 
 	private static final String TAG = "Application:Thread";
-	private static TableLayout tl;
+
 	private String currentPageLink;
 	private String currentPageTitle;
 	
@@ -256,6 +255,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     		spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, text.indexOf("\n"), 0);
     		b.setText(spanString);
     	} else {
+    		// remove quotes for now
+    		text = reformatQuotes(text);
     		b.setText(html? Html.fromHtml(text + "<br><br><br>") : text);
     	}
     	
@@ -284,6 +285,33 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 
     	/* Add row to TableLayout. */
         tl.addView(tr_head, tl.getChildCount() - 1);
+    }
+    
+    private String reformatQuotes(String source) {
+    	String finalText = "";
+
+    	StringTokenizer st = new StringTokenizer(source, "\r\n\t");
+    	boolean skipNextLine = false;
+    	while (st.hasMoreTokens()) {
+        	String nextTok = st.nextToken();
+        	if(!skipNextLine) {	        	
+	        	if(nextTok.contains("<table ")) {
+	        		nextTok = "<blockquote>";
+	        	}
+	        	if(nextTok.contains("</table>")) {
+	        		nextTok = "</blockquote>";
+	        	}
+	        	if(nextTok.toLowerCase().contains("originally posted by")) {
+	        		skipNextLine = true;
+	        	}
+	        	
+	        	finalText += nextTok + " ";
+        	} else {
+        		skipNextLine = false;
+        	}
+        }
+        
+        return finalText;
     }
     
     /**

@@ -59,7 +59,6 @@ import com.normalexception.forum.rx8club.utils.VBForumFactory;
 public class ProfileActivity extends ForumBaseActivity implements OnClickListener {
 
 	private static String TAG = "ProfileActivity";
-	private static TableLayout tl; 
 	private ArrayList<ProfileThreadStub> stubs;
 	
 	/**

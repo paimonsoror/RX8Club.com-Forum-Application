@@ -64,8 +64,6 @@ import com.normalexception.forum.rx8club.view.ViewContents;
  * Main activity for the application
  */
 public class MainActivity extends ForumBaseActivity implements OnClickListener {
-	 // Variables to hold the URL object and its connection to that URL.    
-    private static TableLayout tl;
     
     private Map<String,String> linkMap;
     
@@ -209,13 +207,13 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
      * @param id	The id of the row
      */
     private void addRow(int clr, String texts[], int id, boolean span) {
-    	/* Create a new row to be added. */
+    	// Create a new row to be added.
     	TableRow tr_head = new TableRow(this);
     	tr_head.setId(id);
     	tr_head.setBackgroundColor(clr);
 
     	for(String text : texts) {
-	    	/* Create a Button to be the row-content. */
+	    	// Create a Button to be the row-content.
 	    	TextView b = new TextView(this);
 	    	b.setId(id);
 	    	b.setText(text);
@@ -225,7 +223,7 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	        b.setPadding(5, 5, 5, 5);
 	        
 	
-	    	/* Add Button to row. */
+	    	// Add Button to row.
 	        if(span) {
 		        TableRow.LayoutParams params = new TableRow.LayoutParams();
 		        params.span = 3;
@@ -235,7 +233,7 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	        }
     	}
 
-    	/* Add row to TableLayout. */
+    	// Add row to TableLayout.
         tl.addView(tr_head,new TableLayout.LayoutParams(
     			LayoutParams.WRAP_CONTENT,
     			LayoutParams.WRAP_CONTENT));
