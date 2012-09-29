@@ -32,3 +32,7 @@ com.normalexception.forum.rx8club.utils - A set of common utilities to be
 used in the project
 
 com.normalexception.forum.rx8club.view - A set of view related classes
+
+Needs:
+Fix the way images are parsed
+Make links active
