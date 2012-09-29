@@ -204,13 +204,11 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
                		viewContents.add(new ViewContents(Color.DKGRAY, post.post, 23, true, false));
                	}
 		    	
-               	/*
 		    	runOnUiThread(new Runnable() {
 		            public void run() {
 		            	findViewById(R.id.controlsRow).setVisibility(View.VISIBLE);
 		            }
 		    	});
-		    	*/
 		    	
 		    	updateView(viewContents);
 		    	loadingDialog.dismiss();			

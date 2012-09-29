@@ -118,7 +118,12 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 	@Override
 	public void onClick(View arg0) {
 		switch(arg0.getId()){
-	       case R.id.loginButton :	    	 
+	       case R.id.loginButton :
+	    	   runOnUiThread(new Runnable() {
+					public void run() {
+						((Button)findViewById(R.id.loginButton)).setEnabled(false);
+					}
+				});	
 	    	   new AsyncLogin().execute(this, null, null);
 	    	   break;
 		}		
@@ -160,6 +165,12 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 			} catch (IOException e) {
 				Log.e(TAG, "Error Logging In " + e.getMessage());
 				BugSenseHandler.sendException(e);
+			} finally {
+				runOnUiThread(new Runnable() {
+					public void run() {
+						((Button)findViewById(R.id.loginButton)).setEnabled(true);
+					}
+				});	
 			}
 			return null;
 		}
