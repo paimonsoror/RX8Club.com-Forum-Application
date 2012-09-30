@@ -44,6 +44,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.InputType;
 import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
@@ -51,8 +52,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebSettings.TextSize;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -60,6 +59,7 @@ import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.handler.GuiHandlers;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
@@ -250,6 +250,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     	/* Create a Button to be the row-content. */
     	TextView b = new TextView(this);
     	b.setId(id);
+    	b.setMovementMethod(LinkMovementMethod.getInstance());
     	if(!html && text.indexOf("\n") != -1) {
     		SpannableString spanString = new SpannableString(text);
     		spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, text.indexOf("\n"), 0);
@@ -257,7 +258,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     	} else {
     		// remove quotes for now
     		text = reformatQuotes(text);
-    		b.setText(html? Html.fromHtml(text + "<br><br><br>") : text);
+    		ForumImageHandler imageHandler = new ForumImageHandler(b, this);
+    		b.setText(html? Html.fromHtml(text + "<br><br><br>", imageHandler, null) : text);
     	}
     	
     	b.setTextSize((float) 10.0);
@@ -287,6 +289,12 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         tl.addView(tr_head, tl.getChildCount() - 1);
     }
     
+    /**
+     * Reformat the quotes to blockquotes since Android fromHtml does
+     * not parse tables
+     * @param source	The source text
+     * @return			The updated source text
+     */
     private String reformatQuotes(String source) {
     	String finalText = "";
 
@@ -301,9 +309,9 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	        	if(nextTok.contains("</table>")) {
 	        		nextTok = "</blockquote>";
 	        	}
-	        	if(nextTok.toLowerCase().contains("originally posted by")) {
-	        		skipNextLine = true;
-	        	}
+	        	//if(nextTok.toLowerCase().contains("originally posted by")) {
+	        	//	skipNextLine = true;
+	        	//}
 	        	
 	        	finalText += nextTok + " ";
         	} else {
@@ -376,46 +384,12 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     	return titles;
     }
     
-    /**
-     * Update the pagination text
-     * @param doc	The webpage document
+    /*
+     * (non-Javadoc)
+     * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#enforceVariants(int, int)
      */
-    private void updatePagination(Document doc) {
-    	String myPage = "1";
-    	String label;
-    	
-    	// Grab page number
-    	try {
-    		Elements pageNumbers = doc.select("div[class=pagenav]");
-    		Elements pageLinks = pageNumbers.get(0).select("td[class^=vbmenu_control]");
-    		myPage = pageLinks.text().split(" ")[1];
-    		finalPage = pageLinks.text().split(" ")[3];
-	    		    	
-    	} catch (Exception e) {
-    		myPage = "1";
-    		finalPage = "1";
-    	} finally {
-    		final TextView pagination = (TextView)findViewById(R.id.paginationText);
-        	label = pagination.getText().toString();            	
-        	label = label.replace("X", myPage);
-        	label = label.replace("Y", finalPage);
-        	final String finalizedLabel = label;
-    		runOnUiThread(new Runnable() {
-	            public void run() {	
-	            	pagination.setText(finalizedLabel);
-	            }
-	    	});
-    	}
-    	
-    	enforceVariants(Integer.parseInt(myPage), Integer.parseInt(finalPage));
-    }
-    
-    /**
-     * Enforce GUI based variants
-     * @param myPage	The current page we are on
-     * @param lastPage	The last page of our thread
-     */
-    private void enforceVariants(int myPage, int lastPage) {
+    @Override
+    protected void enforceVariants(int myPage, int lastPage) {
     	if(myPage == 1)
     		runOnUiThread(new Runnable() {
     			public void run() {

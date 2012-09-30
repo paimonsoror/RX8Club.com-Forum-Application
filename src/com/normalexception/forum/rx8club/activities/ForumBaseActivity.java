@@ -28,6 +28,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -37,9 +40,11 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
+import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
 
@@ -148,4 +153,46 @@ public abstract class ForumBaseActivity extends Activity {
 	    }
 	    return super.onKeyDown(keyCode, event);
 	}
+	
+	/**
+     * Update the pagination text
+     * @param doc	The webpage document
+     */
+    protected void updatePagination(Document doc) {
+    	String myPage = "1";
+    	String lastPage = "1";
+    	String label;
+    	
+    	// Grab page number
+    	try {
+    		Elements pageNumbers = doc.select("div[class=pagenav]");
+    		Elements pageLinks = pageNumbers.get(0).select("td[class^=vbmenu_control]");
+    		myPage = pageLinks.text().split(" ")[1];
+    		lastPage = pageLinks.text().split(" ")[3];
+	    		    	
+    	} catch (Exception e) {
+    		myPage = "1";
+    		lastPage = "1";
+    	} finally {
+    		final TextView pagination = (TextView)findViewById(R.id.paginationText);
+        	label = pagination.getText().toString();            	
+        	label = label.replace("X", myPage);
+        	label = label.replace("Y", lastPage);
+        	final String finalizedLabel = label;
+    		runOnUiThread(new Runnable() {
+	            public void run() {	
+	            	pagination.setText(finalizedLabel);
+	            }
+	    	});
+    	}
+    	
+    	enforceVariants(Integer.parseInt(myPage), Integer.parseInt(lastPage));
+    }
+    
+    /**
+     * Enforce GUI based variants
+     * @param myPage	The current page we are on
+     * @param lastPage	The last page of our thread
+     */
+    protected abstract void enforceVariants(int currentPage, int lastPage);
 }

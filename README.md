@@ -34,5 +34,4 @@ used in the project
 com.normalexception.forum.rx8club.view - A set of view related classes
 
 Needs:
-Fix the way images are parsed
-Make links active
+Thread post date/time
