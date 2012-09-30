@@ -79,8 +79,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	private String securityToken = "none";
 	private String postNumber = "none";
 	
-	private String finalPage = "1";
-	
 	/*
 	 * (non-Javadoc)
 	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onSaveInstanceState(android.os.Bundle)
@@ -178,11 +176,11 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         updaterThread = new Thread("CategoryThread") {
 			public void run() {
 				currentPageLink = 
-		        		(String) getIntent().getSerializableExtra("link");
+		        		(String) getIntent().getStringExtra("link");
 				currentPageTitle = 
-						(String) getIntent().getSerializableExtra("title");			
+						(String) getIntent().getStringExtra("title");			
 				pageNumber = 
-						(String) getIntent().getSerializableExtra("page");
+						(String) getIntent().getStringExtra("page");
 				if(pageNumber == null) pageNumber = "1";
 				
 				Log.v(TAG, "Grabbing link: " + currentPageLink);
@@ -469,9 +467,9 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 					_intent.putExtra("title", this.currentPageTitle);
 					this.finish();
 				} catch (ClientProtocolException e) {
-					e.printStackTrace();
+					BugSenseHandler.sendException(e);
 				} catch (IOException e) {
-					e.printStackTrace();
+					BugSenseHandler.sendException(e);
 				}
 				break;
 			case R.id.paginationText:

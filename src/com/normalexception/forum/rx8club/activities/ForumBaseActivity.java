@@ -62,6 +62,8 @@ public abstract class ForumBaseActivity extends Activity {
 	
 	protected static TableLayout tl = null;
 	
+	protected String finalPage = "1";
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
@@ -81,6 +83,7 @@ public abstract class ForumBaseActivity extends Activity {
 			Log.v(TAG, "Serializing Contents");
 			outState.putSerializable("contents", viewContents);
 			outState.putSerializable("links", (LinkedHashMap<String,String>)linkMap);
+			outState.putString("final", finalPage);
 		} catch (Exception e) {
 			Log.e(TAG, "Error Serializing: " + e.getMessage());
 			BugSenseHandler.sendException(e);
@@ -101,6 +104,8 @@ public abstract class ForumBaseActivity extends Activity {
 				(ArrayList<ViewContents>) savedInstanceState.getSerializable("contents");
 			linkMap = 
 					(LinkedHashMap<String, String>) savedInstanceState.getSerializable("links");
+			finalPage = 
+					savedInstanceState.getString("final");
 		} catch (Exception e) {
 			Log.e(TAG, "Error Restoring Contents: " + e.getMessage());
 			BugSenseHandler.sendException(e);
@@ -160,7 +165,6 @@ public abstract class ForumBaseActivity extends Activity {
      */
     protected void updatePagination(Document doc) {
     	String myPage = "1";
-    	String lastPage = "1";
     	String label;
     	
     	// Grab page number
@@ -168,16 +172,16 @@ public abstract class ForumBaseActivity extends Activity {
     		Elements pageNumbers = doc.select("div[class=pagenav]");
     		Elements pageLinks = pageNumbers.get(0).select("td[class^=vbmenu_control]");
     		myPage = pageLinks.text().split(" ")[1];
-    		lastPage = pageLinks.text().split(" ")[3];
-	    		    	
+    		finalPage = pageLinks.text().split(" ")[3];
+
     	} catch (Exception e) {
     		myPage = "1";
-    		lastPage = "1";
+    		finalPage = "1";
     	} finally {
     		final TextView pagination = (TextView)findViewById(R.id.paginationText);
         	label = pagination.getText().toString();            	
         	label = label.replace("X", myPage);
-        	label = label.replace("Y", lastPage);
+        	label = label.replace("Y", finalPage);
         	final String finalizedLabel = label;
     		runOnUiThread(new Runnable() {
 	            public void run() {	
@@ -186,7 +190,7 @@ public abstract class ForumBaseActivity extends Activity {
 	    	});
     	}
     	
-    	enforceVariants(Integer.parseInt(myPage), Integer.parseInt(lastPage));
+    	enforceVariants(Integer.parseInt(myPage), Integer.parseInt(finalPage));
     }
     
     /**

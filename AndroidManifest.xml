@@ -2,12 +2,12 @@
     android:name="com.normalexception.forum.MainApplication"
     package="com.normalexception.forum.rx8club"
     android:installLocation="auto"
-    android:versionCode="1023"
-    android:versionName="1.0.23" >
+    android:versionCode="1024"
+    android:versionName="1.0.24" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="15" />
+        android:targetSdkVersion="10" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_LOGS"/>
@@ -26,7 +26,8 @@
             android:name=".activities.LoginActivity" 
             android:icon="@drawable/rotor_icon" 
             android:label="@string/title_activity_main"
-            android:configChanges="keyboardHidden|orientation">
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleInstance">"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -34,33 +35,39 @@
         </activity><activity
             android:name=".activities.MainActivity"
             android:label="@string/title_activity_main"
-            android:configChanges="keyboardHidden|orientation" >
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleInstance">
         </activity>
         <activity
             android:name=".activities.CategoryActivity"
             android:label="@string/title_activity_category"
-            android:configChanges="keyboardHidden|orientation" >
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleInstance">
         </activity>
         <activity
             android:name=".activities.ThreadActivity"
             android:label="@string/title_activity_thread"
-            android:configChanges="keyboardHidden|orientation" >
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleInstance">
         </activity>
         
         <activity
             android:name=".activities.NewPostsActivity"
             android:label="@string/title_activity_new_posts"
-            android:configChanges="keyboardHidden|orientation" >
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleInstance">
         </activity>
         <activity
             android:name=".activities.ProfileActivity"
             android:label="@string/title_activity_profile"
-            android:configChanges="keyboardHidden|orientation" >
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleInstance">
         </activity>
         <activity
             android:name=".activities.SearchActivity"
             android:label="@string/title_activity_search"
-            android:configChanges="keyboardHidden|orientation" >
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleInstance">
         </activity>
     </application>
 

@@ -84,7 +84,7 @@ public class Utils {
 		fragmentedLink = fragmentedLink.substring(fragmentedLink.lastIndexOf('/') + 1);
 		
 		// Is the string a 'page' string
-		if(fragmentedLink.substring(0, 4).equals("page")) {
+		if(fragmentedLink.indexOf("page") == 0) {
 			int currentPageNumber = Integer.parseInt(parseInts(fragmentedLink));
 			newLink = link.replace("page" + Integer.toString(currentPageNumber),
 					"page" + page);
@@ -111,10 +111,11 @@ public class Utils {
 		fragmentedLink = removeTrailingSlash(link);
 		
 		// Get the ending section
-		fragmentedLink = fragmentedLink.substring(fragmentedLink.lastIndexOf('/') + 1);
+		fragmentedLink = 
+				new String(fragmentedLink.substring(fragmentedLink.lastIndexOf('/') + 1));
 		
 		// Is the string a 'page' string
-		if(fragmentedLink.substring(0, 3).equals("page")) {
+		if(fragmentedLink.indexOf("page") == 0) {
 			int currentPageNumber = Integer.parseInt(parseInts(fragmentedLink));
 			newLink = link.replace("page" + Integer.toString(currentPageNumber),
 					"page" + Integer.toString(currentPageNumber - 1));

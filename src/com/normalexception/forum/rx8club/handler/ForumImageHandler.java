@@ -35,15 +35,14 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.Html.ImageGetter;
-import android.util.Log;
-import android.view.View;
+import android.widget.TextView;
 
 /**
  * Handler designed to display the images within a textview
  */
 public class ForumImageHandler implements ImageGetter {
 	Context c;
-	View container;
+	TextView container;
 
 	/**
 	 * Construct the URLImageParser which will execute 
@@ -51,7 +50,7 @@ public class ForumImageHandler implements ImageGetter {
 	 * @param t	The source view
 	 * @param c	The source context
 	 */
-	public ForumImageHandler(View t, Context c) {
+	public ForumImageHandler(TextView t, Context c) {
 		this.c = c;
 		this.container = t;
 	}
@@ -99,17 +98,22 @@ public class ForumImageHandler implements ImageGetter {
 		 */
 		@Override
 		protected void onPostExecute(Drawable result) {
-			// set the correct bound according to the result from HTTP call
-			Log.d("height",""+result.getIntrinsicHeight());
-			Log.d("width",""+result.getIntrinsicWidth());
-			urlDrawable.setBounds(0, 0, 0+result.getIntrinsicWidth(), 0+result.getIntrinsicHeight()); 
+			urlDrawable.setBounds(0, 0, 
+					0+result.getIntrinsicWidth(), 0+result.getIntrinsicHeight());  
 
-			// change the reference of the current drawable to the result
-			// from the HTTP call
-			urlDrawable.drawable = result;
+		    // change the reference of the current drawable to the result 
+		    // from the HTTP call 
+		    urlDrawable.drawable = result; 
 
-			// redraw the image by invalidating the container
-			ForumImageHandler.this.container.invalidate();
+		    // redraw the image by invalidating the container 
+		    ForumImageHandler.this.container.invalidate();
+
+		    // For ICS
+		    ForumImageHandler.this.container.setHeight(
+		    		ForumImageHandler.this.container.getHeight() + result.getIntrinsicHeight());
+
+		    // Pre ICS
+		    ForumImageHandler.this.container.setEllipsize(null);
 		}
 
 		/***
@@ -123,7 +127,10 @@ public class ForumImageHandler implements ImageGetter {
 				final URLConnection conn = aURL.openConnection(); 
 				conn.connect(); 
 				final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream()); 
-				final Bitmap bm = BitmapFactory.decodeStream(bis);
+				Bitmap bm = BitmapFactory.decodeStream(bis);
+				while(bm.getWidth() > 400) {
+					bm = Bitmap.createScaledBitmap(bm, bm.getWidth() / 2, bm.getHeight() / 2, true);
+				}
 				Drawable drawable = new BitmapDrawable(bm);
 				drawable.setBounds(0,0,bm.getWidth(),bm.getHeight());
 				return drawable;
