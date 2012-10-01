@@ -24,10 +24,13 @@ package com.normalexception.forum.rx8club.activities;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.http.client.ClientProtocolException;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
@@ -39,6 +42,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -48,7 +53,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
 
-public abstract class ForumBaseActivity extends Activity {
+public abstract class ForumBaseActivity extends Activity implements OnClickListener {
 	
 	protected Map<String,String> linkMap;
 	protected ArrayList<ViewContents> viewContents;
@@ -63,6 +68,21 @@ public abstract class ForumBaseActivity extends Activity {
 	protected static TableLayout tl = null;
 	
 	protected String finalPage = "1";
+	
+	/*
+	 * (non-Javadoc)
+	 * @see android.view.View.OnClickListener#onClick(android.view.View)
+	 */
+	@Override
+	public void onClick(View arg0) {
+		// Before anything, make sure we are still logged in
+		if(!LoginFactory.getInstance().isLoggedIn())
+			try {
+				LoginFactory.getInstance().login();
+			} catch (NoSuchAlgorithmException e1) {
+			} catch (ClientProtocolException e1) {
+			} catch (IOException e1) {}
+	}
 	
 	/*
 	 * (non-Javadoc)

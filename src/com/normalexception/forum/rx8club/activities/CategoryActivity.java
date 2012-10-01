@@ -320,6 +320,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
      */
 	@Override
 	public void onClick(View arg0) {
+		super.onClick(arg0);
+		
 		TextView tv = (TextView)arg0;
 		final String linkText = tv.getText().toString();		
 		Log.v(TAG, "User clicked '" + linkText + "'");

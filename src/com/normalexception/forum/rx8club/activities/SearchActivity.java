@@ -99,6 +99,7 @@ public class SearchActivity extends ForumBaseActivity implements OnClickListener
 	 */
 	@Override
 	public void onClick(View arg0) {
+		super.onClick(arg0);
 		switch(arg0.getId()) {
 			case R.id.searchSubmitButton:	
 				String searchText = getSearchUrl();

@@ -25,6 +25,7 @@ package com.normalexception.forum.rx8club.activities;
  ************************************************************************/
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -61,6 +62,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.handler.GuiHandlers;
+import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
@@ -297,24 +299,16 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     	String finalText = "";
 
     	StringTokenizer st = new StringTokenizer(source, "\r\n\t");
-    	boolean skipNextLine = false;
     	while (st.hasMoreTokens()) {
-        	String nextTok = st.nextToken();
-        	if(!skipNextLine) {	        	
-	        	if(nextTok.contains("<table ")) {
-	        		nextTok = "<blockquote>";
-	        	}
-	        	if(nextTok.contains("</table>")) {
-	        		nextTok = "</blockquote>";
-	        	}
-	        	//if(nextTok.toLowerCase().contains("originally posted by")) {
-	        	//	skipNextLine = true;
-	        	//}
-	        	
-	        	finalText += nextTok + " ";
-        	} else {
-        		skipNextLine = false;
+        	String nextTok = st.nextToken();      	
+        	if(nextTok.contains("<table ")) {
+        		nextTok = "<blockquote>";
         	}
+        	if(nextTok.contains("</table>")) {
+        		nextTok = nextTok.replace("</table>","</blockquote>");
+        	}
+
+        	finalText += nextTok + " ";
         }
         
         return finalText;
@@ -437,7 +431,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
      * @see android.view.View.OnClickListener#onClick(android.view.View)
      */
 	@Override
-	public void onClick(View arg0) {
+	public void onClick(View arg0) {	
+		super.onClick(arg0);
 		Intent _intent = null;
 		
 		switch(arg0.getId()) {
@@ -501,6 +496,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 				_intent.putExtra("link", Utils.getPage(this.currentPageLink, Integer.toString(1)));
 				_intent.putExtra("page", "1");
 				_intent.putExtra("title", this.currentPageTitle);
+				finish();
 				break;
 				
 			case R.id.lastButton:
@@ -508,6 +504,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 				_intent.putExtra("link", Utils.getPage(this.currentPageLink, this.finalPage));
 				_intent.putExtra("page", this.finalPage);
 				_intent.putExtra("title", this.currentPageTitle);
+				finish();
 				break;	
 		}	
 		

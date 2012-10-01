@@ -35,36 +35,63 @@ public class Utils {
 		return val.replaceAll( "[^\\d]", "" );
 	}
 	
+	private static String initializePageOperation(String link) {
+		String fragmentedLink = removeTrailingSlash(link);
+		fragmentedLink = fragmentedLink.substring(fragmentedLink.lastIndexOf('/') + 1);
+		return fragmentedLink;
+	}
+	
+	private enum Operation { Increment, Decrement, Get }
+	
+	/**
+	 * 
+	 * @param link
+	 * @param page
+	 * @param op
+	 * @return
+	 */
+	private static String pageOperation(String link, String page, Operation op) {
+		String fragmentedLink = initializePageOperation(link);
+		String newLink = null;
+		
+		if(fragmentedLink.indexOf("page") == 0) {
+			int currentPageNumber = Integer.parseInt(parseInts(fragmentedLink));
+			String newPage = "page";
+			if(op == Operation.Increment)
+				newPage += Integer.toString(currentPageNumber + 1);
+			else if (op == Operation.Decrement) 
+				newPage += Integer.toString(currentPageNumber - 1);
+			else if (op == Operation.Get)
+				newPage += page;
+			
+			newLink = link.replace("page" + Integer.toString(currentPageNumber), newPage);
+		} else {
+			if(link.lastIndexOf("-new-post/") == link.length() - "-new-post/".length()) {
+				newLink = link.substring(0, 
+						link.lastIndexOf("-new-post/")) + "/page";
+				
+				if(op == Operation.Increment)
+					newLink += String.valueOf(Integer.parseInt(page) + 1);
+				else if (op == Operation.Decrement) 
+					newLink += String.valueOf(Integer.parseInt(page) - 1);
+				else if (op == Operation.Get)
+					newLink += page;
+			
+			} else 
+				newLink = link + "page" + page;
+				
+		}
+		
+		return newLink;
+	}
+	
 	/**
 	 * Increment the page count and report a link that reflects that page
 	 * @param link	The link that we are looking to increment
 	 * @return		The new link that equals the link page + 1
 	 */
 	public static String incrementPage(String link, String page) {
-		String fragmentedLink = null, newLink = null;
-		
-		// First check to see if we are currently on a page other
-		// than the first, remove trailing slash
-		fragmentedLink = removeTrailingSlash(link);
-		
-		// Get the ending section
-		fragmentedLink = fragmentedLink.substring(fragmentedLink.lastIndexOf('/') + 1);
-		
-		// Is the string a 'page' string
-		if(fragmentedLink.substring(0, 4).equals("page")) {
-			int currentPageNumber = Integer.parseInt(parseInts(fragmentedLink));
-			newLink = link.replace("page" + Integer.toString(currentPageNumber),
-					"page" + Integer.toString(currentPageNumber + 1));
-		} else {
-			if(link.lastIndexOf("-new-post/") == link.length() - "-new-post/".length())
-				newLink = link.substring(0, 
-						link.lastIndexOf("-new-post/")) + "/page" + 
-						String.valueOf(Integer.parseInt(page) + 1);
-			else
-				newLink = link + "page" + page;
-		}
-		
-		return newLink;
+		return pageOperation(link, page, Operation.Increment);
 	}
 	
 	/**
@@ -74,28 +101,7 @@ public class Utils {
 	 * @return		A string with the new page number
 	 */
 	public static String getPage(String link, String page) {
-		String fragmentedLink = null, newLink = null;
-		
-		// First check to see if we are currently on a page other
-		// than the first, remove trailing slash
-		fragmentedLink = removeTrailingSlash(link);
-		
-		// Get the ending section
-		fragmentedLink = fragmentedLink.substring(fragmentedLink.lastIndexOf('/') + 1);
-		
-		// Is the string a 'page' string
-		if(fragmentedLink.indexOf("page") == 0) {
-			int currentPageNumber = Integer.parseInt(parseInts(fragmentedLink));
-			newLink = link.replace("page" + Integer.toString(currentPageNumber),
-					"page" + page);
-		} else {
-			if(link.lastIndexOf("-new-post/") == link.length() - "-new-post/".length())
-				newLink = link.substring(0, link.lastIndexOf("-new-post/")) + "/page" + page;
-			else
-				newLink = link + "page" + page;
-		}
-		
-		return newLink;
+		return pageOperation(link, page, Operation.Get);
 	}
 	
 	/**
@@ -104,31 +110,7 @@ public class Utils {
 	 * @return		The new link that equals the link page - 1
 	 */
 	public static String decrementPage(String link, String page) {
-		String fragmentedLink = null, newLink = null;
-		
-		// First check to see if we are currently on a page other
-		// than the first, remove trailing slash
-		fragmentedLink = removeTrailingSlash(link);
-		
-		// Get the ending section
-		fragmentedLink = 
-				new String(fragmentedLink.substring(fragmentedLink.lastIndexOf('/') + 1));
-		
-		// Is the string a 'page' string
-		if(fragmentedLink.indexOf("page") == 0) {
-			int currentPageNumber = Integer.parseInt(parseInts(fragmentedLink));
-			newLink = link.replace("page" + Integer.toString(currentPageNumber),
-					"page" + Integer.toString(currentPageNumber - 1));
-		} else {
-			if(link.lastIndexOf("-new-post/") == link.length() - "-new-post/".length())
-				newLink = link.substring(0, 
-						link.lastIndexOf("-new-post/")) + "/page" + 
-						String.valueOf(Integer.parseInt(page) - 1);
-			else
-				newLink = link + "page" + page;
-		}
-		
-		return newLink;
+		return pageOperation(link, page, Operation.Decrement);
 	}
 	
 	/**
