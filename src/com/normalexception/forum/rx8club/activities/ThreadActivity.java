@@ -118,10 +118,10 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	 * Container for thread posts and thread post related information
 	 */
 	private class ThreadPost {
-		private String name, title, location, join, postcount, post;
+		private String name, title, location, join, postcount, post, postDate;
 		public String toString() {
 			return name + "|" + title + "|" + location + 
-					"|" + join + "|" + postcount + "|" + post;
+					"|" + join + "|" + postcount + "|" + post + "|" + postDate;
 		}
 	}
 	
@@ -197,7 +197,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		        
                	for(ThreadPost post : list) {                   		
                		String text = post.name + "\n" + post.title + "\n" + 
-               				post.location + "\n" + post.join + "\n" + post.postcount;
+               				post.location + "\n" + post.join + "\n" + 
+               				post.postcount + "\n\n" + "Post Date: " + post.postDate;
                		
                		viewContents.add(new ViewContents(Color.GRAY, text, 22, false, false));
                		viewContents.add(new ViewContents(Color.DKGRAY, post.post, 23, true, false));
@@ -350,6 +351,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	ThreadPost user = new ThreadPost();
         	user.name = userCp.select("div[id^=postmenu]").text();
         	user.title = userDetail.get(0).text();
+        	user.postDate = innerPost.select("td[class=thead]").get(0).text();
         	
         	for(int i = 1; i < userSubDetail.size(); i++) {
         		switch(i) {
