@@ -24,12 +24,9 @@ package com.normalexception.forum.rx8club.activities;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import org.apache.http.client.ClientProtocolException;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -62,7 +59,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.handler.GuiHandlers;
-import com.normalexception.forum.rx8club.utils.LoginFactory;
+import com.normalexception.forum.rx8club.task.SubmitTask;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
@@ -453,21 +450,14 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 				this.finish();
 				break;
 			case R.id.submitButton:
-				try {
-					String toPost = 
-							((TextView)findViewById(R.id.postBox)).getText() + 
-							"\n\nPosted From RX8Club.com Android App";
-					VBForumFactory.getInstance().submitPost(securityToken, threadNumber, postNumber, toPost);
-					_intent = new Intent(ThreadActivity.this, ThreadActivity.class);
-					_intent.putExtra("link", this.currentPageLink);
-					_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber)));
-					_intent.putExtra("title", this.currentPageTitle);
-					this.finish();
-				} catch (ClientProtocolException e) {
-					BugSenseHandler.sendException(e);
-				} catch (IOException e) {
-					BugSenseHandler.sendException(e);
-				}
+				String toPost = 
+						((TextView)findViewById(R.id.postBox)).getText() + 
+						"\n\nPosted From RX8Club.com Android App";
+				SubmitTask sTask = new SubmitTask(this, this.securityToken, 
+						this.threadNumber, this.postNumber,
+						toPost, this.currentPageLink, 
+						this.currentPageTitle, this.pageNumber);
+				sTask.execute();
 				break;
 			case R.id.paginationText:
 				final EditText input = new EditText(this);
