@@ -50,6 +50,7 @@ import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.handler.GuiHandlers;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
 
@@ -62,12 +63,26 @@ public abstract class ForumBaseActivity extends Activity implements OnClickListe
 	protected ProgressDialog loadingDialog;
 	
 	protected static final int LOGOFF_MENU = 0;
+	protected static final int ABOUT_MENU = 1;
 	
 	private static String TAG = "ForumBaseActivity";
 	
 	protected static TableLayout tl = null;
 	
 	protected String finalPage = "1";
+
+	/**
+	 * Register the common gui buttons
+	 */
+	public void registerGuiButtons() {		
+		if (!(this instanceof LoginActivity)) {
+			findViewById(R.id.newTopicsButton).setOnClickListener(new GuiHandlers(this));
+	        findViewById(R.id.newPmButton).setOnClickListener(new GuiHandlers(this));
+	        findViewById(R.id.liveButton).setOnClickListener(new GuiHandlers(this));
+	        findViewById(R.id.profileButton).setOnClickListener(new GuiHandlers(this));
+	        findViewById(R.id.searchButton).setOnClickListener(new GuiHandlers(this));
+		}
+	}
 	
 	/*
 	 * (non-Javadoc)
@@ -139,6 +154,7 @@ public abstract class ForumBaseActivity extends Activity implements OnClickListe
 	@Override
     public boolean onCreateOptionsMenu(Menu menu){ 
         menu.add(0,LOGOFF_MENU,0,"Logoff");
+        menu.add(0,ABOUT_MENU,0,"About");
         return true; 
     } 
 	
@@ -149,18 +165,27 @@ public abstract class ForumBaseActivity extends Activity implements OnClickListe
 	@Override
     public boolean onOptionsItemSelected (MenuItem item)
     { 
+		Intent _intent = null;
         switch(item.getItemId())
         {
            case(LOGOFF_MENU):
    				Log.v(TAG, "Logoff Pressed");
    				LoginFactory.getInstance().logoff();
-   				Intent _intent = 
+   				_intent = 
    						new Intent(MainApplication.getAppContext(), LoginActivity.class);
    				_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
    				finish();
-   				startActivity(_intent);
    				break;
+           case(ABOUT_MENU):
+        	   	Log.v(TAG, "About Pressed");
+           		_intent =
+           				new Intent(MainApplication.getAppContext(), AboutActivity.class);
+           		break;
         } 
+        
+        if(_intent != null)
+        	startActivity(_intent);
+        
         return false; 
     } 
 	

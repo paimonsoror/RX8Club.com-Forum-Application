@@ -58,10 +58,8 @@ public class GuiHandlers implements OnClickListener {
 		switch(arg0.getId()) {
 			case R.id.newTopicsButton:
 				Log.v(TAG, "New Topics Pressed");
-				if(_src instanceof NewPostsActivity || _src instanceof ThreadActivity) {
-					Log.v(TAG, "Finishing Old Activity");
-					_src.finish();
-				}
+				Log.v(TAG, "Finishing Old Activity");
+				_src.finish();
 				_intent = new Intent(arg0.getContext(), NewPostsActivity.class);
 				break;
 			

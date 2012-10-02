@@ -135,12 +135,10 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	         setContentView(R.layout.activity_thread);
 	         
 	         Log.v(TAG, "Category Activity Started");
+
+	         // Register the titlebar gui buttons
+	         this.registerGuiButtons();
 	         
-	         findViewById(R.id.newTopicsButton).setOnClickListener(new GuiHandlers(this));
-	         findViewById(R.id.newPmButton).setOnClickListener(new GuiHandlers(this));
-	         findViewById(R.id.liveButton).setOnClickListener(new GuiHandlers(this));
-	         findViewById(R.id.profileButton).setOnClickListener(new GuiHandlers(this));
-	         findViewById(R.id.searchButton).setOnClickListener(new GuiHandlers(this));
 	         findViewById(R.id.previousButton).setOnClickListener(this);
 	         findViewById(R.id.nextButton).setOnClickListener(this);
 	         findViewById(R.id.paginationText).setOnClickListener(this);

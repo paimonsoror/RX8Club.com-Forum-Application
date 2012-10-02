@@ -41,7 +41,6 @@
         <item>6 Months Ago</item>
         <item>1 Year Ago</item>
     </string-array>
-    
     <string-array name="searchDateArrayValue">
         <item>0</item>
         <item>lastvisit</item>
@@ -53,26 +52,31 @@
         <item>180</item>
         <item>365</item>
     </string-array>
+    <string-array name="searchSortArray">
+        <item>Relevancy</item>
+        <item>Title</item>
+        <item>Reply Count</item>
+        <item>View Count</item>
+        <item>Thread Start Date</item>
+        <item>Last Post Date</item>
+        <item>User Name</item>
+        <item>Forum</item>
+    </string-array>
+    <string-array name="searchSortArrayValue">
+        <item>rank</item>
+        <item>title</item>
+        <item>replycount</item>
+        <item>views</item>
+        <item>threadstart</item>
+        <item>lastpost</item>
+        <item>postusername</item>
+        <item>forum</item>
+    </string-array>
 
-	<string-array name="searchSortArray">
-    	<item>Relevancy</item>
-    	<item>Title</item>
-    	<item>Reply Count</item>
-    	<item>View Count</item>
-    	<item>Thread Start Date</item>
-    	<item>Last Post Date</item>
-    	<item>User Name</item>
-    	<item>Forum</item>
-	</string-array>
-	
-	<string-array name="searchSortArrayValue">
-	    <item>rank</item>
-	    <item>title</item>
-	    <item>replycount</item>
-	    <item>views</item>
-	    <item>threadstart</item>
-	    <item>lastpost</item>
-	    <item>postusername</item>
-	    <item>forum</item>
-	</string-array>
+    <string name="title_activity_about">AboutActivity</string>
+
+    <string name="aboutstring">This free application was written by Paimon Sorornejad for the RX8Club.com community.  This application is designed to provide a mobile interface for Android based devices.</string>
+
+    <string name="recentchangesstring">Recent Changes: \n * Added about screen \n * Fixed login for some devices</string>
+
 </resources>
