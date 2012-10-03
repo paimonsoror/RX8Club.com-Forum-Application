@@ -75,6 +75,9 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	        
 	        // Register the titlebar gui buttons
 	         this.registerGuiButtons();
+	         
+	        // Hide pagination
+		    findViewById(R.id.paginationRow).setVisibility(View.GONE);
 	        
 	        Log.v(TAG, "New Posts Activity Started");
 	
@@ -117,6 +120,10 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 				}
 		    	
 		    	updateView(viewContents);
+		    	
+		    	// Restore pagination
+		        findViewById(R.id.paginationRow).setVisibility(View.VISIBLE);
+		        
 		    	loadingDialog.dismiss();
  			}
          };

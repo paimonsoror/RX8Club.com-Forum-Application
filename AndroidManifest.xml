@@ -2,8 +2,8 @@
     android:name="com.normalexception.forum.MainApplication"
     package="com.normalexception.forum.rx8club"
     android:installLocation="auto"
-    android:versionCode="1029"
-    android:versionName="1.0.29" >
+    android:versionCode="1030"
+    android:versionName="1.0.30" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -48,8 +48,7 @@
         <activity
             android:name=".activities.ThreadActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_thread"
-            android:launchMode="singleInstance" >
+            android:label="@string/title_activity_thread" >
         </activity>
         <activity
             android:name=".activities.NewPostsActivity"

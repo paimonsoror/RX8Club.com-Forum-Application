@@ -98,11 +98,12 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" >
-
+
                 <TableRow
                     android:id="@+id/paginationRow"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:gravity="center" >
 
                     <Button
                         android:id="@+id/previousButton"
@@ -120,13 +121,12 @@
                         android:layout_weight="1"
                         android:gravity="center_horizontal"
                         android:text="@string/pageXofY" />
-
+
                     <Button
                         android:id="@+id/nextButton"
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.25"
                         android:text="Next"
                         android:textSize="10dip" />
 

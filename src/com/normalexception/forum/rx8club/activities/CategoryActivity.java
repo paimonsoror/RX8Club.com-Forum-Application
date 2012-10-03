@@ -77,6 +77,9 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        // Register the titlebar gui buttons
 	        this.registerGuiButtons();
 	        
+	        // Hide pagination
+	        findViewById(R.id.paginationRow).setVisibility(View.GONE);
+	        
 	        Log.v(TAG, "Category Activity Started");
 	        
 	        if(savedInstanceState == null)
@@ -120,6 +123,10 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 				}
 		    	
 		    	updateView(viewContents);
+		    	
+		    	// Restore pagination
+		    	findViewById(R.id.paginationRow).setVisibility(View.VISIBLE);
+		    	
 		    	loadingDialog.dismiss();
 			}
 		};
