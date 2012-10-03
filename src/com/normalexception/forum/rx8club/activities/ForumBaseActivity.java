@@ -64,6 +64,7 @@ public abstract class ForumBaseActivity extends Activity implements OnClickListe
 	
 	protected static final int LOGOFF_MENU = 0;
 	protected static final int ABOUT_MENU = 1;
+	protected static final int MAIN_MENU = 2;
 	
 	private static String TAG = "ForumBaseActivity";
 	
@@ -76,6 +77,7 @@ public abstract class ForumBaseActivity extends Activity implements OnClickListe
 	 */
 	public void registerGuiButtons() {		
 		if (!(this instanceof LoginActivity)) {
+			findViewById(R.id.imageView1).setOnClickListener(new GuiHandlers(this));
 			findViewById(R.id.newTopicsButton).setOnClickListener(new GuiHandlers(this));
 	        findViewById(R.id.newPmButton).setOnClickListener(new GuiHandlers(this));
 	        findViewById(R.id.liveButton).setOnClickListener(new GuiHandlers(this));
@@ -153,6 +155,7 @@ public abstract class ForumBaseActivity extends Activity implements OnClickListe
 	 */
 	@Override
     public boolean onCreateOptionsMenu(Menu menu){ 
+		menu.add(0,MAIN_MENU,0,"Goto Main");
         menu.add(0,LOGOFF_MENU,0,"Logoff");
         menu.add(0,ABOUT_MENU,0,"About");
         return true; 
@@ -174,12 +177,19 @@ public abstract class ForumBaseActivity extends Activity implements OnClickListe
    				_intent = 
    						new Intent(MainApplication.getAppContext(), LoginActivity.class);
    				_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-   				finish();
+   				if(!(this instanceof MainActivity))
+					finish();
    				break;
            case(ABOUT_MENU):
         	   	Log.v(TAG, "About Pressed");
            		_intent =
            				new Intent(MainApplication.getAppContext(), AboutActivity.class);
+           		break;
+           case(MAIN_MENU):
+        	   _intent =
+        	   			new Intent(MainApplication.getAppContext(), MainActivity.class);
+           		if(!(this instanceof MainActivity))
+           			finish();
            		break;
         } 
         

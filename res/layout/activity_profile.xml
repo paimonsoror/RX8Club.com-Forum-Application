@@ -90,12 +90,11 @@
             android:id="@+id/tableRow2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
+
             <TextView
                 android:id="@+id/userNameText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User Name"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
         </TableRow>
@@ -104,12 +103,11 @@
             android:id="@+id/tableRow3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
+
             <TextView
                 android:id="@+id/userTitleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User's Sample Title"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
         </TableRow>
@@ -118,12 +116,11 @@
             android:id="@+id/tableRow4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
+
             <TextView
                 android:id="@+id/userPostCountText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Post Count"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
         </TableRow>
@@ -132,12 +129,11 @@
             android:id="@+id/tableRow5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
+
             <TextView
                 android:id="@+id/joinDateText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Join Date"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
         </TableRow>

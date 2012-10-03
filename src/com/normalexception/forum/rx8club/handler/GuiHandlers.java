@@ -33,10 +33,10 @@ import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.activities.MainActivity;
 import com.normalexception.forum.rx8club.activities.NewPostsActivity;
 import com.normalexception.forum.rx8club.activities.ProfileActivity;
 import com.normalexception.forum.rx8club.activities.SearchActivity;
-import com.normalexception.forum.rx8club.activities.ThreadActivity;
 
 public class GuiHandlers implements OnClickListener {
 	
@@ -59,7 +59,8 @@ public class GuiHandlers implements OnClickListener {
 			case R.id.newTopicsButton:
 				Log.v(TAG, "New Topics Pressed");
 				Log.v(TAG, "Finishing Old Activity");
-				_src.finish();
+				if(!(_src instanceof MainActivity))
+					_src.finish();
 				_intent = new Intent(arg0.getContext(), NewPostsActivity.class);
 				break;
 			
@@ -87,6 +88,12 @@ public class GuiHandlers implements OnClickListener {
 								"Sorry Not Implemented Yet!", Toast.LENGTH_SHORT).show();
 					}
 				});
+				break;
+				
+			case R.id.imageView1:
+				_intent = new Intent(arg0.getContext(), MainActivity.class);
+				if(!(_src instanceof MainActivity))
+					_src.finish();
 				break;
 		}
 		
