@@ -51,6 +51,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.handler.GuiHandlers;
+import com.normalexception.forum.rx8club.preferences.Preferences;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
 
@@ -65,6 +66,7 @@ public abstract class ForumBaseActivity extends Activity implements OnClickListe
 	protected static final int LOGOFF_MENU = 0;
 	protected static final int ABOUT_MENU = 1;
 	protected static final int MAIN_MENU = 2;
+	protected static final int OPTIONS_MENU = 3;
 	
 	private static String TAG = "ForumBaseActivity";
 	
@@ -93,12 +95,13 @@ public abstract class ForumBaseActivity extends Activity implements OnClickListe
 	@Override
 	public void onClick(View arg0) {
 		// Before anything, make sure we are still logged in
-		if(!LoginFactory.getInstance().isLoggedIn())
+		if(!LoginFactory.getInstance().isLoggedIn()) {
 			try {
 				LoginFactory.getInstance().login();
 			} catch (NoSuchAlgorithmException e1) {
 			} catch (ClientProtocolException e1) {
 			} catch (IOException e1) {}
+		}
 	}
 	
 	/*
@@ -157,6 +160,7 @@ public abstract class ForumBaseActivity extends Activity implements OnClickListe
     public boolean onCreateOptionsMenu(Menu menu){ 
 		menu.add(0,MAIN_MENU,0,"Goto Main");
         menu.add(0,LOGOFF_MENU,0,"Logoff");
+        menu.add(0,OPTIONS_MENU,0,"Preferences");
         menu.add(0,ABOUT_MENU,0,"About");
         return true; 
     } 
@@ -190,6 +194,10 @@ public abstract class ForumBaseActivity extends Activity implements OnClickListe
         	   			new Intent(MainApplication.getAppContext(), MainActivity.class);
            		if(!(this instanceof MainActivity))
            			finish();
+           		break;
+           case(OPTIONS_MENU):
+        	   _intent =
+        	   			new Intent(MainApplication.getAppContext(), Preferences.class);
            		break;
         } 
         

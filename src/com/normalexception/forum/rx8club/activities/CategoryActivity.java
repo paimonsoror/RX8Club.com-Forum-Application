@@ -50,6 +50,7 @@ import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.handler.GuiHandlers;
+import com.normalexception.forum.rx8club.utils.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
@@ -61,6 +62,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	
 	private static char lpad = '«';
 	private static char rpad = '»';
+	
+	private String pageNumber = "";
 
 	/*
 	 * (non-Javadoc)
@@ -77,8 +80,12 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        // Register the titlebar gui buttons
 	        this.registerGuiButtons();
 	        
-	        // Hide pagination
-	        findViewById(R.id.paginationRow).setVisibility(View.GONE);
+	        runOnUiThread(new Runnable() {
+	            public void run() {
+	            	// Hide pagination
+	            	findViewById(R.id.paginationRow).setVisibility(View.GONE);
+	            }
+	        });
 	        
 	        Log.v(TAG, "Category Activity Started");
 	        
@@ -104,7 +111,10 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 			public void run() {
 				link = 
 		        		(String) getIntent().getSerializableExtra("link");
-		    	
+				pageNumber = 
+						(String) getIntent().getStringExtra("page");
+				if(pageNumber == null) pageNumber = "1";
+				
 		        Document doc = VBForumFactory.getInstance().get(link);
 		        
 		        viewContents = new ArrayList<ViewContents>();
@@ -124,8 +134,12 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		    	
 		    	updateView(viewContents);
 		    	
-		    	// Restore pagination
-		    	findViewById(R.id.paginationRow).setVisibility(View.VISIBLE);
+		    	runOnUiThread(new Runnable() {
+		            public void run() {
+		            	// Restore pagination
+		            	findViewById(R.id.paginationRow).setVisibility(View.VISIBLE);
+		            }
+		    	});
 		    	
 		    	loadingDialog.dismiss();
 			}
@@ -177,7 +191,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	    	TextView b = new TextView(this);
 	    	b.setId(id);
 	    	b.setOnClickListener(this);
-	    	b.setTextSize((float) 10.0);
+	    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
 	    	b.setTextColor(Color.WHITE);
 	        b.setPadding(5, 5, 5, 5);
 	        
@@ -200,7 +214,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
         		// Convert dip to px
             	Resources r = getResources();
             	int px = 
-            			(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0, r.getDisplayMetrics());
+            			(int)TypedValue.applyDimension(
+            					TypedValue.COMPLEX_UNIT_DIP, 0, r.getDisplayMetrics());
             	b.setWidth(px);
 	        } else {
 	        	b.setText(text);
@@ -325,28 +340,35 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	@Override
 	public void onClick(View arg0) {
 		super.onClick(arg0);
+		Intent _intent = null;
 		
-		TextView tv = (TextView)arg0;
-		final String linkText = tv.getText().toString();		
-		Log.v(TAG, "User clicked '" + linkText + "'");
+		switch(arg0.getId()) {
+			case R.id.previousButton:
+				_intent = new Intent(CategoryActivity.this, CategoryActivity.class);
+				_intent.putExtra("link", Utils.decrementPage(this.link, this.finalPage));
+				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) - 1));
+				this.finish();
+				break;
+			case R.id.nextButton:
+				_intent = new Intent(CategoryActivity.this, CategoryActivity.class);
+				_intent.putExtra("link", Utils.incrementPage(this.link, this.finalPage));
+				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) + 1));
+				this.finish();
+				break;
+			default:
+				TextView tv = (TextView)arg0;
+				final String linkText = tv.getText().toString();		
+				Log.v(TAG, "User clicked '" + linkText + "'");
 
-		final String trimmedLinkText = linkText.replace("\u00a0", "");
-		final String link = linkMap.get(trimmedLinkText);
-		
-		if(link == null) {
-			Log.e(TAG, "Could Not Find Key of '" + trimmedLinkText + "'");
-			Log.e(TAG, "Keys: " + linkMap.keySet().toString());
-		} else {
-			// Refresh the display
-			new Thread("CreateThreadActivity") {
-				public void run() {
-					Intent intent = 
-							new Intent(CategoryActivity.this, ThreadActivity.class);
-					intent.putExtra("link", link);
-					intent.putExtra("title", linkText);
-					startActivity(intent);
-				}
-			}.start();
+				final String trimmedLinkText = linkText.replace("\u00a0", "");
+				final String link = linkMap.get(trimmedLinkText);
+				_intent = new Intent(CategoryActivity.this, ThreadActivity.class);
+				_intent.putExtra("link", link);
+				_intent.putExtra("title", linkText);
+				break;
 		}
+		
+		if(_intent != null)
+			startActivity(_intent);
 	}
 }

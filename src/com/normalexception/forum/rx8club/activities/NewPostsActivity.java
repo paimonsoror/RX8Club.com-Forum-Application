@@ -48,6 +48,7 @@ import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.handler.GuiHandlers;
+import com.normalexception.forum.rx8club.utils.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
@@ -75,9 +76,13 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	        
 	        // Register the titlebar gui buttons
 	         this.registerGuiButtons();
-	         
-	        // Hide pagination
-		    findViewById(R.id.paginationRow).setVisibility(View.GONE);
+	        
+	         runOnUiThread(new Runnable() {
+		            public void run() {	
+		            	// Hide pagination
+		            	findViewById(R.id.paginationRow).setVisibility(View.GONE);
+		            }
+	         });
 	        
 	        Log.v(TAG, "New Posts Activity Started");
 	
@@ -121,8 +126,12 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 		    	
 		    	updateView(viewContents);
 		    	
-		    	// Restore pagination
-		        findViewById(R.id.paginationRow).setVisibility(View.VISIBLE);
+		    	runOnUiThread(new Runnable() {
+		            public void run() {
+		            	// Restore pagination
+		            	findViewById(R.id.paginationRow).setVisibility(View.VISIBLE);
+		            }
+		    	});
 		        
 		    	loadingDialog.dismiss();
  			}
@@ -164,7 +173,7 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	    	TextView b = new TextView(this);
 	    	b.setId(id);
 	    	b.setOnClickListener(this);
-	    	b.setTextSize((float) 10.0);
+	    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
 	    	b.setTextColor(Color.WHITE);
 	        b.setPadding(5, 5, 5, 5);
 	        

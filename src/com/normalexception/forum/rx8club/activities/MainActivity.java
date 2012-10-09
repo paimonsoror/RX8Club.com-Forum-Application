@@ -40,24 +40,22 @@ import org.jsoup.select.Elements;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
-import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TableLayout;
-import android.widget.TableLayout.LayoutParams;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.handler.GuiHandlers;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
+import com.normalexception.forum.rx8club.utils.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
@@ -90,7 +88,7 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	        
 	     	// Register the titlebar gui buttons
 	        this.registerGuiButtons();
-	        
+			    
 	        if(savedInstanceState == null)
 	        	constructView();
 	        else {
@@ -185,13 +183,7 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
     	runOnUiThread(new Runnable() {
     		public void run() {
     			tl = (TableLayout)findViewById(R.id.myTableLayout);
-    			
-    			// Set column properties
-    			tl.setColumnShrinkable(0, true);
     			tl.setColumnStretchable(0, true);
-    			tl.setColumnShrinkable(1, false);
-    			tl.setColumnShrinkable(2, false);
-    			
     			for(ViewContents view : contents) {
     				addRow(view.getClr(), view.getTexts(), view.getId(), view.isSpan());
     			}
@@ -211,31 +203,35 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
     	tr_head.setId(id);
     	tr_head.setBackgroundColor(clr);
 
+    	int index = 0;
     	for(String text : texts) {
 	    	// Create a Button to be the row-content.
 	    	TextView b = new TextView(this);
 	    	b.setId(id);
 	    	b.setText(text);
 	    	b.setOnClickListener(this);
-	    	b.setTextSize((float) 10.0);
+	    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
 	    	b.setTextColor(Color.WHITE);
 	        b.setPadding(5, 5, 5, 5);
-	        
-	
-	    	// Add Button to row.
-	        if(span) {
-		        TableRow.LayoutParams params = new TableRow.LayoutParams();
-		        params.span = 3;
-		        tr_head.addView(b,params);
-	        } else {
-	        	tr_head.addView(b);
+
+	        if(index == 0) {
+	        	// Convert dip to px
+	        	Resources r = getResources();
+        		int px = 
+        			(int)TypedValue.applyDimension(
+        					TypedValue.COMPLEX_UNIT_DIP, 0, r.getDisplayMetrics());
+        		b.setWidth(px);
 	        }
+	
+	        TableRow.LayoutParams params = new TableRow.LayoutParams();
+	        params.span = span? 5 :	1;  
+	        if(index == 0) params.weight = 1f;
+	        tr_head.addView(b,params);
+	        index++;
     	}
 
     	// Add row to TableLayout.
-        tl.addView(tr_head,new TableLayout.LayoutParams(
-    			LayoutParams.WRAP_CONTENT,
-    			LayoutParams.WRAP_CONTENT));
+        tl.addView(tr_head);
     }
     
     /**

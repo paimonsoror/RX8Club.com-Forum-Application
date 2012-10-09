@@ -2,8 +2,8 @@
     android:name="com.normalexception.forum.MainApplication"
     package="com.normalexception.forum.rx8club"
     android:installLocation="auto"
-    android:versionCode="1030"
-    android:versionName="1.0.30" >
+    android:versionCode="1033"
+    android:versionName="1.0.33" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -27,7 +27,6 @@
             android:icon="@drawable/rotor_icon"
             android:label="@string/title_activity_main"
             android:launchMode="singleInstance" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,7 +42,7 @@
         <activity
             android:name=".activities.CategoryActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_category">
+            android:label="@string/title_activity_category" >
         </activity>
         <activity
             android:name=".activities.ThreadActivity"
@@ -53,7 +52,7 @@
         <activity
             android:name=".activities.NewPostsActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_new_posts">
+            android:label="@string/title_activity_new_posts" >
         </activity>
         <activity
             android:name=".activities.ProfileActivity"
@@ -64,13 +63,17 @@
         <activity
             android:name=".activities.SearchActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_search">
+            android:label="@string/title_activity_search" >
         </activity>
         <activity
             android:name=".activities.AboutActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_about"
             android:launchMode="singleInstance" >
+        </activity>
+        <activity
+            android:name=".preferences.Preferences"
+            android:label="@string/title_activity_preferences" android:theme="@style/AppTheme">
         </activity>
     </application>
 

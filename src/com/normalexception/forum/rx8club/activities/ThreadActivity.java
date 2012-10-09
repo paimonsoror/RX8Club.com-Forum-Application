@@ -60,6 +60,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.handler.GuiHandlers;
 import com.normalexception.forum.rx8club.task.SubmitTask;
+import com.normalexception.forum.rx8club.utils.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
@@ -258,7 +259,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     		b.setText(html? Html.fromHtml(text + "<br><br><br>", imageHandler, null) : text);
     	}
     	
-    	b.setTextSize((float) 10.0);
+    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
     	b.setTextColor(Color.WHITE);
     	
     	/* Add Button to row. */

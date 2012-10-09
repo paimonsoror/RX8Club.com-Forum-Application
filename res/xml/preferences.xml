@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen 
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <ListPreference
+		android:title="Font Size"
+		android:summary="Set the application's font size (Restart Required)"
+		android:key="fontsize"
+		android:defaultValue="Medium"
+		android:entries="@array/fontsizes"
+		android:entryValues="@array/fontsizevalue"
+		/>
+</PreferenceScreen>
