@@ -221,14 +221,11 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        	b.setText(text);
 	        }
 	
-	    	/* Add Button to row. */
-	        if(span) {
-		        TableRow.LayoutParams params = new TableRow.LayoutParams();
-		        params.span = 3;
-		        tr_head.addView(b,params);
-	        } else {
-	        	tr_head.addView(b);
-	        }
+	        /* Add Button to row. */
+	        TableRow.LayoutParams params = new TableRow.LayoutParams();
+	        params.span = span? 5 :	1;  
+	        if(index == 0) params.weight = 1f;
+	        tr_head.addView(b,params);
 	        
 	        index++;
     	}
