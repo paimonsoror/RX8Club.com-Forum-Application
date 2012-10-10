@@ -24,7 +24,10 @@ package com.normalexception.forum.rx8club.preferences;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 
 import com.normalexception.forum.rx8club.R;
@@ -45,5 +48,20 @@ public class Preferences extends PreferenceActivity {
         getPreferenceManager().setSharedPreferencesName(
                 PreferenceHelper.PREFS_NAME);
         addPreferencesFromResource(R.xml.preferences); 
+        
+        Preference button = (Preference)findPreference("donate");
+        button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference arg0) { 
+            	String donateUrl = "https://www.paypal.com/cgi-bin/webscr" +
+            			"?cmd=_donations&business=XSEK8GC74RMMS&lc=US" +
+            			"&currency_code=USD&bn=PP%2dDonations" +
+            			"BF%3abtn_donateCC_LG%2egif%3aNonHosted";
+            	Uri uri = Uri.parse(donateUrl);
+            	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            	startActivity(intent);
+                return true;
+            }
+        });
     }
 }

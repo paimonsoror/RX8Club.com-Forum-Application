@@ -7,11 +7,14 @@
 		android:key="fontsize"
 		android:defaultValue="Medium"
 		android:entries="@array/fontsizes"
-		android:entryValues="@array/fontsizevalue"
-		/>
+		android:entryValues="@array/fontsizevalue"/>
     <CheckBoxPreference
-          android:title="Advertise Application"
-          android:defaultValue="true"
-          android:summary="Show 'Posted From' On Thread Posts"
-          android:key="advertise" />
+        android:title="Advertise Application"
+        android:defaultValue="true"
+        android:summary="Show 'Posted From' On Thread Posts"
+        android:key="advertise" />
+    <Preference 
+        android:title="Donate!"
+        android:key="donate"
+        android:summary="Help Support My Work!"/>
 </PreferenceScreen>
