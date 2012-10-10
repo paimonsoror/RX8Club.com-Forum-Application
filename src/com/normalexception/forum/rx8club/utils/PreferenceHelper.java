@@ -39,8 +39,8 @@ public class PreferenceHelper {
 	
 	/**
 	 * Get the font size from the preference manager
-	 * @param context
-	 * @return
+	 * @param context	The application context
+	 * @return			The font size
 	 */
 	public static int getFontSize(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
@@ -49,8 +49,8 @@ public class PreferenceHelper {
 	
 	/**
 	 * Set the font size
-	 * @param context
-	 * @param newValue
+	 * @param context	The application context
+	 * @param newValue	The new font value
 	 */
     public static void setFontSize(Context context, String newValue) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
@@ -59,4 +59,25 @@ public class PreferenceHelper {
         prefsEditor.commit();
     }
 
+    /**
+     * Report if advertise option is enabled
+     * @param context	Application context
+     * @return			True if option enabled
+     */
+    public static boolean isAdvertiseEnabled(Context context) {
+    	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+    	return prefs.getBoolean("advertise", true);
+    }
+    
+    /**
+     * Convenience method to set the advertise enabled option
+     * @param context	The application context
+     * @param newValue	The new option value
+     */
+    public static void setAdvertiseEnabled(Context context, boolean newValue) {
+    	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+        Editor prefsEditor = prefs.edit();
+        prefsEditor.putBoolean("advertise", newValue);
+        prefsEditor.commit();
+    }
 }

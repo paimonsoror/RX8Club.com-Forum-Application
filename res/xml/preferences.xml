@@ -9,4 +9,9 @@
 		android:entries="@array/fontsizes"
 		android:entryValues="@array/fontsizevalue"
 		/>
+    <CheckBoxPreference
+          android:title="Advertise Application"
+          android:defaultValue="true"
+          android:summary="Show 'Posted From' On Thread Posts"
+          android:key="advertise" />
 </PreferenceScreen>

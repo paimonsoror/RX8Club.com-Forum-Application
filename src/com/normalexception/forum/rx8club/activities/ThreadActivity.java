@@ -56,6 +56,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.handler.GuiHandlers;
@@ -449,9 +450,11 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 				this.finish();
 				break;
 			case R.id.submitButton:
+				String advert = PreferenceHelper.isAdvertiseEnabled(MainApplication.getAppContext())?
+						"\n\nPosted From RX8Club.com Android App" : "";
 				String toPost = 
 						((TextView)findViewById(R.id.postBox)).getText() + 
-						"\n\nPosted From RX8Club.com Android App";
+						advert;
 				SubmitTask sTask = new SubmitTask(this, this.securityToken, 
 						this.threadNumber, this.postNumber,
 						toPost, this.currentPageLink, 

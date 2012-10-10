@@ -34,11 +34,16 @@ import com.normalexception.forum.rx8club.utils.PreferenceHelper;
  * Class used to set and save preferences
  */
 public class Preferences extends PreferenceActivity {
+	
+	/*
+	 * (non-Javadoc)
+	 * @see android.preference.PreferenceActivity#onCreate(android.os.Bundle)
+	 */
 	@Override
     protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            getPreferenceManager().setSharedPreferencesName(
-                    PreferenceHelper.PREFS_NAME);
-            addPreferencesFromResource(R.xml.preferences);
+        super.onCreate(savedInstanceState);
+        getPreferenceManager().setSharedPreferencesName(
+                PreferenceHelper.PREFS_NAME);
+        addPreferencesFromResource(R.xml.preferences); 
     }
 }
