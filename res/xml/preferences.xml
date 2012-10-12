@@ -17,4 +17,8 @@
         android:title="Donate!"
         android:key="donate"
         android:summary="Help Support My Work!"/>
+    <Preference 
+        android:title="Version Number"
+        android:key="version"
+        android:summary=""/>
 </PreferenceScreen>

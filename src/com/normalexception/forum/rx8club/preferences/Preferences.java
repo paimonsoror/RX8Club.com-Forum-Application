@@ -63,5 +63,12 @@ public class Preferences extends PreferenceActivity {
                 return true;
             }
         });
+        
+        try {
+        	Preference version = (Preference)findPreference("version");
+        	version.setSummary(
+        			getPackageManager().getPackageInfo(
+        					this.getPackageName(), 0).versionName);
+        } catch (Exception e) {}
     }
 }
