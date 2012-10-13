@@ -47,7 +47,7 @@ public class Preferences extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         getPreferenceManager().setSharedPreferencesName(
                 PreferenceHelper.PREFS_NAME);
-        addPreferencesFromResource(R.xml.preferences); 
+        addPreferencesFromResource(R.xml.preferences);
         
         Preference button = (Preference)findPreference("donate");
         button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

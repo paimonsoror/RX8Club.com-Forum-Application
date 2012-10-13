@@ -71,10 +71,12 @@
             android:label="@string/title_activity_about"
             android:launchMode="singleInstance" >
         </activity>
-        <activity
-            android:name=".preferences.Preferences"
-            android:label="@string/title_activity_preferences" android:theme="@style/AppTheme">
-        </activity>
+        <activity android:label="Application Preferences"
+	            android:name=".preferences.Preferences"
+	            android:theme="@style/PreferencesTheme">
+	      <intent-filter>
+	      </intent-filter>
+		</activity>
     </application>
 
 </manifest>
