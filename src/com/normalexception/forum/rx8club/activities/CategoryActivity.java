@@ -37,8 +37,6 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.SpannableString;
-import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -49,7 +47,6 @@ import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.handler.GuiHandlers;
 import com.normalexception.forum.rx8club.utils.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
@@ -342,13 +339,13 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		switch(arg0.getId()) {
 			case R.id.previousButton:
 				_intent = new Intent(CategoryActivity.this, CategoryActivity.class);
-				_intent.putExtra("link", Utils.decrementPage(this.link, this.finalPage));
+				_intent.putExtra("link", Utils.decrementPage(link, this.finalPage));
 				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) - 1));
 				this.finish();
 				break;
 			case R.id.nextButton:
 				_intent = new Intent(CategoryActivity.this, CategoryActivity.class);
-				_intent.putExtra("link", Utils.incrementPage(this.link, this.finalPage));
+				_intent.putExtra("link", Utils.incrementPage(link, this.finalPage));
 				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) + 1));
 				this.finish();
 				break;

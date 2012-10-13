@@ -25,7 +25,6 @@ package com.normalexception.forum.rx8club.utils;
  ************************************************************************/
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -43,11 +42,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
-import com.normalexception.forum.rx8club.MainApplication;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.util.Log;
+
+import com.normalexception.forum.rx8club.MainApplication;
 
 /**
  * Singleton class for the login information

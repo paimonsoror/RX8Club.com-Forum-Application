@@ -25,11 +25,8 @@ package com.normalexception.forum.rx8club.activities;
  ************************************************************************/
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RadioButton;
@@ -37,7 +34,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.handler.GuiHandlers;
 
 public class SearchActivity extends ForumBaseActivity implements OnClickListener {
 

@@ -1,9 +1,5 @@
 package com.normalexception.forum.rx8club.enums;
 
-import android.R;
-import android.content.res.Resources;
-
-import com.normalexception.forum.rx8club.MainApplication;
 
 /************************************************************************
  * NormalException.net Software, and other contributors

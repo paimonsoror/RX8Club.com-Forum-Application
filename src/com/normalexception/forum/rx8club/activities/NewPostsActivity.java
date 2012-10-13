@@ -47,7 +47,6 @@ import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.handler.GuiHandlers;
 import com.normalexception.forum.rx8club.utils.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;

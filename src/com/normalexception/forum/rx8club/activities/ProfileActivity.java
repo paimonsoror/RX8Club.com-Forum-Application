@@ -31,15 +31,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.ProgressDialog;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TableLayout;
@@ -49,7 +46,6 @@ import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.handler.GuiHandlers;
 import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
