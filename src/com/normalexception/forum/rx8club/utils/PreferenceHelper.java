@@ -28,7 +28,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.normalexception.forum.rx8club.enums.FontSize;
+import com.normalexception.forum.rx8club.MainApplication;
 
 /**
  * Helper class for the preference manager
@@ -44,7 +44,12 @@ public class PreferenceHelper {
 	 */
 	public static int getFontSize(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        return Integer.parseInt(prefs.getString("fontsize", "12"));
+        try {
+        	return Integer.parseInt(prefs.getString("fontsize", "12"));
+        } catch (NumberFormatException e) {
+        	setFontSize(MainApplication.getAppContext(), "12");
+        	return 12;
+        }
     }
 	
 	/**
