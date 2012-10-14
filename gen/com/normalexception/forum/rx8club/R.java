@@ -119,7 +119,7 @@ public final class R {
     }
     public static final class string {
         public static final int aboutOption=0x7f060008;
-        public static final int aboutstring=0x7f06001e;
+        public static final int aboutstring=0x7f06001f;
         public static final int app_description=0x7f060006;
         public static final int app_name=0x7f060000;
         public static final int commentText=0x7f06000d;
@@ -132,20 +132,21 @@ public final class R {
         public static final int newTopics=0x7f06000e;
         public static final int pageXofY=0x7f06001c;
         public static final int passwordInput=0x7f06000a;
+        public static final int preferencesLabel=0x7f06001d;
         public static final int profileButton=0x7f060011;
-        public static final int recentchangesstring=0x7f06001f;
+        public static final int recentchangesstring=0x7f060020;
         public static final int searchButton=0x7f060012;
         public static final int searchString=0x7f060017;
         public static final int searchType=0x7f060018;
         public static final int threadContentSearch=0x7f06001a;
         public static final int threadTitleSearch=0x7f06001b;
-        public static final int title_activity_about=0x7f06001d;
+        public static final int title_activity_about=0x7f06001e;
         public static final int title_activity_bug_report=0x7f060015;
         public static final int title_activity_category=0x7f060004;
         public static final int title_activity_login=0x7f060009;
         public static final int title_activity_main=0x7f060003;
         public static final int title_activity_new_posts=0x7f060013;
-        public static final int title_activity_preferences=0x7f060020;
+        public static final int title_activity_preferences=0x7f060021;
         public static final int title_activity_profile=0x7f060014;
         public static final int title_activity_search=0x7f060016;
         public static final int title_activity_thread=0x7f060005;

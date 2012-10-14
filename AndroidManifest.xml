@@ -2,8 +2,8 @@
     android:name="com.normalexception.forum.MainApplication"
     package="com.normalexception.forum.rx8club"
     android:installLocation="auto"
-    android:versionCode="1036"
-    android:versionName="1.0.36" >
+    android:versionCode="1037"
+    android:versionName="1.0.37" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -71,11 +71,10 @@
             android:label="@string/title_activity_about"
             android:launchMode="singleInstance" >
         </activity>
-        <activity android:label="Application Preferences"
-	            android:name=".preferences.Preferences"
-	            android:theme="@style/PreferencesTheme">
-	      <intent-filter>
-	      </intent-filter>
+        <activity 
+            android:label="@string/preferencesLabel"
+	        android:name=".preferences.Preferences"
+	        android:theme="@android:style/Theme.Black">
 		</activity>
     </application>
 
