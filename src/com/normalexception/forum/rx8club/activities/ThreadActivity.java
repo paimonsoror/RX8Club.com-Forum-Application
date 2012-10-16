@@ -54,6 +54,7 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
@@ -203,6 +204,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		    	runOnUiThread(new Runnable() {
 		            public void run() {
 		            	findViewById(R.id.controlsRow).setVisibility(View.VISIBLE);
+		            	findViewById(R.id.menuRow).setVisibility(View.VISIBLE);
 		            }
 		    	});
 		    	

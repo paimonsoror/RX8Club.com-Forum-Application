@@ -44,6 +44,7 @@ import android.view.View.OnClickListener;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
@@ -75,12 +76,15 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        setContentView(R.layout.activity_category);
 	        
 	        // Register the titlebar gui buttons
-	        this.registerGuiButtons();
+	        this.registerGuiButtons();	        
+
+	        findViewById(R.id.newThreadButton).setOnClickListener(this);
 	        
 	        runOnUiThread(new Runnable() {
 	            public void run() {
 	            	// Hide pagination
 	            	findViewById(R.id.paginationRow).setVisibility(View.GONE);
+	            	findViewById(R.id.menuRow).setVisibility(View.GONE);
 	            }
 	        });
 	        
@@ -135,6 +139,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		            public void run() {
 		            	// Restore pagination
 		            	findViewById(R.id.paginationRow).setVisibility(View.VISIBLE);
+		            	findViewById(R.id.menuRow).setVisibility(View.VISIBLE);
 		            }
 		    	});
 		    	
@@ -348,6 +353,9 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 				_intent.putExtra("link", Utils.incrementPage(link, this.finalPage));
 				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) + 1));
 				this.finish();
+				break;
+			case R.id.newThreadButton:
+				Toast.makeText(this, "Coming Soon...", Toast.LENGTH_SHORT).show();
 				break;
 			default:
 				TextView tv = (TextView)arg0;
