@@ -71,11 +71,20 @@
             android:label="@string/title_activity_about"
             android:launchMode="singleInstance" >
         </activity>
-        <activity 
+        <activity
+            android:name=".preferences.Preferences"
             android:label="@string/preferencesLabel"
-	        android:name=".preferences.Preferences"
-	        android:theme="@android:style/Theme.Black">
-		</activity>
+            android:theme="@android:style/Theme.Black" >
+        </activity>
+        <activity
+            android:name=".activities.NewThreadActivity"
+            android:label="@string/title_activity_new_thread" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

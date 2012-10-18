@@ -32,6 +32,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -63,6 +64,9 @@ public class VBForumFactory {
 	
 	private static final String postSubmitAddress = 
 			"http://www.rx8club.com/newreply.php?do=newreply&noquote=1&p=";
+	
+	private static final String newThreadAddress =
+			"http://www.rx8club.com/newthread.php?do=newthread&f=";
 	
 	/**
 	 * Constructor
@@ -111,7 +115,8 @@ public class VBForumFactory {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public boolean submitPost(String securityToken, String thread, String postNumber, String post) throws ClientProtocolException, IOException {
+	public boolean submitPost(String securityToken, String thread, String postNumber, String post) 
+			throws ClientProtocolException, IOException {
     	DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
     	
 		HttpPost httpost = new HttpPost(postSubmitAddress + postNumber);
@@ -123,10 +128,7 @@ public class VBForumFactory {
 		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
     	nvps.add(new BasicNameValuePair("do", "postreply"));
     	
-    	Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-    	calendar.clear();
-    	calendar.set(2011, Calendar.OCTOBER, 1);
-    	long secondsSinceEpoch = calendar.getTimeInMillis() / 1000L;
+    	long secondsSinceEpoch = getTime();
     	
     	nvps.add(new BasicNameValuePair("poststarttime", Long.toString(secondsSinceEpoch)));
     	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
@@ -140,6 +142,60 @@ public class VBForumFactory {
     	}
     	
 		return false;
+	}
+	
+	/**
+	 * Submit a new thread to the server
+	 * @param forumId	The category id
+	 * @param s			? not sure ?
+	 * @param token		The security token
+	 * @param posthash	The post hash code
+	 * @param subject	The user defined subject
+	 * @param post		The user defined initial post
+	 * @return			True if successful
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public boolean newThread(String forumId, String s, String token,
+							 String posthash, String subject, String post) 
+			throws ClientProtocolException, IOException {
+		DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
+		long secondsSinceEpoch = getTime();
+		
+		HttpPost httpost = new HttpPost(newThreadAddress + forumId);
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair("s", s));
+		nvps.add(new BasicNameValuePair("securitytoken", token));
+		nvps.add(new BasicNameValuePair("f", forumId));
+		nvps.add(new BasicNameValuePair("do", "postthread"));
+		nvps.add(new BasicNameValuePair("posthash", posthash));
+		nvps.add(new BasicNameValuePair("poststarttime", Long.toString(secondsSinceEpoch)));
+		nvps.add(new BasicNameValuePair("subject", subject));
+		nvps.add(new BasicNameValuePair("message", post));
+		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
+		
+		httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+    	HttpResponse response = httpclient.execute(httpost);
+    	HttpEntity entity = response.getEntity();
+
+    	if (entity != null) {
+    		entity.consumeContent();
+    		return true;
+    	}
+    	
+		return false;
+	}
+	
+	/**
+	 * Report the time since the epoch
+	 * @return	Time since epoch
+	 */
+	public long getTime() {
+		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+    	calendar.clear();
+    	calendar.set(2011, Calendar.OCTOBER, 1);
+    	return calendar.getTimeInMillis() / 1000L;
 	}
 	
 	/**

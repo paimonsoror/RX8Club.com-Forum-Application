@@ -88,5 +88,6 @@
     <string name="aboutstring">This free application was written by Paimon Sorornejad for the RX8Club.com community.  This application is designed to provide a mobile interface for Android based devices.</string>
     <string name="recentchangesstring">Recent Changes: \n * Added about screen \n * Fixed login for some devices</string>
     <string name="title_activity_preferences">Preferences</string>
+    <string name="title_activity_new_thread">NewThreadActivity</string>
 
 </resources>

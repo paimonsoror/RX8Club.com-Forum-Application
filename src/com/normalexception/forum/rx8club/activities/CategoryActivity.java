@@ -44,7 +44,6 @@ import android.view.View.OnClickListener;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
@@ -62,6 +61,29 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	private static char rpad = '»';
 	
 	private String pageNumber = "";
+	
+	private String forumId = "";
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onSaveInstanceState(android.os.Bundle)
+	 */
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("forumid", forumId);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onRestoreInstanceState(android.os.Bundle)
+	 */
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		if(savedInstanceState != null) {
+			forumId = savedInstanceState.getString("forumid");
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -117,6 +139,10 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 				if(pageNumber == null) pageNumber = "1";
 				
 		        Document doc = VBForumFactory.getInstance().get(link);
+		        forumId = link.substring(link.lastIndexOf("-") + 1);
+		        
+		        // Make sure forumid doesn't end with a "/"
+		        forumId = Utils.parseInts(forumId);
 		        
 		        viewContents = new ArrayList<ViewContents>();
 		        linkMap = new LinkedHashMap<String,String>();
@@ -250,7 +276,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     	
     	// Make sure id contains only numbers
     	id = Utils.parseInts(id);
-    	
+ 
     	Elements threadLinks = doc.select("a[id^=thread_title]");
     	Elements repliesText = doc.select("td[title^=Replies");
     	
@@ -340,6 +366,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	public void onClick(View arg0) {
 		super.onClick(arg0);
 		Intent _intent = null;
+		boolean result = false;
 		
 		switch(arg0.getId()) {
 			case R.id.previousButton:
@@ -355,7 +382,11 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 				this.finish();
 				break;
 			case R.id.newThreadButton:
-				Toast.makeText(this, "Coming Soon...", Toast.LENGTH_SHORT).show();
+				_intent = new Intent(CategoryActivity.this, NewThreadActivity.class);
+				_intent.putExtra("link", "http://www.rx8club.com/newthread.php?do=newthread&f=" + forumId);
+				_intent.putExtra("source", link);
+				_intent.putExtra("forumid", forumId);
+				result = true;
 				break;
 			default:
 				TextView tv = (TextView)arg0;
@@ -371,6 +402,21 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		}
 		
 		if(_intent != null)
-			startActivity(_intent);
+			if(result)
+				startActivityForResult(_intent, 1);
+			else
+				startActivity(_intent);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+	 */
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == 1) {
+		     if(resultCode == RESULT_OK) {
+		    	 finish();
+		     }
+		}
 	}
 }

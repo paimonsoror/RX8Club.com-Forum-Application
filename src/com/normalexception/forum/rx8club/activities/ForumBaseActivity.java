@@ -139,13 +139,14 @@ public abstract class ForumBaseActivity extends Activity implements OnClickListe
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		try {
-		if(savedInstanceState != null)
-			viewContents = 
-				(ArrayList<ViewContents>) savedInstanceState.getSerializable("contents");
-			linkMap = 
-					(LinkedHashMap<String, String>) savedInstanceState.getSerializable("links");
-			finalPage = 
-					savedInstanceState.getString("final");
+			if(savedInstanceState != null) {
+				viewContents = 
+					(ArrayList<ViewContents>) savedInstanceState.getSerializable("contents");
+				linkMap = 
+						(LinkedHashMap<String, String>) savedInstanceState.getSerializable("links");
+				finalPage = 
+						savedInstanceState.getString("final");
+			}
 		} catch (Exception e) {
 			Log.e(TAG, "Error Restoring Contents: " + e.getMessage());
 			BugSenseHandler.sendException(e);
