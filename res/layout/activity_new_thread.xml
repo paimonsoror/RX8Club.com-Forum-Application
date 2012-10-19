@@ -88,9 +88,11 @@
 		    xmlns:android="http://schemas.android.com/apk/res/android"
 		    xmlns:tools="http://schemas.android.com/tools"
 		    android:layout_width="match_parent"
-		    android:layout_height="436dp"
+		    android:layout_height="400dp"
 		    android:background="@android:color/darker_gray"
-		    android:orientation="vertical" >
+		    android:orientation="vertical"
+		    android:paddingLeft="5dip"
+		    android:paddingRight="5dip" >
 		    
 		<TextView
 		    android:id="@+id/textView1"
