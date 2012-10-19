@@ -36,13 +36,18 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.InputType;
+import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.util.TypedValue;
@@ -54,7 +59,7 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.TextView.BufferType;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
@@ -62,10 +67,21 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.task.SubmitTask;
 import com.normalexception.forum.rx8club.utils.PreferenceHelper;
+import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
+import com.normalexception.forum.rx8club.view.PostButtonView;
 import com.normalexception.forum.rx8club.view.ViewContents;
 
+/**
+ * Activity used to display thread contents.  Within this activity a user can
+ * create new posts.
+ * 
+ * Required Intent Parameters:
+ * link - The link to the thread
+ * title - The title of the thread
+ * page - The page number of the thread
+ */
 public class ThreadActivity extends ForumBaseActivity implements OnClickListener {
 
 	private static final String TAG = "Application:Thread";
@@ -117,9 +133,11 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	 * Container for thread posts and thread post related information
 	 */
 	private class ThreadPost {
-		private String name, title, location, join, postcount, post, postDate;
+		private String name, title, location, 
+					   join, postcount, post, 
+					   postDate, postid;
 		public String toString() {
-			return name + "|" + title + "|" + location + 
+			return postid + "|" + name + "|" + title + "|" + location + 
 					"|" + join + "|" + postcount + "|" + post + "|" + postDate;
 		}
 	}
@@ -190,15 +208,17 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 				final ArrayList<ThreadPost> list = getThreadContents(doc);
 				
 				viewContents.add(
-						new ViewContents(Color.BLUE, currentPageTitle, 40, false, true));
+						new ViewContents(Color.BLUE, currentPageTitle, 40, "", false, true));
 		        
                	for(ThreadPost post : list) {                   		
                		String text = post.name + "\n" + post.title + "\n" + 
                				post.location + "\n" + post.join + "\n" + 
                				post.postcount + "\n\n" + "Post Date: " + post.postDate;
                		
-               		viewContents.add(new ViewContents(Color.GRAY, text, 22, false, false));
-               		viewContents.add(new ViewContents(Color.DKGRAY, post.post, 23, true, false));
+               		viewContents.add(new ViewContents(Color.GRAY, text, 22, 
+               				post.postid, false, false));
+               		viewContents.add(new ViewContents(Color.DKGRAY, post.post, 23, 
+               				post.postid, true, false));
                	}
 		    	
 		    	runOnUiThread(new Runnable() {
@@ -224,7 +244,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     			tl = (TableLayout)findViewById(R.id.myTableLayoutThread);
     			
     			for(ViewContents view : contents) {
-    				addRow(view.getClr(), view.getText(), view.getId(), view.isHtml(), view.isSpan());
+    				addRow(view.getClr(), view.getText(), view.getId(), 
+    						view.getPostId(), view.isHtml(), view.isSpan());
     			}
     		}
     	});
@@ -236,11 +257,12 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
      * @param text	The text for the row
      * @param id	The id of the row
      */
-    private void addRow(int clr, String text, int id, boolean html, boolean span) {
+    private void addRow(int clr, String text, int id, String postid, boolean html, boolean span) {
     	/* Create a new row to be added. */
     	TableRow tr_head = new TableRow(this);
     	tr_head.setId(id);
     	tr_head.setBackgroundColor(clr);
+    	tr_head.setWeightSum(1);
     	
     	if(clr == Color.DKGRAY)
     		tr_head.setPadding(5, 5, 5, 15);
@@ -268,26 +290,85 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
                 ViewGroup.LayoutParams.FILL_PARENT,
                 ViewGroup.LayoutParams.FILL_PARENT,
                 1.0f);
-        
+    	params.weight = 0;
+    	
     	if(span) {
 	        params.gravity = Gravity.CENTER;
-	        params.span = 5;
     	} else {
         	// Convert dip to px
         	Resources r = getResources();
         	int px = 
-        			(int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0, r.getDisplayMetrics());
-        	b.setWidth(px);
+        			(int)TypedValue.applyDimension(
+        					TypedValue.COMPLEX_UNIT_DIP, 0, r.getDisplayMetrics());
+        	b.setWidth(px);        	
+        	params.weight = 1;
     	}
 
     	/* Add Button to row. */
         tr_head.addView(b, params);      
+        
+        // Thread title information, so add the edit button
+        if(!html && !span) { 	
+        	// Check to see if the post is by the logged in
+        	// user
+        	if(isPostByUser(text)) {
+        		int image = R.drawable.black_pencil_icon;
+        		int buttonType = PostButtonView.EDITBUTTON;
+        		
+        		// First time around, we add the pencil icon, then
+        		// we set the image object to the X
+        		for(int i = 0; i < 2; i++) {
+        			if(i == 1) {
+        				image = R.drawable.black_x;
+        				buttonType = PostButtonView.DELETEBUTTON;
+        			}
+        				
+        			// Check our preferences if the user disabled any of the 
+        			// buttons
+        			if(buttonType == PostButtonView.EDITBUTTON && 
+        					!PreferenceHelper.isShowEditButton(this))
+        				continue;
+        			
+        			if(buttonType == PostButtonView.DELETEBUTTON && 
+        					!PreferenceHelper.isShowDeleteButton(this))
+        				continue;
+        			
+		        	b = new PostButtonView(this, buttonType);
+		        	SpannableStringBuilder ssb = 
+		        			new SpannableStringBuilder(" ");
+		        	
+		        	// We need to decode the resource, and then scale
+		        	// down the image
+		        	Bitmap scaledimg = 
+		        			Bitmap.createScaledBitmap(
+		        					BitmapFactory.decodeResource(
+		        							getResources(), image), 12, 12, true);
+		        	ssb.setSpan(new ImageSpan(scaledimg), 
+		        			0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
+		        	
+		        	// Set the text, padding, and add
+		        	b.setText(ssb, BufferType.SPANNABLE);
+		        	((PostButtonView)b).setPostId(Integer.parseInt(postid));
+		        	b.setPadding(0, 15, 15, 0);
+		        	tr_head.addView(b, params);
+        		}
+        	}
+        }
 
     	/* Add row to TableLayout. */
         tl.addView(tr_head, tl.getChildCount() - 1);
     }
     
-    /**
+    private boolean isPostByUser(String text) {
+		// if the post is by the user, the user name should
+    	// be the first string
+    	String assumedUser = text.split("\n")[0];
+    	if(UserProfile.getUsername().equals(assumedUser))
+    		return true;
+		return false;
+	}
+
+	/**
      * Reformat the quotes to blockquotes since Android fromHtml does
      * not parse tables
      * @param source	The source text
@@ -349,6 +430,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	user.name = userCp.select("div[id^=postmenu]").text();
         	user.title = userDetail.get(0).text();
         	user.postDate = innerPost.select("td[class=thead]").get(0).text();
+        	user.postid = Utils.parseInts(post.attr("id"));
         	
         	for(int i = 1; i < userSubDetail.size(); i++) {
         		switch(i) {

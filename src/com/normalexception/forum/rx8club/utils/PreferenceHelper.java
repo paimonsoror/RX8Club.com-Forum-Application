@@ -85,4 +85,24 @@ public class PreferenceHelper {
         prefsEditor.putBoolean("advertise", newValue);
         prefsEditor.commit();
     }
+    
+    /**
+     * Report if the show edit button option is enabled
+     * @param context	The application context
+     * @return			The option value
+     */
+    public static boolean isShowEditButton(Context context) {
+    	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+    	return prefs.getBoolean("editbutton", true);
+    }
+    
+    /**
+     * Report if the show delete button option is enabled
+     * @param context	The application context
+     * @return			The option value
+     */
+    public static boolean isShowDeleteButton(Context context) {
+    	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+    	return prefs.getBoolean("deletebutton", true);
+    }
 }

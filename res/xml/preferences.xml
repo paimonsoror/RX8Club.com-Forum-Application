@@ -1,24 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen 
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <ListPreference
-        android:title="Font Size"
-		android:summary="Set the application's font size (Restart Required)"
-		android:key="fontsize"
-		android:defaultValue="Medium"
-		android:entries="@array/fontsizes"
-		android:entryValues="@array/fontsizevalue"/>
-    <CheckBoxPreference
-        android:title="Advertise Application"
-        android:defaultValue="true"
-        android:summary="Show 'Posted From' On Thread Posts"
-        android:key="advertise" />
-    <Preference 
-        android:title="Donate!"
-        android:key="donate"
-        android:summary="Help Support My Work!"/>
-    <Preference 
-        android:title="Version Number"
-        android:key="version"
-        android:summary=""/>
+    <PreferenceCategory
+                android:title="General">
+	    <ListPreference
+	        android:title="Font Size"
+			android:summary="Set the application's font size (Restart Required)"
+			android:key="fontsize"
+			android:defaultValue="Medium"
+			android:entries="@array/fontsizes"
+			android:entryValues="@array/fontsizevalue"/>
+	    
+	    <Preference 
+	        android:title="Version Number"
+	        android:key="version"
+	        android:summary=""/>
+	</PreferenceCategory>
+	<PreferenceCategory
+                android:title="Thread Options">
+	    <CheckBoxPreference
+	        android:title="Advertise Application"
+	        android:defaultValue="true"
+	        android:summary="Show 'Posted From' On Thread Posts"
+	        android:key="advertise" />
+	   	<CheckBoxPreference
+	   	    android:title="Show Delete Post Button"
+	   	    android:defaultValue="true"
+	   	    android:summary="Show the delete button on users posts"
+	   	    android:key="deletebutton" />
+	   	<CheckBoxPreference
+	   	    android:title="Show Edit Post Button"
+	   	    android:defaultValue="true"
+	   	    android:summary="Show the edit button on users posts"
+	   	    android:key="editbutton" />	   	    
+	</PreferenceCategory>
+    <PreferenceCategory
+                android:title="Misc Options">
+	    <Preference 
+	        android:title="Donate!"
+	        android:key="donate"
+	        android:summary="Help Support My Work!"/>
+    </PreferenceCategory>
 </PreferenceScreen>

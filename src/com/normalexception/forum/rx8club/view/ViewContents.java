@@ -39,13 +39,15 @@ public class ViewContents implements Serializable {
 	private String texts[], text;
 	private int id;
 	private boolean span, html;
+	private String postid;
 	
-	public ViewContents(int clr, String text, int id, boolean html, boolean span) {
+	public ViewContents(int clr, String text, int id, String postid, boolean html, boolean span) {
 		this.clr = clr;
 		this.text = text;
 		this.id = id;
 		this.span = span;
 		this.html = html;
+		this.postid = postid;
 	}
 	
 	public ViewContents(int clr, String texts[], int id, boolean span) {
@@ -60,6 +62,10 @@ public class ViewContents implements Serializable {
 		this.text = text;
 		this.id = id;
 		this.html = html;
+	}
+	
+	public String getPostId() {
+		return postid;
 	}
 	
 	public boolean isHtml() {

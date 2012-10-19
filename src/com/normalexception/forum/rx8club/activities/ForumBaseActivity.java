@@ -35,7 +35,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -179,16 +181,39 @@ public abstract class ForumBaseActivity extends Activity implements OnClickListe
     public boolean onOptionsItemSelected (MenuItem item)
     { 
 		Intent _intent = null;
+		final Activity src = this;
         switch(item.getItemId())
         {
            case(LOGOFF_MENU):
    				Log.v(TAG, "Logoff Pressed");
-   				LoginFactory.getInstance().logoff();
-   				_intent = 
-   						new Intent(MainApplication.getAppContext(), LoginActivity.class);
-   				_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-   				if(!(this instanceof MainActivity))
-					finish();
+           
+           		// Lets make sure the user didn't accidentally click this
+				DialogInterface.OnClickListener dialogClickListener = 
+						new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						switch (which){
+					    	case DialogInterface.BUTTON_POSITIVE:
+					    		Intent _intent = null;
+				   				LoginFactory.getInstance().logoff();
+				   				_intent = 
+				   						new Intent(MainApplication.getAppContext(), 
+				   								LoginActivity.class);
+				   				_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				   				if(!(src instanceof MainActivity))
+									finish();
+				   				
+				   				startActivity(_intent);
+				   				break;
+				        }
+				    }
+				};
+	    		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder
+					.setMessage("Are you sure you want to logoff?")
+					.setPositiveButton("Yes", dialogClickListener)
+				    .setNegativeButton("No", dialogClickListener)
+				    .show();
    				break;
            case(ABOUT_MENU):
         	   	Log.v(TAG, "About Pressed");
