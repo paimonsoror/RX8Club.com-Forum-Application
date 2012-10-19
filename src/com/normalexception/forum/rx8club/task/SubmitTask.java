@@ -84,7 +84,7 @@ public class SubmitTask extends AsyncTask<Void,Void,Void>{
     protected void onPostExecute(Void result) {
         mProgressDialog.dismiss();
 		Intent _intent = new Intent(sourceActivity, ThreadActivity.class);
-		_intent.putExtra("link", pageLink);
+		_intent.putExtra("link", VBForumFactory.getInstance().getResponseUrl());
 		_intent.putExtra("page", String.valueOf(Integer.parseInt(pageNumber)));
 		_intent.putExtra("title", pageTitle);
 		sourceActivity.finish();

@@ -138,11 +138,18 @@ public class VBForumFactory {
     	nvps.add(new BasicNameValuePair("poststarttime", Long.toString(secondsSinceEpoch)));
     	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 
-    	HttpResponse response = httpclient.execute(httpost);
+    	HttpContext context = new BasicHttpContext();
+    	HttpResponse response = httpclient.execute(httpost, context);
     	HttpEntity entity = response.getEntity();
 
     	if (entity != null) {
     		entity.consumeContent();
+    		
+    		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
+    		        ExecutionContext.HTTP_REQUEST);
+
+    		responseUrl = request.getURI().toString();
+    		
     		return true;
     	}
     	
