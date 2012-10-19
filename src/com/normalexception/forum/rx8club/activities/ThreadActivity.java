@@ -204,7 +204,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		    	runOnUiThread(new Runnable() {
 		            public void run() {
 		            	findViewById(R.id.controlsRow).setVisibility(View.VISIBLE);
-		            	findViewById(R.id.menuRow).setVisibility(View.VISIBLE);
 		            }
 		    	});
 		    	

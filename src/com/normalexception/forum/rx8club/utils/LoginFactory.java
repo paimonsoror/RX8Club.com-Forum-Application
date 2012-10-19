@@ -176,6 +176,7 @@ public class LoginFactory {
 		this.password = "";
 		this.savePreferences(false, false);
 		httpclient.getCookieStore().clear();
+		httpclient.getConnectionManager().shutdown();
 		isLoggedIn = false;
 	}
 	

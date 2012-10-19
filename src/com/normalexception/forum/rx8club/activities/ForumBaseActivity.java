@@ -55,6 +55,11 @@ import com.normalexception.forum.rx8club.preferences.Preferences;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
 
+/**
+ * Abstract activity that handles all common tasks for the activities
+ * contained in the application.  The most common are menu buttons and
+ * GUI handlers
+ */
 public abstract class ForumBaseActivity extends Activity implements OnClickListener {
 	
 	protected Map<String,String> linkMap;

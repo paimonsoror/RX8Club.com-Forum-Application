@@ -32,7 +32,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -40,9 +39,13 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -67,6 +70,8 @@ public class VBForumFactory {
 	
 	private static final String newThreadAddress =
 			"http://www.rx8club.com/newthread.php?do=newthread&f=";
+	
+	private static String responseUrl = "";
 	
 	/**
 	 * Constructor
@@ -176,15 +181,30 @@ public class VBForumFactory {
 		
 		httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 
-    	HttpResponse response = httpclient.execute(httpost);
+		HttpContext context = new BasicHttpContext();
+    	HttpResponse response = httpclient.execute(httpost, context);
     	HttpEntity entity = response.getEntity();
 
     	if (entity != null) {
     		entity.consumeContent();
+    		
+    		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
+    		        ExecutionContext.HTTP_REQUEST);
+
+    		responseUrl = request.getURI().toString();
+    		
     		return true;
     	}
     	
 		return false;
+	}
+	
+	/**
+	 * Report the response url
+	 * @return	The response url
+	 */
+	public String getResponseUrl() {
+		return urlAddress + responseUrl;
 	}
 	
 	/**

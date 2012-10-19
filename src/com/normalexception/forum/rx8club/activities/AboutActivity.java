@@ -31,6 +31,12 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
 
+/**
+ * Activity used to display information about the application.
+ * 
+ * Required Intent Parameters:
+ * None
+ */
 public class AboutActivity extends ForumBaseActivity {
 
 	private static String TAG = "AboutActivity";

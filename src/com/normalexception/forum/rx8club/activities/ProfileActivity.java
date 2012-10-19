@@ -51,6 +51,9 @@ import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
 /**
  * Activity that sets up the users profile
+ * 
+ * Required Intent Parameters:
+ * none
  */
 public class ProfileActivity extends ForumBaseActivity implements OnClickListener {
 

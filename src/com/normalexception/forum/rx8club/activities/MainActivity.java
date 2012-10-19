@@ -61,7 +61,11 @@ import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
 
 /**
- * Main activity for the application
+ * Main activity for the application.  This is the main forum view that 
+ * is displayed after login has been completed.
+ * 
+ * Required Intent Parameters:
+ * none
  */
 public class MainActivity extends ForumBaseActivity implements OnClickListener {
     

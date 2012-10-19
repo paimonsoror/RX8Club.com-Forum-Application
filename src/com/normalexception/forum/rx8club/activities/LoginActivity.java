@@ -50,6 +50,13 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.utils.UserProfile;
 
+/**
+ * Activity that is designed to handle all login related
+ * GUI information.
+ * 
+ * Required Intent Parameters:
+ * none
+ */
 public class LoginActivity extends ForumBaseActivity implements OnClickListener, OnCheckedChangeListener {
 
 	private static String TAG = "LoginActivity";

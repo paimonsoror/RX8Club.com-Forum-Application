@@ -52,6 +52,15 @@ import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
 
+/**
+ * Activity used to display forum category contents.  This will essentially
+ * open a category and display all of the threads that are contained
+ * in that category
+ * 
+ * Required Intent Parameters:
+ * link - The link to the category view, example http://www.rx8club.com/lounge-4/
+ * page - The current page number.  This is used for the pagination info
+ */
 public class CategoryActivity extends ForumBaseActivity implements OnClickListener {
 	
 	private static final String TAG = "Application:Category";

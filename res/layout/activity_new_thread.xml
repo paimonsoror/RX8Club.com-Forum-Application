@@ -120,6 +120,7 @@
 		    android:layout_gravity="top"
 		    android:layout_weight="1"
 		    android:ems="10"
+		    android:gravity="top"
 		    android:inputType="textMultiLine" />
 		
 		<Button

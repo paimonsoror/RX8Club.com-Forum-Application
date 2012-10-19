@@ -52,6 +52,13 @@ import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
 
+/**
+ * Activity that is used to display all "new" posts since the users
+ * last visit.  This is essentially a modified CategoryActivity
+ * 
+ * Required Intent Parameters:
+ * link - The link to the "new posts" results
+ */
 public class NewPostsActivity extends ForumBaseActivity implements OnClickListener {
 	
 	private static final String newPostUrl = "http://www.rx8club.com/search.php?do=getnew";

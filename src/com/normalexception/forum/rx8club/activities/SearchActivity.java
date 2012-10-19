@@ -35,6 +35,12 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
 
+/**
+ * Activity used to create a search in the forum.
+ * 
+ * Required Intent Parameters:
+ * none
+ */
 public class SearchActivity extends ForumBaseActivity implements OnClickListener {
 
 	private static String TAG = "SearchActivity";

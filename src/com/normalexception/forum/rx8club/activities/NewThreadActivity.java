@@ -38,6 +38,14 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.task.NewThreadTask;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
+/**
+ * Activity that is loaded when the user is creating a new thread.
+ * 
+ * Required Intent Parameters:
+ * forumid - The forum id number as a string 
+ * link - 	Link to the forums new thread handler
+ * source - The address of the source category
+ */
 public class NewThreadActivity extends ForumBaseActivity implements OnClickListener {
 	
 	private String forumId = "", link = "", s, token, f, posthash, poststart, subject, post, source;

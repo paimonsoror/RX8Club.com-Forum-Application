@@ -32,10 +32,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
 
-import com.normalexception.forum.rx8club.activities.CategoryActivity;
+import com.normalexception.forum.rx8club.activities.ThreadActivity;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
 /**
@@ -70,18 +69,13 @@ public class NewThreadTask extends AsyncTask<Void,Void,Void> {
 	 */
 	@Override
     protected void onPostExecute(Void result) {
-		// We need to wait a bit to let the thread get created
-		// Use the post handler to wait for like 2 seconds
-		Handler handler = new Handler(); 
-	    handler.postDelayed(new Runnable() { 
-	         public void run() {
-	        	mProgressDialog.dismiss();
-				Intent _intent = new Intent(sourceActivity, CategoryActivity.class);
-				_intent.putExtra("link", source);
-				sourceActivity.finish();
-				sourceActivity.startActivity(_intent);
-	         }
-	    }, 2000);
+    	mProgressDialog.dismiss();
+		Intent _intent = new Intent(sourceActivity, ThreadActivity.class);
+		_intent.putExtra("link", VBForumFactory.getInstance().getResponseUrl());
+		_intent.putExtra("title", subject);
+		_intent.putExtra("page", "1");
+		sourceActivity.finish();
+		sourceActivity.startActivity(_intent);
     }
 
 	/*
