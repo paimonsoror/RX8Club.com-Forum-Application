@@ -89,5 +89,6 @@
     <string name="recentchangesstring">Recent Changes: \n * Added about screen \n * Fixed login for some devices</string>
     <string name="title_activity_preferences">Preferences</string>
     <string name="title_activity_new_thread">NewThreadActivity</string>
+    <string name="title_activity_edit_post">EditPostActivity</string>
 
 </resources>

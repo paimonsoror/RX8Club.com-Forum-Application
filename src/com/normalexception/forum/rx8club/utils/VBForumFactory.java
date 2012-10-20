@@ -27,6 +27,7 @@ package com.normalexception.forum.rx8club.utils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -70,6 +71,9 @@ public class VBForumFactory {
 	
 	private static final String newThreadAddress =
 			"http://www.rx8club.com/newthread.php?do=newthread&f=";
+	
+	private static final String editPostAddress = 
+			"http://www.rx8club.com/editpost.php?do=editpost&p=";
 	
 	private static String responseUrl = "";
 	
@@ -154,6 +158,50 @@ public class VBForumFactory {
     	}
     	
 		return false;
+	}
+	
+	/**
+	 * Report the contents of the post that we are intending
+	 * on editing
+	 * @param securityToken	The security token of the session
+	 * @return				The response page 
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public String getEditPostPage(String securityToken, String postid) 
+			throws ClientProtocolException, IOException {
+		String output = "";
+		
+		DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
+		
+		HttpPost httpost = new HttpPost(editPostAddress + postid);
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+    	nvps.add(new BasicNameValuePair("securitytoken", securityToken));
+    	
+    	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+    	HttpResponse response = httpclient.execute(httpost);
+    	HttpEntity entity = response.getEntity();
+    	
+    	if(entity != null) {
+	    	// Get login results (in this case the forum frontpage0
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					entity.getContent()));
+			
+			StringBuilder sb = new StringBuilder();
+			
+			String inputLine; 
+			while ((inputLine = in.readLine()) != null) 
+				sb.append(inputLine);
+			
+			output = sb.toString();
+			
+			in.close();	
+			
+			entity.consumeContent();
+    	}
+		
+		return output;
 	}
 	
 	/**

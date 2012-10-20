@@ -348,7 +348,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		        	
 		        	// Set the text, padding, and add
 		        	b.setText(ssb, BufferType.SPANNABLE);
-		        	((PostButtonView)b).setPostId(Integer.parseInt(postid));
+		        	((PostButtonView)b).setPostId(postid);
 		        	b.setPadding(0, 15, 15, 0);
 		        	tr_head.addView(b, params);
         		}
