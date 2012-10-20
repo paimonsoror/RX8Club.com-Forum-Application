@@ -85,7 +85,8 @@ import com.normalexception.forum.rx8club.view.ViewContents;
 public class ThreadActivity extends ForumBaseActivity implements OnClickListener {
 
 	private static final String TAG = "Application:Thread";
-
+	private static final int ThreadIdIndex = 9000;
+	
 	private String currentPageLink;
 	private String currentPageTitle;
 	
@@ -243,8 +244,9 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     		public void run() {
     			tl = (TableLayout)findViewById(R.id.myTableLayoutThread);
     			
+    			int index = 0;
     			for(ViewContents view : contents) {
-    				addRow(view.getClr(), view.getText(), view.getId(), 
+    				addRow(view.getClr(), view.getText(), index++, 
     						view.getPostId(), view.isHtml(), view.isSpan());
     			}
     		}
@@ -253,9 +255,12 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     
     /**
      * Add a row to the view
-     * @param clr	The background color of the row
-     * @param text	The text for the row
-     * @param id	The id of the row
+     * @param clr		The background color of the row
+     * @param text		The text for the row
+     * @param id		The id of the row
+     * @param postid 	The id of the post
+     * @param html		True if the text contains html
+     * @param span		True if we are creating a spannable string
      */
     private void addRow(int clr, String text, int id, String postid, boolean html, boolean span) {
     	/* Create a new row to be added. */
@@ -269,7 +274,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 
     	/* Create a Button to be the row-content. */
     	TextView b = new TextView(this);
-    	b.setId(id);
+    	b.setId(ThreadActivity.ThreadIdIndex + id);
     	b.setMovementMethod(LinkMovementMethod.getInstance());
     	if(!html && text.indexOf("\n") != -1) {
     		SpannableString spanString = new SpannableString(text);
@@ -309,60 +314,103 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         
         // Thread title information, so add the edit button
         if(!html && !span) { 	
-        	// Check to see if the post is by the logged in
-        	// user
-        	if(isPostByUser(text)) {
-        		int image = R.drawable.black_pencil_icon;
-        		int buttonType = PostButtonView.EDITBUTTON;
-        		
-        		// First time around, we add the pencil icon, then
-        		// we set the image object to the X
-        		for(int i = 0; i < 2; i++) {
-        			if(i == 1) {
-        				image = R.drawable.black_x;
-        				buttonType = PostButtonView.DELETEBUTTON;
-        			}
-        				
-        			// Check our preferences if the user disabled any of the 
-        			// buttons
-        			if(buttonType == PostButtonView.EDITBUTTON && 
-        					!PreferenceHelper.isShowEditButton(this))
-        				continue;
-        			
-        			if(buttonType == PostButtonView.DELETEBUTTON && 
-        					!PreferenceHelper.isShowDeleteButton(this))
-        				continue;
-        			
-		        	b = new PostButtonView(this, buttonType);
-		        	SpannableStringBuilder ssb = 
-		        			new SpannableStringBuilder(" ");
-		        	
-		        	// We need to decode the resource, and then scale
-		        	// down the image
-		        	Bitmap scaledimg = 
-		        			Bitmap.createScaledBitmap(
-		        					BitmapFactory.decodeResource(
-		        							getResources(), image), 12, 12, true);
-		        	ssb.setSpan(new ImageSpan(scaledimg), 
-		        			0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
-		        	
-		        	// Set the text, padding, and add
-		        	b.setText(ssb, BufferType.SPANNABLE);
-		        	((PostButtonView)b).setPostId(postid);
-		        	b.setPadding(0, 15, 15, 0);
-		        	tr_head.addView(b, params);
-        		}
-        	}
+    		addPostButtons(tr_head, getPostUser(text), 
+    				postid, id, params);
         }
 
     	/* Add row to TableLayout. */
         tl.addView(tr_head, tl.getChildCount() - 1);
     }
     
+    /**
+     * Add the buttons to the post title that allow the user to quote, edit, or
+     * delete their posts
+     * @param tr_head	The row object
+     * @param user		The user of the current post 
+     * @param postid	The id number of the post
+     * @param id		The id number of the view object
+     * @param params	The layout params
+     */
+    private void addPostButtons(TableRow tr_head, String user, 
+    		String postid, int id, TableRow.LayoutParams params) {
+    	int image = R.drawable.quote_icon;
+		int buttonType = PostButtonView.QUOTEBUTTON;
+		
+		// First time around, we add the pencil icon, then
+		// we set the image object to the X
+		for(int i = 0; i < 3; i++) {
+			if(i == 1) {
+				image = R.drawable.black_pencil_icon;
+				buttonType = PostButtonView.EDITBUTTON;
+			} else if (i == 2) {
+				image = R.drawable.black_x;
+				buttonType = PostButtonView.DELETEBUTTON;
+			}
+			
+			// If the post is not by the user, we are going
+			// to skip this iteration if it is an edit or
+			// delete button
+			if(buttonType == PostButtonView.EDITBUTTON &&
+					!isPostByUser(user))
+				continue;
+			
+			if(buttonType == PostButtonView.DELETEBUTTON && 
+					!isPostByUser(user))
+				continue;
+				
+			// Check our preferences if the user disabled any of the 
+			// buttons
+			if(buttonType == PostButtonView.EDITBUTTON && 
+					!PreferenceHelper.isShowEditButton(this))
+				continue;
+			
+			if(buttonType == PostButtonView.DELETEBUTTON && 
+					!PreferenceHelper.isShowDeleteButton(this))
+				continue;
+			
+        	PostButtonView b = new PostButtonView(this, 
+        			buttonType,
+        			ThreadActivity.ThreadIdIndex+id+1,
+        			this.securityToken,
+        			user);
+        	SpannableStringBuilder ssb = 
+        			new SpannableStringBuilder(" ");
+        	
+        	// We need to decode the resource, and then scale
+        	// down the image
+        	Bitmap scaledimg = 
+        			Bitmap.createScaledBitmap(
+        					BitmapFactory.decodeResource(
+        							getResources(), image), 12, 12, true);
+        	ssb.setSpan(new ImageSpan(scaledimg), 
+        			0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
+        	
+        	// Set the text, padding, and add
+        	b.setText(ssb, BufferType.SPANNABLE);
+        	((PostButtonView)b).setPostId(postid);
+        	b.setPadding(0, 15, 15, 0);
+        	tr_head.addView(b, params);
+    	}
+    }
+    
+    /**
+     * Get the user that posted the message
+     * @param text	The thread text
+     * @return		The user
+     */
+    private String getPostUser(String text) {
+    	return text.split("\n")[0];
+    }
+    
+    /**
+     * Check if the post is by the logged in user
+     * @param text	The post text
+     * @return		True if the post is by the logged in user
+     */
     private boolean isPostByUser(String text) {
 		// if the post is by the user, the user name should
     	// be the first string
-    	String assumedUser = text.split("\n")[0];
+    	String assumedUser = getPostUser(text);
     	if(UserProfile.getUsername().equals(assumedUser))
     		return true;
 		return false;

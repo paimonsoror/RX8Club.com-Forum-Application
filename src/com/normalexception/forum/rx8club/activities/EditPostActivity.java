@@ -24,22 +24,28 @@ package com.normalexception.forum.rx8club.activities;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import org.jsoup.nodes.Document;
+
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
 /**
  * Activity used whenever the user wants to edit the post
  * 
  * Required Intent Parameters:
  * postId - the post id of the post that is to be edited
+ * securitytoken - the security token of the session
  */
 public class EditPostActivity extends ForumBaseActivity {
 
 	private static final String TAG = "EditPostActivity";
-	private String postId;
+	private String postId, securityToken;
 	
 	/*
 	 * (non-Javadoc)
@@ -56,10 +62,32 @@ public class EditPostActivity extends ForumBaseActivity {
         // Register the titlebar gui buttons
         this.registerGuiButtons();
         
+        findViewById(R.id.editThreadSubmit).setOnClickListener(this);
+        
         postId = 
         		(String) getIntent().getStringExtra("postid");
+        securityToken = 
+        		(String) getIntent().getStringExtra("securitytoken");
         
-        Toast.makeText(this, "Editing Post " + postId, Toast.LENGTH_LONG).show();        
+        constructView();
+    }
+    
+    /**
+     * Construct the view items
+     */
+    private void constructView() {
+    	loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
+    	
+    	try {
+    		Document editPage = 
+    			VBForumFactory.getInstance().getEditPostPage(securityToken, postId);
+    		String msg = editPage.select("textarea[name=message]").text();
+    		((TextView)findViewById(R.id.postMessage)).setText(msg);
+    	} catch (Exception e) {
+    		
+    	} finally {
+    		loadingDialog.dismiss();
+    	}
     }
 
     /*
@@ -68,5 +96,18 @@ public class EditPostActivity extends ForumBaseActivity {
      */
 	@Override
 	protected void enforceVariants(int currentPage, int lastPage) {
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onClick(android.view.View)
+	 */
+	@Override
+	public void onClick(View arg0) {
+		super.onClick(arg0);
+		switch(arg0.getId()) {
+		case R.id.editThreadSubmit:
+			break;
+		}
 	}
 }

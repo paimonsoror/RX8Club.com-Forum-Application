@@ -27,7 +27,6 @@ package com.normalexception.forum.rx8club.utils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -168,7 +167,7 @@ public class VBForumFactory {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public String getEditPostPage(String securityToken, String postid) 
+	public Document getEditPostPage(String securityToken, String postid) 
 			throws ClientProtocolException, IOException {
 		String output = "";
 		
@@ -201,7 +200,7 @@ public class VBForumFactory {
 			entity.consumeContent();
     	}
 		
-		return output;
+		return Jsoup.parse(output);
 	}
 	
 	/**

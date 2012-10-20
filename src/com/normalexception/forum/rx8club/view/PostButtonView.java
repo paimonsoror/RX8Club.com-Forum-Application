@@ -24,6 +24,7 @@ package com.normalexception.forum.rx8club.view;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.MainApplication;
+import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.EditPostActivity;
 
 /**
@@ -43,9 +45,13 @@ import com.normalexception.forum.rx8club.activities.EditPostActivity;
 public class PostButtonView extends TextView implements OnClickListener {
 	public static final int EDITBUTTON = 0;
 	public static final int DELETEBUTTON = 1;
+	public static final int QUOTEBUTTON = 2;
 	
 	private String postId;
 	private int buttonType;
+	private String token;
+	private String user;
+	private int index;
 	
 	/**
 	 * Constructor that just calls the super constructor
@@ -60,11 +66,16 @@ public class PostButtonView extends TextView implements OnClickListener {
 	 * and identifier for the type of button that is used
 	 * @param context	The source context
 	 * @param button	The type of button that this view represents
+	 * @param token		The security token for the session
 	 */
-	public PostButtonView(Context context, int button) {
+	public PostButtonView(Context context, int button,
+			int index, String token, String user) {
 		super(context);
 		this.setOnClickListener(this);
 		buttonType = button;
+		this.token = token;
+		this.user = user;
+		this.index = index;
 	}
 	
 	/**
@@ -90,6 +101,22 @@ public class PostButtonView extends TextView implements OnClickListener {
 	public int getButtonType() {
 		return buttonType;
 	}
+	
+	/**
+	 * Report the security token
+	 * @return	The security token
+	 */
+	public String getSecurityToken() {
+		return token;
+	}
+	
+	/**
+	 * Report the user that owns the post
+	 * @return	The user that owns the post
+	 */
+	public String getUser() {
+		return user;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -102,6 +129,7 @@ public class PostButtonView extends TextView implements OnClickListener {
 		case EDITBUTTON:
 			Intent _intent = new Intent(getContext(), EditPostActivity.class);
 			_intent.putExtra("postid", postId);
+			_intent.putExtra("securitytoken", token);
 			getContext().startActivity(_intent);
 			break;
 		case DELETEBUTTON:
@@ -112,7 +140,7 @@ public class PostButtonView extends TextView implements OnClickListener {
 			        switch (which){
 			        case DialogInterface.BUTTON_POSITIVE:
 			        	Toast.makeText(MainApplication.getAppContext(), 
-								"Delete Post " + getPostId(), 
+								"Delete Post Coming Soon...", 
 								Toast.LENGTH_SHORT).show();
 			            break;
 			        }
@@ -126,6 +154,15 @@ public class PostButtonView extends TextView implements OnClickListener {
 				.setPositiveButton("Yes", dialogClickListener)
 			    .setNegativeButton("No", dialogClickListener)
 			    .show();
+			break;
+		case QUOTEBUTTON:
+			Activity threadActivity = (Activity)getContext();
+			String txt = ((TextView)threadActivity.findViewById(index)).getText().toString();
+			String finalText = String.format("[quote=%s]%s[/quote]",
+					getUser(), txt);
+			((TextView)threadActivity.findViewById(R.id.postBox)).setText(
+					finalText
+			);
 			break;
 		}
 	}

@@ -126,7 +126,7 @@
 		    android:inputType="textMultiLine" />
 		
 		<Button
-		    android:id="@+id/newThreadButton"
+		    android:id="@+id/editThreadSubmit"
 		    style="?android:attr/buttonStyleSmall"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
