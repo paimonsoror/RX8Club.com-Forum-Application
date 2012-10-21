@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
 import org.jsoup.nodes.Document;
@@ -64,7 +63,7 @@ import com.normalexception.forum.rx8club.view.ViewContents;
  */
 public abstract class ForumBaseActivity extends Activity implements OnClickListener {
 	
-	protected Map<String,String> linkMap;
+	protected LinkedHashMap<String,String> linkMap;
 	protected ArrayList<ViewContents> viewContents;
 	
 	protected Thread updaterThread;

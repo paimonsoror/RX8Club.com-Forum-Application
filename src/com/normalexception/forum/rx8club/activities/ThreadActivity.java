@@ -49,6 +49,7 @@ import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -96,6 +97,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	
 	private String securityToken = "none";
 	private String postNumber = "none";
+	
+	private int scaledImage = 12;
 	
 	/*
 	 * (non-Javadoc)
@@ -172,6 +175,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		            }
 	         });
 	         
+	         setScaledImageSizes();
+	         
 	         if(savedInstanceState == null)
 		        	constructView();
 		        else {
@@ -182,6 +187,26 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	 		Log.e(TAG, "Fatal Error In Thread Activity! " + e.getMessage());
 	 		BugSenseHandler.sendException(e);
 	 	}
+    }
+    
+    /**
+     * Depending on the screen DPI, we will rescale the thread
+     * buttons to make sure that they are not too small or 
+     * too large
+     */
+    private void setScaledImageSizes() {
+    	switch(getResources().getDisplayMetrics().densityDpi) {
+    	case DisplayMetrics.DENSITY_LOW:
+    	case DisplayMetrics.DENSITY_MEDIUM:
+    		this.scaledImage = 12;
+    		break;
+    	case DisplayMetrics.DENSITY_HIGH:
+    		this.scaledImage = 24;
+    		break;
+    	case DisplayMetrics.DENSITY_XHIGH:
+    		this.scaledImage = 32;
+    		break;
+    	}
     }
     
     /**
@@ -378,7 +403,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	Bitmap scaledimg = 
         			Bitmap.createScaledBitmap(
         					BitmapFactory.decodeResource(
-        							getResources(), image), 12, 12, true);
+        							getResources(), image), 
+        							scaledImage, scaledImage, true);
         	ssb.setSpan(new ImageSpan(scaledimg), 
         			0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
         	
