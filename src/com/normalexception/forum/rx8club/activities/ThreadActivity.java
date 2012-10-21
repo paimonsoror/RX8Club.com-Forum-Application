@@ -134,8 +134,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	 * Container for thread posts and thread post related information
 	 */
 	private class ThreadPost {
-		private String name, title, location, 
-					   join, postcount, post, 
+		private String name, title, location, join, postcount, post, 
 					   postDate, postid;
 		public String toString() {
 			return postid + "|" + name + "|" + title + "|" + location + 
@@ -509,48 +508,21 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
      */
     @Override
     protected void enforceVariants(int myPage, int lastPage) {
-    	if(myPage == 1)
-    		runOnUiThread(new Runnable() {
-    			public void run() {
-    				findViewById(R.id.previousButton).setEnabled(false);
-    				findViewById(R.id.firstButton).setEnabled(false);
-    			}
-    		});
-    	else 
-    		runOnUiThread(new Runnable() {
-    			public void run() {
-    				findViewById(R.id.previousButton).setEnabled(true);
-    				findViewById(R.id.firstButton).setEnabled(true);
-    			}
-    		});
+    	final boolean first, prev, next, last;
     	
-    	if(lastPage > myPage) {
-    		runOnUiThread(new Runnable() {
-    			public void run() {
-    				findViewById(R.id.nextButton).setEnabled(true);
-    			}
-    		});
-    	} else {
-    		runOnUiThread(new Runnable() {
-    			public void run() {
-    				findViewById(R.id.nextButton).setEnabled(false);
-    			}
-    		});
-    	}
+    	prev = myPage == 1? 		false : true;
+    	first = myPage == 1? 		false : true;
+    	next = lastPage > myPage? 	true : false;
+    	last = myPage == lastPage? 	false : true;
     	
-    	if(myPage == lastPage) {
-    		runOnUiThread(new Runnable() {
-    			public void run() {
-    				findViewById(R.id.lastButton).setEnabled(false);
-    			}
-    		});
-    	} else {
-    		runOnUiThread(new Runnable() {
-    			public void run() {
-    				findViewById(R.id.lastButton).setEnabled(true);
-    			}
-    		});
-    	}
+    	runOnUiThread(new Runnable() {
+    		public void run() {
+    			findViewById(R.id.previousButton).setEnabled(prev);
+				findViewById(R.id.firstButton).setEnabled(first);
+				findViewById(R.id.nextButton).setEnabled(next);
+				findViewById(R.id.lastButton).setEnabled(last);
+    		}
+    	});
     }
 
     /*
@@ -561,20 +533,18 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	public void onClick(View arg0) {	
 		super.onClick(arg0);
 		Intent _intent = null;
+		_intent = new Intent(ThreadActivity.this, ThreadActivity.class);
+		_intent.putExtra("title", this.currentPageTitle);
 		
 		switch(arg0.getId()) {
 			case R.id.previousButton:
-				_intent = new Intent(ThreadActivity.this, ThreadActivity.class);
 				_intent.putExtra("link", Utils.decrementPage(this.currentPageLink, this.finalPage));
 				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) - 1));
-				_intent.putExtra("title", this.currentPageTitle);
 				this.finish();
 				break;
 			case R.id.nextButton:
-				_intent = new Intent(ThreadActivity.this, ThreadActivity.class);
 				_intent.putExtra("link", Utils.incrementPage(this.currentPageLink, this.finalPage));
 				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) + 1));
-				_intent.putExtra("title", this.currentPageTitle);
 				this.finish();
 				break;
 			case R.id.submitButton:
@@ -605,28 +575,25 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 						startActivity(_intent);
 						finish();
 			        }
-			    }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-			        public void onClick(DialogInterface dialog, int whichButton) {
-			            // Do nothing.
-			        }
-			    }).show();				
+			    }).setNegativeButton("Cancel", null).show();	
+				_intent = null; // Just to make sure we dont start another activity 
 				break;
 				
 			case R.id.firstButton:
-				_intent = new Intent(ThreadActivity.this, ThreadActivity.class);
 				_intent.putExtra("link", Utils.getPage(this.currentPageLink, Integer.toString(1)));
 				_intent.putExtra("page", "1");
-				_intent.putExtra("title", this.currentPageTitle);
 				finish();
 				break;
 				
 			case R.id.lastButton:
-				_intent = new Intent(ThreadActivity.this, ThreadActivity.class);
 				_intent.putExtra("link", Utils.getPage(this.currentPageLink, this.finalPage));
 				_intent.putExtra("page", this.finalPage);
-				_intent.putExtra("title", this.currentPageTitle);
 				finish();
 				break;	
+				
+			default:
+				_intent = null;
+				break;
 		}	
 		
 		if(_intent != null)
