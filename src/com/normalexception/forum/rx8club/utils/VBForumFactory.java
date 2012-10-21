@@ -74,6 +74,9 @@ public class VBForumFactory {
 	private static final String editPostAddress = 
 			"http://www.rx8club.com/editpost.php?do=editpost&p=";
 	
+	private static final String updatePostAddress = 
+			"http://www.rx8club.com/editpost.php?do=updatepost&p=";
+	
 	private static String responseUrl = "";
 	
 	/**
@@ -134,7 +137,7 @@ public class VBForumFactory {
 		nvps.add(new BasicNameValuePair("p", postNumber));
 		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
 		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
-    	nvps.add(new BasicNameValuePair("do", "postreply"));
+    	nvps.add(new BasicNameValuePair("do","postreply"));
     	
     	long secondsSinceEpoch = getTime();
     	
@@ -146,6 +149,51 @@ public class VBForumFactory {
     	HttpEntity entity = response.getEntity();
 
     	if (entity != null) {
+    		entity.consumeContent();
+    		
+    		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
+    		        ExecutionContext.HTTP_REQUEST);
+
+    		responseUrl = request.getURI().toString();
+    		
+    		return true;
+    	}
+    	
+		return false;
+	}
+	
+	/**
+	 * Submit a post edit
+	 * @param securityToken	The security token of the posting
+	 * @param postNumber	The post number being edited
+	 * @param posthash		The post hash number
+	 * @param poststart		The post start time
+	 * @param post			The post text
+	 * @return				True if submit successful
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public boolean submitEdit(String securityToken, String postNumber, 
+							  String posthash, String poststart, String post) 
+			throws ClientProtocolException, IOException {
+    	DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
+    	
+		HttpPost httpost = new HttpPost(updatePostAddress + postNumber);
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair("message", post));
+		nvps.add(new BasicNameValuePair("p", postNumber));
+		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
+    	nvps.add(new BasicNameValuePair("do","updatepost"));
+    	nvps.add(new BasicNameValuePair("posthash", posthash));
+    	nvps.add(new BasicNameValuePair("poststarttime", poststart));
+ 
+    	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+    	HttpContext context = new BasicHttpContext();
+    	HttpResponse response = httpclient.execute(httpost, context);
+    	HttpEntity entity = response.getEntity();
+
+    	if (entity != null) {    					
     		entity.consumeContent();
     		
     		HttpUriRequest request = (HttpUriRequest) context.getAttribute(

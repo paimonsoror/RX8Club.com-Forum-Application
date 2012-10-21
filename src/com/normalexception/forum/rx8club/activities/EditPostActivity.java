@@ -25,6 +25,7 @@ package com.normalexception.forum.rx8club.activities;
  ************************************************************************/
 
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.task.UpdateTask;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
 /**
@@ -41,11 +43,16 @@ import com.normalexception.forum.rx8club.utils.VBForumFactory;
  * Required Intent Parameters:
  * postId - the post id of the post that is to be edited
  * securitytoken - the security token of the session
+ * link - the original thread link
+ * title - original thread title
+ * page - page number
+ * threadnumber - original thread number
  */
 public class EditPostActivity extends ForumBaseActivity {
 
 	private static final String TAG = "EditPostActivity";
-	private String postId, securityToken;
+	private String postId, securityToken, postHash, poststart, 
+		pageNumber, pageTitle;
 	
 	/*
 	 * (non-Javadoc)
@@ -68,7 +75,10 @@ public class EditPostActivity extends ForumBaseActivity {
         		(String) getIntent().getStringExtra("postid");
         securityToken = 
         		(String) getIntent().getStringExtra("securitytoken");
-        
+        pageNumber =
+        		(String) getIntent().getStringExtra("pagenumber");
+        pageTitle =
+        		(String) getIntent().getStringExtra("pagetitle");
         constructView();
     }
     
@@ -83,12 +93,29 @@ public class EditPostActivity extends ForumBaseActivity {
     			VBForumFactory.getInstance().getEditPostPage(securityToken, postId);
     		String msg = editPage.select("textarea[name=message]").text();
     		((TextView)findViewById(R.id.postMessage)).setText(msg);
+    		
+    		Elements pansurr = editPage.select("td[class=panelsurround]");
+    		this.securityToken = getInputElementValue(pansurr, "securitytoken");
+    		this.postId = getInputElementValue(pansurr, "p");
+    		this.postHash = getInputElementValue(pansurr, "posthash");
+    		this.poststart = getInputElementValue(pansurr, "poststarttime");
     	} catch (Exception e) {
     		
     	} finally {
     		loadingDialog.dismiss();
     	}
     }
+    
+    /**
+     * Report the value inside of an input element
+     * @param pan	The panel where all of the input elements reside
+     * @param name	The name of the input to get the value for
+     * @return		The string value of the input
+     */
+    private String getInputElementValue(Elements pan, String name) {
+    	return pan.select("input[name=" + name + "]").attr("value");
+    }
+
 
     /*
      * (non-Javadoc)
@@ -107,6 +134,11 @@ public class EditPostActivity extends ForumBaseActivity {
 		super.onClick(arg0);
 		switch(arg0.getId()) {
 		case R.id.editThreadSubmit:
+			String toPost = 
+					((TextView)findViewById(R.id.postMessage)).getText().toString();
+			UpdateTask utask = new UpdateTask(this, this.securityToken, this.postId,
+					this.postHash, this.poststart, this.pageNumber, this.pageTitle, toPost);
+			utask.execute();
 			break;
 		}
 	}

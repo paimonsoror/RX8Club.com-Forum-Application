@@ -28,66 +28,72 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 
+import com.normalexception.forum.rx8club.activities.ThreadActivity;
+import com.normalexception.forum.rx8club.utils.VBForumFactory;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.normalexception.forum.rx8club.activities.ThreadActivity;
-import com.normalexception.forum.rx8club.utils.VBForumFactory;
-
 /**
- * Task generated to move the submit of a post to an async
- * task
+ * Task used to move all post editing tasks to an async task
  */
-public class SubmitTask extends AsyncTask<Void,Void,Void>{
+public class UpdateTask extends AsyncTask<Void,Void,Void> {
+	private static final String TAG = "UpdateTask";
+	
 	private ProgressDialog mProgressDialog;
 	private Activity sourceActivity;
 	
-	private String token, thread, post, text, pageTitle, pageNumber;
-
-	private static String TAG = "SubmitTask";
+	private String securitytoken, p, posthash, 
+		poststarttime, msg, pageNumber, pageTitle;
 	
-	/**
-	 * Constructor to a SubmitTask
-	 * @param sourceActivity	The source activity
-	 * @param securityToken		The users security token
-	 * @param threadNumber		The source thread number
-	 * @param postNumber		The post number
-	 * @param toPost			The text to post
-	 * @param currentPageLink	The current page link
-	 * @param pageTitle			The current page title
-	 * @param pageNumber		The current page number
-	 */
-	public SubmitTask(Activity sourceActivity, String securityToken, 
-					  String threadNumber, String postNumber, 
-					  String toPost, String pageTitle, String pageNumber) 
-	{
+	public UpdateTask(Activity sourceActivity, String token, String postid, 
+					  String posthash, String poststarttime, String pageNumber,
+					  String pageTitle, String message) {
 		this.sourceActivity = sourceActivity;
-		this.token = securityToken;
-		this.thread = threadNumber;
-		this.post = postNumber;
-		this.text = toPost;
-		this.pageTitle = pageTitle;
+		securitytoken = token;
+		p = postid;
+		this.posthash = posthash;
+		this.poststarttime = poststarttime;
+		this.msg = message;
 		this.pageNumber = pageNumber;
+		this.pageTitle = pageTitle;
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see android.os.AsyncTask#doInBackground(Params[])
+	 */
+	@Override
+	protected Void doInBackground(Void... params) {
+		try {
+			VBForumFactory.getInstance().submitEdit(securitytoken, p, 
+					posthash, poststarttime, msg);
+		} catch (ClientProtocolException e) {
+			Log.e(TAG, e.getMessage());
+		} catch (IOException e) {
+			Log.e(TAG, e.getMessage());
+		}
+		return null;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 	 */
 	@Override
     protected void onPostExecute(Void result) {
-        mProgressDialog.dismiss();
+		mProgressDialog.dismiss();
 		Intent _intent = new Intent(sourceActivity, ThreadActivity.class);
 		_intent.putExtra("link", VBForumFactory.getInstance().getResponseUrl());
-		_intent.putExtra("page", String.valueOf(Integer.parseInt(pageNumber)));
+		_intent.putExtra("page", pageNumber);
 		_intent.putExtra("title", pageTitle);
 		sourceActivity.finish();
 		sourceActivity.startActivity(_intent);
-    }
-
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.os.AsyncTask#onPreExecute()
@@ -96,21 +102,5 @@ public class SubmitTask extends AsyncTask<Void,Void,Void>{
     protected void onPreExecute() {
         mProgressDialog = 
         		ProgressDialog.show(this.sourceActivity, "Submitting...", "Submitting Post...");
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see android.os.AsyncTask#doInBackground(Params[])
-     */
-    @Override
-    protected Void doInBackground(Void... params) {
-    	try {
-			VBForumFactory.getInstance().submitPost(token, thread, post, text);
-		} catch (ClientProtocolException e) {
-			Log.e(TAG, e.getMessage());
-		} catch (IOException e) {
-			Log.e(TAG, e.getMessage());
-		}
-        return null;
     }
 }

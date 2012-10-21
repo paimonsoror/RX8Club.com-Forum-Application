@@ -3,7 +3,7 @@
     package="com.normalexception.forum.rx8club"
     android:installLocation="auto"
     android:versionCode="1039"
-    android:versionName="1.0.39" >
+    android:versionName="1.0.40" >
 
     <uses-sdk
         android:minSdkVersion="8"

@@ -51,6 +51,8 @@ public class PostButtonView extends TextView implements OnClickListener {
 	private int buttonType;
 	private String token;
 	private String user;
+	private String title;
+	private String page;
 	private int index;
 	
 	/**
@@ -69,13 +71,16 @@ public class PostButtonView extends TextView implements OnClickListener {
 	 * @param token		The security token for the session
 	 */
 	public PostButtonView(Context context, int button,
-			int index, String token, String user) {
+						  int index, String token, String user, 
+						  String title, String page) {
 		super(context);
 		this.setOnClickListener(this);
 		buttonType = button;
 		this.token = token;
 		this.user = user;
 		this.index = index;
+		this.title = title;
+		this.page = page;
 	}
 	
 	/**
@@ -130,6 +135,8 @@ public class PostButtonView extends TextView implements OnClickListener {
 			Intent _intent = new Intent(getContext(), EditPostActivity.class);
 			_intent.putExtra("postid", postId);
 			_intent.putExtra("securitytoken", token);
+			_intent.putExtra("pagenumber", this.page);
+			_intent.putExtra("pagetitle", this.title);
 			getContext().startActivity(_intent);
 			break;
 		case DELETEBUTTON:

@@ -368,11 +368,9 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 					!PreferenceHelper.isShowDeleteButton(this))
 				continue;
 			
-        	PostButtonView b = new PostButtonView(this, 
-        			buttonType,
-        			ThreadActivity.ThreadIdIndex+id+1,
-        			this.securityToken,
-        			user);
+        	PostButtonView b = new PostButtonView(this, buttonType,
+        			ThreadActivity.ThreadIdIndex+id+1, this.securityToken,
+        			user, currentPageTitle, pageNumber);
         	SpannableStringBuilder ssb = 
         			new SpannableStringBuilder(" ");
         	
@@ -587,8 +585,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 						advert;
 				SubmitTask sTask = new SubmitTask(this, this.securityToken, 
 						this.threadNumber, this.postNumber,
-						toPost, this.currentPageLink, 
-						this.currentPageTitle, this.pageNumber);
+						toPost, this.currentPageTitle, this.pageNumber);
 				sTask.execute();
 				break;
 			case R.id.paginationText:
