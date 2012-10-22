@@ -65,6 +65,7 @@ import android.widget.TextView.BufferType;
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.enums.ThreadButtonSize;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.task.SubmitTask;
 import com.normalexception.forum.rx8club.utils.PreferenceHelper;
@@ -198,13 +199,13 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     	switch(getResources().getDisplayMetrics().densityDpi) {
     	case DisplayMetrics.DENSITY_LOW:
     	case DisplayMetrics.DENSITY_MEDIUM:
-    		this.scaledImage = 12;
+    		this.scaledImage = ThreadButtonSize.LDPI.getValue();
     		break;
     	case DisplayMetrics.DENSITY_HIGH:
-    		this.scaledImage = 24;
+    		this.scaledImage = ThreadButtonSize.HDPI.getValue();
     		break;
     	case DisplayMetrics.DENSITY_XHIGH:
-    		this.scaledImage = 32;
+    		this.scaledImage = ThreadButtonSize.XHDPI.getValue();
     		break;
     	}
     }
