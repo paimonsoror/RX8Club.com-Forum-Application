@@ -170,6 +170,7 @@ public class PostButtonView extends TextView implements OnClickListener {
 			((TextView)threadActivity.findViewById(R.id.postBox)).setText(
 					finalText
 			);
+			((TextView)threadActivity.findViewById(R.id.postBox)).requestFocus();
 			break;
 		}
 	}
