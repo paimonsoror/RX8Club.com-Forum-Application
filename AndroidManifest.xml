@@ -2,8 +2,8 @@
     android:name="com.normalexception.forum.MainApplication"
     package="com.normalexception.forum.rx8club"
     android:installLocation="auto"
-    android:versionCode="1043"
-    android:versionName="1.0.43" >
+    android:versionCode="1045"
+    android:versionName="1.0.45" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -78,21 +78,13 @@
         </activity>
         <activity
             android:name=".activities.NewThreadActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_new_thread" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.EditPostActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_edit_post" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
