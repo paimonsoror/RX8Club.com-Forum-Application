@@ -53,6 +53,7 @@ public class EditPostActivity extends ForumBaseActivity {
 	private static final String TAG = "EditPostActivity";
 	private String postId, securityToken, postHash, poststart, 
 		pageNumber, pageTitle;
+	private boolean delete = false, deleteThread = false;
 	
 	/*
 	 * (non-Javadoc)
@@ -79,6 +80,11 @@ public class EditPostActivity extends ForumBaseActivity {
         		(String) getIntent().getStringExtra("pagenumber");
         pageTitle =
         		(String) getIntent().getStringExtra("pagetitle");
+        delete = 
+        		(Boolean) getIntent().getBooleanExtra("delete", false);
+        deleteThread = 
+        		(Boolean) getIntent().getBooleanExtra("deleteThread", false);
+        
         constructView();
     }
     
@@ -99,11 +105,25 @@ public class EditPostActivity extends ForumBaseActivity {
     		this.postId = getInputElementValue(pansurr, "p");
     		this.postHash = getInputElementValue(pansurr, "posthash");
     		this.poststart = getInputElementValue(pansurr, "poststarttime");
+    		
+    		if(delete)
+    			deletePost();
     	} catch (Exception e) {
     		
     	} finally {
     		loadingDialog.dismiss();
     	}
+    }
+    
+    /**
+     * Delete the post
+     */
+    private void deletePost() {
+    	UpdateTask utask = 
+				new UpdateTask(this, this.securityToken, this.postId,
+							   this.postHash, this.poststart, this.pageNumber, 
+							   this.pageTitle, null, true, deleteThread);
+		utask.execute();
     }
     
     /**
@@ -136,8 +156,10 @@ public class EditPostActivity extends ForumBaseActivity {
 		case R.id.editThreadSubmit:
 			String toPost = 
 					((TextView)findViewById(R.id.postMessage)).getText().toString();
-			UpdateTask utask = new UpdateTask(this, this.securityToken, this.postId,
-					this.postHash, this.poststart, this.pageNumber, this.pageTitle, toPost);
+			UpdateTask utask = 
+					new UpdateTask(this, this.securityToken, this.postId,
+								   this.postHash, this.poststart, this.pageNumber, 
+								   this.pageTitle, toPost, false, false);
 			utask.execute();
 			break;
 		}

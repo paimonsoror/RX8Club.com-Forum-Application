@@ -77,6 +77,9 @@ public class VBForumFactory {
 	private static final String updatePostAddress = 
 			"http://www.rx8club.com/editpost.php?do=updatepost&p=";
 	
+	private static final String deletePostAddress =
+			"http://www.rx8club.com/editpost.php?do=deletepost&p=";
+	
 	private static String responseUrl = "";
 	
 	/**
@@ -186,6 +189,45 @@ public class VBForumFactory {
     	nvps.add(new BasicNameValuePair("do","updatepost"));
     	nvps.add(new BasicNameValuePair("posthash", posthash));
     	nvps.add(new BasicNameValuePair("poststarttime", poststart));
+ 
+    	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+    	HttpContext context = new BasicHttpContext();
+    	HttpResponse response = httpclient.execute(httpost, context);
+    	HttpEntity entity = response.getEntity();
+
+    	if (entity != null) {    					
+    		entity.consumeContent();
+    		
+    		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
+    		        ExecutionContext.HTTP_REQUEST);
+
+    		responseUrl = request.getURI().toString();
+    		
+    		return true;
+    	}
+    	
+		return false;
+	}
+	
+	/**
+	 * Submit a request to the server to delete the post
+	 * @param securityToken	The session security token
+	 * @param postNum		The post number to delete
+	 * @return				True if delete successful
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public boolean submitDelete(String securityToken, String postNum)
+		throws ClientProtocolException, IOException {
+		DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
+    	
+		HttpPost httpost = new HttpPost(deletePostAddress + postNum);
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair("postid", postNum));
+		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
+    	nvps.add(new BasicNameValuePair("do","deletepost"));
+    	nvps.add(new BasicNameValuePair("deletepost", "delete"));
  
     	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 

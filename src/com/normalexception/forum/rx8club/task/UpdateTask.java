@@ -28,14 +28,15 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 
-import com.normalexception.forum.rx8club.activities.ThreadActivity;
-import com.normalexception.forum.rx8club.utils.VBForumFactory;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.normalexception.forum.rx8club.activities.CategoryActivity;
+import com.normalexception.forum.rx8club.activities.ThreadActivity;
+import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
 /**
  * Task used to move all post editing tasks to an async task
@@ -49,9 +50,12 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 	private String securitytoken, p, posthash, 
 		poststarttime, msg, pageNumber, pageTitle;
 	
+	private boolean delete = false, deleteThread = false;
+	
 	public UpdateTask(Activity sourceActivity, String token, String postid, 
 					  String posthash, String poststarttime, String pageNumber,
-					  String pageTitle, String message) {
+					  String pageTitle, String message, boolean delete,
+					  boolean deleteThread) {
 		this.sourceActivity = sourceActivity;
 		securitytoken = token;
 		p = postid;
@@ -60,6 +64,8 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 		this.msg = message;
 		this.pageNumber = pageNumber;
 		this.pageTitle = pageTitle;
+		this.delete = delete;
+		this.deleteThread = deleteThread;
 	}
 	
 	/*
@@ -69,8 +75,12 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 	@Override
 	protected Void doInBackground(Void... params) {
 		try {
-			VBForumFactory.getInstance().submitEdit(securitytoken, p, 
+			if(delete) {
+				VBForumFactory.getInstance().submitDelete(securitytoken, p);
+			} else {
+				VBForumFactory.getInstance().submitEdit(securitytoken, p, 
 					posthash, poststarttime, msg);
+			}
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, e.getMessage());
 		} catch (IOException e) {
@@ -86,10 +96,18 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 	@Override
     protected void onPostExecute(Void result) {
 		mProgressDialog.dismiss();
-		Intent _intent = new Intent(sourceActivity, ThreadActivity.class);
-		_intent.putExtra("link", VBForumFactory.getInstance().getResponseUrl());
-		_intent.putExtra("page", pageNumber);
+		String url = VBForumFactory.getInstance().getResponseUrl();
+		Intent _intent = null;
+		
+		if(pageNumber.equals("1") && deleteThread) {
+			_intent = new Intent(sourceActivity, CategoryActivity.class);
+		} else {
+			_intent = new Intent(sourceActivity, ThreadActivity.class);			
+		}
+		
 		_intent.putExtra("title", pageTitle);
+		_intent.putExtra("page", "1");
+		_intent.putExtra("link", url);
 		sourceActivity.finish();
 		sourceActivity.startActivity(_intent);
 	}
@@ -100,7 +118,11 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 	 */
     @Override
     protected void onPreExecute() {
-        mProgressDialog = 
+    	if(delete) 
+    		mProgressDialog = 
+    			ProgressDialog.show(this.sourceActivity, "Deleting...", "Deleting Post...");
+    	else
+    		mProgressDialog = 
         		ProgressDialog.show(this.sourceActivity, "Submitting...", "Submitting Post...");
     }
 }

@@ -48,7 +48,7 @@ public enum ThreadButtonSize {
 	/*
 	 * Extra High DPI
 	 */
-	XHDPI(40);
+	XHDPI(48);
 	
 	private int value;    
 	

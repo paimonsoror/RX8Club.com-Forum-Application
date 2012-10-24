@@ -87,7 +87,7 @@ import com.normalexception.forum.rx8club.view.ViewContents;
 public class ThreadActivity extends ForumBaseActivity implements OnClickListener {
 
 	private static final String TAG = "Application:Thread";
-	private static final int ThreadIdIndex = 9000;
+	public static final int ThreadIdIndex = 9000;
 	
 	private String currentPageLink;
 	private String currentPageTitle;

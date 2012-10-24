@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.EditPostActivity;
+import com.normalexception.forum.rx8club.activities.ThreadActivity;
 
 /**
  * An extension of a TextView that is used in the ThreadActivity to 
@@ -68,7 +69,11 @@ public class PostButtonView extends TextView implements OnClickListener {
 	 * and identifier for the type of button that is used
 	 * @param context	The source context
 	 * @param button	The type of button that this view represents
+	 * @param index		The button index number
 	 * @param token		The security token for the session
+	 * @param user		The user of the post
+	 * @param title		The thread title
+	 * @param page		The page number
 	 */
 	public PostButtonView(Context context, int button,
 						  int index, String token, String user, 
@@ -146,9 +151,15 @@ public class PostButtonView extends TextView implements OnClickListener {
 			    public void onClick(DialogInterface dialog, int which) {
 			        switch (which){
 			        case DialogInterface.BUTTON_POSITIVE:
-			        	Toast.makeText(MainApplication.getAppContext(), 
-								"Delete Post Coming Soon...", 
-								Toast.LENGTH_SHORT).show();
+			        	Intent _intent = new Intent(getContext(), EditPostActivity.class);
+						_intent.putExtra("postid", postId);
+						_intent.putExtra("securitytoken", token);
+						_intent.putExtra("pagenumber", page);
+						_intent.putExtra("pagetitle", title);
+						_intent.putExtra("delete", true);
+						_intent.putExtra("deleteThread", 
+								index - ThreadActivity.ThreadIdIndex == 2);
+						getContext().startActivity(_intent);
 			            break;
 			        }
 			    }
