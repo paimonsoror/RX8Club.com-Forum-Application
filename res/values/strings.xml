@@ -3,13 +3,23 @@
     <string name="app_name">RX8Club</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
+    
     <string name="title_activity_main">RX8Club.com</string>
-    <string name="title_activity_category">CategoryActivity</string>
-    <string name="title_activity_thread">ThreadActivity</string>
+    <string name="title_activity_category">RX8Club.com</string>
+    <string name="title_activity_thread">RX8Club.com</string>
+    <string name="title_activity_new_posts">RX8Club.com</string>
+    <string name="title_activity_profile">RX8Club.com</string>
+    <string name="title_activity_bug_report">RX8Club.com</string>
+    <string name="title_activity_search">RX8Club.com</string>
+    <string name="title_activity_login">RX8Club.com</string>
+    <string name="title_activity_about">RX8Club.com</string>
+    <string name="title_activity_preferences">RX8Club.com</string>
+    <string name="title_activity_new_thread">RX8Club.com</string>
+    <string name="title_activity_edit_post">RX8Club.com</string>
+    
     <string name="app_description">This is an application designed to provide the user with a faster, and easier to use forum experience for current RX8Club.com members</string>
     <string name="exitOption">Exit</string>
     <string name="aboutOption">About</string>
-    <string name="title_activity_login">LoginActivity</string>
     <string name="passwordInput">Password: </string>
     <string name="usernameInput">Username: </string>
     <string name="loginButton">Login</string>
@@ -19,10 +29,8 @@
     <string name="logoff">Logoff</string>
     <string name="profileButton">Profile</string>
     <string name="searchButton">Search</string>
-    <string name="title_activity_new_posts">NewPostsActivity</string>
-    <string name="title_activity_profile">ProfileActivity</string>
-    <string name="title_activity_bug_report">BugReportActivity</string>
-    <string name="title_activity_search">SearchActivity</string>
+    <string name="aboutstring">This free application was written by Paimon Sorornejad for the RX8Club.com community.  This application is designed to provide a mobile interface for Android based devices.</string>
+    <string name="recentchangesstring">Recent Changes: \n * Added about screen \n * Fixed login for some devices</string>
     <string name="searchString">Please Enter Search String:</string>
     <string name="searchType">Search Type</string>
     <string name="userNameSearch">User Name</string>
@@ -83,12 +91,5 @@
         <item>12</item>
         <item>14</item>
     </string-array>
-
-    <string name="title_activity_about">AboutActivity</string>
-    <string name="aboutstring">This free application was written by Paimon Sorornejad for the RX8Club.com community.  This application is designed to provide a mobile interface for Android based devices.</string>
-    <string name="recentchangesstring">Recent Changes: \n * Added about screen \n * Fixed login for some devices</string>
-    <string name="title_activity_preferences">Preferences</string>
-    <string name="title_activity_new_thread">NewThreadActivity</string>
-    <string name="title_activity_edit_post">EditPostActivity</string>
 
 </resources>
