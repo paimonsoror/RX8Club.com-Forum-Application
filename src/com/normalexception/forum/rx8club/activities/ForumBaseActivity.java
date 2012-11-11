@@ -39,6 +39,10 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -51,6 +55,7 @@ import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.activities.fragments.BannerFragment;
 import com.normalexception.forum.rx8club.handler.GuiHandlers;
 import com.normalexception.forum.rx8club.preferences.Preferences;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
@@ -61,7 +66,7 @@ import com.normalexception.forum.rx8club.view.ViewContents;
  * contained in the application.  The most common are menu buttons and
  * GUI handlers
  */
-public abstract class ForumBaseActivity extends Activity implements OnClickListener {
+public abstract class ForumBaseActivity extends FragmentActivity implements OnClickListener {
 	
 	protected LinkedHashMap<String,String> linkMap;
 	protected ArrayList<ViewContents> viewContents;
@@ -88,7 +93,6 @@ public abstract class ForumBaseActivity extends Activity implements OnClickListe
 			findViewById(R.id.imageView1).setOnClickListener(new GuiHandlers(this));
 			findViewById(R.id.newTopicsButton).setOnClickListener(new GuiHandlers(this));
 	        findViewById(R.id.newPmButton).setOnClickListener(new GuiHandlers(this));
-	        findViewById(R.id.liveButton).setOnClickListener(new GuiHandlers(this));
 	        findViewById(R.id.profileButton).setOnClickListener(new GuiHandlers(this));
 	        findViewById(R.id.searchButton).setOnClickListener(new GuiHandlers(this));
 		}

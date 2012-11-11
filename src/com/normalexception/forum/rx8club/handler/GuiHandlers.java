@@ -79,15 +79,6 @@ public class GuiHandlers implements OnClickListener {
 				_intent = new Intent(arg0.getContext(), SearchActivity.class);
 				break;
 				
-			case R.id.liveButton:
-				_src.runOnUiThread(new Runnable() {
-					public void run() {
-						Toast.makeText(MainApplication.getAppContext(), 
-								"Sorry Not Implemented Yet!", Toast.LENGTH_SHORT).show();
-					}
-				});
-				break;
-				
 			case R.id.imageView1:
 				_intent = new Intent(arg0.getContext(), MainActivity.class);
 				if(!(_src instanceof MainActivity))

@@ -1,0 +1,74 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/darker_gray"
+    android:orientation="vertical" >
+	
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="0px"
+        android:layout_marginBottom="0px"
+        android:layout_marginLeft="0px"
+        android:layout_marginRight="0px"
+        android:layout_marginTop="0px"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:padding="0px"
+        android:paddingBottom="0px"
+        android:paddingLeft="0px"
+        android:paddingRight="0px"
+        android:paddingTop="0px"
+        android:scaleType="centerCrop"
+        android:src="@drawable/rx8club_logo" />
+    
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:background="@android:color/darker_gray"
+        android:paddingTop="5dip" >
+           
+           <Button
+               android:id="@+id/profileButton"
+               style="?android:attr/buttonStyleSmall"
+               android:layout_width="0dip"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:text="@string/profileButton"
+               android:textSize="10dip" />
+
+           <Button
+               android:id="@+id/newTopicsButton"
+               style="?android:attr/buttonStyleSmall"
+               android:layout_width="0dip"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:text="@string/newTopics"
+               android:textSize="10dip" />
+
+           <Button
+               android:id="@+id/newPmButton"
+               style="?android:attr/buttonStyleSmall"
+               android:layout_width="0dip"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:text="@string/newPms"
+               android:textSize="10dip" />
+
+           <Button
+               android:id="@+id/searchButton"
+               style="?android:attr/buttonStyleSmall"
+               android:layout_width="0dip"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:text="@string/searchButton"
+               android:textSize="10dip" />
+
+
+       </TableRow>
+</LinearLayout>

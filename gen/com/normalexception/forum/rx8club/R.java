@@ -42,18 +42,18 @@ public final class R {
         public static final int editTextDialogUserInput=0x7f0a0043;
         public static final int editThreadSubmit=0x7f0a0017;
         public static final int firstButton=0x7f0a003e;
+        public static final int fragment_content=0x7f0a000c;
         public static final int imageView1=0x7f0a0000;
         public static final int imageView6=0x7f0a001a;
         public static final int joinDateText=0x7f0a0033;
         public static final int lastButton=0x7f0a003f;
         public static final int layout_root=0x7f0a0042;
-        public static final int liveButton=0x7f0a0006;
         public static final int loginButton=0x7f0a0029;
         public static final int menuControlsRow=0x7f0a000e;
         public static final int menuRow=0x7f0a000d;
         public static final int menu_settings=0x7f0a0044;
         public static final int myTableLayout=0x7f0a002c;
-        public static final int myTableLayoutCategory=0x7f0a000c;
+        public static final int myTableLayoutCategory=0x7f0a000b;
         public static final int myTableLayoutNewPost=0x7f0a002d;
         public static final int myTableLayoutProfile=0x7f0a002f;
         public static final int myTableLayoutThread=0x7f0a003c;
@@ -84,13 +84,13 @@ public final class R {
         public static final int tableRow4=0x7f0a0019;
         public static final int tableRow5=0x7f0a0023;
         public static final int tableRow6=0x7f0a002a;
-        public static final int textView1=0x7f0a0007;
+        public static final int textView1=0x7f0a0006;
         public static final int textView10=0x7f0a0027;
         public static final int textView11=0x7f0a0028;
-        public static final int textView2=0x7f0a0009;
-        public static final int textView3=0x7f0a000a;
+        public static final int textView2=0x7f0a0008;
+        public static final int textView3=0x7f0a0009;
         public static final int textView4=0x7f0a003a;
-        public static final int textView6=0x7f0a000b;
+        public static final int textView6=0x7f0a000a;
         public static final int textView7=0x7f0a0024;
         public static final int textView8=0x7f0a0025;
         public static final int textView9=0x7f0a0026;
@@ -102,7 +102,7 @@ public final class R {
         public static final int userPostCountText=0x7f0a0032;
         public static final int userTitleText=0x7f0a0031;
         public static final int usernameText=0x7f0a001c;
-        public static final int versionNumber=0x7f0a0008;
+        public static final int versionNumber=0x7f0a0007;
         public static final int versonCode=0x7f0a002b;
     }
     public static final class layout {
@@ -116,20 +116,22 @@ public final class R {
         public static final int activity_profile=0x7f030007;
         public static final int activity_search=0x7f030008;
         public static final int activity_thread=0x7f030009;
-        public static final int prompts=0x7f03000a;
+        public static final int fragment_banner=0x7f03000a;
+        public static final int prompts=0x7f03000b;
     }
     public static final class menu {
         public static final int activity_about=0x7f090000;
-        public static final int activity_category=0x7f090001;
-        public static final int activity_edit_post=0x7f090002;
-        public static final int activity_login=0x7f090003;
-        public static final int activity_main=0x7f090004;
-        public static final int activity_new_posts=0x7f090005;
-        public static final int activity_new_thread=0x7f090006;
-        public static final int activity_preferences=0x7f090007;
-        public static final int activity_profile=0x7f090008;
-        public static final int activity_search=0x7f090009;
-        public static final int activity_thread=0x7f09000a;
+        public static final int activity_banner_fragment=0x7f090001;
+        public static final int activity_category=0x7f090002;
+        public static final int activity_edit_post=0x7f090003;
+        public static final int activity_login=0x7f090004;
+        public static final int activity_main=0x7f090005;
+        public static final int activity_new_posts=0x7f090006;
+        public static final int activity_new_thread=0x7f090007;
+        public static final int activity_preferences=0x7f090008;
+        public static final int activity_profile=0x7f090009;
+        public static final int activity_search=0x7f09000a;
+        public static final int activity_thread=0x7f09000b;
     }
     public static final class string {
         public static final int aboutOption=0x7f060011;
@@ -155,6 +157,7 @@ public final class R {
         public static final int threadContentSearch=0x7f060020;
         public static final int threadTitleSearch=0x7f060021;
         public static final int title_activity_about=0x7f06000b;
+        public static final int title_activity_banner_fragment=0x7f060024;
         public static final int title_activity_bug_report=0x7f060008;
         public static final int title_activity_category=0x7f060004;
         public static final int title_activity_edit_post=0x7f06000e;

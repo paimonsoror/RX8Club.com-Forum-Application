@@ -74,15 +74,6 @@
                 android:layout_weight="1"
                 android:text="@string/searchButton"
                 android:textSize="10dip" />
-            
-            <Button
-                android:id="@+id/liveButton"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Live"
-                android:textSize="10dip" />
 
 
         </TableRow>
