@@ -45,7 +45,7 @@ public class NewThreadTask extends AsyncTask<Void,Void,Void> {
 	private ProgressDialog mProgressDialog;
 	
 	private Activity sourceActivity;
-	private String s, token, f, posthash, subject, post, forumId, source;
+	private String s, token, posthash, subject, post, forumId;
 	
 	private static String TAG = "NewThreadTask";
 	
@@ -55,12 +55,10 @@ public class NewThreadTask extends AsyncTask<Void,Void,Void> {
 		this.sourceActivity = source;
 		this.s = s;
 		this.token = token;
-		this.f = f;
 		this.posthash = posthash;
 		this.subject = subject;
 		this.post = post;
 		this.forumId = forumId;
-		this.source = sourceLink;
 	}
 	
 	/*

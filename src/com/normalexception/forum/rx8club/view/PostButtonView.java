@@ -32,9 +32,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.EditPostActivity;
 import com.normalexception.forum.rx8club.activities.ThreadActivity;
