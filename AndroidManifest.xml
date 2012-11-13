@@ -2,8 +2,8 @@
     android:name="com.normalexception.forum.MainApplication"
     package="com.normalexception.forum.rx8club"
     android:installLocation="auto"
-    android:versionCode="1048"
-    android:versionName="1.0.48" >
+    android:versionCode="1049"
+    android:versionName="1.0.49" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -89,6 +89,15 @@
         <activity
             android:name=".activities.fragments.BannerFragment"
             android:label="@string/title_activity_banner_fragment" >
+        </activity>
+        <activity
+            android:name=".activities.PrivateMessageActivity"
+            android:label="@string/title_activity_private_message" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

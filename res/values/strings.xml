@@ -23,7 +23,7 @@
     <string name="loginButton">Login</string>
     <string name="commentText">Comment</string>
     <string name="newTopics">New Posts</string>
-    <string name="newPms">New PM</string>
+    <string name="newPms">Inbox</string>
     <string name="logoff">Logoff</string>
     <string name="profileButton">Profile</string>
     <string name="searchButton">Search</string>
@@ -91,5 +91,6 @@
     </string-array>
 
     <string name="title_activity_banner_fragment">BannerFragment</string>
+    <string name="title_activity_private_message">PrivateMessageActivity</string>
 
 </resources>

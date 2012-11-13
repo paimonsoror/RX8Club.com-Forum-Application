@@ -29,12 +29,11 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Toast;
 
-import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.MainActivity;
 import com.normalexception.forum.rx8club.activities.NewPostsActivity;
+import com.normalexception.forum.rx8club.activities.PrivateMessageActivity;
 import com.normalexception.forum.rx8club.activities.ProfileActivity;
 import com.normalexception.forum.rx8club.activities.SearchActivity;
 
@@ -63,12 +62,7 @@ public class GuiHandlers implements OnClickListener {
 				break;
 			
 			case R.id.newPmButton:
-				_src.runOnUiThread(new Runnable() {
-					public void run() {
-						Toast.makeText(MainApplication.getAppContext(), 
-								"Sorry Not Implemented Yet!", Toast.LENGTH_SHORT).show();
-					}
-				});
+				_intent = new Intent(arg0.getContext(), PrivateMessageActivity.class);
 				break;
 			
 			case R.id.profileButton:
