@@ -136,7 +136,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     		public void run() {
     			tl = (TableLayout)findViewById(R.id.myTableLayoutPM);
     			tl.setColumnStretchable(0, true);
-    			boolean alternate = false;
+
     			addRow(Color.BLUE, "Subject", "User", "Date");
     			
     			String month = getMonthForInt(0);
@@ -173,6 +173,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     	tr_head.setId(31);
     	
     	int style = Typeface.NORMAL;
+    	int index = 0;
     	for(String text : texts) {
 	    	TextView b = new TextView(this);
 	    	b.setId(32);
@@ -186,40 +187,10 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 			
 			/* Add Button to row. */
 	        TableRow.LayoutParams params = new TableRow.LayoutParams();
-	        params.weight = 1f;
+	        if(index == 0) params.weight = 1f;
 	        tr_head.addView(b,params);
+	        index++;
     	}
-        
-        /* Add row to TableLayout. */
-        tl.addView(tr_head);
-    }
-    
-    /**
-     * Add a new row to the view
-     * @param pm	The private message object
-     */
-    private void addRow(PrivateMessage pm, boolean alt) {
-    	/* Create a new row to be added. */
-    	TableRow tr_head = new TableRow(this);
-    	tr_head.setId(31);
-    	TextView b = new TextView(this);
-    	b.setId(32);
-    	b.setTextColor(Color.WHITE);
-    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
-    	
-    	if(alt)
-    		tr_head.setBackgroundColor(Color.DKGRAY);
-    	else
-    		tr_head.setBackgroundColor(Color.GRAY);
-    	
-    	b.setOnClickListener(this);	     
-        b.setText(pm.toString());
-        
-        /* Add Button to row. */
-        TableRow.LayoutParams params = new TableRow.LayoutParams();
-        params.weight = 1f;
-        params.setMargins(0, 10, 0, 10);
-        tr_head.addView(b,params);
         
         /* Add row to TableLayout. */
         tl.addView(tr_head);
