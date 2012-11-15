@@ -25,19 +25,31 @@ package com.normalexception.forum.rx8club.activities;
  ************************************************************************/
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View.OnClickListener;
 import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.utils.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
 
@@ -124,19 +136,93 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     		public void run() {
     			tl = (TableLayout)findViewById(R.id.myTableLayoutPM);
     			tl.setColumnStretchable(0, true);
+    			boolean alternate = false;
+    			addRow(Color.BLUE, "Subject", "User", "Date");
+    			
+    			String month = getMonthForInt(0);
     			for(PrivateMessage pm : privateMessages) {
-    				addRow(pm);
+    				String moNum = 
+    						getMonthForInt(
+    								Integer.parseInt(pm.getDate().split("-")[0]));
+    				
+    				if(!month.equals(moNum)) {
+    					month = moNum;
+    					addRow(Color.DKGRAY, month);
+    				}
+    				
+    				//addRow(pm, alternate = !alternate);
+    				addRow(Color.GRAY, pm.getSubject(), pm.getUser(), pm.getDate());
     			}
     		}
     	});
+    }
+    
+    private String getMonthForInt(int m) {
+    	Calendar cal = Calendar.getInstance();
+    	cal.set(Calendar.MONTH, m - 1);
+    	
+    	// For API 9
+    	//cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US);
+    	
+    	return String.format(Locale.US,"%tB",cal);
+    }
+    
+    private void addRow(int clr, String... texts) {
+    	/* Create a new row to be added. */
+    	TableRow tr_head = new TableRow(this);
+    	tr_head.setId(31);
+    	
+    	int style = Typeface.NORMAL;
+    	for(String text : texts) {
+	    	TextView b = new TextView(this);
+	    	b.setId(32);
+	    	b.setTextColor(Color.WHITE);
+	    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
+	    	b.setPadding(5,5,5,5);
+	    	tr_head.setBackgroundColor(clr);
+			SpannableString spanString = new SpannableString(text);
+			spanString.setSpan(new StyleSpan(style), 0, text.length(), 0);
+			b.setText(spanString);
+			
+			/* Add Button to row. */
+	        TableRow.LayoutParams params = new TableRow.LayoutParams();
+	        params.weight = 1f;
+	        tr_head.addView(b,params);
+    	}
+        
+        /* Add row to TableLayout. */
+        tl.addView(tr_head);
     }
     
     /**
      * Add a new row to the view
      * @param pm	The private message object
      */
-    private void addRow(PrivateMessage pm) {
+    private void addRow(PrivateMessage pm, boolean alt) {
+    	/* Create a new row to be added. */
+    	TableRow tr_head = new TableRow(this);
+    	tr_head.setId(31);
+    	TextView b = new TextView(this);
+    	b.setId(32);
+    	b.setTextColor(Color.WHITE);
+    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
     	
+    	if(alt)
+    		tr_head.setBackgroundColor(Color.DKGRAY);
+    	else
+    		tr_head.setBackgroundColor(Color.GRAY);
+    	
+    	b.setOnClickListener(this);	     
+        b.setText(pm.toString());
+        
+        /* Add Button to row. */
+        TableRow.LayoutParams params = new TableRow.LayoutParams();
+        params.weight = 1f;
+        params.setMargins(0, 10, 0, 10);
+        tr_head.addView(b,params);
+        
+        /* Add row to TableLayout. */
+        tl.addView(tr_head);
     }
     
     /**
@@ -184,6 +270,8 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
  						}
  					}
  				}
+ 				
+ 				updateView(privateMessages);
  				
  				loadingDialog.dismiss();
  			}
