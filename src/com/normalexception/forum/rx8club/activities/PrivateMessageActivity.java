@@ -25,10 +25,8 @@ package com.normalexception.forum.rx8club.activities;
  ************************************************************************/
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import org.jsoup.nodes.Document;
@@ -42,13 +40,13 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View.OnClickListener;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.utils.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
@@ -56,7 +54,7 @@ import com.normalexception.forum.rx8club.view.ViewContents;
 public class PrivateMessageActivity extends ForumBaseActivity implements OnClickListener {
 
 	private static String TAG = "PrivateMessageActivity";
-	private static final String pmUrl = "http://www.rx8club.com/private.php";
+
 	private ArrayList<PrivateMessage> privateMessages;
 	
 	/**
@@ -97,6 +95,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 	 * (non-Javadoc)
 	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onRestoreInstanceState(android.os.Bundle)
 	 */
+	@SuppressWarnings("unchecked")
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		if(savedInstanceState != null) {
@@ -206,7 +205,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 		
         updaterThread = new Thread("NewPostsThread") {
  			public void run() { 		
- 				Document doc = VBForumFactory.getInstance().get(pmUrl);
+ 				Document doc = VBForumFactory.getInstance().get(WebUrls.pmUrl);
  				viewContents = new ArrayList<ViewContents>();
  				privateMessages = new ArrayList<PrivateMessage>();
  				

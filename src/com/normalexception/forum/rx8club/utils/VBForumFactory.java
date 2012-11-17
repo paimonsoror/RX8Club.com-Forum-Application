@@ -54,6 +54,7 @@ import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
+import com.normalexception.forum.rx8club.WebUrls;
 
 /**
  * Classes that pertain to a VB type forum
@@ -62,24 +63,7 @@ public class VBForumFactory {
 	
 	private static VBForumFactory _instance = null;
 	private static final String TAG = "Application:VBForumFactory";
-	
-	private static final String urlAddress = "http://www.rx8club.com";
-	
-	private static final String postSubmitAddress = 
-			"http://www.rx8club.com/newreply.php?do=newreply&noquote=1&p=";
-	
-	private static final String newThreadAddress =
-			"http://www.rx8club.com/newthread.php?do=newthread&f=";
-	
-	private static final String editPostAddress = 
-			"http://www.rx8club.com/editpost.php?do=editpost&p=";
-	
-	private static final String updatePostAddress = 
-			"http://www.rx8club.com/editpost.php?do=updatepost&p=";
-	
-	private static final String deletePostAddress =
-			"http://www.rx8club.com/editpost.php?do=deletepost&p=";
-	
+		
 	private static String responseUrl = "";
 	
 	/**
@@ -105,7 +89,7 @@ public class VBForumFactory {
 	 * @return	The root address of the forum
 	 */
 	public static String getRootAddress() {
-		return urlAddress;
+		return WebUrls.rootUrl;
 	}
 
 	/**
@@ -116,7 +100,7 @@ public class VBForumFactory {
 	 * @throws IOException
 	 */
 	public String getForumFrontpage(LoginFactory lf) throws ClientProtocolException, IOException {
-		return getForumPage(lf, urlAddress);
+		return getForumPage(lf, WebUrls.rootUrl);
 	}
 	
 	/**
@@ -133,7 +117,7 @@ public class VBForumFactory {
 			throws ClientProtocolException, IOException {
     	DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
     	
-		HttpPost httpost = new HttpPost(postSubmitAddress + postNumber);
+		HttpPost httpost = new HttpPost(WebUrls.postSubmitAddress + postNumber);
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("message", post));
 		nvps.add(new BasicNameValuePair("t", thread));
@@ -181,7 +165,7 @@ public class VBForumFactory {
 			throws ClientProtocolException, IOException {
     	DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
     	
-		HttpPost httpost = new HttpPost(updatePostAddress + postNumber);
+		HttpPost httpost = new HttpPost(WebUrls.updatePostAddress + postNumber);
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("message", post));
 		nvps.add(new BasicNameValuePair("p", postNumber));
@@ -222,7 +206,7 @@ public class VBForumFactory {
 		throws ClientProtocolException, IOException {
 		DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
     	
-		HttpPost httpost = new HttpPost(deletePostAddress + postNum);
+		HttpPost httpost = new HttpPost(WebUrls.deletePostAddress + postNum);
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("postid", postNum));
 		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
@@ -263,7 +247,7 @@ public class VBForumFactory {
 		
 		DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
 		
-		HttpPost httpost = new HttpPost(editPostAddress + postid);
+		HttpPost httpost = new HttpPost(WebUrls.editPostAddress + postid);
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
     	nvps.add(new BasicNameValuePair("securitytoken", securityToken));
     	
@@ -311,7 +295,7 @@ public class VBForumFactory {
 		DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
 		long secondsSinceEpoch = getTime();
 		
-		HttpPost httpost = new HttpPost(newThreadAddress + forumId);
+		HttpPost httpost = new HttpPost(WebUrls.newThreadAddress + forumId);
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("s", s));
 		nvps.add(new BasicNameValuePair("securitytoken", token));
@@ -348,7 +332,7 @@ public class VBForumFactory {
 	 * @return	The response url
 	 */
 	public String getResponseUrl() {
-		return urlAddress + responseUrl;
+		return WebUrls.rootUrl + responseUrl;
 	}
 	
 	/**

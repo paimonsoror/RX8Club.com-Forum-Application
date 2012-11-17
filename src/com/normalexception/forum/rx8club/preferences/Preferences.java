@@ -31,6 +31,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.utils.PreferenceHelper;
 
 /**
@@ -53,11 +54,7 @@ public class Preferences extends PreferenceActivity {
         button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference arg0) { 
-            	String donateUrl = "https://www.paypal.com/cgi-bin/webscr" +
-            			"?cmd=_donations&business=XSEK8GC74RMMS&lc=US" +
-            			"&currency_code=USD&bn=PP%2dDonations" +
-            			"BF%3abtn_donateCC_LG%2egif%3aNonHosted";
-            	Uri uri = Uri.parse(donateUrl);
+            	Uri uri = Uri.parse(WebUrls.paypalUrl);
             	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             	startActivity(intent);
                 return true;

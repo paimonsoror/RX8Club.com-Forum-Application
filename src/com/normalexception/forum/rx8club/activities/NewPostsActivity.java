@@ -47,6 +47,7 @@ import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.utils.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
@@ -61,7 +62,6 @@ import com.normalexception.forum.rx8club.view.ViewContents;
  */
 public class NewPostsActivity extends ForumBaseActivity implements OnClickListener {
 	
-	private static final String newPostUrl = "http://www.rx8club.com/search.php?do=getnew";
 	private static final String TAG = "Application:NewPostsActivity";
 	private static TableLayout tl;
 	
@@ -115,7 +115,8 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
  				String link = 
 		        		(String) getIntent().getSerializableExtra("link");
  				
- 				Document doc = VBForumFactory.getInstance().get(link == null? newPostUrl : link);
+ 				Document doc = VBForumFactory.getInstance().get(
+ 						link == null? WebUrls.newPostUrl : link);
  				viewContents = new ArrayList<ViewContents>();
  		        linkMap = new LinkedHashMap<String,String>();
  		        

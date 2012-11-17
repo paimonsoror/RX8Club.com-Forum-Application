@@ -34,6 +34,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.WebUrls;
 
 /**
  * Activity used to create a search in the forum.
@@ -44,7 +45,6 @@ import com.normalexception.forum.rx8club.R;
 public class SearchActivity extends ForumBaseActivity implements OnClickListener {
 
 	private static String TAG = "SearchActivity";
-	private static String searchLink = "http://www.rx8club.com/search.php?do=process&query=";
 	
 	/*
 	 * (non-Javadoc)
@@ -103,7 +103,7 @@ public class SearchActivity extends ForumBaseActivity implements OnClickListener
 			case R.id.searchSubmitButton:	
 				String searchText = getSearchUrl();
 				Intent _intent = new Intent(SearchActivity.this, NewPostsActivity.class);
-				_intent.putExtra("link", searchLink + searchText);
+				_intent.putExtra("link", WebUrls.searchUrl + searchText);
 				Log.v(TAG, "Adding Link To Search: " + _intent.getStringExtra("link"));
 				startActivity(_intent);
 			break;

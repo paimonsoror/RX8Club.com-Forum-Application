@@ -25,8 +25,6 @@ package com.normalexception.forum.rx8club.utils;
  ************************************************************************/
 
 import java.io.IOException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +45,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.normalexception.forum.rx8club.MainApplication;
+import com.normalexception.forum.rx8club.WebUrls;
 
 /**
  * Singleton class for the login information
@@ -56,7 +55,6 @@ public class LoginFactory {
 	private static LoginFactory _instance = null;
 	
 	private static final String TAG = "Application:LoginFactory";
-	private static final String urlAddress = "http://www.rx8club.com/login.php";
 	
 	private String password = null;
 	
@@ -199,10 +197,10 @@ public class LoginFactory {
 		}
 		
 		httpclient = new DefaultHttpClient();
-    	HttpPost httpost = new HttpPost(urlAddress);
+    	HttpPost httpost = new HttpPost(WebUrls.loginUrl);
 
     	List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-    	String password = hexMd5(this.password);
+    	String password = PasswordUtils.hexMd5(this.password);
     	nvps.add(new BasicNameValuePair("vb_login_username", UserProfile.getUsername()));
     	nvps.add(new BasicNameValuePair("vb_login_md5password", password));
     	nvps.add(new BasicNameValuePair("vb_login_md5password_utf", password));
@@ -245,35 +243,5 @@ public class LoginFactory {
 	 */
 	public int getCookieListCount() {
 		return cookieList.size();
-	}
-	
-	/**
-	 * Convert the password to an md5 password
-	 * @param password	A plaintext password
-	 * @return			The md5 encoded password
-	 * @throws NoSuchAlgorithmException
-	 */
-	private static String hexMd5(String password) throws NoSuchAlgorithmException {
-		Log.v(TAG, "Creating MD5 Password");
-		MessageDigest md5 = MessageDigest.getInstance("MD5");
-		md5.update(password.getBytes());
-		BigInteger hash = new BigInteger(1, md5.digest());
-		return pad(hash.toString(16), 32, '0');
-	}
-	    
-	/**
-	 * Pad the md5 password
-	 * @param s			The string to pad
-	 * @param length	The total length to pad to
-	 * @param pad		The pad character
-	 * @return			The padded string
-	 */
-	private static String pad(String s, int length, char pad) {
-		Log.v(TAG, "Padding MD5 Password");
-		StringBuffer buffer = new StringBuffer(s);
-		while (buffer.length() < length) {
-			buffer.insert(0, pad);
-		}
-		return buffer.toString();
 	}
 }
