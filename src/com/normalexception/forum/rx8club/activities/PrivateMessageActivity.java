@@ -34,22 +34,26 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.Log;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.utils.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
-import com.normalexception.forum.rx8club.view.ViewContents;
 
 public class PrivateMessageActivity extends ForumBaseActivity implements OnClickListener {
 
@@ -60,7 +64,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 	/**
 	 * Container that holds information about each private message
 	 */
-	private class PrivateMessage implements Serializable {
+	private class PrivateMessage implements Serializable, Parcelable {
 		private static final long serialVersionUID = 1L;
 		private String user, time, subject, date;
 		public void setUser(String usr) { user = usr; }
@@ -80,6 +84,12 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 						getUser(),
 						getSubject());
 		}
+		@Override
+		public int describeContents() {
+			return 0;
+		}
+		@Override
+		public void writeToParcel(Parcel arg0, int arg1) {}
 	}
 	
 	/*
@@ -87,8 +97,13 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onSaveInstanceState(android.os.Bundle)
 	 */
 	public void onSaveInstanceState(Bundle outState) {	
-		super.onSaveInstanceState(outState);
-		outState.putSerializable("contents", privateMessages);
+		//super.onSaveInstanceState(outState);
+		try {
+			outState.putSerializable("contents", privateMessages);
+		} catch (Exception e) {
+			Log.e(TAG, "Error Serializing: " + e.getMessage());
+			BugSenseHandler.sendException(e);
+		}
 	}
 	
 	/*
@@ -97,10 +112,15 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 	 */
 	@SuppressWarnings("unchecked")
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		if(savedInstanceState != null) {
-			privateMessages = 
-					(ArrayList<PrivateMessage>)savedInstanceState.getSerializable("contents");
+		//super.onRestoreInstanceState(savedInstanceState);
+		try {
+			if(savedInstanceState != null) {
+				privateMessages = 
+						(ArrayList<PrivateMessage>)savedInstanceState.getSerializable("contents");
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "Error UnSerializing: " + e.getMessage());
+			BugSenseHandler.sendException(e);
 		}
 	}
 	
@@ -156,6 +176,11 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     	});
     }
     
+    /**
+     * Convert an integer month to a string month
+     * @param m	The integer month to convert
+     * @return	A string representation of a month
+     */
     private String getMonthForInt(int m) {
     	Calendar cal = Calendar.getInstance();
     	cal.set(Calendar.MONTH, m - 1);
@@ -166,6 +191,11 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     	return String.format(Locale.US,"%tB",cal);
     }
     
+    /**
+     * Add a row to the view table
+     * @param clr	The color of the background
+     * @param texts	The text array that will be added to each row
+     */
     private void addRow(int clr, String... texts) {
     	/* Create a new row to be added. */
     	TableRow tr_head = new TableRow(this);
@@ -183,6 +213,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 			SpannableString spanString = new SpannableString(text);
 			spanString.setSpan(new StyleSpan(style), 0, text.length(), 0);
 			b.setText(spanString);
+			b.setOnClickListener(this);
 			
 			/* Add Button to row. */
 	        TableRow.LayoutParams params = new TableRow.LayoutParams();
@@ -206,7 +237,6 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
         updaterThread = new Thread("NewPostsThread") {
  			public void run() { 		
  				Document doc = VBForumFactory.getInstance().get(WebUrls.pmUrl);
- 				viewContents = new ArrayList<ViewContents>();
  				privateMessages = new ArrayList<PrivateMessage>();
  				
  				Elements collapse = doc.select("tbody[id^=collapseobj_pmf0]");
@@ -248,6 +278,37 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
         };
         updaterThread.start();
     }
+    
+    /*
+	 * (non-Javadoc)
+	 * @see android.view.View.OnClickListener#onClick(android.view.View)
+	 */
+	@Override
+	public void onClick(View arg0) {
+		super.onClick(arg0);
+		
+		switch(arg0.getId()) {	
+		default:
+			Log.v(TAG, "Category Clicked");
+			TextView tv = (TextView)arg0;
+			final String link = tv.getText().toString();
+			if(link != null && !link.equals("")) {
+				Log.v(TAG, "User Clicked: " + link);
+				
+				// Open new thread
+				new Thread("RefreshDisplayList") {
+					public void run() {
+						Intent intent = 
+								new Intent(PrivateMessageActivity.this, 
+										PrivateMessageViewActivity.class);
+						intent.putExtra("link", link);
+						startActivity(intent);
+					}
+				}.start();	
+			}
+			break;
+		}
+	}
 
     /*
      * (non-Javadoc)

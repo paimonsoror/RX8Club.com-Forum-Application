@@ -331,7 +331,7 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 			Log.e(TAG, "Could Not Find Key of '" + trimmedLinkText + "'");
 			Log.e(TAG, "Keys: " + linkMap.keySet().toString());
 		} else {
-			// Refresh the display
+			// Open the thread
 			new Thread("CreateThreadActivity") {
 				public void run() {
 					Intent intent = 

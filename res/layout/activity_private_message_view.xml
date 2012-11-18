@@ -1,0 +1,45 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/darker_gray"
+    android:scrollbars="vertical" >
+
+    <TableLayout
+        android:id="@+id/myTableLayoutPM"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:spacing="40dip"
+        android:stretchColumns="3" >
+
+        <fragment
+	        android:id="@+id/fragment_content"
+	        android:name="com.normalexception.forum.rx8club.activities.fragments.BannerFragment"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent" >
+	
+	        <!-- Preview: layout=@layout/fragment_banner -->
+	    </fragment>
+	    
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/commentText" />
+
+        <EditText
+            android:id="@+id/postBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textMultiLine" />
+
+        <Button
+            android:id="@+id/submitButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Submit" />
+    </TableLayout>
+</ScrollView>

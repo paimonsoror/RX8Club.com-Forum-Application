@@ -312,7 +312,29 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
      */
 	@Override
 	public void onClick(View arg0) {
-		super.onClick(arg0);
+		super.onClick(arg0);		
+				
+		switch(arg0.getId()) {	
+			default:
+				Log.v(TAG, "Category Clicked");
+				TextView tv = (TextView)arg0;
+				final String link = linkMap.get(tv.getText());
+				if(link != null && !link.equals("")) {
+					Log.v(TAG, "User Clicked: " + link);
+					
+					// Open new thread
+					new Thread("RefreshDisplayList") {
+						public void run() {
+							Intent intent = 
+									new Intent(MainActivity.this, CategoryActivity.class);
+							intent.putExtra("link", link);
+							startActivity(intent);
+						}
+					}.start();	
+				}
+				break;
+		}	
+
 	}
 
 	/*

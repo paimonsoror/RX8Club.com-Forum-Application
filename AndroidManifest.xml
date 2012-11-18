@@ -96,6 +96,11 @@
             android:label="@string/title_activity_private_message"
             android:launchMode="singleInstance" >
         </activity>
+        <activity
+            android:name=".activities.PrivateMessageViewActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_activity_private_message_view" >
+        </activity>
     </application>
 
 </manifest>

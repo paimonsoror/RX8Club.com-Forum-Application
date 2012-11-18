@@ -92,5 +92,6 @@
 
     <string name="title_activity_banner_fragment">BannerFragment</string>
     <string name="title_activity_private_message">PrivateMessageActivity</string>
+    <string name="title_activity_private_message_view">PrivateMessageViewActivity</string>
 
 </resources>
