@@ -308,8 +308,13 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     	} else {
     		// remove quotes for now
     		text = reformatQuotes(text);
-    		ForumImageHandler imageHandler = new ForumImageHandler(b, this);
-    		b.setText(html? Html.fromHtml(text + "<br><br><br>", imageHandler, null) : text);
+    		
+    		try {
+    			ForumImageHandler imageHandler = new ForumImageHandler(b, this);
+    			b.setText(html? Html.fromHtml(text + "<br><br><br>", imageHandler, null) : text);
+    		} catch (Exception e) {
+    			b.setText(html? Html.fromHtml(text + "<br><br><br>") : text);
+    		}
     	}
     	
     	b.setTextSize((float) PreferenceHelper.getFontSize(this));
