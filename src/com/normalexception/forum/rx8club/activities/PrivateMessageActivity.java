@@ -27,7 +27,9 @@ package com.normalexception.forum.rx8club.activities;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -60,13 +62,14 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 	private static String TAG = "PrivateMessageActivity";
 
 	private ArrayList<PrivateMessage> privateMessages;
+	private Map<String, String> linkMap;
 	
 	/**
 	 * Container that holds information about each private message
 	 */
 	private class PrivateMessage implements Serializable, Parcelable {
 		private static final long serialVersionUID = 1L;
-		private String user, time, subject, date;
+		private String user, time, subject, date, link;
 		public void setUser(String usr) { user = usr; }
 		public String getUser() { return user; }
 		public void setTime(String tim) { time = tim; }
@@ -75,6 +78,8 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 		public String getSubject() { return subject; }
 		public void setDate(String dat) { date = dat; }
 		public String getDate() { return date; }
+		public void setLink(String lnk) { link = lnk; }
+		public String getLink() { return link; }
 		
 		public String toString() {
 			// Log for debug purposes
@@ -155,6 +160,8 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     		public void run() {
     			tl = (TableLayout)findViewById(R.id.myTableLayoutPM);
     			tl.setColumnStretchable(0, true);
+    			
+				linkMap = new LinkedHashMap<String, String>();
 
     			addRow(Color.BLUE, "Subject", "User", "Date");
     			
@@ -171,6 +178,8 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     				
     				//addRow(pm, alternate = !alternate);
     				addRow(Color.GRAY, pm.getSubject(), pm.getUser(), pm.getDate());
+    				
+    				linkMap.put(pm.getSubject(), pm.getLink());
     			}
     		}
     	});
@@ -247,6 +256,10 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
  						for(Element alt1 : alt1s) {
  							Elements divs = alt1.select("div");
  							
+ 							// First grab our link
+ 							Elements linkElement = divs.get(0).select("a[rel=nofollow]");
+ 							String pmLink = linkElement.attr("href");
+ 							
  							// There should be two divs here with text in it
  							// the first is 'MM-DD-YYYY Subject'
  							String dateSubject = divs.get(0).text();
@@ -262,6 +275,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
  							pm.setSubject(dateSubjectSplit[1]);
  							pm.setTime(timeTimeUserSplit[0] + timeTimeUserSplit[1]);
  							pm.setUser(timeTimeUserSplit[2]);
+ 							pm.setLink(pmLink);
  							
  							Log.v(TAG, pm.toString());
  							
@@ -291,7 +305,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 		default:
 			Log.v(TAG, "Category Clicked");
 			TextView tv = (TextView)arg0;
-			final String link = tv.getText().toString();
+			final String link = linkMap.get(tv.getText().toString());
 			if(link != null && !link.equals("")) {
 				Log.v(TAG, "User Clicked: " + link);
 				

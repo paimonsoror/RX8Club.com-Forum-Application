@@ -24,6 +24,7 @@ package com.normalexception.forum.rx8club.activities;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -46,6 +47,30 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
         this.registerGuiButtons();
         
         Log.v(TAG, "PM View Activity Started");
+        
+        if(savedInstanceState == null)
+        	constructView();
+        else {
+        	updateView();
+        }
+    }
+    
+    private void constructView() {
+    	loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
+        
+        updaterThread = new Thread("CategoryThread") {
+			public void run() {
+				String link = 
+		        		(String) getIntent().getStringExtra("link");
+				
+		    	loadingDialog.dismiss();			
+			}
+        };
+        updaterThread.start();
+    }
+    
+    private void updateView() {
+    	
     }
 
     /*
