@@ -55,7 +55,6 @@ import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.WebUrls;
-import com.normalexception.forum.rx8club.activities.ThreadActivity;
 
 /**
  * Classes that pertain to a VB type forum
@@ -128,7 +127,7 @@ public class VBForumFactory {
 		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
     	nvps.add(new BasicNameValuePair("do", doType));
     	nvps.add(new BasicNameValuePair("recipients", recips));
-    	nvps.add(new BasicNameValuePair("title", subject));
+    	nvps.add(new BasicNameValuePair("title", "Re: " + subject));
     	nvps.add(new BasicNameValuePair("pmid", pmid));
     	
     	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));

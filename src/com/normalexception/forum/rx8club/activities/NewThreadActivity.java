@@ -25,7 +25,6 @@ package com.normalexception.forum.rx8club.activities;
  ************************************************************************/
 
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import android.os.Bundle;
 import android.util.Log;

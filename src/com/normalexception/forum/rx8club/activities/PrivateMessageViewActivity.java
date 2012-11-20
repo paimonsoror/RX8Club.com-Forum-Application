@@ -226,7 +226,7 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
    			String toPost = 
 					((TextView)findViewById(R.id.postBox)).getText().toString();
 			PmTask sTask = 
-					new PmTask(this, this.securityToken, "Temp Title", toPost, this.postUser, this.pmid);
+					new PmTask(this, this.securityToken, this.title, toPost, this.postUser, this.pmid);
 			sTask.execute();
    			break;
    		}
