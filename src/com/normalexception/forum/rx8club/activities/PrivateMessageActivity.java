@@ -303,7 +303,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 		
 		switch(arg0.getId()) {	
 		default:
-			Log.v(TAG, "Category Clicked");
+			Log.v(TAG, "PM Clicked");
 			TextView tv = (TextView)arg0;
 			final String link = linkMap.get(tv.getText().toString());
 			if(link != null && !link.equals("")) {

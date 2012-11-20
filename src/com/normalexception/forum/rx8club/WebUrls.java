@@ -38,6 +38,7 @@ public class WebUrls {
 	public static final String editPostAddress = rootUrl + "/editpost.php?do=editpost&p=";
 	public static final String updatePostAddress = 	rootUrl + "/editpost.php?do=updatepost&p=";
 	public static final String deletePostAddress =	rootUrl + "/editpost.php?do=deletepost&p=";
+	public static final String pmSubmitAddress = rootUrl + "/private.php?do=insertpm&pmid=";
 	
 	public static final String paypalUrl = "https://www.paypal.com/cgi-bin/webscr" +
 			"?cmd=_donations&business=XSEK8GC74RMMS&lc=US" +

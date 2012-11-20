@@ -55,6 +55,7 @@ import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.WebUrls;
+import com.normalexception.forum.rx8club.activities.ThreadActivity;
 
 /**
  * Classes that pertain to a VB type forum
@@ -104,6 +105,53 @@ public class VBForumFactory {
 	}
 	
 	/**
+	 * Convenience method to send a private message
+	 * @param doType		Submit type
+	 * @param securityToken User's security token	
+	 * @param post			The text from the PM
+	 * @param subject		The subject of the PM
+	 * @param recips		The recipient of the PM
+	 * @param pmid			The pm id number
+	 * @return				True if the submit worked
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public boolean submitPM(String doType, String securityToken, 
+			                String post, String subject, String recips, String pmid) 
+			throws ClientProtocolException, IOException {
+    	DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
+    	
+		HttpPost httpost = new HttpPost(WebUrls.pmSubmitAddress + pmid);
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair("message", post));
+		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
+		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
+    	nvps.add(new BasicNameValuePair("do", doType));
+    	nvps.add(new BasicNameValuePair("recipients", recips));
+    	nvps.add(new BasicNameValuePair("title", subject));
+    	nvps.add(new BasicNameValuePair("pmid", pmid));
+    	
+    	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+    	HttpContext context = new BasicHttpContext();
+    	HttpResponse response = httpclient.execute(httpost, context);
+    	HttpEntity entity = response.getEntity();
+
+    	if (entity != null) {
+    		entity.consumeContent();
+    		
+    		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
+    		        ExecutionContext.HTTP_REQUEST);
+
+    		responseUrl = request.getURI().toString();
+    		
+    		return true;
+    	}
+    	
+		return false;
+	}
+	
+	/**
 	 * Submit a post to the server
 	 * @param securityToken	The posting security token
 	 * @param thread		The thread number
@@ -113,7 +161,8 @@ public class VBForumFactory {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public boolean submitPost(String securityToken, String thread, String postNumber, String post) 
+	public boolean submitPost(String doType, String securityToken, String thread, 
+							String postNumber, String post) 
 			throws ClientProtocolException, IOException {
     	DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
     	
@@ -124,7 +173,7 @@ public class VBForumFactory {
 		nvps.add(new BasicNameValuePair("p", postNumber));
 		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
 		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
-    	nvps.add(new BasicNameValuePair("do","postreply"));
+    	nvps.add(new BasicNameValuePair("do", doType));
     	
     	long secondsSinceEpoch = getTime();
     	

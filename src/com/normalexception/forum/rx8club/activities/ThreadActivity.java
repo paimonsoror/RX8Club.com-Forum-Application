@@ -25,7 +25,6 @@ package com.normalexception.forum.rx8club.activities;
  ************************************************************************/
 
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -68,6 +67,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.enums.ThreadButtonSize;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.task.SubmitTask;
+import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.Utils;
@@ -444,31 +444,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     		return true;
 		return false;
 	}
-
-	/**
-     * Reformat the quotes to blockquotes since Android fromHtml does
-     * not parse tables
-     * @param source	The source text
-     * @return			The updated source text
-     */
-    private String reformatQuotes(String source) {
-    	String finalText = "";
-
-    	StringTokenizer st = new StringTokenizer(source, "\r\n\t");
-    	while (st.hasMoreTokens()) {
-        	String nextTok = st.nextToken();      	
-        	if(nextTok.contains("<table ")) {
-        		nextTok = "<blockquote>";
-        	}
-        	if(nextTok.contains("</table>")) {
-        		nextTok = nextTok.replace("</table>","</blockquote>");
-        	}
-
-        	finalText += nextTok + " ";
-        }
-        
-        return finalText;
-    }
     
     /**
      * Grab contents from the forum that the user clicked on
@@ -483,7 +458,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     	updatePagination(doc);
     	
     	// Get Post Number and security token
-    	securityToken = doc.select("input[name=securitytoken]").attr("value");
+    	securityToken = HtmlFormUtils.getInputElementValue(doc, "securitytoken");
     	Elements pNumber = 
     			doc.select("a[href^=http://www.rx8club.com/newreply.php?do=newreply&noquote=1&p=]");
     	String pNumberHref = pNumber.attr("href");

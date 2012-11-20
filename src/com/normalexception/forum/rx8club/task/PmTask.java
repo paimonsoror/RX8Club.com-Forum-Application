@@ -34,46 +34,37 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.normalexception.forum.rx8club.activities.ThreadActivity;
+import com.normalexception.forum.rx8club.activities.PrivateMessageActivity;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
-/**
- * Task generated to move the submit of a post to an async
- * task
- */
-public class SubmitTask extends AsyncTask<Void,Void,Void>{
+public class PmTask extends AsyncTask<Void,Void,Void>{
 	private ProgressDialog mProgressDialog;
 	private Activity sourceActivity;
 	
-	private String token, thread, post, text, pageTitle, pageNumber, doType;
+	private String token, text, doType, recipients, title, pmid;
 	private Class<?> postClazz;
 
 	private static String TAG = "SubmitTask";
-	
+
 	/**
-	 * Constructor to a SubmitTask
-	 * @param sourceActivity	The source activity
-	 * @param securityToken		The users security token
-	 * @param threadNumber		The source thread number
-	 * @param postNumber		The post number
-	 * @param toPost			The text to post
-	 * @param currentPageLink	The current page link
-	 * @param pageTitle			The current page title
-	 * @param pageNumber		The current page number
+	 * Async Task handler for submitting a Private messages
+	 * @param sourceActivity
+	 * @param securityToken
+	 * @param subject
+	 * @param toPost
+	 * @param recipients
+	 * @param pmid
 	 */
-	public SubmitTask(Activity sourceActivity, String securityToken, 
-					  String threadNumber, String postNumber, 
-					  String toPost, String pageTitle, String pageNumber) 
-	{
+	public PmTask(Activity sourceActivity, String securityToken, String subject,
+			String toPost, String recipients, String pmid) {
 		this.sourceActivity = sourceActivity;
 		this.token = securityToken;
-		this.thread = threadNumber;
-		this.post = postNumber;
 		this.text = toPost;
-		this.pageTitle = pageTitle;
-		this.pageNumber = pageNumber;
-		this.doType = "postreply";
-		this.postClazz = ThreadActivity.class;
+		this.doType = "insertpm";
+		this.recipients = recipients;
+		this.title = subject;
+		this.pmid = pmid;
+		this.postClazz = PrivateMessageActivity.class;
 	}
 
 	/*
@@ -85,8 +76,6 @@ public class SubmitTask extends AsyncTask<Void,Void,Void>{
         mProgressDialog.dismiss();
 		Intent _intent = new Intent(sourceActivity, postClazz);
 		_intent.putExtra("link", VBForumFactory.getInstance().getResponseUrl());
-		_intent.putExtra("page", String.valueOf(Integer.parseInt(pageNumber)));
-		_intent.putExtra("title", pageTitle);
 		sourceActivity.finish();
 		sourceActivity.startActivity(_intent);
     }
@@ -98,7 +87,7 @@ public class SubmitTask extends AsyncTask<Void,Void,Void>{
     @Override
     protected void onPreExecute() {
         mProgressDialog = 
-        		ProgressDialog.show(this.sourceActivity, "Submitting...", "Submitting Post...");
+        		ProgressDialog.show(this.sourceActivity, "Sending...", "Sending PM...");
     }
 
     /*
@@ -108,13 +97,13 @@ public class SubmitTask extends AsyncTask<Void,Void,Void>{
     @Override
     protected Void doInBackground(Void... params) {
     	try {
-			VBForumFactory.getInstance().submitPost(doType, token, thread, 
-					post, text);
+			VBForumFactory.getInstance().submitPM(doType, token, 
+	                   text, title, recipients, pmid);
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, e.getMessage());
 		} catch (IOException e) {
 			Log.e(TAG, e.getMessage());
 		}
         return null;
-    }
+    }	
 }

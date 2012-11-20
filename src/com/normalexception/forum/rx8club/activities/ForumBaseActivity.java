@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.StringTokenizer;
 
 import org.apache.http.client.ClientProtocolException;
 import org.jsoup.nodes.Document;
@@ -136,6 +137,31 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 		}
 		
 	}
+	
+	/**
+     * Reformat the quotes to blockquotes since Android fromHtml does
+     * not parse tables
+     * @param source	The source text
+     * @return			The updated source text
+     */
+    protected String reformatQuotes(String source) {
+    	String finalText = "";
+
+    	StringTokenizer st = new StringTokenizer(source, "\r\n\t");
+    	while (st.hasMoreTokens()) {
+        	String nextTok = st.nextToken();      	
+        	if(nextTok.contains("<table ")) {
+        		nextTok = "<blockquote>";
+        	}
+        	if(nextTok.contains("</table>")) {
+        		nextTok = nextTok.replace("</table>","</blockquote>");
+        	}
+
+        	finalText += nextTok + " ";
+        }
+        
+        return finalText;
+    }
 	
 	/*
 	 * (non-Javadoc)

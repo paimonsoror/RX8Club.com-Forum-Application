@@ -36,6 +36,7 @@ import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.task.NewThreadTask;
+import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
 /**
@@ -124,12 +125,11 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
      */
     private void constructView() {    	
     	Document doc = VBForumFactory.getInstance().get(link);
-    	Elements panel = doc.getElementsByClass("panelsurround");
-    	s 			= getInputElementValue(panel, "s");
-    	token 		= getInputElementValue(panel, "securitytoken");
-    	f 			= getInputElementValue(panel, "f");
-    	posthash 	= getInputElementValue(panel, "posthash");
-    	poststart	= getInputElementValue(panel, "poststarttime");
+    	s 			= HtmlFormUtils.getInputElementValue(doc, "s");
+    	token 		= HtmlFormUtils.getInputElementValue(doc, "securitytoken");
+    	f 			= HtmlFormUtils.getInputElementValue(doc, "f");
+    	posthash 	= HtmlFormUtils.getInputElementValue(doc, "posthash");
+    	poststart	= HtmlFormUtils.getInputElementValue(doc, "poststarttime");
     }
     
     /*
@@ -152,16 +152,6 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
 			break;
 		}
 	}
-    
-    /**
-     * Report the value inside of an input element
-     * @param pan	The panel where all of the input elements reside
-     * @param name	The name of the input to get the value for
-     * @return		The string value of the input
-     */
-    private String getInputElementValue(Elements pan, String name) {
-    	return pan.select("input[name=" + name + "]").attr("value");
-    }
 
     /*
      * (non-Javadoc)
