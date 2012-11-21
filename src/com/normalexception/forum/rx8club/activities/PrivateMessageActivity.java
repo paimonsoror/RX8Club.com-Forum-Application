@@ -47,18 +47,19 @@ import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
+import com.normalexception.forum.rx8club.task.DeletePmTask;
+import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
@@ -69,6 +70,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 	private ArrayList<PrivateMessage> privateMessages;
 	private Map<String, String> linkMap;
 	private Random idGenerator;
+	private String token;
 	
 	/**
 	 * Container that holds information about each private message
@@ -111,6 +113,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 		//super.onSaveInstanceState(outState);
 		try {
 			outState.putSerializable("contents", privateMessages);
+			outState.putSerializable("token", token);
 		} catch (Exception e) {
 			Log.e(TAG, "Error Serializing: " + e.getMessage());
 			BugSenseHandler.sendException(e);
@@ -128,6 +131,8 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 			if(savedInstanceState != null) {
 				privateMessages = 
 						(ArrayList<PrivateMessage>)savedInstanceState.getSerializable("contents");
+				token =
+						(String)savedInstanceState.getSerializable("token");
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "Error UnSerializing: " + e.getMessage());
@@ -280,8 +285,12 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
        	return true;
 	}
     
+    /**
+     * Handler for replying to a private message
+     * @param arg0	The view associated with the private message
+     */
     private void replyPm(View arg0) {
-    	Log.v(TAG, "Delete PM Clicked");
+    	Log.v(TAG, "Reply PM Clicked");
 		TextView tv = (TextView)arg0;
 		final String link = linkMap.get(tv.getText().toString());
 		if(link != null && !link.equals("")) {
@@ -300,8 +309,22 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 		}
     }
     
+    /**
+     * Handler for deleting a private message
+     * @param arg0	The view associated with the private message
+     */
     private void deletePm(View arg0) {
+    	Log.v(TAG, "Delete PM Clicked");
+    	TextView tv = (TextView)arg0;
+    	final String link = linkMap.get(tv.getText().toString());
     	
+    	if(link != null && !link.equals("")) {
+    		final String id = link.substring(link.lastIndexOf("id=") + 3);
+			Log.v(TAG, "User Clicked: " + id);
+
+			DeletePmTask dpm = new DeletePmTask(this, token, id);
+			dpm.execute();
+		}
     }
     
     /**
@@ -316,6 +339,8 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
  			public void run() { 		
  				Document doc = VBForumFactory.getInstance().get(WebUrls.pmUrl);
  				privateMessages = new ArrayList<PrivateMessage>();
+ 				
+ 				token = HtmlFormUtils.getInputElementValue(doc, "securitytoken");
  				
  				Elements collapse = doc.select("tbody[id^=collapseobj_pmf0]");
  				for(Element coll : collapse) {

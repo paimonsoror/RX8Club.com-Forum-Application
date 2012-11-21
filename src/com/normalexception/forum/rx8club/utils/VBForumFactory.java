@@ -103,6 +103,38 @@ public class VBForumFactory {
 		return getForumPage(lf, WebUrls.rootUrl);
 	}
 	
+	public boolean deletePM(String securityToken, String pmid) 
+			throws ClientProtocolException, IOException {
+		DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
+    	
+		HttpPost httpost = new HttpPost(WebUrls.pmUrl);
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
+		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
+    	nvps.add(new BasicNameValuePair("do", "managepm"));
+    	nvps.add(new BasicNameValuePair("dowhat", "delete"));
+    	nvps.add(new BasicNameValuePair("pm[" + pmid + "]","0_today"));
+    	
+    	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+
+    	HttpContext context = new BasicHttpContext();
+    	HttpResponse response = httpclient.execute(httpost, context);
+    	HttpEntity entity = response.getEntity();
+
+    	if (entity != null) {
+    		entity.consumeContent();
+    		
+    		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
+    		        ExecutionContext.HTTP_REQUEST);
+
+    		responseUrl = request.getURI().toString();
+    		
+    		return true;
+    	}
+    	
+		return false;
+	}
+	
 	/**
 	 * Convenience method to send a private message
 	 * @param doType		Submit type
