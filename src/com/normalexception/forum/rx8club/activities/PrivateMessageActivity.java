@@ -45,11 +45,15 @@ import android.os.Parcelable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
@@ -231,11 +235,44 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 	        if(index == 0) params.weight = 1f;
 	        tr_head.addView(b,params);
 	        index++;
+	        	    	
+	        registerForContextMenu(b);
     	}
         
         /* Add row to TableLayout. */
         tl.addView(tr_head);
     }
+       
+    /*
+     * (non-Javadoc)
+     * @see android.app.Activity#onCreateContextMenu(android.view.ContextMenu, android.view.View, android.view.ContextMenu.ContextMenuInfo)
+     */
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo) {
+    	super.onCreateContextMenu(menu, v, menuInfo);
+		menu.setHeaderTitle("Context Menu");
+		menu.add(0, v.getId(), 0, "Reply");
+		menu.add(0, v.getId(), 0, "Delete");
+	}
+
+    /*
+     * (non-Javadoc)
+     * @see android.app.Activity#onContextItemSelected(android.view.MenuItem)
+     */
+    @Override
+	public boolean onContextItemSelected(MenuItem item) {
+       	if(item.getTitle()=="Reply") {
+       		Toast.makeText(this, "Reply", Toast.LENGTH_SHORT).show();
+       	}
+    	else if(item.getTitle()=="Delete") {
+    		Toast.makeText(this, "Delete", Toast.LENGTH_SHORT).show();
+    	}
+    	else {
+    		return false;
+    	}
+       	
+       	return true;
+	}
     
     /**
      * Construct view by grabbing all private messages.  This is only done
