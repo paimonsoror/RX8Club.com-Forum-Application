@@ -101,6 +101,13 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 				
 				postUser = 
 						getIntent().getStringExtra("user");
+				
+				if(validateInputs(postUser))
+					runOnUiThread(new Runnable() {
+			    		public void run() {
+			    			((TextView)findViewById(R.id.pmRecipientsText)).setText(postUser);
+			    		}
+					});
 		    	
 				loadingDialog.dismiss();	
 			}

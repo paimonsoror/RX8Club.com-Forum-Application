@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.EditPostActivity;
+import com.normalexception.forum.rx8club.activities.NewPrivateMessageActivity;
 import com.normalexception.forum.rx8club.activities.ThreadActivity;
 
 /**
@@ -135,9 +136,10 @@ public class PostButtonView extends TextView implements OnClickListener {
 	@Override
 	public void onClick(View arg0) {
 		PostButtonView btn = (PostButtonView)arg0;
+		Intent _intent = null;
 		switch(btn.getButtonType()) {
 		case EDITBUTTON:
-			Intent _intent = new Intent(getContext(), EditPostActivity.class);
+			_intent = new Intent(getContext(), EditPostActivity.class);
 			_intent.putExtra("postid", postId);
 			_intent.putExtra("securitytoken", token);
 			_intent.putExtra("pagenumber", this.page);
@@ -184,7 +186,9 @@ public class PostButtonView extends TextView implements OnClickListener {
 			((TextView)threadActivity.findViewById(R.id.postBox)).requestFocus();
 			break;
 		case PMBUTTON:
-			Toast.makeText(getContext(), "Coming Soon...", Toast.LENGTH_SHORT).show();
+			_intent = new Intent(getContext(), NewPrivateMessageActivity.class);
+			_intent.putExtra("user", getUser());
+			getContext().startActivity(_intent);
 			break;
 		}
 	}
