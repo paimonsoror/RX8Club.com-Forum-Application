@@ -89,7 +89,7 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 		if (!(this instanceof LoginActivity)) {
 			findViewById(R.id.imageView1).setOnClickListener(new GuiHandlers(this));
 			findViewById(R.id.newTopicsButton).setOnClickListener(new GuiHandlers(this));
-	        findViewById(R.id.newPmButton).setOnClickListener(new GuiHandlers(this));
+	        findViewById(R.id.inboxButton).setOnClickListener(new GuiHandlers(this));
 	        findViewById(R.id.profileButton).setOnClickListener(new GuiHandlers(this));
 	        findViewById(R.id.searchButton).setOnClickListener(new GuiHandlers(this));
 		}

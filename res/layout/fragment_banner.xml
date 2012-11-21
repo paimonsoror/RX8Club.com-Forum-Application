@@ -52,7 +52,7 @@
                android:textSize="10dip" />
 
            <Button
-               android:id="@+id/newPmButton"
+               android:id="@+id/inboxButton"
                style="?android:attr/buttonStyleSmall"
                android:layout_width="0dip"
                android:layout_height="wrap_content"

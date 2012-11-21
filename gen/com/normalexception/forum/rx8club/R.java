@@ -39,19 +39,20 @@ public final class R {
         public static final int UserName=0x7f0a001b;
         public static final int autoLoginBox=0x7f0a0021;
         public static final int controlsRow=0x7f0a0010;
-        public static final int editTextDialogUserInput=0x7f0a0044;
+        public static final int editTextDialogUserInput=0x7f0a0045;
         public static final int editThreadSubmit=0x7f0a0017;
         public static final int firstButton=0x7f0a0041;
         public static final int fragment_content=0x7f0a000c;
         public static final int imageView1=0x7f0a0000;
         public static final int imageView6=0x7f0a001a;
+        public static final int inboxButton=0x7f0a0043;
         public static final int joinDateText=0x7f0a0036;
         public static final int lastButton=0x7f0a0042;
-        public static final int layout_root=0x7f0a0043;
+        public static final int layout_root=0x7f0a0044;
         public static final int loginButton=0x7f0a0029;
         public static final int menuControlsRow=0x7f0a000e;
         public static final int menuRow=0x7f0a000d;
-        public static final int menu_settings=0x7f0a0045;
+        public static final int menu_settings=0x7f0a0046;
         public static final int myTableLayout=0x7f0a002c;
         public static final int myTableLayoutCategory=0x7f0a000b;
         public static final int myTableLayoutNewPost=0x7f0a002d;
@@ -113,14 +114,15 @@ public final class R {
         public static final int activity_login=0x7f030003;
         public static final int activity_main=0x7f030004;
         public static final int activity_new_posts=0x7f030005;
-        public static final int activity_new_thread=0x7f030006;
-        public static final int activity_private_message=0x7f030007;
-        public static final int activity_private_message_view=0x7f030008;
-        public static final int activity_profile=0x7f030009;
-        public static final int activity_search=0x7f03000a;
-        public static final int activity_thread=0x7f03000b;
-        public static final int fragment_banner=0x7f03000c;
-        public static final int prompts=0x7f03000d;
+        public static final int activity_new_private_message=0x7f030006;
+        public static final int activity_new_thread=0x7f030007;
+        public static final int activity_private_message=0x7f030008;
+        public static final int activity_private_message_view=0x7f030009;
+        public static final int activity_profile=0x7f03000a;
+        public static final int activity_search=0x7f03000b;
+        public static final int activity_thread=0x7f03000c;
+        public static final int fragment_banner=0x7f03000d;
+        public static final int prompts=0x7f03000e;
     }
     public static final class menu {
         public static final int activity_about=0x7f090000;
@@ -130,13 +132,14 @@ public final class R {
         public static final int activity_login=0x7f090004;
         public static final int activity_main=0x7f090005;
         public static final int activity_new_posts=0x7f090006;
-        public static final int activity_new_thread=0x7f090007;
-        public static final int activity_preferences=0x7f090008;
-        public static final int activity_private_message=0x7f090009;
-        public static final int activity_private_message_view=0x7f09000a;
-        public static final int activity_profile=0x7f09000b;
-        public static final int activity_search=0x7f09000c;
-        public static final int activity_thread=0x7f09000d;
+        public static final int activity_new_private_message=0x7f090007;
+        public static final int activity_new_thread=0x7f090008;
+        public static final int activity_preferences=0x7f090009;
+        public static final int activity_private_message=0x7f09000a;
+        public static final int activity_private_message_view=0x7f09000b;
+        public static final int activity_profile=0x7f09000c;
+        public static final int activity_search=0x7f09000d;
+        public static final int activity_thread=0x7f09000e;
     }
     public static final class string {
         public static final int aboutOption=0x7f060011;
@@ -169,6 +172,7 @@ public final class R {
         public static final int title_activity_login=0x7f06000a;
         public static final int title_activity_main=0x7f060003;
         public static final int title_activity_new_posts=0x7f060006;
+        public static final int title_activity_new_private_message=0x7f060027;
         public static final int title_activity_new_thread=0x7f06000d;
         public static final int title_activity_preferences=0x7f06000c;
         public static final int title_activity_private_message=0x7f060025;

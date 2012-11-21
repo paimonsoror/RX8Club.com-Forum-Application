@@ -142,6 +142,8 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
         // Register the titlebar gui buttons
         this.registerGuiButtons();
         
+        findViewById(R.id.newPmButton).setOnClickListener(this);
+        
         Log.v(TAG, "PM Activity Started");
         
         if(savedInstanceState == null)
@@ -302,6 +304,12 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 		super.onClick(arg0);
 		
 		switch(arg0.getId()) {	
+		case R.id.newPmButton:
+			Log.v(TAG, "New PM Clicked");
+			Intent intent = new Intent(PrivateMessageActivity.this, 
+					NewPrivateMessageActivity.class);
+			startActivity(intent);
+			break;
 		default:
 			Log.v(TAG, "PM Clicked");
 			TextView tv = (TextView)arg0;

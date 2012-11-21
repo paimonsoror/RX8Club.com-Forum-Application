@@ -61,7 +61,7 @@ public class GuiHandlers implements OnClickListener {
 				_intent = new Intent(arg0.getContext(), NewPostsActivity.class);
 				break;
 			
-			case R.id.newPmButton:
+			case R.id.inboxButton:
 				_intent = new Intent(arg0.getContext(), PrivateMessageActivity.class);
 				break;
 			
