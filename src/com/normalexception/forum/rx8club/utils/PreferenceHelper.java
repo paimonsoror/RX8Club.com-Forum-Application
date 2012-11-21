@@ -105,4 +105,14 @@ public class PreferenceHelper {
     	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
     	return prefs.getBoolean("deletebutton", true);
     }
+    
+    /**
+     * Report if the show delete button option is enabled
+     * @param context	The application context
+     * @return			The option value
+     */
+    public static boolean isShowPMButton(Context context) {
+    	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+    	return prefs.getBoolean("pmbutton", true);
+    }
 }

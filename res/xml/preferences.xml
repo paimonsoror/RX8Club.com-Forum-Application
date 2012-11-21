@@ -32,7 +32,12 @@
 	   	    android:title="Show Edit Post Button"
 	   	    android:defaultValue="true"
 	   	    android:summary="Show the edit button on users posts"
-	   	    android:key="editbutton" />	   	    
+	   	    android:key="editbutton" />	
+	   	<CheckBoxPreference
+	   	    android:title="Show PM Button"
+	   	    android:defaultValue="true"
+	   	    android:summary="Show the pm button on posts"
+	   	    android:key="pmbutton" />   	    
 	</PreferenceCategory>
     <PreferenceCategory
                 android:title="Misc Options">

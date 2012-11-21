@@ -405,6 +405,10 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 					!PreferenceHelper.isShowDeleteButton(this))
 				continue;
 			
+			if(buttonType == PostButtonView.PMBUTTON &&
+					!PreferenceHelper.isShowPMButton(this))
+				continue;
+			
         	PostButtonView b = new PostButtonView(this, buttonType,
         			ThreadActivity.ThreadIdIndex+id+1, this.securityToken,
         			user, currentPageTitle, pageNumber);
