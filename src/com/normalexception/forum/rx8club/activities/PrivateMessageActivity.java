@@ -30,6 +30,7 @@ import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -67,6 +68,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 
 	private ArrayList<PrivateMessage> privateMessages;
 	private Map<String, String> linkMap;
+	private Random idGenerator;
 	
 	/**
 	 * Container that holds information about each private message
@@ -148,6 +150,8 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
         
         findViewById(R.id.newPmButton).setOnClickListener(this);
         
+        idGenerator = new Random(19580427);
+        
         Log.v(TAG, "PM Activity Started");
         
         if(savedInstanceState == null)
@@ -220,7 +224,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     	int index = 0;
     	for(String text : texts) {
 	    	TextView b = new TextView(this);
-	    	b.setId(32);
+	    	b.setId(idGenerator.nextInt());
 	    	b.setTextColor(Color.WHITE);
 	    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
 	    	b.setPadding(5,5,5,5);
@@ -250,7 +254,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo) {
     	super.onCreateContextMenu(menu, v, menuInfo);
-		menu.setHeaderTitle("Context Menu");
+		menu.setHeaderTitle("Menu");
 		menu.add(0, v.getId(), 0, "Reply");
 		menu.add(0, v.getId(), 0, "Delete");
 	}
@@ -262,10 +266,12 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     @Override
 	public boolean onContextItemSelected(MenuItem item) {
        	if(item.getTitle()=="Reply") {
-       		Toast.makeText(this, "Reply", Toast.LENGTH_SHORT).show();
+       		View vw = findViewById(item.getItemId());
+       		replyPm(vw);
        	}
     	else if(item.getTitle()=="Delete") {
-    		Toast.makeText(this, "Delete", Toast.LENGTH_SHORT).show();
+    		View vw = findViewById(item.getItemId());
+    		deletePm(vw);
     	}
     	else {
     		return false;
@@ -273,6 +279,30 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
        	
        	return true;
 	}
+    
+    private void replyPm(View arg0) {
+    	Log.v(TAG, "Delete PM Clicked");
+		TextView tv = (TextView)arg0;
+		final String link = linkMap.get(tv.getText().toString());
+		if(link != null && !link.equals("")) {
+			Log.v(TAG, "User Clicked: " + link);
+			
+			// Open new thread
+			new Thread("RefreshDisplayList") {
+				public void run() {
+					Intent intent = 
+							new Intent(PrivateMessageActivity.this, 
+									PrivateMessageViewActivity.class);
+					intent.putExtra("link", link);
+					startActivity(intent);
+				}
+			}.start();	
+		}
+    }
+    
+    private void deletePm(View arg0) {
+    	
+    }
     
     /**
      * Construct view by grabbing all private messages.  This is only done
@@ -348,23 +378,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 			startActivity(intent);
 			break;
 		default:
-			Log.v(TAG, "PM Clicked");
-			TextView tv = (TextView)arg0;
-			final String link = linkMap.get(tv.getText().toString());
-			if(link != null && !link.equals("")) {
-				Log.v(TAG, "User Clicked: " + link);
-				
-				// Open new thread
-				new Thread("RefreshDisplayList") {
-					public void run() {
-						Intent intent = 
-								new Intent(PrivateMessageActivity.this, 
-										PrivateMessageViewActivity.class);
-						intent.putExtra("link", link);
-						startActivity(intent);
-					}
-				}.start();	
-			}
+			replyPm(arg0);
 			break;
 		}
 	}
