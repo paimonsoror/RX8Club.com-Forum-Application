@@ -32,6 +32,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.EditPostActivity;
@@ -45,6 +46,7 @@ public class PostButtonView extends TextView implements OnClickListener {
 	public static final int EDITBUTTON = 0;
 	public static final int DELETEBUTTON = 1;
 	public static final int QUOTEBUTTON = 2;
+	public static final int PMBUTTON = 3;
 	
 	private String postId;
 	private int buttonType;
@@ -180,6 +182,9 @@ public class PostButtonView extends TextView implements OnClickListener {
 					finalText
 			);
 			((TextView)threadActivity.findViewById(R.id.postBox)).requestFocus();
+			break;
+		case PMBUTTON:
+			Toast.makeText(getContext(), "Coming Soon...", Toast.LENGTH_SHORT).show();
 			break;
 		}
 	}

@@ -127,7 +127,7 @@ public class VBForumFactory {
 		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
     	nvps.add(new BasicNameValuePair("do", doType));
     	nvps.add(new BasicNameValuePair("recipients", recips));
-    	nvps.add(new BasicNameValuePair("title", "Re: " + subject));
+    	nvps.add(new BasicNameValuePair("title", subject));
     	nvps.add(new BasicNameValuePair("pmid", pmid));
     	
     	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));

@@ -368,15 +368,18 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		
 		// First time around, we add the pencil icon, then
 		// we set the image object to the X
-		for(int i = 0; i < 3; i++) {
+		for(int i = 0; i < 4; i++) {
 			if(i == 1) {
 				image = R.drawable.black_pencil_icon;
 				buttonType = PostButtonView.EDITBUTTON;
 			} else if (i == 2) {
 				image = R.drawable.black_x;
 				buttonType = PostButtonView.DELETEBUTTON;
+			} else if (i == 3) {
+				image = R.drawable.black_mail;
+				buttonType = PostButtonView.PMBUTTON;
 			}
-			
+	
 			// If the post is not by the user, we are going
 			// to skip this iteration if it is an edit or
 			// delete button
@@ -386,6 +389,10 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			
 			if(buttonType == PostButtonView.DELETEBUTTON && 
 					!isPostByUser(user))
+				continue;
+			
+			if(buttonType == PostButtonView.PMBUTTON &&
+					isPostByUser(user))
 				continue;
 				
 			// Check our preferences if the user disabled any of the 
