@@ -1,4 +1,4 @@
-package com.normalexception.forum.rx8club.activities;
+package com.normalexception.forum.rx8club.activities.thread;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.task.NewThreadTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;

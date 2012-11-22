@@ -32,10 +32,10 @@ import android.view.View.OnClickListener;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.MainActivity;
-import com.normalexception.forum.rx8club.activities.NewPostsActivity;
-import com.normalexception.forum.rx8club.activities.PrivateMessageActivity;
 import com.normalexception.forum.rx8club.activities.ProfileActivity;
 import com.normalexception.forum.rx8club.activities.SearchActivity;
+import com.normalexception.forum.rx8club.activities.list.NewPostsActivity;
+import com.normalexception.forum.rx8club.activities.pm.PrivateMessageActivity;
 
 public class GuiHandlers implements OnClickListener {
 	

@@ -34,8 +34,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.normalexception.forum.rx8club.activities.CategoryActivity;
-import com.normalexception.forum.rx8club.activities.ThreadActivity;
+import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
+import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
 /**

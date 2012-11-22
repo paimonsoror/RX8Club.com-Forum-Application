@@ -40,17 +40,17 @@
             android:launchMode="singleInstance" >
         </activity>
         <activity
-            android:name=".activities.CategoryActivity"
+            android:name=".activities.list.CategoryActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_category" >
         </activity>
         <activity
-            android:name=".activities.ThreadActivity"
+            android:name=".activities.thread.ThreadActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_thread" >
         </activity>
         <activity
-            android:name=".activities.NewPostsActivity"
+            android:name=".activities.list.NewPostsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_new_posts" >
         </activity>
@@ -77,12 +77,12 @@
             android:theme="@android:style/Theme.Black" >
         </activity>
         <activity
-            android:name=".activities.NewThreadActivity"
+            android:name=".activities.thread.NewThreadActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_new_thread" >
         </activity>
         <activity
-            android:name=".activities.EditPostActivity"
+            android:name=".activities.thread.EditPostActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_edit_post" >
         </activity>
@@ -91,17 +91,17 @@
             android:label="@string/title_activity_banner_fragment" >
         </activity>
         <activity
-            android:name=".activities.PrivateMessageActivity"
+            android:name=".activities.pm.PrivateMessageActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_private_message" >
         </activity>
         <activity
-            android:name=".activities.PrivateMessageViewActivity"
+            android:name=".activities.pm.PrivateMessageViewActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_private_message_view" >
         </activity>
         <activity
-            android:name=".activities.NewPrivateMessageActivity"
+            android:name=".activities.pm.NewPrivateMessageActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_new_private_message" >
         </activity>

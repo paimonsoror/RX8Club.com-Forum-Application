@@ -34,9 +34,9 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.activities.EditPostActivity;
-import com.normalexception.forum.rx8club.activities.NewPrivateMessageActivity;
-import com.normalexception.forum.rx8club.activities.ThreadActivity;
+import com.normalexception.forum.rx8club.activities.pm.NewPrivateMessageActivity;
+import com.normalexception.forum.rx8club.activities.thread.EditPostActivity;
+import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 
 /**
  * An extension of a TextView that is used in the ThreadActivity to 

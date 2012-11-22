@@ -34,7 +34,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.normalexception.forum.rx8club.activities.PrivateMessageActivity;
+import com.normalexception.forum.rx8club.activities.pm.PrivateMessageActivity;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
 public class PmTask extends AsyncTask<Void,Void,Void>{

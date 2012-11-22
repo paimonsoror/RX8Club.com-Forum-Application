@@ -35,6 +35,7 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
+import com.normalexception.forum.rx8club.activities.list.NewPostsActivity;
 
 /**
  * Activity used to create a search in the forum.
