@@ -1,4 +1,4 @@
-package com.normalexception.forum.rx8club.utils;
+package com.normalexception.forum.rx8club.preferences;
 
 /************************************************************************
  * NormalException.net Software, and other contributors

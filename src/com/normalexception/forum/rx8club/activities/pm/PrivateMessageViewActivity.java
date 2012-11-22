@@ -44,9 +44,9 @@ import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
+import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.task.PmTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
-import com.normalexception.forum.rx8club.utils.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
 public class PrivateMessageViewActivity extends ForumBaseActivity {

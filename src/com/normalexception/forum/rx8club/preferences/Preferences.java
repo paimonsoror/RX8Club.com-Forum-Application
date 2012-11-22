@@ -32,7 +32,6 @@ import android.preference.PreferenceActivity;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
-import com.normalexception.forum.rx8club.utils.PreferenceHelper;
 
 /**
  * Class used to set and save preferences
