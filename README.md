@@ -34,7 +34,7 @@ category and post lists
 *com.normalexception.forum.rx8club.activities.pm* - Activities that represent 
 private messages and related functions
 
-*com.normalexception.forum.rx8club.activities.thread - Activities that represent
+*com.normalexception.forum.rx8club.activities.thread* - Activities that represent
 threads and their related functions
 
 *com.normalexception.forum.rx8club.enums* - A set of enumerations used
