@@ -128,7 +128,7 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	        		linkMap = new LinkedHashMap<String,String>();
 	        		
 	        		// User information
-	        		if(!UserProfile.isInitialized()) {
+	        		if(!UserProfile.isInitialized() || UserProfile.getUserProfileLink().equals("")) {
 	        			doc = 
 	        				VBForumFactory.getInstance().get(VBForumFactory.getRootAddress());
 	        			Elements userElement = 

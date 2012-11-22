@@ -132,24 +132,32 @@ public class VBForumFactory {
 				httpost = new HttpGet(getRootAddress() + addr);			
 			}
 			
-	    	HttpResponse response = client.execute(httpost);
-	    	HttpEntity entity = response.getEntity();
-	    	
-	    	// Get login results (in this case the forum frontpage0
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					entity.getContent()));
+			try {
+		    	HttpResponse response = client.execute(httpost);
+		    	HttpEntity entity = response.getEntity();
+		    	
+		    	// Get login results (in this case the forum frontpage0
+				BufferedReader in = new BufferedReader(new InputStreamReader(
+						entity.getContent()));
+				
+				StringBuilder sb = new StringBuilder();
+				
+				String inputLine; 
+				while ((inputLine = in.readLine()) != null) 
+					sb.append(inputLine);
+				
+				output = sb.toString();
+				
+				in.close();	
+				
+				entity.consumeContent();
+			} catch (NullPointerException e) {
+				Toast.makeText(MainApplication.getAppContext(), 
+						"Error Opening Page. This Has Been Logged", 
+						Toast.LENGTH_SHORT).show();
+				BugSenseHandler.sendException(e);
+			}
 			
-			StringBuilder sb = new StringBuilder();
-			
-			String inputLine; 
-			while ((inputLine = in.readLine()) != null) 
-				sb.append(inputLine);
-			
-			output = sb.toString();
-			
-			in.close();	
-			
-			entity.consumeContent();
 		} else {
 			Toast.makeText(MainApplication.getAppContext(),
 					"Error With Credentials",
