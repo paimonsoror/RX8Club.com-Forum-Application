@@ -14,7 +14,7 @@ virtual machines
 
 Contents:
 -------------------------
-You will find nine (9) total packages in this project
+You will find nine (12) total packages in this project
 
 *com.normalexception.forum.rx8club* - The main package which contains 
 a single class that starts the application process.  This class also
@@ -25,6 +25,18 @@ activities that carry on tasks within the application.  These activities
 are implementations of the project's ForumBaseActivity interface which
 extends the Android SDK Activity class
 
+*com.normalexception.forum.rx8club.activities.fragments* - Handler for common
+view fragments
+
+*com.normalexception.forum.rx8club.activities.list* - Activities that represent
+category and post lists
+
+*com.normalexception.forum.rx8club.activities.pm* - Activities that represent 
+private messages and related functions
+
+*com.normalexception.forum.rx8club.activities.thread - Activities that represent
+threads and their related functions
+
 *com.normalexception.forum.rx8club.enums* - A set of enumerations used
 by the source
 
@@ -33,9 +45,6 @@ used within the application
 
 *com.normalexception.forum.rx8club.preferences* - Contains the xml file 
 that defines the application preferences
-
-*com.normalexception.forum.rx8club.prompts* - A useful class that can be
-used to prompt the user for an input
 
 *com.normalexception.forum.rx8club.task* - Contains the submit task that handles
 when a user presses submit in a thread
@@ -49,5 +58,4 @@ Needs:
 -------------------------
 * Add pagination to the top of threads, allow preference to enable/disable
 * Fix search results, clicking on a link takes to first page instead of most recent
-* Is Live! possible?
-* Implement PM's
+* Pinch to Zoom
