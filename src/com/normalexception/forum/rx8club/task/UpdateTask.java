@@ -36,7 +36,7 @@ import android.util.Log;
 
 import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
-import com.normalexception.forum.rx8club.utils.VBForumFactory;
+import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 
 /**
  * Task used to move all post editing tasks to an async task
@@ -76,9 +76,9 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 	protected Void doInBackground(Void... params) {
 		try {
 			if(delete) {
-				VBForumFactory.getInstance().submitDelete(securitytoken, p);
+				HtmlFormUtils.submitDelete(securitytoken, p);
 			} else {
-				VBForumFactory.getInstance().submitEdit(securitytoken, p, 
+				HtmlFormUtils.submitEdit(securitytoken, p, 
 					posthash, poststarttime, msg);
 			}
 		} catch (ClientProtocolException e) {
@@ -96,7 +96,7 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 	@Override
     protected void onPostExecute(Void result) {
 		mProgressDialog.dismiss();
-		String url = VBForumFactory.getInstance().getResponseUrl();
+		String url = HtmlFormUtils.getResponseUrl();
 		Intent _intent = null;
 		
 		if(pageNumber.equals("1") && deleteThread) {

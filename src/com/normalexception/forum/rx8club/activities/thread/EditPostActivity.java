@@ -36,7 +36,7 @@ import android.widget.TextView;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.task.UpdateTask;
-import com.normalexception.forum.rx8club.utils.VBForumFactory;
+import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 
 /**
  * Activity used whenever the user wants to edit the post
@@ -97,7 +97,7 @@ public class EditPostActivity extends ForumBaseActivity {
     	
     	try {
     		Document editPage = 
-    			VBForumFactory.getInstance().getEditPostPage(securityToken, postId);
+    			HtmlFormUtils.getEditPostPage(securityToken, postId);
     		String msg = editPage.select("textarea[name=message]").text();
     		((TextView)findViewById(R.id.postMessage)).setText(msg);
     		

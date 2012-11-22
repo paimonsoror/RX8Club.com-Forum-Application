@@ -35,7 +35,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
-import com.normalexception.forum.rx8club.utils.VBForumFactory;
+import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 
 /**
  * Task generated to move the submit of a post to an async
@@ -84,7 +84,7 @@ public class SubmitTask extends AsyncTask<Void,Void,Void>{
     protected void onPostExecute(Void result) {
         mProgressDialog.dismiss();
 		Intent _intent = new Intent(sourceActivity, postClazz);
-		_intent.putExtra("link", VBForumFactory.getInstance().getResponseUrl());
+		_intent.putExtra("link", HtmlFormUtils.getResponseUrl());
 		_intent.putExtra("page", String.valueOf(Integer.parseInt(pageNumber)));
 		_intent.putExtra("title", pageTitle);
 		sourceActivity.finish();
@@ -108,7 +108,7 @@ public class SubmitTask extends AsyncTask<Void,Void,Void>{
     @Override
     protected Void doInBackground(Void... params) {
     	try {
-			VBForumFactory.getInstance().submitPost(doType, token, thread, 
+    		HtmlFormUtils.submitPost(doType, token, thread, 
 					post, text);
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, e.getMessage());

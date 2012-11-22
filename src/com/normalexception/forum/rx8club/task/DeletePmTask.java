@@ -35,6 +35,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.normalexception.forum.rx8club.activities.pm.PrivateMessageActivity;
+import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
 public class DeletePmTask extends AsyncTask<Void,Void,Void>{
@@ -67,7 +68,7 @@ public class DeletePmTask extends AsyncTask<Void,Void,Void>{
     protected void onPostExecute(Void result) {
         mProgressDialog.dismiss();
 		Intent _intent = new Intent(sourceActivity, postClazz);
-		_intent.putExtra("link", VBForumFactory.getInstance().getResponseUrl());
+		_intent.putExtra("link", HtmlFormUtils.getResponseUrl());
 		sourceActivity.finish();
 		sourceActivity.startActivity(_intent);
     }
@@ -89,7 +90,7 @@ public class DeletePmTask extends AsyncTask<Void,Void,Void>{
     @Override
     protected Void doInBackground(Void... params) {
     	try {
-			VBForumFactory.getInstance().deletePM(this.token, this.pmid);
+    		HtmlFormUtils.deletePM(this.token, this.pmid);
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, e.getMessage());
 		} catch (IOException e) {

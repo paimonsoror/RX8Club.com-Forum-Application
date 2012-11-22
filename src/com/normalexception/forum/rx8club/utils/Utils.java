@@ -1,5 +1,8 @@
 package com.normalexception.forum.rx8club.utils;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
 /************************************************************************
  * NormalException.net Software, and other contributors
  * http://www.normalexception.net
@@ -125,4 +128,15 @@ public class Utils {
 			return link;
 	}
 
+	
+	/**
+	 * Report the time since the epoch
+	 * @return	Time since epoch
+	 */
+	public static long getTime() {
+		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+    	calendar.clear();
+    	calendar.set(2011, Calendar.OCTOBER, 1);
+    	return calendar.getTimeInMillis() / 1000L;
+	}
 }

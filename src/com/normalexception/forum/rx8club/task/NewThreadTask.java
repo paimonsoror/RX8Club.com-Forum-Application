@@ -35,7 +35,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
-import com.normalexception.forum.rx8club.utils.VBForumFactory;
+import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 
 /**
  * Task generated to move the submit of a new thread to an async
@@ -69,7 +69,7 @@ public class NewThreadTask extends AsyncTask<Void,Void,Void> {
     protected void onPostExecute(Void result) {
     	mProgressDialog.dismiss();
 		Intent _intent = new Intent(sourceActivity, ThreadActivity.class);
-		_intent.putExtra("link", VBForumFactory.getInstance().getResponseUrl());
+		_intent.putExtra("link", HtmlFormUtils.getResponseUrl());
 		_intent.putExtra("title", subject);
 		_intent.putExtra("page", "1");
 		sourceActivity.finish();
@@ -93,7 +93,7 @@ public class NewThreadTask extends AsyncTask<Void,Void,Void> {
 	@Override
 	protected Void doInBackground(Void... arg0) {
 		try {
-			VBForumFactory.getInstance().newThread(forumId, s, token, posthash, subject, post);
+			HtmlFormUtils.newThread(forumId, s, token, posthash, subject, post);
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, e.getMessage());
 		} catch (IOException e) {
