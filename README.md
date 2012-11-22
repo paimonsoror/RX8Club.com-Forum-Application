@@ -14,7 +14,7 @@ virtual machines
 
 Contents:
 -------------------------
-You will find nine (12) total packages in this project
+You will find twelve (12) total packages in this project
 
 *com.normalexception.forum.rx8club* - The main package which contains 
 a single class that starts the application process.  This class also
