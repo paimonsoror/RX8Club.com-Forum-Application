@@ -260,7 +260,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo) {
     	super.onCreateContextMenu(menu, v, menuInfo);
-		menu.setHeaderTitle("Menu");
+		menu.setHeaderTitle(((TextView)v).getText());
 		menu.add(0, v.getId(), 0, "Reply");
 		menu.add(0, v.getId(), 0, "Delete");
 	}

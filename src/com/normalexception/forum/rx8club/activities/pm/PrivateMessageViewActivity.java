@@ -45,6 +45,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
+import com.normalexception.forum.rx8club.task.DeletePmTask;
 import com.normalexception.forum.rx8club.task.PmTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
@@ -110,6 +111,7 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
         this.registerGuiButtons();
         
         findViewById(R.id.submitButton).setOnClickListener(this);
+        findViewById(R.id.deleteButton).setOnClickListener(this);
         
         Log.v(TAG, "PM View Activity Started");
         
@@ -230,6 +232,10 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 					new PmTask(this, this.securityToken, "Re: " + this.title, 
 							toPost, this.postUser, this.pmid);
 			sTask.execute();
+   			break;
+   		case R.id.deleteButton:
+   			DeletePmTask dpm = new DeletePmTask(this, securityToken, pmid);
+			dpm.execute();
    			break;
    		}
    	}
