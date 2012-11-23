@@ -27,7 +27,11 @@ package com.normalexception.forum.rx8club.activities.pm;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -41,13 +45,17 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
+import com.normalexception.forum.rx8club.activities.LoginActivity;
+import com.normalexception.forum.rx8club.activities.MainActivity;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.task.DeletePmTask;
 import com.normalexception.forum.rx8club.task.PmTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
+import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
 public class PrivateMessageViewActivity extends ForumBaseActivity {
@@ -234,9 +242,27 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 			sTask.execute();
    			break;
    		case R.id.deleteButton:
-   			DeletePmTask dpm = new DeletePmTask(this, securityToken, pmid);
-			dpm.execute();
-   			break;
+   			final Activity ctx = this;
+   			// Lets make sure the user didn't accidentally click this
+			DialogInterface.OnClickListener dialogClickListener = 
+					new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					switch (which){
+				    	case DialogInterface.BUTTON_POSITIVE:
+				    		DeletePmTask dpm = new DeletePmTask(ctx, securityToken, pmid);
+							dpm.execute();
+			   				break;
+			        }
+			    }
+			};
+    		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder
+				.setMessage("Are you sure you want to delete PM?")
+				.setPositiveButton("Yes", dialogClickListener)
+			    .setNegativeButton("No", dialogClickListener)
+			    .show();
+			break;
    		}
    	}
 

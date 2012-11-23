@@ -36,7 +36,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -270,14 +273,31 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
      * @see android.app.Activity#onContextItemSelected(android.view.MenuItem)
      */
     @Override
-	public boolean onContextItemSelected(MenuItem item) {
+	public boolean onContextItemSelected(final MenuItem item) {
        	if(item.getTitle()=="Reply") {
        		View vw = findViewById(item.getItemId());
        		replyPm(vw);
        	}
     	else if(item.getTitle()=="Delete") {
-    		View vw = findViewById(item.getItemId());
-    		deletePm(vw);
+   			// Lets make sure the user didn't accidentally click this
+			DialogInterface.OnClickListener dialogClickListener = 
+					new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					switch (which){
+				    	case DialogInterface.BUTTON_POSITIVE:
+				    		View vw = findViewById(item.getItemId());
+				    		deletePm(vw);
+			   				break;
+			        }
+			    }
+			};
+    		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder
+				.setMessage("Are you sure you want to delete PM?")
+				.setPositiveButton("Yes", dialogClickListener)
+			    .setNegativeButton("No", dialogClickListener)
+			    .show();
     	}
     	else {
     		return false;
