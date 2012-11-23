@@ -31,7 +31,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -45,17 +44,13 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
-import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
-import com.normalexception.forum.rx8club.activities.LoginActivity;
-import com.normalexception.forum.rx8club.activities.MainActivity;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.task.DeletePmTask;
 import com.normalexception.forum.rx8club.task.PmTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
-import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
 public class PrivateMessageViewActivity extends ForumBaseActivity {
