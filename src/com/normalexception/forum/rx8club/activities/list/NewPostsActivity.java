@@ -244,16 +244,16 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
     		Elements threadhrefs = doc.select("#td_threadtitle_" + idnumber + " a");
     		Elements threadicon = doc.select("img[id=thread_statusicon_" + idnumber + "]");
     		String totalPostsInThreadTitle = threadicon.attr("alt");
-    		String totalPosts;
+    		String totalPosts = "";
     		
-    		if(totalPostsInThreadTitle != null && totalPostsInThreadTitle.length() > 0)
+    		
+    		if(PreferenceHelper.isShowPostCountButton(this) && 
+    				totalPostsInThreadTitle != null && totalPostsInThreadTitle.length() > 0)
     			totalPosts = lpad +
     				totalPostsInThreadTitle.split(" ")[2] + 
     				" " + 
     				totalPostsInThreadTitle.split(" ")[3] +
     				rpad;
-    		else
-    			totalPosts = "";
     		
     		String idlink = "http://www.rx8club.com/misc.php?do=whoposted&t=" + idnumber;
     		
