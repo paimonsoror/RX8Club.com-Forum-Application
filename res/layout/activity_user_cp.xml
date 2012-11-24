@@ -1,0 +1,24 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="vertical"
+    tools:context=".ThreadActivity" >
+
+    <TableLayout
+        android:id="@+id/myTableLayoutThread"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:spacing="40dip" >
+
+        <fragment
+	        android:id="@+id/fragment_content"
+	        android:name="com.normalexception.forum.rx8club.activities.fragments.BannerFragment"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent" >
+	
+	        <!-- Preview: layout=@layout/fragment_banner -->
+	    </fragment>
+  </TableLayout>
+	 
+</ScrollView>

@@ -105,6 +105,11 @@
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_new_private_message" >
         </activity>
+        <activity
+            android:name=".activities.UserCpActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_activity_user_cp" >
+        </activity>
     </application>
 
 </manifest>

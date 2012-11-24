@@ -129,8 +129,9 @@ public final class R {
         public static final int activity_profile=0x7f03000a;
         public static final int activity_search=0x7f03000b;
         public static final int activity_thread=0x7f03000c;
-        public static final int fragment_banner=0x7f03000d;
-        public static final int prompts=0x7f03000e;
+        public static final int activity_user_cp=0x7f03000d;
+        public static final int fragment_banner=0x7f03000e;
+        public static final int prompts=0x7f03000f;
     }
     public static final class menu {
         public static final int activity_about=0x7f090000;
@@ -148,30 +149,31 @@ public final class R {
         public static final int activity_profile=0x7f09000c;
         public static final int activity_search=0x7f09000d;
         public static final int activity_thread=0x7f09000e;
+        public static final int activity_user_cp=0x7f09000f;
     }
     public static final class string {
-        public static final int aboutOption=0x7f060015;
-        public static final int aboutstring=0x7f06001f;
-        public static final int app_description=0x7f060013;
+        public static final int aboutOption=0x7f060016;
+        public static final int aboutstring=0x7f060020;
+        public static final int app_description=0x7f060014;
         public static final int app_name=0x7f060000;
-        public static final int commentText=0x7f060019;
-        public static final int exitOption=0x7f060014;
+        public static final int commentText=0x7f06001a;
+        public static final int exitOption=0x7f060015;
         public static final int hello_world=0x7f060001;
-        public static final int loginButton=0x7f060018;
-        public static final int logoff=0x7f06001c;
+        public static final int loginButton=0x7f060019;
+        public static final int logoff=0x7f06001d;
         public static final int menu_settings=0x7f060002;
-        public static final int newPms=0x7f06001b;
-        public static final int newTopics=0x7f06001a;
-        public static final int pageXofY=0x7f060026;
-        public static final int passwordInput=0x7f060016;
-        public static final int preferencesLabel=0x7f060027;
-        public static final int profileButton=0x7f06001d;
-        public static final int recentchangesstring=0x7f060020;
-        public static final int searchButton=0x7f06001e;
-        public static final int searchString=0x7f060021;
-        public static final int searchType=0x7f060022;
-        public static final int threadContentSearch=0x7f060024;
-        public static final int threadTitleSearch=0x7f060025;
+        public static final int newPms=0x7f06001c;
+        public static final int newTopics=0x7f06001b;
+        public static final int pageXofY=0x7f060027;
+        public static final int passwordInput=0x7f060017;
+        public static final int preferencesLabel=0x7f060028;
+        public static final int profileButton=0x7f06001e;
+        public static final int recentchangesstring=0x7f060021;
+        public static final int searchButton=0x7f06001f;
+        public static final int searchString=0x7f060022;
+        public static final int searchType=0x7f060023;
+        public static final int threadContentSearch=0x7f060025;
+        public static final int threadTitleSearch=0x7f060026;
         public static final int title_activity_about=0x7f06000b;
         public static final int title_activity_banner_fragment=0x7f06000f;
         public static final int title_activity_bug_report=0x7f060008;
@@ -188,8 +190,9 @@ public final class R {
         public static final int title_activity_profile=0x7f060007;
         public static final int title_activity_search=0x7f060009;
         public static final int title_activity_thread=0x7f060005;
-        public static final int userNameSearch=0x7f060023;
-        public static final int usernameInput=0x7f060017;
+        public static final int title_activity_user_cp=0x7f060013;
+        public static final int userNameSearch=0x7f060024;
+        public static final int usernameInput=0x7f060018;
     }
     public static final class style {
         public static final int AppTheme=0x7f080000;
