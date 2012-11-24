@@ -102,9 +102,6 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
 	        super.setTitle("RX8Club.com Forums");
 	        setContentView(R.layout.activity_new_thread);
 	        
-	        // Register the titlebar gui buttons
-	        this.registerGuiButtons();
-	        
 	        findViewById(R.id.newThreadButton).setOnClickListener(this);
 	        
 	        forumId = getIntent().getStringExtra("forumid");

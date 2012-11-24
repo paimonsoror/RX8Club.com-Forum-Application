@@ -50,9 +50,6 @@ public class AboutActivity extends ForumBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         
-        // Register the titlebar gui buttons
-        this.registerGuiButtons();
-        
         TextView version = ((TextView)findViewById(R.id.versionNumber));
         try {
 			version.setText("Version Number: " + 

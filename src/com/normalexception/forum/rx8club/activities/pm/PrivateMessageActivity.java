@@ -153,9 +153,6 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
         super.setTitle("RX8Club.com Forums");
         setContentView(R.layout.activity_private_message);
         
-        // Register the titlebar gui buttons
-        this.registerGuiButtons();
-        
         findViewById(R.id.newPmButton).setOnClickListener(this);
         
         idGenerator = new Random(19580427);

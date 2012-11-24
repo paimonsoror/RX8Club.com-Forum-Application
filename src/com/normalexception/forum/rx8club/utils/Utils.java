@@ -1,8 +1,5 @@
 package com.normalexception.forum.rx8club.utils;
 
-import java.util.Calendar;
-import java.util.TimeZone;
-
 /************************************************************************
  * NormalException.net Software, and other contributors
  * http://www.normalexception.net
@@ -26,6 +23,9 @@ import java.util.TimeZone;
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
+
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class Utils {
 	

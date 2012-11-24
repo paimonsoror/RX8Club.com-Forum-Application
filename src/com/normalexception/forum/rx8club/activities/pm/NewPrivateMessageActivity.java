@@ -99,9 +99,6 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
         
         setContentView(R.layout.activity_new_private_message);
         
-        // Register the titlebar gui buttons
-        this.registerGuiButtons();
-        
         findViewById(R.id.newPmButton).setOnClickListener(this);
     
 	    if(savedInstanceState == null)

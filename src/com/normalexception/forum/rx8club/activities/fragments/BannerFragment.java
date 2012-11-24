@@ -24,18 +24,25 @@ package com.normalexception.forum.rx8club.activities.fragments;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.activities.MainActivity;
+import com.normalexception.forum.rx8club.activities.ProfileActivity;
+import com.normalexception.forum.rx8club.activities.SearchActivity;
+import com.normalexception.forum.rx8club.activities.list.NewPostsActivity;
+import com.normalexception.forum.rx8club.activities.pm.PrivateMessageActivity;
 
 /**
  * Implementation of the banner found on all views
  */
-public class BannerFragment extends Fragment {
+public class BannerFragment extends Fragment implements OnClickListener {
 
 	/*
 	 * (non-Javadoc)
@@ -44,9 +51,59 @@ public class BannerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	// Inflate our fragment
-        View view = inflater.inflate(R.layout.fragment_banner, container, false);
-        
+        View view = inflater.inflate(R.layout.fragment_banner, container, false);        
         return view;
     }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onActivityCreated(android.os.Bundle)
+     */
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+    	super.onActivityCreated(savedInstanceState);
+        getView().findViewById(R.id.imageView1).setOnClickListener(this);
+        getView().findViewById(R.id.newTopicsButton).setOnClickListener(this);
+        getView().findViewById(R.id.inboxButton).setOnClickListener(this);
+        getView().findViewById(R.id.profileButton).setOnClickListener(this);
+        getView().findViewById(R.id.searchButton).setOnClickListener(this);
+    }
+    
+    /*
+	 * (non-Javadoc)
+	 * @see android.view.View.OnClickListener#onClick(android.view.View)
+	 */
+	@Override
+	public void onClick(View arg0) {
+		Intent _intent = null;
+		switch(arg0.getId()) {
+			case R.id.newTopicsButton:
+				//if(!(_src instanceof MainActivity))
+				//	_src.finish();
+				_intent = new Intent(arg0.getContext(), NewPostsActivity.class);
+				break;
+			
+			case R.id.inboxButton:
+				_intent = new Intent(arg0.getContext(), PrivateMessageActivity.class);
+				break;
+			
+			case R.id.profileButton:
+				_intent = new Intent(arg0.getContext(), ProfileActivity.class);
+				break;
+				
+			case R.id.searchButton:
+				_intent = new Intent(arg0.getContext(), SearchActivity.class);
+				break;
+				
+			case R.id.imageView1:
+				_intent = new Intent(arg0.getContext(), MainActivity.class);
+				//if(!(_src instanceof MainActivity))
+				//	_src.finish();
+				break;
+		}
+		
+		if(_intent != null)
+			startActivity(_intent);
+	}
 
 }

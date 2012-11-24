@@ -84,9 +84,6 @@ public class ProfileActivity extends ForumBaseActivity implements OnClickListene
         super.setTitle("RX8Club.com Forums");
         setContentView(R.layout.activity_profile);
         
-        // Register the titlebar gui buttons
-        this.registerGuiButtons();
-        
         Log.v(TAG, "Category Activity Started");
         
         constructView();

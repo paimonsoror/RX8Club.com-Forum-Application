@@ -53,7 +53,6 @@ import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.handler.GuiHandlers;
 import com.normalexception.forum.rx8club.preferences.Preferences;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
@@ -75,25 +74,13 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	protected static final int ABOUT_MENU = 1;
 	protected static final int MAIN_MENU = 2;
 	protected static final int OPTIONS_MENU = 3;
+	protected static final int USERCP_MENU = 4;
 	
 	private static String TAG = "ForumBaseActivity";
 	
 	protected static TableLayout tl = null;
 	
 	protected String finalPage = "1";
-
-	/**
-	 * Register the common gui buttons
-	 */
-	public void registerGuiButtons() {		
-		if (!(this instanceof LoginActivity)) {
-			findViewById(R.id.imageView1).setOnClickListener(new GuiHandlers(this));
-			findViewById(R.id.newTopicsButton).setOnClickListener(new GuiHandlers(this));
-	        findViewById(R.id.inboxButton).setOnClickListener(new GuiHandlers(this));
-	        findViewById(R.id.profileButton).setOnClickListener(new GuiHandlers(this));
-	        findViewById(R.id.searchButton).setOnClickListener(new GuiHandlers(this));
-		}
-	}
 	
 	/*
 	 * (non-Javadoc)

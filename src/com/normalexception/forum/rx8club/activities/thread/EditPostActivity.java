@@ -67,9 +67,6 @@ public class EditPostActivity extends ForumBaseActivity {
         setContentView(R.layout.activity_edit_post);
         
         Log.v(TAG, "Edit Thread Activity Started");
-
-        // Register the titlebar gui buttons
-        this.registerGuiButtons();
         
         findViewById(R.id.editThreadSubmit).setOnClickListener(this);
         

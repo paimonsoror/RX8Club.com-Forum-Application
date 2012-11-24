@@ -56,9 +56,6 @@ public class SearchActivity extends ForumBaseActivity implements OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         
-        // Register the titlebar gui buttons
-        this.registerGuiButtons();
-        
         findViewById(R.id.searchSubmitButton).setOnClickListener(this);
     }
 	

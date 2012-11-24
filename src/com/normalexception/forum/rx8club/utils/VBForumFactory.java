@@ -118,7 +118,7 @@ public class VBForumFactory {
 		}
 		
 		// If client isn't null, continue
-		if(client != null) {
+		if(client != null && (addr != null && !addr.equals(""))) {
 			HttpGet httpost = null;
 			
 			try {

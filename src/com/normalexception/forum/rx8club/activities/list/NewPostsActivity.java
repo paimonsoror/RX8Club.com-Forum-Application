@@ -82,9 +82,6 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	        super.setTitle("RX8Club.com Forums");
 	        setContentView(R.layout.activity_new_posts);
 	        
-	        // Register the titlebar gui buttons
-	         this.registerGuiButtons();
-	        
 	         runOnUiThread(new Runnable() {
 		            public void run() {	
 		            	// Hide pagination

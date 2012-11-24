@@ -90,10 +90,7 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	        super.setTitle("RX8Club.com Forums");
 	        
 	        setContentView(R.layout.activity_main);
-	        
-	     	// Register the titlebar gui buttons
-	        this.registerGuiButtons();
-			    
+
 	        if(savedInstanceState == null)
 	        	constructView();
 	        else {

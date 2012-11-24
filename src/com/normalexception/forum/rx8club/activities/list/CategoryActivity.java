@@ -107,10 +107,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
         try {
         	super.onCreate(savedInstanceState);
 	        super.setTitle("RX8Club.com Forums");
-	        setContentView(R.layout.activity_category);
-	        
-	        // Register the titlebar gui buttons
-	        this.registerGuiButtons();	        
+	        setContentView(R.layout.activity_category);        
 
 	        findViewById(R.id.newThreadButton).setOnClickListener(this);
 	        

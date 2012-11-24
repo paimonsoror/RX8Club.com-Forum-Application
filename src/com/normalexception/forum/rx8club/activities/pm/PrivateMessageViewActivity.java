@@ -111,8 +111,6 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
         super.setTitle("RX8Club.com Forums");
         setContentView(R.layout.activity_private_message_view);
         
-        this.registerGuiButtons();
-        
         findViewById(R.id.submitButton).setOnClickListener(this);
         findViewById(R.id.deleteButton).setOnClickListener(this);
         
