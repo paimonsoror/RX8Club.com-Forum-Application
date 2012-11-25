@@ -96,11 +96,12 @@ public class ProfileActivity extends ForumBaseActivity implements OnClickListene
     	tl = (TableLayout)findViewById(R.id.myTableLayoutProfile);
         
         loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
+        final ForumBaseActivity src = this;
         
         updaterThread = new Thread("CategoryThread") {
 			public void run() {				
 				Document doc = 
-						VBForumFactory.getInstance().get(UserProfile.getUserProfileLink());
+						VBForumFactory.getInstance().get(src, UserProfile.getUserProfileLink());
 				String id = UserProfile.getUserProfileLink().substring(
 						UserProfile.getUserProfileLink().lastIndexOf("-") + 1,
 						UserProfile.getUserProfileLink().length() - 1);
@@ -218,7 +219,7 @@ public class ProfileActivity extends ForumBaseActivity implements OnClickListene
     	
     	// Threads
     	String link = "http://www.rx8club.com/search.php?do=finduser&u=" + UserProfile.getUserId();
-    	doc = VBForumFactory.getInstance().get(link);
+    	doc = VBForumFactory.getInstance().get(this, link);
     	Elements threadlist = doc.select("table[id^=post]");
     	for(Element threadl : threadlist) {
     		ProfileThreadStub stub = new ProfileThreadStub();

@@ -42,6 +42,7 @@ import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.WebUrls;
+import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 
 /**
  * Classes that pertain to a VB type forum
@@ -81,24 +82,28 @@ public class VBForumFactory {
 
 	/**
 	 * Get the frontpage for the forum
+	 * @param src   The source activity
 	 * @param lf	The login factory object
 	 * @return		The output text for the frontpage
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public String getForumFrontpage(LoginFactory lf) throws ClientProtocolException, IOException {
-		return getForumPage(lf, WebUrls.rootUrl);
+	public String getForumFrontpage(ForumBaseActivity src, LoginFactory lf) 
+			throws ClientProtocolException, IOException {
+		return getForumPage(src, lf, WebUrls.rootUrl);
 	}
 	
 	/**
 	 * Get the page context from from a supplied forum address
+	 * @param src   The source activity
 	 * @param lf	The login factory object
 	 * @param addr	The address to grab information from
 	 * @return		The output text for the page
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public String getForumPage(LoginFactory lf, String addr) throws ClientProtocolException, IOException {
+	public String getForumPage(ForumBaseActivity src, LoginFactory lf, String addr) 
+			throws ClientProtocolException, IOException {
 		DefaultHttpClient client = null;
 		String output = null;
 		
@@ -151,6 +156,9 @@ public class VBForumFactory {
 				in.close();	
 				
 				entity.consumeContent();
+				
+				if(output == null || output.equals(""))
+					src.returnToLoginPage();
 			} catch (NullPointerException e) {
 				Toast.makeText(MainApplication.getAppContext(), 
 						"Error Opening Page. This Has Been Logged", 
@@ -172,13 +180,13 @@ public class VBForumFactory {
      * @return	A jsoup document object that contains the 
      * 			forum contents
      */
-    public Document get(String addr) {  
+    public Document get(ForumBaseActivity src, String addr) {  
     	LoginFactory lf = LoginFactory.getInstance();
     	
     	String output = "";	
 		try {
 			VBForumFactory ff = VBForumFactory.getInstance();
-			output = ff.getForumPage(lf, addr);
+			output = ff.getForumPage(src, lf, addr);
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, "Error grabbing category page: " + e.getMessage());
 		} catch (IOException e) {

@@ -110,13 +110,14 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 	 */
 	private void constructView() {
 		loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
-	    
+		final ForumBaseActivity src = this;
+		
 	    updaterThread = new Thread("PrivateMessageThread") {
 			public void run() {
 				String link = 
 		        		(String) getIntent().getStringExtra("link");
 				Document doc = 
-						VBForumFactory.getInstance().get(
+						VBForumFactory.getInstance().get(src, 
 								VBForumFactory.getRootAddress() + "/" + link);
 				securityToken =
 						HtmlFormUtils.getInputElementValue(doc, "securitytoken");

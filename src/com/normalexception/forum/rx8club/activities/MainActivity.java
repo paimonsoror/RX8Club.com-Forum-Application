@@ -108,7 +108,7 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
      */
     private void constructView() {
     	loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
-        final Activity thisActivity = this;
+        final ForumBaseActivity thisActivity = this;
         
         /**
          * Thread created to list the contents of the forum into
@@ -127,7 +127,7 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	        		// User information
 	        		if(!UserProfile.isInitialized() || UserProfile.getUserProfileLink().equals("")) {
 	        			doc = 
-	        				VBForumFactory.getInstance().get(VBForumFactory.getRootAddress());
+	        				VBForumFactory.getInstance().get(thisActivity, VBForumFactory.getRootAddress());
 	        			Elements userElement = 
 	        				doc.select("a[href^=http://www.rx8club.com/members/" + UserProfile.getUsername().replace(".", "-") + "]");
 	        			UserProfile.setUserProfileLink(userElement.attr("href"));
@@ -295,7 +295,7 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 		
 		try {
 			VBForumFactory ff = VBForumFactory.getInstance();
-			output = ff.getForumFrontpage(lf);
+			output = ff.getForumFrontpage(this, lf);
 		} catch (IOException ioe) {
 			Log.e(TAG, "Error Grabbing Forum Frontpage: " + ioe.getMessage());
 			BugSenseHandler.sendException(ioe);

@@ -70,7 +70,6 @@ public class UserCpActivity extends ForumBaseActivity {
 	 * (non-Javadoc)
 	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onRestoreInstanceState(android.os.Bundle)
 	 */
-	@SuppressWarnings("unchecked")
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		try {
 			if(savedInstanceState != null) {
@@ -112,12 +111,12 @@ public class UserCpActivity extends ForumBaseActivity {
     
     private void constructView() {
     	loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
-        
+        final ForumBaseActivity src = this;
         updaterThread = new Thread("Updater") {
         	public void run() {
         		try {
         			Document doc = 
-    						VBForumFactory.getInstance().get(WebUrls.editProfile);
+    						VBForumFactory.getInstance().get(src, WebUrls.editProfile);
         			token = 
         					HtmlFormUtils.getInputElementValue(doc, "securitytoken");
         			

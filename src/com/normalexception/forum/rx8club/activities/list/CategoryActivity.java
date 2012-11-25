@@ -138,6 +138,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	 */
 	private void constructView() {
 		loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
+		final ForumBaseActivity src = this;
 		
 		updaterThread = new Thread("CategoryThread") {
 			public void run() {
@@ -147,7 +148,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 						(String) getIntent().getStringExtra("page");
 				if(pageNumber == null) pageNumber = "1";
 				
-		        Document doc = VBForumFactory.getInstance().get(link);
+		        Document doc = VBForumFactory.getInstance().get(src, link);
 		        forumId = link.substring(link.lastIndexOf("-") + 1);
 		        
 		        // Make sure forumid doesn't end with a "/"

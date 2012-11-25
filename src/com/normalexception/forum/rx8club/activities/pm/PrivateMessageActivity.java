@@ -351,10 +351,11 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
      */
     private void constructView() {
     	loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
-		
+    	final ForumBaseActivity src = this;
+    	
         updaterThread = new Thread("NewPostsThread") {
  			public void run() { 		
- 				Document doc = VBForumFactory.getInstance().get(WebUrls.pmUrl);
+ 				Document doc = VBForumFactory.getInstance().get(src, WebUrls.pmUrl);
  				privateMessages = new ArrayList<PrivateMessage>();
  				
  				token = HtmlFormUtils.getInputElementValue(doc, "securitytoken");

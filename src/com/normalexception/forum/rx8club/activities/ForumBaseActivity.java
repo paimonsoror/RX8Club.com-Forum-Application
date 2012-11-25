@@ -186,6 +186,22 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
         return true; 
     } 
 	
+	/**
+	 * Close all activities and return to login
+	 */
+	public void returnToLoginPage() {
+		Intent _intent = null;
+		LoginFactory.getInstance().logoff();
+		_intent = 
+				new Intent(MainApplication.getAppContext(), 
+						LoginActivity.class);
+		_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		if(!(this instanceof MainActivity))
+		finish();
+		
+		startActivity(_intent);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
@@ -194,7 +210,6 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
     public boolean onOptionsItemSelected (MenuItem item)
     { 
 		Intent _intent = null;
-		final Activity src = this;
         switch(item.getItemId())
         {
            case(LOGOFF_MENU):
@@ -207,16 +222,7 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which){
 					    	case DialogInterface.BUTTON_POSITIVE:
-					    		Intent _intent = null;
-				   				LoginFactory.getInstance().logoff();
-				   				_intent = 
-				   						new Intent(MainApplication.getAppContext(), 
-				   								LoginActivity.class);
-				   				_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				   				if(!(src instanceof MainActivity))
-									finish();
-				   				
-				   				startActivity(_intent);
+					    		returnToLoginPage();
 				   				break;
 				        }
 				    }

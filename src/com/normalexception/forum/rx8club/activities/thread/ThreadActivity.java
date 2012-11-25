@@ -213,7 +213,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
      */
     private void constructView() {
     	loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
-        
+    	final ForumBaseActivity src = this;
+    	
         updaterThread = new Thread("CategoryThread") {
 			public void run() {
 				currentPageLink = 
@@ -226,7 +227,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 				
 				Log.v(TAG, "Grabbing link: " + currentPageLink);
 				
-				Document doc = VBForumFactory.getInstance().get(currentPageLink);
+				Document doc = VBForumFactory.getInstance().get(src, currentPageLink);
 				viewContents = new ArrayList<ViewContents>();
 				
 				final ArrayList<ThreadPost> list = getThreadContents(doc);

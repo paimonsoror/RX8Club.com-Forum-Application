@@ -121,7 +121,7 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
      * Construct the view
      */
     private void constructView() {    	
-    	Document doc = VBForumFactory.getInstance().get(link);
+    	Document doc = VBForumFactory.getInstance().get(this, link);
     	s 			= HtmlFormUtils.getInputElementValue(doc, "s");
     	token 		= HtmlFormUtils.getInputElementValue(doc, "securitytoken");
     	f 			= HtmlFormUtils.getInputElementValue(doc, "f");

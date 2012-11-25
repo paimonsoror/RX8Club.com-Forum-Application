@@ -108,13 +108,14 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
      */
     private void constructView() {
     	loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
-		
+    	final ForumBaseActivity src = this;
+    	
         updaterThread = new Thread("NewPostsThread") {
  			public void run() { 			
  				String link = 
 		        		(String) getIntent().getSerializableExtra("link");
  				
- 				Document doc = VBForumFactory.getInstance().get(
+ 				Document doc = VBForumFactory.getInstance().get(src,
  						link == null? WebUrls.newPostUrl : link);
  				viewContents = new ArrayList<ViewContents>();
  		        linkMap = new LinkedHashMap<String,String>();
