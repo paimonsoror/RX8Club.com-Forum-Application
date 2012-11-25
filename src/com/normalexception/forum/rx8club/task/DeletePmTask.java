@@ -36,7 +36,6 @@ import android.util.Log;
 
 import com.normalexception.forum.rx8club.activities.pm.PrivateMessageActivity;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
-import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
 public class DeletePmTask extends AsyncTask<Void,Void,Void>{
 	private ProgressDialog mProgressDialog;
@@ -45,7 +44,7 @@ public class DeletePmTask extends AsyncTask<Void,Void,Void>{
 	private String token, pmid;
 	private Class<?> postClazz;
 
-	private static String TAG = "SubmitTask";
+	private static String TAG = "DeletePmTask";
 
 	/**
 	 * Async Task handler for deleting a Private messages

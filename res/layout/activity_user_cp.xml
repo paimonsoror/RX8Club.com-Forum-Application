@@ -5,13 +5,15 @@
     android:scrollbars="vertical"
     tools:context=".ThreadActivity" >
 
-    <TableLayout
-        android:id="@+id/myTableLayoutThread"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:spacing="40dip" >
-
-        <fragment
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/darker_gray"
+        android:orientation="vertical" >
+		
+	    <fragment
 	        android:id="@+id/fragment_content"
 	        android:name="com.normalexception.forum.rx8club.activities.fragments.BannerFragment"
 	        android:layout_width="fill_parent"
@@ -19,6 +21,109 @@
 	
 	        <!-- Preview: layout=@layout/fragment_banner -->
 	    </fragment>
-  </TableLayout>
+	
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="25dip"
+	        android:text="Custom User Title"
+	        tools:context=".UserCpActivity" />
+	
+	    <EditText
+	        android:id="@+id/customTitle"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:ems="10"
+	        android:inputType="text" />
+	    
+	    	        
+	    <TextView
+	        android:layout_width="fill_parent"
+			android:layout_height="2dip"
+			android:background="#666666" />
+	    
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="25dip"
+	        android:text="Homepage URL"
+	        tools:context=".UserCpActivity" />
+	
+	    <EditText
+	        android:id="@+id/homepageUrl"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:ems="10"
+	        android:inputType="text" />
+	    
+	    <TextView
+	        android:layout_width="fill_parent"
+			android:layout_height="2dip"
+			android:background="#666666" />
+	    
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="5dip"
+	        android:text="Biography"
+	        tools:context=".UserCpActivity" />
+	
+	    <EditText
+	        android:id="@+id/biography"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:ems="10"
+	        android:inputType="text" />
+	    
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="5dip"
+	        android:text="Location"
+	        tools:context=".UserCpActivity" />
+	
+	    <EditText
+	        android:id="@+id/location"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:ems="10"
+	        android:inputType="text" />
+	    
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="5dip"
+	        android:text="Interests"
+	        tools:context=".UserCpActivity" />
+	
+	    <EditText
+	        android:id="@+id/interests"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:ems="10"
+	        android:inputType="text" />
+	    
+	    <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="5dip"
+	        android:text="Occupation"
+	        tools:context=".UserCpActivity" />
+	
+	    <EditText
+	        android:id="@+id/occupation"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:ems="10"
+	        android:inputType="text" />
+	    
+	    <Button
+	        android:id="@+id/searchUserCpButton"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="20dip"
+	        android:text="Save Changes" />
+	    
+	</LinearLayout>
 	 
 </ScrollView>

@@ -181,6 +181,7 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 		menu.add(0,MAIN_MENU,0,"Goto Main");
         menu.add(0,LOGOFF_MENU,0,"Logoff");
         menu.add(0,OPTIONS_MENU,0,"Preferences");
+        menu.add(0,USERCP_MENU,0,"User CP");
         menu.add(0,ABOUT_MENU,0,"About");
         return true; 
     } 
@@ -227,6 +228,11 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 				    .setNegativeButton("No", dialogClickListener)
 				    .show();
    				break;
+           case(USERCP_MENU):
+        	   Log.v(TAG, "UserCP Pressed");
+           	   _intent = 
+           			   new Intent(MainApplication.getAppContext(), UserCpActivity.class);
+        	   break;
            case(ABOUT_MENU):
         	   	Log.v(TAG, "About Pressed");
            		_intent =

@@ -44,7 +44,7 @@ public class PmTask extends AsyncTask<Void,Void,Void>{
 	private String token, text, doType, recipients, title, pmid;
 	private Class<?> postClazz;
 
-	private static String TAG = "SubmitTask";
+	private static String TAG = "PMTask";
 
 	/**
 	 * Async Task handler for submitting a Private messages
