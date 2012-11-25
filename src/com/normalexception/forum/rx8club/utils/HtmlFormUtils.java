@@ -1,5 +1,29 @@
 package com.normalexception.forum.rx8club.utils;
 
+/************************************************************************
+ * NormalException.net Software, and other contributors
+ * http://www.normalexception.net
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ ************************************************************************/
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -27,19 +51,20 @@ import com.normalexception.forum.rx8club.WebUrls;
 public class HtmlFormUtils {	
 	private static String responseUrl = "";
 	
-	public static boolean deletePM(String securityToken, String pmid) 
+	/**
+	 * Submit a form and its contents
+	 * @param url	The url to submit the form to
+	 * @param nvps	The name value pair of form contents
+	 * @return		True if it worked
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	private static boolean formSubmit(String url, List<NameValuePair> nvps) 
 			throws ClientProtocolException, IOException {
 		DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
-    	
-		HttpPost httpost = new HttpPost(WebUrls.pmUrl);
-		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
-		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
-    	nvps.add(new BasicNameValuePair("do", "managepm"));
-    	nvps.add(new BasicNameValuePair("dowhat", "delete"));
-    	nvps.add(new BasicNameValuePair("pm[" + pmid + "]","0_today"));
-    	
-    	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+		
+		HttpPost httpost = new HttpPost(url);	    
+	    httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 
     	HttpContext context = new BasicHttpContext();
     	HttpResponse response = httpclient.execute(httpost, context);
@@ -57,6 +82,59 @@ public class HtmlFormUtils {
     	}
     	
 		return false;
+	}
+	
+	/**
+	 * Update user profile
+	 * @param token		 The users security token	
+	 * @param title		 The user title
+	 * @param homepage	 The users homepage
+	 * @param bio		 The users bio
+	 * @param location	 The users location
+	 * @param interests  The users interests
+	 * @param occupation The users occupation
+	 * @return			 True if success
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public static boolean updateProfile(String token, String title, String homepage, String bio, 
+					   					String location, String interests, String occupation) 
+		throws ClientProtocolException, IOException {
+
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
+		nvps.add(new BasicNameValuePair("securitytoken", token));
+		nvps.add(new BasicNameValuePair("do", "updateprofile"));
+		nvps.add(new BasicNameValuePair("customtext", title));
+		nvps.add(new BasicNameValuePair("homepage", homepage));
+		nvps.add(new BasicNameValuePair("userfield[field1]", bio));
+		nvps.add(new BasicNameValuePair("userfield[field2]", location));
+		nvps.add(new BasicNameValuePair("userfield[field3]", interests));
+		nvps.add(new BasicNameValuePair("userfield[field4]", occupation));
+		
+		return formSubmit(WebUrls.profileUrl, nvps);
+    
+	}
+	
+	/**
+	 * Delete private message
+	 * @param securityToken	Users security token
+	 * @param pmid			The private message id number
+	 * @return				True if success
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public static boolean deletePM(String securityToken, String pmid) 
+			throws ClientProtocolException, IOException {
+
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
+		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
+    	nvps.add(new BasicNameValuePair("do", "managepm"));
+    	nvps.add(new BasicNameValuePair("dowhat", "delete"));
+    	nvps.add(new BasicNameValuePair("pm[" + pmid + "]","0_today"));
+    	
+    	return formSubmit(WebUrls.pmUrl, nvps);
 	}
 	
 	/**
@@ -74,9 +152,7 @@ public class HtmlFormUtils {
 	public static boolean submitPM(String doType, String securityToken, 
 			                String post, String subject, String recips, String pmid) 
 			throws ClientProtocolException, IOException {
-    	DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
-    	
-		HttpPost httpost = new HttpPost(WebUrls.pmSubmitAddress + pmid);
+
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("message", post));
 		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
@@ -86,24 +162,7 @@ public class HtmlFormUtils {
     	nvps.add(new BasicNameValuePair("title", subject));
     	nvps.add(new BasicNameValuePair("pmid", pmid));
     	
-    	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-
-    	HttpContext context = new BasicHttpContext();
-    	HttpResponse response = httpclient.execute(httpost, context);
-    	HttpEntity entity = response.getEntity();
-
-    	if (entity != null) {
-    		entity.consumeContent();
-    		
-    		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
-    		        ExecutionContext.HTTP_REQUEST);
-
-    		responseUrl = request.getURI().toString();
-    		
-    		return true;
-    	}
-    	
-		return false;
+    	return formSubmit(WebUrls.pmSubmitAddress + pmid, nvps);
 	}
 	
 	/**
@@ -119,9 +178,7 @@ public class HtmlFormUtils {
 	public static boolean submitPost(String doType, String securityToken, String thread, 
 							String postNumber, String post) 
 			throws ClientProtocolException, IOException {
-    	DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
     	
-		HttpPost httpost = new HttpPost(WebUrls.postSubmitAddress + postNumber);
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("message", post));
 		nvps.add(new BasicNameValuePair("t", thread));
@@ -130,27 +187,7 @@ public class HtmlFormUtils {
 		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
     	nvps.add(new BasicNameValuePair("do", doType));
     	
-    	long secondsSinceEpoch = Utils.getTime();
-    	
-    	nvps.add(new BasicNameValuePair("poststarttime", Long.toString(secondsSinceEpoch)));
-    	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-
-    	HttpContext context = new BasicHttpContext();
-    	HttpResponse response = httpclient.execute(httpost, context);
-    	HttpEntity entity = response.getEntity();
-
-    	if (entity != null) {
-    		entity.consumeContent();
-    		
-    		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
-    		        ExecutionContext.HTTP_REQUEST);
-
-    		responseUrl = request.getURI().toString();
-    		
-    		return true;
-    	}
-    	
-		return false;
+    	return formSubmit(WebUrls.postSubmitAddress + postNumber, nvps);
 	}
 	
 	/**
@@ -167,9 +204,7 @@ public class HtmlFormUtils {
 	public static boolean submitEdit(String securityToken, String postNumber, 
 							  String posthash, String poststart, String post) 
 			throws ClientProtocolException, IOException {
-    	DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
     	
-		HttpPost httpost = new HttpPost(WebUrls.updatePostAddress + postNumber);
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("message", post));
 		nvps.add(new BasicNameValuePair("p", postNumber));
@@ -178,24 +213,7 @@ public class HtmlFormUtils {
     	nvps.add(new BasicNameValuePair("posthash", posthash));
     	nvps.add(new BasicNameValuePair("poststarttime", poststart));
  
-    	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-
-    	HttpContext context = new BasicHttpContext();
-    	HttpResponse response = httpclient.execute(httpost, context);
-    	HttpEntity entity = response.getEntity();
-
-    	if (entity != null) {    					
-    		entity.consumeContent();
-    		
-    		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
-    		        ExecutionContext.HTTP_REQUEST);
-
-    		responseUrl = request.getURI().toString();
-    		
-    		return true;
-    	}
-    	
-		return false;
+    	return formSubmit(WebUrls.updatePostAddress + postNumber, nvps);
 	}
 	
 	/**
@@ -208,33 +226,14 @@ public class HtmlFormUtils {
 	 */
 	public static boolean submitDelete(String securityToken, String postNum)
 		throws ClientProtocolException, IOException {
-		DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
-    	
-		HttpPost httpost = new HttpPost(WebUrls.deletePostAddress + postNum);
+
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("postid", postNum));
 		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
     	nvps.add(new BasicNameValuePair("do","deletepost"));
     	nvps.add(new BasicNameValuePair("deletepost", "delete"));
  
-    	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-
-    	HttpContext context = new BasicHttpContext();
-    	HttpResponse response = httpclient.execute(httpost, context);
-    	HttpEntity entity = response.getEntity();
-
-    	if (entity != null) {    					
-    		entity.consumeContent();
-    		
-    		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
-    		        ExecutionContext.HTTP_REQUEST);
-
-    		responseUrl = request.getURI().toString();
-    		
-    		return true;
-    	}
-    	
-		return false;
+    	return formSubmit(WebUrls.deletePostAddress + postNum, nvps);
 	}
 	
 	/**
@@ -296,39 +295,19 @@ public class HtmlFormUtils {
 	public static boolean newThread(String forumId, String s, String token,
 							 String posthash, String subject, String post) 
 			throws ClientProtocolException, IOException {
-		DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
-		long secondsSinceEpoch = Utils.getTime();
-		
-		HttpPost httpost = new HttpPost(WebUrls.newThreadAddress + forumId);
+
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("s", s));
 		nvps.add(new BasicNameValuePair("securitytoken", token));
 		nvps.add(new BasicNameValuePair("f", forumId));
 		nvps.add(new BasicNameValuePair("do", "postthread"));
 		nvps.add(new BasicNameValuePair("posthash", posthash));
-		nvps.add(new BasicNameValuePair("poststarttime", Long.toString(secondsSinceEpoch)));
+		nvps.add(new BasicNameValuePair("poststarttime", Long.toString(Utils.getTime())));
 		nvps.add(new BasicNameValuePair("subject", subject));
 		nvps.add(new BasicNameValuePair("message", post));
 		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
 		
-		httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-
-		HttpContext context = new BasicHttpContext();
-    	HttpResponse response = httpclient.execute(httpost, context);
-    	HttpEntity entity = response.getEntity();
-
-    	if (entity != null) {
-    		entity.consumeContent();
-    		
-    		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
-    		        ExecutionContext.HTTP_REQUEST);
-
-    		responseUrl = request.getURI().toString();
-    		
-    		return true;
-    	}
-    	
-		return false;
+		return formSubmit(WebUrls.newThreadAddress + forumId, nvps);
 	}
 	
 	/**

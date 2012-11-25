@@ -31,6 +31,7 @@ public class WebUrls {
 	public static final String loginUrl = rootUrl + "/login.php";
 	public static final String newPostUrl = rootUrl + "/search.php?do=getnew";
 	public static final String pmUrl = rootUrl + "/private.php";
+	public static final String profileUrl = rootUrl + "/profile.php";
 	public static final String searchUrl = rootUrl + "/search.php?do=process&query=";
 	
 	public static final String postSubmitAddress = 	rootUrl + "/newreply.php?do=newreply&noquote=1&p=";

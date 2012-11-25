@@ -92,8 +92,8 @@ public final class R {
         public static final int searchSortSpinner=0x7f0a0045;
         public static final int searchSubmitButton=0x7f0a003f;
         public static final int searchText=0x7f0a003e;
-        public static final int searchUserCpButton=0x7f0a0050;
         public static final int submitButton=0x7f0a0037;
+        public static final int submitUserCpButton=0x7f0a0050;
         public static final int tableLayout1=0x7f0a0018;
         public static final int tableRow1=0x7f0a0001;
         public static final int tableRow2=0x7f0a001d;
