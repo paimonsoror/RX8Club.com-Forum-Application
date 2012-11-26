@@ -52,8 +52,6 @@ public class VBForumFactory {
 	private static VBForumFactory _instance = null;
 	private static final String TAG = "Application:VBForumFactory";
 		
-	
-	
 	/**
 	 * Constructor
 	 */
@@ -157,7 +155,9 @@ public class VBForumFactory {
 				
 				entity.consumeContent();
 				
-				if(output == null || output.equals(""))
+				if(output == null || 
+						output.equals("") || 
+						output.contains("You are not logged in"))
 					src.returnToLoginPage();
 			} catch (NullPointerException e) {
 				Toast.makeText(MainApplication.getAppContext(), 
