@@ -24,7 +24,6 @@ package com.normalexception.forum.rx8club.activities.pm;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
@@ -43,8 +42,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.util.Log;
@@ -70,43 +67,10 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 
 	private static String TAG = "PrivateMessageActivity";
 
-	private ArrayList<PrivateMessage> privateMessages;
+	private ArrayList<PrivateMessageParcel> privateMessages;
 	private Map<String, String> linkMap;
 	private Random idGenerator;
 	private String token;
-	
-	/**
-	 * Container that holds information about each private message
-	 */
-	private class PrivateMessage implements Serializable, Parcelable {
-		private static final long serialVersionUID = 1L;
-		private String user, time, subject, date, link;
-		public void setUser(String usr) { user = usr; }
-		public String getUser() { return user; }
-		public void setTime(String tim) { time = tim; }
-		public String getTime() { return time; }
-		public void setSubject(String subj) { subject = subj; }
-		public String getSubject() { return subject; }
-		public void setDate(String dat) { date = dat; }
-		public String getDate() { return date; }
-		public void setLink(String lnk) { link = lnk; }
-		public String getLink() { return link; }
-		
-		public String toString() {
-			// Log for debug purposes
-			return String.format("[%s %s] %s | %s",
-						getDate(),
-						getTime(),
-						getUser(),
-						getSubject());
-		}
-		@Override
-		public int describeContents() {
-			return 0;
-		}
-		@Override
-		public void writeToParcel(Parcel arg0, int arg1) {}
-	}
 	
 	/*
 	 * (non-Javadoc)
@@ -133,7 +97,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 		try {
 			if(savedInstanceState != null) {
 				privateMessages = 
-						(ArrayList<PrivateMessage>)savedInstanceState.getSerializable("contents");
+						(ArrayList<PrivateMessageParcel>)savedInstanceState.getSerializable("contents");
 				token =
 						(String)savedInstanceState.getSerializable("token");
 			}
@@ -170,7 +134,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
      * Update the view contents
      * @param contents	List of view rows
      */
-    private void updateView(final ArrayList<PrivateMessage> contents) {
+    private void updateView(final ArrayList<PrivateMessageParcel> contents) {
     	runOnUiThread(new Runnable() {
     		public void run() {
     			tl = (TableLayout)findViewById(R.id.myTableLayoutPM);
@@ -181,10 +145,10 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     			addRow(Color.BLUE, "Subject", "User", "Date");
     			
     			String month = getMonthForInt(0);
-    			for(PrivateMessage pm : privateMessages) {
+    			for(PrivateMessageParcel pm : privateMessages) {
     				String moNum = 
     						getMonthForInt(
-    								Integer.parseInt(pm.getDate().split("-")[0]));
+    								Integer.parseInt(pm.date.split("-")[0]));
     				
     				if(!month.equals(moNum)) {
     					month = moNum;
@@ -192,9 +156,9 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     				}
     				
     				//addRow(pm, alternate = !alternate);
-    				addRow(Color.GRAY, pm.getSubject(), pm.getUser(), pm.getDate());
+    				addRow(Color.GRAY, pm.subject, pm.user, pm.date);
     				
-    				linkMap.put(pm.getSubject(), pm.getLink());
+    				linkMap.put(pm.subject, pm.link);
     			}
     		}
     	});
@@ -356,7 +320,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
         updaterThread = new Thread("NewPostsThread") {
  			public void run() { 		
  				Document doc = VBForumFactory.getInstance().get(src, WebUrls.pmUrl);
- 				privateMessages = new ArrayList<PrivateMessage>();
+ 				privateMessages = new ArrayList<PrivateMessageParcel>();
  				
  				token = HtmlFormUtils.getInputElementValue(doc, "securitytoken");
  				
@@ -382,12 +346,12 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
  							String[] timeTimeUserSplit = timeTimeUser.split(" ", 3);
  							
  							// Create new pm
- 							PrivateMessage pm = new PrivateMessage();
- 							pm.setDate(dateSubjectSplit[0]);
- 							pm.setSubject(dateSubjectSplit[1]);
- 							pm.setTime(timeTimeUserSplit[0] + timeTimeUserSplit[1]);
- 							pm.setUser(timeTimeUserSplit[2]);
- 							pm.setLink(pmLink);
+ 							PrivateMessageParcel pm = new PrivateMessageParcel();
+ 							pm.date = dateSubjectSplit[0];
+ 							pm.subject = dateSubjectSplit[1];
+ 							pm.time = timeTimeUserSplit[0] + timeTimeUserSplit[1];
+ 							pm.user = timeTimeUserSplit[2];
+ 							pm.link = pmLink;
  							
  							Log.v(TAG, pm.toString());
  							
