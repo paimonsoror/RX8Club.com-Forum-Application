@@ -170,9 +170,10 @@ public class LoginFactory {
 	/**
 	 * Clear cookies and logoff
 	 */
-	public void logoff() {
+	public void logoff(boolean clearPrefs) {
 		this.password = "";
-		this.savePreferences(false, false);
+		if(clearPrefs)
+			this.savePreferences(false, false);
 		httpclient.getCookieStore().clear();
 		httpclient.getConnectionManager().shutdown();
 		isLoggedIn = false;

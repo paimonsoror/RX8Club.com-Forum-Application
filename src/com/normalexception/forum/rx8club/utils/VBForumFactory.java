@@ -158,7 +158,7 @@ public class VBForumFactory {
 				if(output == null || 
 						output.equals("") || 
 						output.contains("You are not logged in"))
-					src.returnToLoginPage();
+					src.returnToLoginPage(false);
 			} catch (NullPointerException e) {
 				
 				src.runOnUiThread(new Runnable() {

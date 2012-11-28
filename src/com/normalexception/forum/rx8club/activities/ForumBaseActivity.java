@@ -188,9 +188,9 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	/**
 	 * Close all activities and return to login
 	 */
-	public void returnToLoginPage() {
+	public void returnToLoginPage(boolean clearPrefs) {
 		Intent _intent = null;
-		LoginFactory.getInstance().logoff();
+		LoginFactory.getInstance().logoff(clearPrefs);
 		_intent = 
 				new Intent(MainApplication.getAppContext(), 
 						LoginActivity.class);
@@ -221,7 +221,7 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which){
 					    	case DialogInterface.BUTTON_POSITIVE:
-					    		returnToLoginPage();
+					    		returnToLoginPage(true);
 				   				break;
 				        }
 				    }
