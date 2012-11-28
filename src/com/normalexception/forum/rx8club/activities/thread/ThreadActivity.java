@@ -565,6 +565,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 				this.finish();
 				break;
 			case R.id.submitButton:
+				_intent = null;
 				String advert = PreferenceHelper.isAdvertiseEnabled(MainApplication.getAppContext())?
 						"\n\nPosted From RX8Club.com Android App" : "";
 				String toPost = 

@@ -160,16 +160,26 @@ public class VBForumFactory {
 						output.contains("You are not logged in"))
 					src.returnToLoginPage();
 			} catch (NullPointerException e) {
-				Toast.makeText(MainApplication.getAppContext(), 
-						"Error Opening Page. This Has Been Logged", 
-						Toast.LENGTH_SHORT).show();
+				
+				src.runOnUiThread(new Runnable() {
+					  public void run() {
+						  Toast.makeText(MainApplication.getAppContext(), 
+								  "Error Opening Page. This Has Been Logged", 
+								  Toast.LENGTH_SHORT).show();
+					  }
+				});
+				
 				BugSenseHandler.sendException(e);
 			}
 			
 		} else {
-			Toast.makeText(MainApplication.getAppContext(),
-					"Error With Credentials",
-					Toast.LENGTH_SHORT).show();
+			src.runOnUiThread(new Runnable() {
+				  public void run() {
+					Toast.makeText(MainApplication.getAppContext(),
+							"Error With Credentials",
+							Toast.LENGTH_SHORT).show();
+				  }
+			});
 		}
 		
 		return output;
@@ -187,12 +197,13 @@ public class VBForumFactory {
 		try {
 			VBForumFactory ff = VBForumFactory.getInstance();
 			output = ff.getForumPage(src, lf, addr);
+			return Jsoup.parse(output);
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, "Error grabbing category page: " + e.getMessage());
 		} catch (IOException e) {
 			Log.e(TAG, "Error grabbing category page: " + e.getMessage());
 		}
 		
-	   	return Jsoup.parse(output);
+	   	return null;
     }
 }
