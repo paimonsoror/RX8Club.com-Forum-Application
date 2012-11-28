@@ -36,6 +36,8 @@ public class MainApplication extends Application {
 	private static Context context;
 	
 	private static String TAG = "Application";
+	
+	public static final String APP_PACKAGE = "com.normalexception.forum.rx8club";
 
 	/*
 	 * (non-Javadoc)

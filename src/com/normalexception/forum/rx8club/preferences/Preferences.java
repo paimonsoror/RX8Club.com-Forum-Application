@@ -30,6 +30,7 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 
+import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 
@@ -59,6 +60,18 @@ public class Preferences extends PreferenceActivity {
                 return true;
             }
         });
+        
+        Preference rate = (Preference)findPreference("rate");
+        rate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference arg0) { 
+            	startActivity(
+            			new Intent(Intent.ACTION_VIEW, 
+            					Uri.parse("market://details?id=" + 
+            			MainApplication.APP_PACKAGE)));
+                return true;
+            }
+        }); 
         
         try {
         	Preference version = (Preference)findPreference("version");

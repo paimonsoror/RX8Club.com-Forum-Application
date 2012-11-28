@@ -49,6 +49,10 @@
 	</PreferenceCategory>
     <PreferenceCategory
                 android:title="Misc Options">
+	   	<Preference
+	   	    android:title="Rate Application"
+	   	    android:key="rate"
+	   	    android:summary="Just Takes a Second!"/>
 	    <Preference 
 	        android:title="Donate!"
 	        android:key="donate"
