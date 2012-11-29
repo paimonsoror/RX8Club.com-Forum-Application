@@ -159,30 +159,36 @@ public class VBForumFactory {
 						output.equals("") || 
 						output.contains("You are not logged in"))
 					src.returnToLoginPage(false);
-			} catch (NullPointerException e) {
-				
-				src.runOnUiThread(new Runnable() {
-					  public void run() {
-						  Toast.makeText(MainApplication.getAppContext(), 
-								  "Error Opening Page. This Has Been Logged", 
-								  Toast.LENGTH_SHORT).show();
-					  }
-				});
-				
-				BugSenseHandler.sendException(e);
-			}
-			
+			} catch (NullPointerException e) {		
+				notifyError(src, 
+						"Error Opening Page. This Has Been Logged", e);
+			}	
 		} else {
-			src.runOnUiThread(new Runnable() {
-				  public void run() {
-					Toast.makeText(MainApplication.getAppContext(),
-							"Error With Credentials",
-							Toast.LENGTH_SHORT).show();
-				  }
-			});
+			notifyError(src, 
+					"Error With Credentials", null);
 		}
 		
 		return output;
+	}
+	
+	/**
+	 * Convenience method of displaying error to user and logging
+	 * the exception
+	 * @param src	The source activity
+	 * @param msg	The message to post
+	 * @param e		The exception to log
+	 */
+	private void notifyError(ForumBaseActivity src, final String msg, Exception e) {
+		src.runOnUiThread(new Runnable() {
+			  public void run() {
+				Toast.makeText(MainApplication.getAppContext(),
+						msg,
+						Toast.LENGTH_SHORT).show();
+			  }
+		});
+		
+		if(e != null)
+			BugSenseHandler.sendException(e);
 	}
 	
 	/**

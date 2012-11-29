@@ -35,6 +35,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -76,6 +77,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	
 	private String forumId = "";
 	
+	private LinkedHashMap<String,String> styleMap;
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onSaveInstanceState(android.os.Bundle)
@@ -83,17 +86,21 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putSerializable("forumid", forumId);
+		outState.putSerializable("styles", (LinkedHashMap<String,String>)styleMap);
 	}
 	
 	/*
 	 * (non-Javadoc)
 	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onRestoreInstanceState(android.os.Bundle)
 	 */
+	@SuppressWarnings("unchecked")
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		
 		if(savedInstanceState != null) {
 			forumId = savedInstanceState.getString("forumid");
+			styleMap = 
+					(LinkedHashMap<String, String>) savedInstanceState.getSerializable("styles");
 		}
 	}
 
@@ -156,6 +163,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		        
 		        viewContents = new ArrayList<ViewContents>();
 		        linkMap = new LinkedHashMap<String,String>();
+		        styleMap = new LinkedHashMap<String,String>();
 		        
 				final ArrayList<String> list = 
 						getCategoryContents(doc, link.substring(link.lastIndexOf('-') + 1));
@@ -232,6 +240,10 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
 	    	b.setTextColor(Color.WHITE);
 	        b.setPadding(5, 5, 5, 5);
+	        
+	        String style = styleMap.get(text);
+	        if(style != null && !style.equals(""))
+	        	b.setTypeface(null, Typeface.BOLD);
 	        
 	        if(index == 0) {
         		int spanStart = text.lastIndexOf(lpad);
@@ -326,6 +338,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	    			
 	    		Log.v(TAG, "Adding: " + threadhrefs.get(index).attr("href"));
 	    		linkMap.put((threadLink.text() + totalPosts).trim(), threadhrefs.get(index).attr("href"));
+	    		styleMap.put((threadLink.text() + totalPosts).trim(), threadhrefs.get(index).attr("style"));
 	    		
 	    		zindex++;
     		}

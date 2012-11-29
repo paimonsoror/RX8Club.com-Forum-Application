@@ -24,15 +24,19 @@ package com.normalexception.forum.rx8club.preferences;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
+import android.widget.Toast;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
+import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 
 /**
  * Class used to set and save preferences
@@ -54,9 +58,14 @@ public class Preferences extends PreferenceActivity {
         button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference arg0) { 
-            	Uri uri = Uri.parse(WebUrls.paypalUrl);
-            	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            	startActivity(intent);
+            	try {
+            	startActivity(new Intent(Intent.ACTION_VIEW, 
+            			Uri.parse(WebUrls.paypalUrl)));
+            	} catch (ActivityNotFoundException e) {
+            		// In the event that the browser isn't working
+            		// properly
+            		notifyError("Error Opening Browser, Sorry!");
+            	}
                 return true;
             }
         });
@@ -65,10 +74,16 @@ public class Preferences extends PreferenceActivity {
         rate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference arg0) { 
-            	startActivity(
+            	try {
+            		startActivity(
             			new Intent(Intent.ACTION_VIEW, 
-            					Uri.parse("market://details?id=" + 
+            					Uri.parse(WebUrls.marketUrl + 
             			MainApplication.APP_PACKAGE)));
+            	} catch (ActivityNotFoundException e) {
+            		// In the event that the market isn't installed
+            		// or is unavailable
+            		notifyError("Error Opening Market, Sorry!");
+            	}
                 return true;
             }
         }); 
@@ -80,4 +95,21 @@ public class Preferences extends PreferenceActivity {
         					this.getPackageName(), 0).versionName);
         } catch (Exception e) {}
     }
+	
+	/**
+	 * Convenience method of displaying error to user and logging
+	 * the exception
+	 * @param src	The source activity
+	 * @param msg	The message to post
+	 * @param e		The exception to log
+	 */
+	private void notifyError(final String msg) {
+		this.runOnUiThread(new Runnable() {
+			  public void run() {
+				Toast.makeText(MainApplication.getAppContext(),
+						msg,
+						Toast.LENGTH_SHORT).show();
+			  }
+		});
+	}
 }

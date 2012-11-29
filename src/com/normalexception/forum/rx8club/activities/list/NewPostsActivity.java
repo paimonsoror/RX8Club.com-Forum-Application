@@ -35,6 +35,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -69,6 +70,36 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	
 	private static char lpad = '«';
 	private static char rpad = '»';
+	
+	private LinkedHashMap<String,String> styleMap;
+	
+	/*
+	 * (non-Javadoc)
+	 * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
+	 */
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("styles", (LinkedHashMap<String,String>)styleMap);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see android.app.Activity#onRestoreInstanceState(android.os.Bundle)
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		try {
+			styleMap = 
+					(LinkedHashMap<String, String>) savedInstanceState.getSerializable("styles");
+		} catch (Exception e) {
+			Log.e(TAG, "Error Restoring Contents: " + e.getMessage());
+			BugSenseHandler.sendException(e);
+		}
+	}
 	
 	/*
 	 * (non-Javadoc)
@@ -119,6 +150,7 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
  						link == null? WebUrls.newPostUrl : link);
  				viewContents = new ArrayList<ViewContents>();
  		        linkMap = new LinkedHashMap<String,String>();
+ 		        styleMap = new LinkedHashMap<String,String>();
  		        
 				final ArrayList<String> list = getContents(doc);
 		        
@@ -183,6 +215,10 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
 	    	b.setTextColor(Color.WHITE);
 	        b.setPadding(5, 5, 5, 5);
+	        
+	        String style = styleMap.get(text);
+	        if(style != null && !style.equals(""))
+	        	b.setTypeface(null, Typeface.BOLD);
 	        
 	        if(index == 0) {
         		int spanStart = text.lastIndexOf(lpad);
@@ -271,7 +307,7 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
     			
     		Log.v(TAG, "Adding: " + threadhrefs.get(index).attr("href"));
     		linkMap.put((threadLink.text() + totalPosts).trim(), "http://www.rx8club.com/" + threadhrefs.get(index).attr("href"));
-    		
+    		styleMap.put((threadLink.text() + totalPosts).trim(), threadhrefs.get(index).attr("style"));
     		zindex++;
     	}
     	

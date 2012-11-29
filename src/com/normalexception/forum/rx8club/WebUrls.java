@@ -27,6 +27,7 @@ package com.normalexception.forum.rx8club;
 public class WebUrls {
 
 	public static final String rootUrl = "http://www.rx8club.com";
+	public static final String marketUrl = "market://details?id=";
 	
 	public static final String loginUrl = rootUrl + "/login.php";
 	public static final String newPostUrl = rootUrl + "/search.php?do=getnew";
