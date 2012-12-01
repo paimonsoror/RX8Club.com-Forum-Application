@@ -78,7 +78,8 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	private static char lpad = '«';
 	private static char rpad = '»';
 	
-	private LinkedHashMap<String,String> styleMap, userMap, lastUserMap;
+	//private LinkedHashMap<String,String> styleMap, userMap, lastUserMap;
+	private ThreadListContents tlContents = null;
 	
 	public int scaledImage = 12;
 	
@@ -89,9 +90,10 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putSerializable("styles", (LinkedHashMap<String,String>)styleMap);
-		outState.putSerializable("users", (LinkedHashMap<String,String>)userMap);
-		outState.putSerializable("lastusers", (LinkedHashMap<String,String>)lastUserMap);
+		outState.putSerializable("contents", tlContents);
+		//outState.putSerializable("styles", (LinkedHashMap<String,String>)styleMap);
+		//outState.putSerializable("users", (LinkedHashMap<String,String>)userMap);
+		//outState.putSerializable("lastusers", (LinkedHashMap<String,String>)lastUserMap);
 	}
 	
 	/*
@@ -104,12 +106,14 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 		super.onRestoreInstanceState(savedInstanceState);
 		
 		try {
-			styleMap = 
+			tlContents =
+					(ThreadListContents) savedInstanceState.getSerializable("contents");
+			/*styleMap = 
 					(LinkedHashMap<String, String>) savedInstanceState.getSerializable("styles");
 			userMap = 
 					(LinkedHashMap<String, String>) savedInstanceState.getSerializable("users");
 			lastUserMap = 
-					(LinkedHashMap<String, String>) savedInstanceState.getSerializable("lastusers");
+					(LinkedHashMap<String, String>) savedInstanceState.getSerializable("lastusers");*/
 			
 		} catch (Exception e) {
 			Log.e(TAG, "Error Restoring Contents: " + e.getMessage());
@@ -188,9 +192,8 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
  				viewContents = new ArrayList<ViewContents>();
  		        
  				linkMap = new LinkedHashMap<String,String>();
- 		        styleMap = new LinkedHashMap<String,String>();
- 		        userMap = new LinkedHashMap<String,String>();
- 		        lastUserMap = new LinkedHashMap<String, String>();
+ 				
+ 				tlContents = new ThreadListContents();
  		        
 				final ArrayList<String> list = getContents(doc);
 		        
@@ -258,7 +261,7 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	    	b.setTextColor(Color.WHITE);
 	        b.setPadding(5, 5, 5, 5);
 	        
-	        String style = styleMap.get(text);
+	        String style = tlContents.styleMap.get(text);
 	        if(style != null && !style.equals(""))
 	        	b.setTypeface(null, Typeface.BOLD);
 	        
@@ -271,8 +274,8 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	    							scaledImage, scaledImage, true);
 	        
 	        if(index == 0) {
-	        	user = userMap.get(text);
-	        	lastuser = lastUserMap.get(text);
+	        	user = tlContents.userMap.get(text);
+	        	lastuser = tlContents.lastUserMap.get(text);
 	        	
         		int spanStart = text.lastIndexOf(lpad);
         		if(spanStart > -1) {
@@ -390,10 +393,18 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
     			index = 1;
     			
     		Log.v(TAG, "Adding: " + threadhrefs.get(index).attr("href"));
-    		linkMap.put((threadLink.text() + totalPosts).trim(), "http://www.rx8club.com/" + threadhrefs.get(index).attr("href"));
-    		styleMap.put((threadLink.text() + totalPosts).trim(), threadhrefs.get(index).attr("style"));
-    		userMap.put((threadLink.text() + totalPosts).trim(), threaduser.text());
-    		lastUserMap.put((threadLink.text() + totalPosts).trim(), repliesText.get(zindex).select("a[rel=nofollow]").text());
+    		linkMap.put(
+    				(threadLink.text() + totalPosts).trim(), 
+    				"http://www.rx8club.com/" + threadhrefs.get(index).attr("href"));
+    		tlContents.styleMap.put(
+    				(threadLink.text() + totalPosts).trim(), 
+    				threadhrefs.get(index).attr("style"));
+    		tlContents.userMap.put(
+    				(threadLink.text() + totalPosts).trim(), 
+    				threaduser.text());
+    		tlContents.lastUserMap.put(
+    				(threadLink.text() + totalPosts).trim(), 
+    				repliesText.get(zindex).select("a[rel=nofollow]").text());
     		zindex++;
     	}
     	

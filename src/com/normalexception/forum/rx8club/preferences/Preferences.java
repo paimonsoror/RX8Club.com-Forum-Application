@@ -32,11 +32,9 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.widget.Toast;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
-import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 
 /**
  * Class used to set and save preferences
