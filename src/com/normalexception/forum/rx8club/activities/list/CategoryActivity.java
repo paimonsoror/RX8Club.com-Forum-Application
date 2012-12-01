@@ -43,7 +43,6 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -57,7 +56,6 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
-import com.normalexception.forum.rx8club.enums.CategoryIconSize;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
@@ -97,16 +95,12 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		super.onSaveInstanceState(outState);
 		outState.putSerializable("forumid", forumId);
 		outState.putSerializable("contents", tlContents);
-		//outState.putSerializable("styles", (LinkedHashMap<String,String>)styleMap);
-		//outState.putSerializable("users", (LinkedHashMap<String,String>)userMap);
-		//outState.putSerializable("lastusers", (LinkedHashMap<String,String>)lastUserMap);
 	}
 	
 	/*
 	 * (non-Javadoc)
 	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onRestoreInstanceState(android.os.Bundle)
 	 */
-	@SuppressWarnings("unchecked")
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
 		
@@ -115,35 +109,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 					savedInstanceState.getString("forumid");
 			tlContents =
 					(ThreadListContents) savedInstanceState.getSerializable("contents");
-        	/*styleMap = 
-					(LinkedHashMap<String, String>) savedInstanceState.getSerializable("styles");
-        	userMap = 
-					(LinkedHashMap<String, String>) savedInstanceState.getSerializable("users");
-        	lastUserMap = 
-					(LinkedHashMap<String, String>) savedInstanceState.getSerializable("lastusers");*/
 		}
 	}
-	
-	/**
-     * Depending on the screen DPI, we will rescale the thread
-     * buttons to make sure that they are not too small or 
-     * too large
-     */
-    private void setScaledImageSizes() {
-    	switch(getResources().getDisplayMetrics().densityDpi) {
-    	case DisplayMetrics.DENSITY_LOW:
-    	case DisplayMetrics.DENSITY_MEDIUM:
-    		this.scaledImage = CategoryIconSize.LDPI.getValue();
-    		break;
-    	case DisplayMetrics.DENSITY_HIGH:
-    		this.scaledImage = CategoryIconSize.HDPI.getValue();
-    		break;
-    	case DisplayMetrics.DENSITY_XHIGH:
-    		this.scaledImage = CategoryIconSize.XHDPI.getValue();
-    		break;
-    	}
-    }
-    
 
 	/*
 	 * (non-Javadoc)
@@ -168,7 +135,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        
 	        Log.v(TAG, "Category Activity Started");
 	        
-	        setScaledImageSizes();
+	        scaledImage = CategoryUtils.setScaledImageSizes(this);
 	        
 	        if(savedInstanceState == null)
 	        	constructView();

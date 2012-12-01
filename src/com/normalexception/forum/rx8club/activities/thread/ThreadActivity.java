@@ -48,7 +48,6 @@ import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -65,7 +64,6 @@ import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
-import com.normalexception.forum.rx8club.enums.ThreadButtonSize;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.task.SubmitTask;
@@ -174,7 +172,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		            }
 	         });
 	         
-	         setScaledImageSizes();
+	         scaledImage = ThreadUtils.setScaledImageSizes(this);
 	         
 	         if(savedInstanceState == null)
 		        	constructView();
@@ -186,26 +184,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	 		Log.e(TAG, "Fatal Error In Thread Activity! " + e.getMessage());
 	 		BugSenseHandler.sendException(e);
 	 	}
-    }
-    
-    /**
-     * Depending on the screen DPI, we will rescale the thread
-     * buttons to make sure that they are not too small or 
-     * too large
-     */
-    private void setScaledImageSizes() {
-    	switch(getResources().getDisplayMetrics().densityDpi) {
-    	case DisplayMetrics.DENSITY_LOW:
-    	case DisplayMetrics.DENSITY_MEDIUM:
-    		this.scaledImage = ThreadButtonSize.LDPI.getValue();
-    		break;
-    	case DisplayMetrics.DENSITY_HIGH:
-    		this.scaledImage = ThreadButtonSize.HDPI.getValue();
-    		break;
-    	case DisplayMetrics.DENSITY_XHIGH:
-    		this.scaledImage = ThreadButtonSize.XHDPI.getValue();
-    		break;
-    	}
     }
     
     /**
