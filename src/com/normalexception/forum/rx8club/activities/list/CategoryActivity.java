@@ -34,10 +34,16 @@ import org.jsoup.select.Elements;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -51,7 +57,9 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
+import com.normalexception.forum.rx8club.enums.CategoryIconSize;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
+import com.normalexception.forum.rx8club.preferences.Preferences;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
@@ -77,7 +85,9 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	
 	private String forumId = "";
 	
-	private LinkedHashMap<String,String> styleMap;
+	private LinkedHashMap<String,String> styleMap, userMap, lastUserMap;
+	
+	public int scaledImage = 12;
 	
 	/*
 	 * (non-Javadoc)
@@ -87,6 +97,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		super.onSaveInstanceState(outState);
 		outState.putSerializable("forumid", forumId);
 		outState.putSerializable("styles", (LinkedHashMap<String,String>)styleMap);
+		outState.putSerializable("users", (LinkedHashMap<String,String>)userMap);
+		outState.putSerializable("lastusers", (LinkedHashMap<String,String>)lastUserMap);
 	}
 	
 	/*
@@ -98,17 +110,42 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		super.onRestoreInstanceState(savedInstanceState);
 		
 		if(savedInstanceState != null) {
-			forumId = savedInstanceState.getString("forumid");
-			styleMap = 
+			forumId = 
+					savedInstanceState.getString("forumid");
+        	styleMap = 
 					(LinkedHashMap<String, String>) savedInstanceState.getSerializable("styles");
+        	userMap = 
+					(LinkedHashMap<String, String>) savedInstanceState.getSerializable("users");
+        	lastUserMap = 
+					(LinkedHashMap<String, String>) savedInstanceState.getSerializable("lastusers");
 		}
 	}
+	
+	/**
+     * Depending on the screen DPI, we will rescale the thread
+     * buttons to make sure that they are not too small or 
+     * too large
+     */
+    private void setScaledImageSizes() {
+    	switch(getResources().getDisplayMetrics().densityDpi) {
+    	case DisplayMetrics.DENSITY_LOW:
+    	case DisplayMetrics.DENSITY_MEDIUM:
+    		this.scaledImage = CategoryIconSize.LDPI.getValue();
+    		break;
+    	case DisplayMetrics.DENSITY_HIGH:
+    		this.scaledImage = CategoryIconSize.HDPI.getValue();
+    		break;
+    	case DisplayMetrics.DENSITY_XHIGH:
+    		this.scaledImage = CategoryIconSize.XHDPI.getValue();
+    		break;
+    	}
+    }
+    
 
 	/*
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         try {
@@ -128,10 +165,11 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        
 	        Log.v(TAG, "Category Activity Started");
 	        
+	        setScaledImageSizes();
+	        
 	        if(savedInstanceState == null)
 	        	constructView();
 	        else {
-	        	viewContents = (ArrayList<ViewContents>) savedInstanceState.getSerializable("contents");
 	        	updateView(viewContents);
 	        }
 		} catch (Exception e) {
@@ -164,6 +202,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		        viewContents = new ArrayList<ViewContents>();
 		        linkMap = new LinkedHashMap<String,String>();
 		        styleMap = new LinkedHashMap<String,String>();
+		        userMap = new LinkedHashMap<String,String>();
+ 		        lastUserMap = new LinkedHashMap<String, String>();
 		        
 				final ArrayList<String> list = 
 						getCategoryContents(doc, link.substring(link.lastIndexOf('-') + 1));
@@ -208,16 +248,6 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     		}
     	});
     }
-	
-    /*
-     * (non-Javadoc)
-     * @see android.app.Activity#onDestroy()
-     */
-	@Override
-	public void onDestroy() {
-		Log.v(TAG, "Closing Category Activity");
-		super.onDestroy();		
-	}
 
     /**
      * Add a row to the view
@@ -226,6 +256,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
      * @param id	The id of the row
      */
     private void addRow(int clr, String texts[], int id, boolean span) {
+    	String user = "", lastuser = "";
+    	
     	/* Create a new row to be added. */
     	TableRow tr_head = new TableRow(this);
     	tr_head.setId(id);
@@ -245,20 +277,39 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        if(style != null && !style.equals(""))
 	        	b.setTypeface(null, Typeface.BOLD);
 	        
+	        // We need to decode the resource, and then scale
+	    	// down the image
+	    	Bitmap scaledimg = 
+	    			Bitmap.createScaledBitmap(
+	    					BitmapFactory.decodeResource(
+	    							getResources(), R.drawable.arrow_icon), 
+	    							scaledImage, scaledImage, true);
+	        
 	        if(index == 0) {
+	        	user = userMap.get(text);
+	        	lastuser = lastUserMap.get(text);
+	        	
         		int spanStart = text.lastIndexOf(lpad);
         		if(spanStart > -1) {
         			int spanEnd = text.lastIndexOf(rpad) + 1;
         			String preDetail = text.substring(0, spanStart);
         			String postDetail = text.substring(spanStart, spanEnd);
-        			b.setText( 
-	    				Html.fromHtml(preDetail + "&nbsp;&nbsp;" +
-	    						"<font color='yellow'>" + 
-	    						postDetail + 
-	    						"</font>"),
+        			SpannableStringBuilder htext = new SpannableStringBuilder(
+        					Html.fromHtml("&nbsp;" + preDetail + "&nbsp;&nbsp;" +
+    						"<font color='yellow'>" + 
+    						postDetail + 
+    						"</font>"));
+        			
+        			htext.setSpan(new ImageSpan(scaledimg), 
+        	    			0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
+        			
+        			b.setText( htext,
 	    						TextView.BufferType.SPANNABLE);
         		} else {
-        			b.setText(text);
+        			SpannableStringBuilder htext = new SpannableStringBuilder(" " + text);
+        			htext.setSpan(new ImageSpan(scaledimg), 
+        	    			0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
+        			b.setText(clr == Color.BLUE? text : htext);
         		}
         		
         		// Convert dip to px
@@ -282,6 +333,28 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 
     	/* Add row to TableLayout. */
         tl.addView(tr_head,tl.getChildCount() - 1);
+        
+        if(PreferenceHelper.isShowPostDetailButton(this)) {
+	        if(user != null) {
+		        // Add username
+		        tr_head = new TableRow(this);
+		    	tr_head.setBackgroundColor(clr);
+		    	
+		    	TextView b = new TextView(this);
+		    	float scaledText = (float) PreferenceHelper.getFontSize(this);
+		    	b.setTextSize((float) (scaledText * 0.75));
+		    	b.setTextColor(Color.WHITE);
+		    	b.setTypeface(null, Typeface.ITALIC);
+		    	b.setText("\tStarted By: " + user + ",\tLast: " + lastuser);
+		    	
+		    	TableRow.LayoutParams params = new TableRow.LayoutParams();
+		        params.span = 5;  
+		        params.weight = 1f;
+		    	tr_head.addView(b, params);
+		    	
+		    	tl.addView(tr_head, tl.getChildCount() - 1);
+	        }
+        }
     }
     
     /**
@@ -306,6 +379,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     	for(Element threadLink : threadLinks) {
     		String idnumber = Utils.parseInts(threadLink.id());
     		Elements threadhrefs = doc.select("#td_threadtitle_" + idnumber + " a");
+    		Elements threaduser = doc.select("#td_threadtitle_" + idnumber + " div.smallfont");
     		Elements threadicon = doc.select("img[id=thread_statusicon_" + idnumber + "]");
     		String totalPostsInThreadTitle = threadicon.attr("alt");
     		String totalPosts;
@@ -339,6 +413,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	    		Log.v(TAG, "Adding: " + threadhrefs.get(index).attr("href"));
 	    		linkMap.put((threadLink.text() + totalPosts).trim(), threadhrefs.get(index).attr("href"));
 	    		styleMap.put((threadLink.text() + totalPosts).trim(), threadhrefs.get(index).attr("style"));
+	    		userMap.put((threadLink.text() + totalPosts).trim(), threaduser.text());
+	    		lastUserMap.put((threadLink.text() + totalPosts).trim(), repliesText.get(zindex).select("a[href*=members]").text());
 	    		
 	    		zindex++;
     		}
@@ -415,8 +491,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 				TextView tv = (TextView)arg0;
 				final String linkText = tv.getText().toString();		
 				Log.v(TAG, "User clicked '" + linkText + "'");
-
-				final String trimmedLinkText = linkText.replace("\u00a0", "");
+				final String trimmedLinkText = linkText.trim().replace("\u00a0", "");
 				final String link = linkMap.get(trimmedLinkText);
 				_intent = new Intent(CategoryActivity.this, ThreadActivity.class);
 				_intent.putExtra("link", link);

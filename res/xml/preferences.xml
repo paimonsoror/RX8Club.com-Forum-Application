@@ -23,6 +23,11 @@
 	        android:defaultValue="true"
 	        android:summary="Show your total posts in thread"
 	        android:key="postcount" />
+	    <CheckBoxPreference
+	        android:title="Show Post Detail"
+	        android:defaultValue="true"
+	        android:summary="Display Thread Starter and Last Poster Information"
+	        android:key="postdetail" />
 	</PreferenceCategory>
 	<PreferenceCategory
                 android:title="Thread Options">

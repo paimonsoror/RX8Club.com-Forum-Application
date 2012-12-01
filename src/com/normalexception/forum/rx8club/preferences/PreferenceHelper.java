@@ -125,4 +125,14 @@ public class PreferenceHelper {
     	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
     	return prefs.getBoolean("postcount", true);
     }
+    
+    /**
+     * Report if the show post detail is enabled
+     * @param context	The application context
+     * @return			The option value
+     */
+    public static boolean isShowPostDetailButton(Context context) {
+    	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+    	return prefs.getBoolean("postdetail", true);
+    }
 }

@@ -40,8 +40,14 @@ import org.jsoup.select.Elements;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -54,6 +60,7 @@ import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
+import com.normalexception.forum.rx8club.enums.CategoryIconSize;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.utils.UserProfile;
@@ -75,6 +82,8 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	
 	private Map<String, Collection<?>> mainForumContainer;
 	
+	public int scaledImage = 12;
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -89,6 +98,8 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	        super.setTitle("RX8Club.com Forums");
 	        
 	        setContentView(R.layout.activity_main);
+	        
+	        setScaledImageSizes();
 
 	        if(savedInstanceState == null)
 	        	constructView();
@@ -99,6 +110,26 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
     	} catch (Exception e) {
     		Log.e(TAG, "Fatal Error In Main Activity! " + e.getMessage());
     		BugSenseHandler.sendException(e);
+    	}
+    }
+    
+    /**
+     * Depending on the screen DPI, we will rescale the thread
+     * buttons to make sure that they are not too small or 
+     * too large
+     */
+    private void setScaledImageSizes() {
+    	switch(getResources().getDisplayMetrics().densityDpi) {
+    	case DisplayMetrics.DENSITY_LOW:
+    	case DisplayMetrics.DENSITY_MEDIUM:
+    		this.scaledImage = CategoryIconSize.LDPI.getValue();
+    		break;
+    	case DisplayMetrics.DENSITY_HIGH:
+    		this.scaledImage = CategoryIconSize.HDPI.getValue();
+    		break;
+    	case DisplayMetrics.DENSITY_XHIGH:
+    		this.scaledImage = CategoryIconSize.XHDPI.getValue();
+    		break;
     	}
     }
     
@@ -203,13 +234,26 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
     	TableRow tr_head = new TableRow(this);
     	tr_head.setId(id);
     	tr_head.setBackgroundColor(clr);
+    	
+    	// We need to decode the resource, and then scale
+    	// down the image
+    	Bitmap scaledimg = 
+    			Bitmap.createScaledBitmap(
+    					BitmapFactory.decodeResource(
+    							getResources(), R.drawable.arrow_icon), 
+    							scaledImage, scaledImage, true);
 
     	int index = 0;
     	for(String text : texts) {
 	    	// Create a Button to be the row-content.
 	    	TextView b = new TextView(this);
 	    	b.setId(id);
-	    	b.setText(text);
+	    	
+	    	SpannableStringBuilder htext = new SpannableStringBuilder(" " + text);
+			htext.setSpan(new ImageSpan(scaledimg), 
+	    			0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
+			b.setText(clr == Color.BLUE || clr == Color.DKGRAY || index > 0? text : htext);
+			
 	    	b.setOnClickListener(this);
 	    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
 	    	b.setTextColor(Color.WHITE);
@@ -312,10 +356,10 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 		super.onClick(arg0);		
 				
 		switch(arg0.getId()) {	
-			default:
-				Log.v(TAG, "Category Clicked");
+			default:			
 				TextView tv = (TextView)arg0;
-				final String link = linkMap.get(tv.getText());
+				Log.v(TAG, "Category Clicked: " + tv.getText());
+				final String link = linkMap.get(tv.getText().toString().trim());
 				if(link != null && !link.equals("")) {
 					Log.v(TAG, "User Clicked: " + link);
 					
