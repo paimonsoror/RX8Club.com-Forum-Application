@@ -78,8 +78,7 @@ public class BannerFragment extends Fragment implements OnClickListener {
 		Intent _intent = null;
 		switch(arg0.getId()) {
 			case R.id.newTopicsButton:
-				//if(!(_src instanceof MainActivity))
-				//	_src.finish();
+				this.getActivity().finish();
 				_intent = new Intent(arg0.getContext(), NewPostsActivity.class);
 				break;
 			

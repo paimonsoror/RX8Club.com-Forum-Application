@@ -47,7 +47,6 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -60,7 +59,7 @@ import android.widget.Toast;
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
-import com.normalexception.forum.rx8club.enums.CategoryIconSize;
+import com.normalexception.forum.rx8club.activities.list.CategoryUtils;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.utils.UserProfile;
@@ -99,7 +98,7 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	        
 	        setContentView(R.layout.activity_main);
 	        
-	        setScaledImageSizes();
+	        scaledImage = CategoryUtils.setScaledImageSizes(this);
 
 	        if(savedInstanceState == null)
 	        	constructView();
@@ -110,26 +109,6 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
     	} catch (Exception e) {
     		Log.e(TAG, "Fatal Error In Main Activity! " + e.getMessage());
     		BugSenseHandler.sendException(e);
-    	}
-    }
-    
-    /**
-     * Depending on the screen DPI, we will rescale the thread
-     * buttons to make sure that they are not too small or 
-     * too large
-     */
-    private void setScaledImageSizes() {
-    	switch(getResources().getDisplayMetrics().densityDpi) {
-    	case DisplayMetrics.DENSITY_LOW:
-    	case DisplayMetrics.DENSITY_MEDIUM:
-    		this.scaledImage = CategoryIconSize.LDPI.getValue();
-    		break;
-    	case DisplayMetrics.DENSITY_HIGH:
-    		this.scaledImage = CategoryIconSize.HDPI.getValue();
-    		break;
-    	case DisplayMetrics.DENSITY_XHIGH:
-    		this.scaledImage = CategoryIconSize.XHDPI.getValue();
-    		break;
     	}
     }
     

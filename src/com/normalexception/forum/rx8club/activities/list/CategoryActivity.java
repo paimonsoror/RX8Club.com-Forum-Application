@@ -94,7 +94,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putSerializable("forumid", forumId);
-		outState.putSerializable("contents", tlContents);
+		outState.putSerializable("tlcontents", tlContents);
 	}
 	
 	/*
@@ -108,7 +108,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 			forumId = 
 					savedInstanceState.getString("forumid");
 			tlContents =
-					(ThreadListContents) savedInstanceState.getSerializable("contents");
+					(ThreadListContents) savedInstanceState.getSerializable("tlcontents");
 		}
 	}
 
