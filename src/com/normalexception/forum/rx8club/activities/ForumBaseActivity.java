@@ -81,6 +81,9 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	
 	protected String finalPage = "1";
 	
+	private static int taskCount = 0; 
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -113,7 +116,6 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 		}
 		
 		try {
-			Log.v(TAG, "Serializing Contents");
 			outState.putSerializable("contents", viewContents);
 			outState.putSerializable("links", (LinkedHashMap<String,String>)linkMap);
 			outState.putString("final", finalPage);

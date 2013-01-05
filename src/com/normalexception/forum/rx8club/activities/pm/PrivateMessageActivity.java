@@ -68,7 +68,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 	private static String TAG = "PrivateMessageActivity";
 
 	private ArrayList<PrivateMessageParcel> privateMessages;
-	private Map<String, String> linkMap;
+	private Map<Integer, String> linkMap;
 	private Random idGenerator;
 	private String token;
 	
@@ -140,7 +140,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     			tl = (TableLayout)findViewById(R.id.myTableLayoutPM);
     			tl.setColumnStretchable(0, true);
     			
-				linkMap = new LinkedHashMap<String, String>();
+				linkMap = new LinkedHashMap<Integer, String>();
 
     			addRow(Color.BLUE, "Subject", "User", "Date");
     			
@@ -155,10 +155,9 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     					addRow(Color.DKGRAY, month);
     				}
     				
-    				//addRow(pm, alternate = !alternate);
-    				addRow(Color.GRAY, pm.subject, pm.user, pm.date);
+    				int lineId = addRow(Color.GRAY, pm.subject, pm.user, pm.date);
     				
-    				linkMap.put(pm.subject, pm.link);
+    				linkMap.put(lineId, pm.link);
     			}
     		}
     	});
@@ -184,16 +183,17 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
      * @param clr	The color of the background
      * @param texts	The text array that will be added to each row
      */
-    private void addRow(int clr, String... texts) {
+    private int addRow(int clr, String... texts) {
     	/* Create a new row to be added. */
     	TableRow tr_head = new TableRow(this);
     	tr_head.setId(31);
     	
     	int style = Typeface.NORMAL;
     	int index = 0;
+    	int id = idGenerator.nextInt();
     	for(String text : texts) {
 	    	TextView b = new TextView(this);
-	    	b.setId(idGenerator.nextInt());
+	    	b.setId(id);
 	    	b.setTextColor(Color.WHITE);
 	    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
 	    	b.setPadding(5,5,5,5);
@@ -214,6 +214,8 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
         
         /* Add row to TableLayout. */
         tl.addView(tr_head);
+        
+        return id;
     }
        
     /*
@@ -273,7 +275,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     private void replyPm(View arg0) {
     	Log.v(TAG, "Reply PM Clicked");
 		TextView tv = (TextView)arg0;
-		final String link = linkMap.get(tv.getText().toString());
+		final String link = linkMap.get(tv.getId()); //tv.getText().toString());
 		if(link != null && !link.equals("")) {
 			Log.v(TAG, "User Clicked: " + link);
 			
@@ -297,7 +299,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     private void deletePm(View arg0) {
     	Log.v(TAG, "Delete PM Clicked");
     	TextView tv = (TextView)arg0;
-    	final String link = linkMap.get(tv.getText().toString());
+    	final String link = linkMap.get(tv.getId()); //tv.getText().toString());
     	
     	if(link != null && !link.equals("")) {
     		final String id = link.substring(link.lastIndexOf("id=") + 3);

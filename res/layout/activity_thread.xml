@@ -89,6 +89,38 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/commentText" />
+
+                <TableRow
+                    android:id="@+id/extrasRow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" >
+                    
+                    <Button
+                        android:id="@+id/linkCodeButton"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="[url]"
+                        android:textSize="10dip" />
+
+                    <Button
+                        android:id="@+id/imageCodeButton"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="[img]"
+                        android:textSize="10dip" />
+
+                    <Button
+                        android:id="@+id/quoteCodeButton"
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="[quote]"
+                        android:textSize="10dip" />
+
+                </TableRow>
 
                 <EditText
                     android:id="@+id/postBox"

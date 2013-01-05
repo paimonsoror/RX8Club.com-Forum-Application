@@ -33,6 +33,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.activities.MainActivity;
 import com.normalexception.forum.rx8club.activities.ProfileActivity;
 import com.normalexception.forum.rx8club.activities.SearchActivity;
@@ -78,7 +79,6 @@ public class BannerFragment extends Fragment implements OnClickListener {
 		Intent _intent = null;
 		switch(arg0.getId()) {
 			case R.id.newTopicsButton:
-				this.getActivity().finish();
 				_intent = new Intent(arg0.getContext(), NewPostsActivity.class);
 				break;
 			
@@ -96,8 +96,6 @@ public class BannerFragment extends Fragment implements OnClickListener {
 				
 			case R.id.imageView1:
 				_intent = new Intent(arg0.getContext(), MainActivity.class);
-				//if(!(_src instanceof MainActivity))
-				//	_src.finish();
 				break;
 		}
 		

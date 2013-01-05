@@ -94,7 +94,6 @@ public class PrivateMessageParcel implements Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		Log.v(TAG, "Writing To Parcel: " + flags);
 		dest.writeString(user);
 		dest.writeString(time);
 		dest.writeString(subject);

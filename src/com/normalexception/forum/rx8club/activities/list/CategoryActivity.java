@@ -378,7 +378,6 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	    		if(threadhrefs.size() > 1)
 	    			index = 1;
 	    			
-	    		Log.v(TAG, "Adding: " + threadhrefs.get(index).attr("href"));
 	    		linkMap.put(
 	    				(threadLink.text() + totalPosts).trim(), 
 	    				threadhrefs.get(index).attr("href"));
