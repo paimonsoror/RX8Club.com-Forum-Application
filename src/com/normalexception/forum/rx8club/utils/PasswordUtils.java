@@ -4,7 +4,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import android.util.Log;
+import com.normalexception.forum.rx8club.Log;
 
 /************************************************************************
  * NormalException.net Software, and other contributors

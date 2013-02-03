@@ -37,7 +37,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Log;
+import com.normalexception.forum.rx8club.Log;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;

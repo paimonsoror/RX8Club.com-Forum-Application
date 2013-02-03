@@ -42,7 +42,7 @@ import org.apache.http.protocol.HTTP;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.util.Log;
+import com.normalexception.forum.rx8club.Log;
 
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.WebUrls;

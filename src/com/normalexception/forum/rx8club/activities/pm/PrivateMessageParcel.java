@@ -26,10 +26,8 @@ package com.normalexception.forum.rx8club.activities.pm;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 public class PrivateMessageParcel implements Parcelable {
-	private static final String TAG = "PrivateMessageParcel";
 	public String user, time, subject, date, link;
 	
 	/*

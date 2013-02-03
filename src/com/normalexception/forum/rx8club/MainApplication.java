@@ -26,7 +26,6 @@ package com.normalexception.forum.rx8club;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 
 /**
  * Main Application
@@ -44,6 +43,9 @@ public class MainApplication extends Application {
 	 * @see android.app.Application#onCreate()
 	 */
     public void onCreate(){
+    	// Set the logger level for our log wrapper
+    	Log.setLevel(Log.DEBUG);
+    	
     	Log.v(TAG, "Starting Application");
         super.onCreate();
         MainApplication.context = getApplicationContext();

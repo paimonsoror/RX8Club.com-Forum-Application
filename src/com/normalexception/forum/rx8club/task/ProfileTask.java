@@ -8,7 +8,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
+import com.normalexception.forum.rx8club.Log;
 
 import com.normalexception.forum.rx8club.activities.UserCpActivity;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;

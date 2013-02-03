@@ -40,7 +40,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
+import com.normalexception.forum.rx8club.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -80,9 +80,6 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	protected static TableLayout tl = null;
 	
 	protected String finalPage = "1";
-	
-	private static int taskCount = 0; 
-	
 	
 	/*
 	 * (non-Javadoc)

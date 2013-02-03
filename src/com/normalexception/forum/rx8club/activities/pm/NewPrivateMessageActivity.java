@@ -28,7 +28,7 @@ import org.jsoup.nodes.Document;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
+import com.normalexception.forum.rx8club.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;

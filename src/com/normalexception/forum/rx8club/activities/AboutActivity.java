@@ -26,9 +26,9 @@ package com.normalexception.forum.rx8club.activities;
 
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 
 /**

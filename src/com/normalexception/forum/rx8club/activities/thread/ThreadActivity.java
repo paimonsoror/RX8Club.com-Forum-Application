@@ -48,7 +48,7 @@ import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
+import com.normalexception.forum.rx8club.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;

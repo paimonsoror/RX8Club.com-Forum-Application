@@ -36,7 +36,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import android.util.Log;
+import com.normalexception.forum.rx8club.Log;
 import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;

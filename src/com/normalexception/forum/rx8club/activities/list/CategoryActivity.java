@@ -43,7 +43,7 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
-import android.util.Log;
+import com.normalexception.forum.rx8club.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
