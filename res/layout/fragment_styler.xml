@@ -1,0 +1,62 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent" >
+
+     <TableRow
+        android:id="@+id/stylerRow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+        
+        <Button
+            android:id="@+id/boldButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[b]"
+            android:textSize="10dip" />
+        
+        <Button
+            android:id="@+id/italicButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[i]"
+            android:textSize="10dip" />
+        
+        <Button
+            android:id="@+id/underlineButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[u]"
+            android:textSize="10dip" />
+        
+        <Button
+            android:id="@+id/linkCodeButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[url]"
+            android:textSize="10dip" />
+
+        <Button
+            android:id="@+id/imageCodeButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[img]"
+            android:textSize="10dip" />
+
+        <Button
+            android:id="@+id/quoteCodeButton"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="[quote]"
+            android:textSize="10dip" />
+
+    </TableRow>
+
+</RelativeLayout>

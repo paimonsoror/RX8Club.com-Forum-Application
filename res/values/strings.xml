@@ -94,4 +94,7 @@
         <item>12</item>
         <item>14</item>
     </string-array>
+
+    <string name="title_activity_styler_fragment">StylerFragment</string>
+
 </resources>

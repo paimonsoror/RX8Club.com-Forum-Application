@@ -40,30 +40,32 @@ public final class R {
         public static final int Password=0x7f0a001e;
         public static final int UserName=0x7f0a001b;
         public static final int autoLoginBox=0x7f0a0021;
-        public static final int biography=0x7f0a0050;
+        public static final int biography=0x7f0a004d;
+        public static final int boldButton=0x7f0a0054;
         public static final int controlsRow=0x7f0a0010;
-        public static final int customTitle=0x7f0a004e;
+        public static final int customTitle=0x7f0a004b;
         public static final int deleteButton=0x7f0a0038;
-        public static final int editTextDialogUserInput=0x7f0a0057;
+        public static final int editTextDialogUserInput=0x7f0a005b;
         public static final int editThreadSubmit=0x7f0a0017;
-        public static final int extrasRow=0x7f0a004a;
         public static final int firstButton=0x7f0a0048;
         public static final int fragment_content=0x7f0a000c;
-        public static final int homepageUrl=0x7f0a004f;
-        public static final int imageCodeButton=0x7f0a004c;
+        public static final int fragment_content_styler=0x7f0a004a;
+        public static final int homepageUrl=0x7f0a004c;
+        public static final int imageCodeButton=0x7f0a0058;
         public static final int imageView1=0x7f0a0000;
         public static final int imageView6=0x7f0a001a;
-        public static final int inboxButton=0x7f0a0055;
-        public static final int interests=0x7f0a0052;
+        public static final int inboxButton=0x7f0a0052;
+        public static final int interests=0x7f0a004f;
+        public static final int italicButton=0x7f0a0055;
         public static final int joinDateText=0x7f0a003d;
         public static final int lastButton=0x7f0a0049;
-        public static final int layout_root=0x7f0a0056;
-        public static final int linkCodeButton=0x7f0a004b;
-        public static final int location=0x7f0a0051;
+        public static final int layout_root=0x7f0a005a;
+        public static final int linkCodeButton=0x7f0a0057;
+        public static final int location=0x7f0a004e;
         public static final int loginButton=0x7f0a0029;
         public static final int menuControlsRow=0x7f0a000e;
         public static final int menuRow=0x7f0a000d;
-        public static final int menu_settings=0x7f0a0058;
+        public static final int menu_settings=0x7f0a005c;
         public static final int myTableLayout=0x7f0a002c;
         public static final int myTableLayoutCategory=0x7f0a000b;
         public static final int myTableLayoutNewPost=0x7f0a002d;
@@ -74,7 +76,7 @@ public final class R {
         public static final int newThreadButton=0x7f0a000f;
         public static final int newTopicsButton=0x7f0a0003;
         public static final int nextButton=0x7f0a0014;
-        public static final int occupation=0x7f0a0053;
+        public static final int occupation=0x7f0a0050;
         public static final int paginationRow=0x7f0a0011;
         public static final int paginationText=0x7f0a0013;
         public static final int passwordText=0x7f0a001f;
@@ -90,15 +92,16 @@ public final class R {
         public static final int postSubject=0x7f0a0015;
         public static final int previousButton=0x7f0a0012;
         public static final int profileButton=0x7f0a0002;
-        public static final int quoteCodeButton=0x7f0a004d;
+        public static final int quoteCodeButton=0x7f0a0059;
         public static final int rememberMeBox=0x7f0a0022;
         public static final int searchButton=0x7f0a0005;
         public static final int searchDateSpinner=0x7f0a0043;
         public static final int searchSortSpinner=0x7f0a0045;
         public static final int searchSubmitButton=0x7f0a003f;
         public static final int searchText=0x7f0a003e;
+        public static final int stylerRow=0x7f0a0053;
         public static final int submitButton=0x7f0a0037;
-        public static final int submitUserCpButton=0x7f0a0054;
+        public static final int submitUserCpButton=0x7f0a0051;
         public static final int tableLayout1=0x7f0a0018;
         public static final int tableRow1=0x7f0a0001;
         public static final int tableRow2=0x7f0a001d;
@@ -119,6 +122,7 @@ public final class R {
         public static final int threadContentButton=0x7f0a0040;
         public static final int threadRow=0x7f0a0047;
         public static final int threadTitleButton=0x7f0a0041;
+        public static final int underlineButton=0x7f0a0056;
         public static final int userNameButton=0x7f0a0042;
         public static final int userNameText=0x7f0a003a;
         public static final int userPostCountText=0x7f0a003c;
@@ -143,7 +147,8 @@ public final class R {
         public static final int activity_thread=0x7f03000c;
         public static final int activity_user_cp=0x7f03000d;
         public static final int fragment_banner=0x7f03000e;
-        public static final int prompts=0x7f03000f;
+        public static final int fragment_styler=0x7f03000f;
+        public static final int prompts=0x7f030010;
     }
     public static final class menu {
         public static final int activity_about=0x7f090000;
@@ -162,6 +167,7 @@ public final class R {
         public static final int activity_search=0x7f09000d;
         public static final int activity_thread=0x7f09000e;
         public static final int activity_user_cp=0x7f09000f;
+        public static final int fragment_styler=0x7f090010;
     }
     public static final class string {
         public static final int aboutOption=0x7f060016;
@@ -201,6 +207,7 @@ public final class R {
         public static final int title_activity_private_message_view=0x7f060011;
         public static final int title_activity_profile=0x7f060007;
         public static final int title_activity_search=0x7f060009;
+        public static final int title_activity_styler_fragment=0x7f060029;
         public static final int title_activity_thread=0x7f060005;
         public static final int title_activity_user_cp=0x7f060013;
         public static final int userNameSearch=0x7f060024;

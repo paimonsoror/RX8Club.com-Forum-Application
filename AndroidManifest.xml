@@ -2,22 +2,21 @@
     android:name="com.normalexception.forum.MainApplication"
     package="com.normalexception.forum.rx8club"
     android:installLocation="auto"
-    android:versionCode="1065"
-    android:versionName="1.0.65" >
+    android:versionCode="1066"
+    android:versionName="1.0.66" >
 
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="10" />
 
-    <uses-permission 
-        android:name="android.permission.INTERNET" />
-    
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <supports-screens
         android:anyDensity="true"
-        android:xlargeScreens="true"
         android:largeScreens="true"
         android:normalScreens="true"
-        android:smallScreens="true" />
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
 
     <application
         android:name="MainApplication"
@@ -116,6 +115,11 @@
             android:name=".activities.UserCpActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_user_cp" >
+        </activity>
+        <activity
+            android:name=".activities.fragments.StylerFragment"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_activity_styler_fragment" >
         </activity>
     </application>
 

@@ -24,26 +24,24 @@ package com.normalexception.forum.rx8club.activities.fragments;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.activities.MainActivity;
-import com.normalexception.forum.rx8club.activities.ProfileActivity;
-import com.normalexception.forum.rx8club.activities.SearchActivity;
-import com.normalexception.forum.rx8club.activities.list.NewPostsActivity;
-import com.normalexception.forum.rx8club.activities.pm.PrivateMessageActivity;
 
 /**
- * Implementation of the banner found on all views
+ * Styler found on the threads
  */
-public class BannerFragment extends Fragment implements OnClickListener {
-
+public class StylerFragment extends Fragment implements OnClickListener {
+	
+	private static final String TAG = "Application:StylerFragment";
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
@@ -51,7 +49,7 @@ public class BannerFragment extends Fragment implements OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	// Inflate our fragment
-        View view = inflater.inflate(R.layout.fragment_banner, container, false);        
+        View view = inflater.inflate(R.layout.fragment_styler, container, false);        
         return view;
     }
     
@@ -62,11 +60,12 @@ public class BannerFragment extends Fragment implements OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
     	super.onActivityCreated(savedInstanceState);
-        getView().findViewById(R.id.imageView1).setOnClickListener(this);
-        getView().findViewById(R.id.newTopicsButton).setOnClickListener(this);
-        getView().findViewById(R.id.inboxButton).setOnClickListener(this);
-        getView().findViewById(R.id.profileButton).setOnClickListener(this);
-        getView().findViewById(R.id.searchButton).setOnClickListener(this);
+        getView().findViewById(R.id.boldButton).setOnClickListener(this);
+        getView().findViewById(R.id.italicButton).setOnClickListener(this);
+        getView().findViewById(R.id.underlineButton).setOnClickListener(this);
+        getView().findViewById(R.id.linkCodeButton).setOnClickListener(this);
+        getView().findViewById(R.id.imageCodeButton).setOnClickListener(this);
+        getView().findViewById(R.id.quoteCodeButton).setOnClickListener(this);
     }
     
     /*
@@ -75,31 +74,38 @@ public class BannerFragment extends Fragment implements OnClickListener {
 	 */
 	@Override
 	public void onClick(View arg0) {
-		Intent _intent = null;
-		switch(arg0.getId()) {
-			case R.id.newTopicsButton:
-				_intent = new Intent(arg0.getContext(), NewPostsActivity.class);
-				break;
-			
-			case R.id.inboxButton:
-				_intent = new Intent(arg0.getContext(), PrivateMessageActivity.class);
-				break;
-			
-			case R.id.profileButton:
-				_intent = new Intent(arg0.getContext(), ProfileActivity.class);
-				break;
-				
-			case R.id.searchButton:
-				_intent = new Intent(arg0.getContext(), SearchActivity.class);
-				break;
-				
-			case R.id.imageView1:
-				_intent = new Intent(arg0.getContext(), MainActivity.class);
-				break;
+		TextView tv = 
+				(TextView)getActivity().findViewById(R.id.postBox);
+		
+		if(tv == null) {
+			Log.e(TAG, "TextView is null...");
+			return;
 		}
 		
-		if(_intent != null)
-			startActivity(_intent);
+		String val = "";
+		
+		switch(arg0.getId()) {
+		case R.id.boldButton:
+			val = "[b][/b]";
+			break;
+		case R.id.italicButton:
+			val = "[i][/i]";
+			break;
+		case R.id.underlineButton:
+			val = "[u][/u]";
+			break;
+		case R.id.linkCodeButton:
+			val = "[url][/url]";
+			break;
+		case R.id.imageCodeButton:
+			val = "[img][/img]";
+			break;
+		case R.id.quoteCodeButton:
+			val = "[quote][/quote]";
+			break;
+		}
+		
+		tv.setText(tv.getText().toString() + val);
 	}
 
 }

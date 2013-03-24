@@ -68,7 +68,5 @@
                android:layout_weight="1"
                android:text="@string/searchButton"
                android:textSize="10dip" />
-
-
-       </TableRow>z
+       </TableRow>
 </LinearLayout>

@@ -48,7 +48,6 @@ import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
-import com.normalexception.forum.rx8club.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -61,6 +60,7 @@ import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
@@ -107,10 +107,10 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putString("threadnumber", threadNumber);
+		outState.putString("threadnumber",  threadNumber);
 		outState.putString("securitytoken", securityToken);
-		outState.putString("postnumber", postNumber);
-		outState.putString("final", finalPage);
+		outState.putString("postnumber",    postNumber);
+		outState.putString("final",         finalPage);
 	}
 	
 	/*
@@ -122,10 +122,10 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		super.onRestoreInstanceState(savedInstanceState);
 		try {
 			if(savedInstanceState != null) {
-				threadNumber = savedInstanceState.getString("threadnumber");
+				threadNumber =  savedInstanceState.getString("threadnumber");
 				securityToken = savedInstanceState.getString("securitytoken");
-				postNumber = savedInstanceState.getString("postnumber");
-				finalPage = savedInstanceState.getString("final");
+				postNumber =    savedInstanceState.getString("postnumber");
+				finalPage =     savedInstanceState.getString("final");
 			}				
 		} catch (Exception e) {
 			Log.e(TAG, "Error Restoring Contents: " + e.getMessage());
@@ -160,11 +160,11 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	         Log.v(TAG, "Category Activity Started");
 	         
 	         findViewById(R.id.previousButton).setOnClickListener(this);
-	         findViewById(R.id.nextButton).setOnClickListener(this);
+	         findViewById(R.id.nextButton)    .setOnClickListener(this);
 	         findViewById(R.id.paginationText).setOnClickListener(this);
-	         findViewById(R.id.submitButton).setOnClickListener(this);
-	         findViewById(R.id.firstButton).setOnClickListener(this);
-	         findViewById(R.id.lastButton).setOnClickListener(this);
+	         findViewById(R.id.submitButton)  .setOnClickListener(this);
+	         findViewById(R.id.firstButton)   .setOnClickListener(this);
+	         findViewById(R.id.lastButton)    .setOnClickListener(this);
 	         
 	         runOnUiThread(new Runnable() {
 		            public void run() {
@@ -177,7 +177,9 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	         if(savedInstanceState == null)
 		        	constructView();
 		        else {
-		        	viewContents = (ArrayList<ViewContents>) savedInstanceState.getSerializable("contents");
+		        	viewContents = 
+		        			(ArrayList<ViewContents>) 
+		        			savedInstanceState.getSerializable("contents");
 		        	updateView(viewContents);
 		        }
 	 	} catch (Exception e) {
@@ -192,7 +194,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     private void constructView() {
     	loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
     	final ForumBaseActivity src = this;
-    	
+    	    	
         updaterThread = new Thread("CategoryThread") {
 			public void run() {
 				currentPageLink = 
