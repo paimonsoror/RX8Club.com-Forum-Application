@@ -135,4 +135,14 @@ public class PreferenceHelper {
     	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
     	return prefs.getBoolean("postdetail", true);
     }
+    
+    /**
+     * Show the style buttons in the threads
+     * @param context	Application context
+     * @return			The option value
+     */
+    public static boolean isShowStyleButtons(Context context) {
+    	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+    	return prefs.getBoolean("stylebutton", true);
+    }
 }

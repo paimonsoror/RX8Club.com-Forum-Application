@@ -130,7 +130,7 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
      * @return			The updated source text
      */
     protected String reformatQuotes(String source) {
-    	String finalText = "";
+    	StringBuilder finalText = new StringBuilder();
 
     	StringTokenizer st = new StringTokenizer(source, "\r\n\t");
     	while (st.hasMoreTokens()) {
@@ -139,13 +139,13 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
         		nextTok = "<blockquote>";
         	}
         	if(nextTok.contains("</table>")) {
-        		nextTok = nextTok.replace("</table>","</blockquote>");
+        		nextTok = nextTok.replace("</table>","</blockquote><br>");
         	}
 
-        	finalText += nextTok + " ";
+        	finalText.append(nextTok + " ");
         }
         
-        return finalText;
+        return finalText.toString();
     }
 	
 	/*

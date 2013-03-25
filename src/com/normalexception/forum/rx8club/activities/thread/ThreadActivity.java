@@ -175,13 +175,21 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	         scaledImage = ThreadUtils.setScaledImageSizes(this);
 	         
 	         if(savedInstanceState == null)
-		        	constructView();
-		        else {
-		        	viewContents = 
-		        			(ArrayList<ViewContents>) 
-		        			savedInstanceState.getSerializable("contents");
-		        	updateView(viewContents);
-		        }
+	        	constructView();
+	         else {
+	        	viewContents = 
+	        			(ArrayList<ViewContents>) 
+	        			savedInstanceState.getSerializable("contents");
+	        	updateView(viewContents);
+	         }
+	         
+	         if(!PreferenceHelper.isShowStyleButtons(this)) {
+		         runOnUiThread(new Runnable() {
+			            public void run() {
+			            	findViewById(R.id.stylerRow).setVisibility(View.GONE);
+			            }
+		         });
+	         }
 	 	} catch (Exception e) {
 	 		Log.e(TAG, "Fatal Error In Thread Activity! " + e.getMessage());
 	 		BugSenseHandler.sendException(e);
