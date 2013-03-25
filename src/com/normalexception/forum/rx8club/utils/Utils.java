@@ -72,15 +72,21 @@ public class Utils {
 			if(link.lastIndexOf("-new-post/") == link.length() - "-new-post/".length()) {
 				newLink = link.substring(0, 
 						link.lastIndexOf("-new-post/")) + "/page";
-			} else 
-				newLink = link + "page";
+			} else {
+				if(fragmentedLink.startsWith("search.php")) {
+					// Looks like this is a search result
+					newLink = link + "&pp=50&page=";
+				} else {
+					newLink = link + "page";
+				}
+			}
 			
-				if(op == Operation.Increment)
-					newLink += String.valueOf(Integer.parseInt(page) + 1);
-				else if (op == Operation.Decrement) 
-					newLink += String.valueOf(Integer.parseInt(page) - 1);
-				else if (op == Operation.Get)
-					newLink += page;				
+			if(op == Operation.Increment)
+				newLink += String.valueOf(Integer.parseInt(page) + 1);
+			else if (op == Operation.Decrement) 
+				newLink += String.valueOf(Integer.parseInt(page) - 1);
+			else if (op == Operation.Get)
+				newLink += page;				
 		}
 		
 		return newLink;

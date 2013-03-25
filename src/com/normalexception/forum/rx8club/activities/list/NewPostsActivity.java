@@ -165,6 +165,16 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
  				
  				Document doc = VBForumFactory.getInstance().get(src,
  						link == null? WebUrls.newPostUrl : link);
+ 				
+ 				// if doc came back, and link was null, we need to update
+ 				// the link reference to reflect the new post URL
+ 				if(link == null) {
+ 					// <link rel="canonical" href="http://www.rx8club.com/search.php?searchid=10961740" />
+ 					Elements ele = doc.select("link[rel^=canonical]");
+ 					if(ele != null) {
+ 						link = ele.attr("href");
+ 					}
+ 				}
  				viewContents = new ArrayList<ViewContents>();
  		        
  				linkMap = new LinkedHashMap<String,String>();
@@ -453,17 +463,14 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 					Log.e(TAG, "Could Not Find Key of '" + trimmedLinkText + "'");
 					Log.e(TAG, "Keys: " + linkMap.keySet().toString());
 				} else {
-					// Open the thread
-					new Thread("CreateThreadActivity") {
-						public void run() {
-							Intent intent = 
-									new Intent(NewPostsActivity.this, ThreadActivity.class);
-							intent.putExtra("link", link);
-							intent.putExtra("title", linkText);
-							startActivity(intent);
-						}
-					}.start();
+					Intent intent = 
+							new Intent(NewPostsActivity.this, ThreadActivity.class);
+					intent.putExtra("link", link);
+					intent.putExtra("title", linkText);
 				}
 		}
+		
+		if(_intent != null)
+			startActivity(_intent);
 	}
 }
