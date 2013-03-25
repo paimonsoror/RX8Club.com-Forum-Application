@@ -43,7 +43,6 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
-import com.normalexception.forum.rx8club.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,6 +51,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
@@ -124,6 +124,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        setContentView(R.layout.activity_category);        
 
 	        findViewById(R.id.newThreadButton).setOnClickListener(this);
+	        findViewById(R.id.previousButton).setOnClickListener(this);
+	        findViewById(R.id.nextButton).setOnClickListener(this);
 	        
 	        runOnUiThread(new Runnable() {
 	            public void run() {
@@ -174,7 +176,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		        tlContents = new ThreadListContents();
 		        
 				final ArrayList<String> list = 
-						getCategoryContents(doc, link.substring(link.lastIndexOf('-') + 1));
+						getCategoryContents(doc, 
+								link.substring(link.lastIndexOf('-') + 1, link.lastIndexOf('/')));
 		        
 				viewContents.add(
 						new ViewContents(Color.BLUE, new String[]{"Forum", "Posts", "Views"}, 40, false));
@@ -361,7 +364,10 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     		else
     			totalPosts = "";
     		
-    		if(threadhrefs.get(0).attr("href").contains(link)) {
+    		// Remove page from the link
+    		String realLink = Utils.removePageFromLink(link);  			
+    		
+    		if(threadhrefs.get(0).attr("href").contains(realLink)) {
 	    		String idlink = "http://www.rx8club.com/misc.php?do=whoposted&t=" + idnumber;
 	    		
 	    		String txt = repliesText.get(zindex).getElementsByClass("alt2").attr("title");
@@ -445,13 +451,13 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		switch(arg0.getId()) {
 			case R.id.previousButton:
 				_intent = new Intent(CategoryActivity.this, CategoryActivity.class);
-				_intent.putExtra("link", Utils.decrementPage(link, this.finalPage));
+				_intent.putExtra("link", Utils.decrementPage(link, this.pageNumber));
 				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) - 1));
 				this.finish();
 				break;
 			case R.id.nextButton:
 				_intent = new Intent(CategoryActivity.this, CategoryActivity.class);
-				_intent.putExtra("link", Utils.incrementPage(link, this.finalPage));
+				_intent.putExtra("link", Utils.incrementPage(link, this.pageNumber));
 				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) + 1));
 				this.finish();
 				break;

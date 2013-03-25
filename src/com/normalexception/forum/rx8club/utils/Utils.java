@@ -72,17 +72,15 @@ public class Utils {
 			if(link.lastIndexOf("-new-post/") == link.length() - "-new-post/".length()) {
 				newLink = link.substring(0, 
 						link.lastIndexOf("-new-post/")) + "/page";
-				
+			} else 
+				newLink = link + "page";
+			
 				if(op == Operation.Increment)
 					newLink += String.valueOf(Integer.parseInt(page) + 1);
 				else if (op == Operation.Decrement) 
 					newLink += String.valueOf(Integer.parseInt(page) - 1);
 				else if (op == Operation.Get)
-					newLink += page;
-			
-			} else 
-				newLink = link + "page" + page;
-				
+					newLink += page;				
 		}
 		
 		return newLink;
@@ -126,6 +124,24 @@ public class Utils {
 			return link.substring(0, link.length() - 1);
 		else
 			return link;
+	}
+	
+	/**
+	 * Remove the page number from a link
+	 * @param link	The link that the page will be removed from
+	 * @return		A pageless link
+	 */
+	public static String removePageFromLink(String link) {
+		String realLink = link;
+		String[] splittedLink = link.split("/");
+		String pagenumber = splittedLink[splittedLink.length - 1];
+		if(pagenumber.contains("page")) {
+			StringBuilder sb = new StringBuilder();
+			for(int i = 0; i < (splittedLink.length - 1); i++) 
+				sb.append(splittedLink[i] + "/");
+			realLink = sb.toString();
+		} 
+		return realLink;
 	}
 
 	

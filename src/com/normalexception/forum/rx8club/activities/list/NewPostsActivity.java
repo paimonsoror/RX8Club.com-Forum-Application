@@ -55,6 +55,7 @@ import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
+import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.Utils;
@@ -78,6 +79,9 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	
 	//private LinkedHashMap<String,String> styleMap, userMap, lastUserMap;
 	private ThreadListContents tlContents = null;
+	
+	private String pageNumber = "";
+	private static String link;
 	
 	public int scaledImage = 12;
 	
@@ -119,6 +123,9 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	        super.setTitle("RX8Club.com Forums");
 	        setContentView(R.layout.activity_new_posts);
 	        
+	        findViewById(R.id.previousButton).setOnClickListener(this);
+	        findViewById(R.id.nextButton).setOnClickListener(this);
+	        
 	         runOnUiThread(new Runnable() {
 		            public void run() {	
 		            	// Hide pagination
@@ -150,8 +157,11 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
     	
         updaterThread = new Thread("NewPostsThread") {
  			public void run() { 			
- 				String link = 
-		        		(String) getIntent().getSerializableExtra("link");
+ 				link = 
+		        	(String) getIntent().getSerializableExtra("link");
+ 				pageNumber = 
+						(String) getIntent().getStringExtra("page");
+				if(pageNumber == null) pageNumber = "1";
  				
  				Document doc = VBForumFactory.getInstance().get(src,
  						link == null? WebUrls.newPostUrl : link);
@@ -331,8 +341,7 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
     		Elements threaduser = doc.select("#td_threadtitle_" + idnumber + " div.smallfont");
     		Elements threadicon = doc.select("img[id=thread_statusicon_" + idnumber + "]");
     		String totalPostsInThreadTitle = threadicon.attr("alt");
-    		String totalPosts = "";
-    		
+    		String totalPosts = "";	
     		
     		if(PreferenceHelper.isShowPostCountButton(this) && 
     				totalPostsInThreadTitle != null && totalPostsInThreadTitle.length() > 0)
@@ -416,28 +425,45 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
      */
 	@Override
 	public void onClick(View arg0) {
-		super.onClick(arg0);
+		super.onClick(arg0);	
+		Intent _intent = null;
+		boolean result = false;
 		
-		TextView tv = (TextView)arg0;
-		final String linkText = tv.getText().toString();		
-		Log.v(TAG, "User clicked '" + linkText + "'");
-		final String trimmedLinkText = linkText.trim().replace("\u00a0", "");
-		final String link = linkMap.get(trimmedLinkText);
-		
-		if(link == null) {
-			Log.e(TAG, "Could Not Find Key of '" + trimmedLinkText + "'");
-			Log.e(TAG, "Keys: " + linkMap.keySet().toString());
-		} else {
-			// Open the thread
-			new Thread("CreateThreadActivity") {
-				public void run() {
-					Intent intent = 
-							new Intent(NewPostsActivity.this, ThreadActivity.class);
-					intent.putExtra("link", link);
-					intent.putExtra("title", linkText);
-					startActivity(intent);
+		switch(arg0.getId()) {
+			case R.id.previousButton:
+				_intent = new Intent(NewPostsActivity.this, NewPostsActivity.class);
+				_intent.putExtra("link", Utils.decrementPage(link, this.pageNumber));
+				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) - 1));
+				this.finish();
+				break;
+			case R.id.nextButton:
+				_intent = new Intent(NewPostsActivity.this, NewPostsActivity.class);
+				_intent.putExtra("link", Utils.incrementPage(link, this.pageNumber));
+				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) + 1));
+				this.finish();
+				break;
+			default:
+				TextView tv = (TextView)arg0;
+				final String linkText = tv.getText().toString();		
+				Log.v(TAG, "User clicked '" + linkText + "'");
+				final String trimmedLinkText = linkText.trim().replace("\u00a0", "");
+				final String link = linkMap.get(trimmedLinkText);
+				
+				if(link == null) {
+					Log.e(TAG, "Could Not Find Key of '" + trimmedLinkText + "'");
+					Log.e(TAG, "Keys: " + linkMap.keySet().toString());
+				} else {
+					// Open the thread
+					new Thread("CreateThreadActivity") {
+						public void run() {
+							Intent intent = 
+									new Intent(NewPostsActivity.this, ThreadActivity.class);
+							intent.putExtra("link", link);
+							intent.putExtra("title", linkText);
+							startActivity(intent);
+						}
+					}.start();
 				}
-			}.start();
 		}
 	}
 }
