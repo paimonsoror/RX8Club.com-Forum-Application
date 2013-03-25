@@ -38,20 +38,30 @@ public class Utils {
 		return val.replaceAll( "[^\\d]", "" );
 	}
 	
+	/**
+	 * Scrap the site link of the root and only provide the 
+	 * data that is after the last forward slash	
+	 * @param link	The link to perform operation on
+	 * @return		The fragmented link
+	 */
 	private static String initializePageOperation(String link) {
 		String fragmentedLink = removeTrailingSlash(link);
 		fragmentedLink = fragmentedLink.substring(fragmentedLink.lastIndexOf('/') + 1);
 		return fragmentedLink;
 	}
 	
+	/*
+	 * A Set of enumerators that will define the operations to perform
+	 */
 	private enum Operation { Increment, Decrement, Get }
 	
 	/**
-	 * 
-	 * @param link
-	 * @param page
-	 * @param op
-	 * @return
+	 * A private function that carries out the operation that is passed
+	 * in as an argument
+	 * @param link	The link to perform the operation on
+	 * @param page	The page number that we are currently on
+	 * @param op	The operation enumeration
+	 * @return		The updated link
 	 */
 	private static String pageOperation(String link, String page, Operation op) {
 		String fragmentedLink = initializePageOperation(link);
