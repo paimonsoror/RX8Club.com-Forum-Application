@@ -177,7 +177,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		        
 				final ArrayList<String> list = 
 						getCategoryContents(doc, 
-								link.substring(link.lastIndexOf('-') + 1, link.lastIndexOf('/')));
+								link.substring(link.lastIndexOf('-') + 1, link.lastIndexOf('/')),
+								link.contains("sale-wanted"));
 		        
 				viewContents.add(
 						new ViewContents(Color.BLUE, new String[]{"Forum", "Posts", "Views"}, 40, false));
@@ -316,7 +317,15 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		    	b.setTextSize((float) (scaledText * 0.75));
 		    	b.setTextColor(Color.WHITE);
 		    	b.setTypeface(null, Typeface.ITALIC);
-		    	b.setText("\tStarted By: " + user + ",\tLast: " + lastuser);
+		    	
+		    	StringBuilder userText = new StringBuilder();
+		    	userText.append("\tStarted By: ");
+		    	userText.append(user);
+		    	if(lastuser.length() != 0) {
+		    		userText.append(",\tLast: ");
+		    		userText.append(lastuser);
+		    	}
+		    	b.setText(userText.toString());
 		    	
 		    	TableRow.LayoutParams params = new TableRow.LayoutParams();
 		        params.span = 5;  
@@ -330,11 +339,12 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     
     /**
      * Grab contents from the forum that the user clicked on
-     * @param doc	The document parsed from the link
-     * @param id	The id number of the link
-     * @return		An arraylist of forum contents
+     * @param doc		The document parsed from the link
+     * @param id		The id number of the link
+     * @param isMarket 	True if the link is from a marketplace category
+     * @return			An arraylist of forum contents
      */
-    public ArrayList<String> getCategoryContents(Document doc, String id) {
+    public ArrayList<String> getCategoryContents(Document doc, String id, boolean isMarket) {
     	ArrayList<String> titles = new ArrayList<String>();
     	
     	// Update pagination
@@ -367,7 +377,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     		// Remove page from the link
     		String realLink = Utils.removePageFromLink(link);  			
     		
-    		if(threadhrefs.get(0).attr("href").contains(realLink)) {
+    		if(threadhrefs.get(0).attr("href").contains(realLink) || isMarket) {
 	    		String idlink = "http://www.rx8club.com/misc.php?do=whoposted&t=" + idnumber;
 	    		
 	    		String txt = repliesText.get(zindex).getElementsByClass("alt2").attr("title");

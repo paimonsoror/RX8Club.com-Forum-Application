@@ -342,14 +342,6 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 				if(link != null && !link.equals("")) {
 					Log.v(TAG, "User Clicked: " + link);
 					
-					//TODO temporary fix
-					if(link.contains("sale-wanted")) {
-						Toast.makeText(this, 
-								"Fix Being Worked On For Sale/Wanted Category", 
-								Toast.LENGTH_LONG).show();
-						break;
-					} 
-					
 					// Open new thread
 					new Thread("RefreshDisplayList") {
 						public void run() {

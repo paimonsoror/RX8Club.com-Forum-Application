@@ -124,15 +124,17 @@ public class VBForumFactory {
 		if(client != null && (addr != null && !addr.equals(""))) {
 			HttpGet httpost = null;
 			
+			// Lets make sure that the host was passed in with the 
+			// link
+			if(!addr.startsWith(getRootAddress())) {
+				addr = addr.startsWith("/")? addr : "/" + addr;
+				addr = getRootAddress() + addr;
+			}
+			
 			try {
 				httpost = new HttpGet(addr);
 			} catch (IllegalStateException e) {
-				BugSenseHandler.sendExceptionMessage("Address", addr, e);
-				
-				// Sometimes we pass an address with no host, fix
-				// that issue here
-				addr = addr.startsWith("/")? addr : "/" + addr;
-				httpost = new HttpGet(getRootAddress() + addr);			
+				BugSenseHandler.sendExceptionMessage("Address", addr, e);		
 			}
 			
 			try {
