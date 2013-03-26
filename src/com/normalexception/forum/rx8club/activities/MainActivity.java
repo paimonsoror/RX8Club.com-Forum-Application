@@ -216,12 +216,17 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
     	
     	// We need to decode the resource, and then scale
     	// down the image
-    	Bitmap scaledimg = 
+    	Bitmap scaledimg = null;
+    	try {
+    		scaledimg = 
     			Bitmap.createScaledBitmap(
     					BitmapFactory.decodeResource(
     							getResources(), R.drawable.arrow_icon), 
     							scaledImage, scaledImage, true);
-
+    	} catch (IllegalArgumentException iae) {
+    		Log.e(TAG, iae.getMessage());
+    	}
+    	
     	int index = 0;
     	for(String text : texts) {
 	    	// Create a Button to be the row-content.

@@ -46,9 +46,8 @@ public class CategoryUtils {
     		return CategoryIconSize.HDPI.getValue();
 
     	case DisplayMetrics.DENSITY_XHIGH:
+    	default:
     		return CategoryIconSize.XHDPI.getValue();
     	}
-    	
-    	return 0;
     } 
 }

@@ -46,9 +46,9 @@ public class ThreadUtils {
     		return ThreadButtonSize.HDPI.getValue();
 
     	case DisplayMetrics.DENSITY_XHIGH:
+    	default:
     		return ThreadButtonSize.XHDPI.getValue();
 
     	}
-    	return 0;
     }
 }
