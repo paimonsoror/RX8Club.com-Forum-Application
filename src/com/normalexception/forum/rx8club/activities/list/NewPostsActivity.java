@@ -55,7 +55,6 @@ import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
-import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.Utils;
@@ -437,7 +436,6 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	public void onClick(View arg0) {
 		super.onClick(arg0);	
 		Intent _intent = null;
-		boolean result = false;
 		
 		switch(arg0.getId()) {
 			case R.id.previousButton:
