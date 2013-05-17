@@ -41,6 +41,7 @@
     <string name="threadTitleSearch">Thread Title Search</string>
     <string name="pageXofY">Page X of Y</string>
     <string name="preferencesLabel">Application Preferences</string>
+    <string name="favorites">Favorites</string>
 
     <string-array name="searchDateArray">
         <item>Any Date</item>

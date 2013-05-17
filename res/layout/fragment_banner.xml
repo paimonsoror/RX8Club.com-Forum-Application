@@ -52,6 +52,15 @@
                android:textSize="10dip" />
 
            <Button
+               android:id="@+id/favoritesButton"
+               style="?android:attr/buttonStyleSmall"
+               android:layout_width="0dip"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:text="@string/favorites"
+               android:textSize="10dip" />
+           
+           <Button
                android:id="@+id/inboxButton"
                style="?android:attr/buttonStyleSmall"
                android:layout_width="0dip"

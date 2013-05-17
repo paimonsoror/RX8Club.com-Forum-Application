@@ -24,6 +24,10 @@ package com.normalexception.forum.rx8club.activities.fragments;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.util.ArrayList;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.MainActivity;
@@ -44,6 +49,9 @@ import com.normalexception.forum.rx8club.activities.pm.PrivateMessageActivity;
  */
 public class BannerFragment extends Fragment implements OnClickListener {
 
+	ArrayList<String> favoritesList = new ArrayList<String>();
+	CharSequence[] cs = null;
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
@@ -52,6 +60,8 @@ public class BannerFragment extends Fragment implements OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	// Inflate our fragment
         View view = inflater.inflate(R.layout.fragment_banner, container, false);        
+        favoritesList.add("Coming Soon...");
+        cs = favoritesList.toArray(new CharSequence[favoritesList.size()]);
         return view;
     }
     
@@ -64,6 +74,7 @@ public class BannerFragment extends Fragment implements OnClickListener {
     	super.onActivityCreated(savedInstanceState);
         getView().findViewById(R.id.imageView1).setOnClickListener(this);
         getView().findViewById(R.id.newTopicsButton).setOnClickListener(this);
+        getView().findViewById(R.id.favoritesButton).setOnClickListener(this);
         getView().findViewById(R.id.inboxButton).setOnClickListener(this);
         getView().findViewById(R.id.profileButton).setOnClickListener(this);
         getView().findViewById(R.id.searchButton).setOnClickListener(this);
@@ -79,6 +90,12 @@ public class BannerFragment extends Fragment implements OnClickListener {
 		switch(arg0.getId()) {
 			case R.id.newTopicsButton:
 				_intent = new Intent(arg0.getContext(), NewPostsActivity.class);
+				break;
+				
+			case R.id.favoritesButton:
+				_intent = null;
+				createFavoritesMenu();
+				
 				break;
 			
 			case R.id.inboxButton:
@@ -100,6 +117,24 @@ public class BannerFragment extends Fragment implements OnClickListener {
 		
 		if(_intent != null)
 			startActivity(_intent);
+	}
+	
+	private void createFavoritesMenu() {
+		// 1. Instantiate an AlertDialog.Builder with its constructor
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+		// 2. Chain together various setter methods to set the dialog characteristics
+		builder.setItems(cs, new DialogInterface.OnClickListener() {
+				            public void onClick(DialogInterface dialog, int which) {
+				            // The 'which' argument contains the index position
+				            // of the selected item
+				            Toast.makeText(getActivity(), "Coming Soon...", Toast.LENGTH_SHORT).show();
+				            }
+				        })
+		       .setTitle("Favorites");
+
+		// 3. Get the AlertDialog from create()
+		builder.create().show();
 	}
 
 }
