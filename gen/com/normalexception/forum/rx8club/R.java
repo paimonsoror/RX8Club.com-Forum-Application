@@ -173,6 +173,7 @@ public final class R {
     public static final class string {
         public static final int aboutOption=0x7f060016;
         public static final int aboutstring=0x7f060020;
+        public static final int addToFavorites=0x7f06002a;
         public static final int app_description=0x7f060014;
         public static final int app_name=0x7f060000;
         public static final int commentText=0x7f06001a;
@@ -209,7 +210,7 @@ public final class R {
         public static final int title_activity_private_message_view=0x7f060011;
         public static final int title_activity_profile=0x7f060007;
         public static final int title_activity_search=0x7f060009;
-        public static final int title_activity_styler_fragment=0x7f06002a;
+        public static final int title_activity_styler_fragment=0x7f06002b;
         public static final int title_activity_thread=0x7f060005;
         public static final int title_activity_user_cp=0x7f060013;
         public static final int userNameSearch=0x7f060024;

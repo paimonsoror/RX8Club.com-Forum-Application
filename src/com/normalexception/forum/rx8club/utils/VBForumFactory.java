@@ -210,6 +210,8 @@ public class VBForumFactory {
 			Log.e(TAG, "Error grabbing category page: " + e.getMessage());
 		} catch (IOException e) {
 			Log.e(TAG, "Error grabbing category page: " + e.getMessage());
+		} catch (IllegalArgumentException e) {
+			Log.e(TAG, "Error grabbing category page: " + e.getMessage());
 		}
 		
 	   	return null;

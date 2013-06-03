@@ -37,12 +37,15 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import com.normalexception.forum.rx8club.Log;
+import com.normalexception.forum.rx8club.MainApplication;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TableLayout;
 import android.widget.TableLayout.LayoutParams;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
@@ -102,32 +105,41 @@ public class ProfileActivity extends ForumBaseActivity implements OnClickListene
 			public void run() {				
 				Document doc = 
 						VBForumFactory.getInstance().get(src, UserProfile.getUserProfileLink());
-				String id = UserProfile.getUserProfileLink().substring(
-						UserProfile.getUserProfileLink().lastIndexOf("-") + 1,
-						UserProfile.getUserProfileLink().length() - 1);
-				UserProfile.setUserId(id);
-				getUserInformation(doc);
-				
-				runOnUiThread(new Runnable() {
-                    public void run() {
-                    	((TextView)findViewById(R.id.userNameText)).setText(
-                    			UserProfile.getUsername() + " (ID: " + UserProfile.getUserId() + ")");
-                    	((TextView)findViewById(R.id.userTitleText)).setText(UserProfile.getUserTitle());
-                    	((TextView)findViewById(R.id.userPostCountText)).setText(UserProfile.getUserPostCount());
-                    	((TextView)findViewById(R.id.joinDateText)).setText(UserProfile.getUserJoinDate());
-                    	
-                    	addRow(Color.BLACK, new String[]{"Your Recent Activity"}, 40, false);
-                    	
-                    	boolean alternate = true;
-                    	for(ProfileThreadStub stub : stubs) {
-                    		addRow(alternate? Color.GRAY : Color.DKGRAY,
-                    				new String[]{stub.name + "\n\n" + stub.text},
-                    				100, false);
-                    		alternate = !alternate;
-                    	}
-                    }
-				});
-
+				if(doc != null) {
+					String id = UserProfile.getUserProfileLink().substring(
+							UserProfile.getUserProfileLink().lastIndexOf("-") + 1,
+							UserProfile.getUserProfileLink().length() - 1);
+					UserProfile.setUserId(id);
+					getUserInformation(doc);
+					
+					runOnUiThread(new Runnable() {
+	                    public void run() {
+	                    	((TextView)findViewById(R.id.userNameText)).setText(
+	                    			UserProfile.getUsername() + " (ID: " + UserProfile.getUserId() + ")");
+	                    	((TextView)findViewById(R.id.userTitleText)).setText(UserProfile.getUserTitle());
+	                    	((TextView)findViewById(R.id.userPostCountText)).setText(UserProfile.getUserPostCount());
+	                    	((TextView)findViewById(R.id.joinDateText)).setText(UserProfile.getUserJoinDate());
+	                    	
+	                    	addRow(Color.BLACK, new String[]{"Your Recent Activity"}, 40, false);
+	                    	
+	                    	boolean alternate = true;
+	                    	for(ProfileThreadStub stub : stubs) {
+	                    		addRow(alternate? Color.GRAY : Color.DKGRAY,
+	                    				new String[]{stub.name + "\n\n" + stub.text},
+	                    				100, false);
+	                    		alternate = !alternate;
+	                    	}
+	                    }
+					});
+				} else {
+					runOnUiThread(new Runnable() {
+	                    public void run() {
+						Toast.makeText(MainApplication.getAppContext(),
+								"There Was An Error Reading Your Profile...",
+								Toast.LENGTH_LONG).show();
+		                    }
+					});
+				}
 				loadingDialog.dismiss();
 			}
         };
