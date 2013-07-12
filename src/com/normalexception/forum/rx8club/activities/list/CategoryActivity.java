@@ -53,6 +53,7 @@ import android.widget.TextView;
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
@@ -185,8 +186,12 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		    	
 		    	for(String lst : list) {     
 		    		final String[] rowText = lst.split("µ");
+		    		int clr = Color.DKGRAY;
+		    		if(lst.startsWith("Sticky:"))
+		    			clr = Color.GRAY;
+		    		
 		    		viewContents.add(
-		    				new ViewContents(Color.DKGRAY, new String[]{rowText[0], rowText[1], rowText[2]}, 90, false));
+		    				new ViewContents(clr, new String[]{rowText[0], rowText[1], rowText[2]}, 90, false));
 				}
 		    	
 		    	updateView(viewContents);
@@ -352,16 +357,21 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     	
     	// Make sure id contains only numbers
     	id = Utils.parseInts(id);
- 
-    	Elements threadLinks = doc.select("a[id^=thread_title]");
-    	Elements repliesText = doc.select("td[title^=Replies");
     	
-    	int zindex = 0;
-    	for(Element threadLink : threadLinks) {
-    		String idnumber = Utils.parseInts(threadLink.id());
-    		Elements threadhrefs = doc.select("#td_threadtitle_" + idnumber + " a");
-    		Elements threaduser = doc.select("#td_threadtitle_" + idnumber + " div.smallfont");
-    		Elements threadicon = doc.select("img[id=thread_statusicon_" + idnumber + "]");
+    	// Grab each thread
+    	Elements threadListing = doc.select("tbody[id^=threadbits_] > tr");
+ 
+    	for(Element thread : threadListing) {
+    		Element threadLink  = thread.select("a[id^=thread_title]").get(0);
+    		Element repliesText = thread.select("td[title^=Replies]").get(0);
+    		Element threaduser  = thread.select("td[id^=td_threadtitle_] div.smallfont").get(0);
+    		Element threadicon  = thread.select("img[id^=thread_statusicon_]").get(0);
+
+    		boolean isSticky = false;
+    		try {
+    			isSticky = thread.select("td[id^=td_threadtitle_] > div").text().contains("Sticky:");
+    		} catch (Exception e) { }
+    		
     		String totalPostsInThreadTitle = threadicon.attr("alt");
     		String totalPosts;
     		
@@ -377,37 +387,31 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     		// Remove page from the link
     		String realLink = Utils.removePageFromLink(link);  			
     		
-    		if(threadhrefs.get(0).attr("href").contains(realLink) || isMarket) {
-	    		String idlink = "http://www.rx8club.com/misc.php?do=whoposted&t=" + idnumber;
+    		if(threadLink.attr("href").contains(realLink) || isMarket) {
 	    		
-	    		String txt = repliesText.get(zindex).getElementsByClass("alt2").attr("title");
+	    		String txt = repliesText.getElementsByClass("alt2").attr("title");
 	    		String splitter[] = txt.split(" ", 4);
 	    		String postCount = splitter[1].substring(0, splitter[1].length() - 1);
 	    		String views = splitter[3];
 
-	    		titles.add(threadLink.text() + totalPosts + "µ" + postCount + "µ" + views);
+	    		String formattedTitle = 
+	    				String.format("%s%s", isSticky? "Sticky: " : "", threadLink.text()); 
 	    		
-	    		if(threadhrefs.isEmpty())
-	    			Log.e(TAG, "Thread Links are empty on this iteration! " + idlink);
+	    		titles.add(String.format(
+	    				"%s%sµ%sµ%s", formattedTitle, totalPosts, postCount, views));
 	    		
-	    		int index = 0;
-	    		if(threadhrefs.size() > 1)
-	    			index = 1;
-	    			
 	    		linkMap.put(
-	    				(threadLink.text() + totalPosts).trim(), 
-	    				threadhrefs.get(index).attr("href"));
+	    				(formattedTitle + totalPosts).trim(), 
+	    				threadLink.attr("href"));
 	    		tlContents.styleMap.put(
-	    				(threadLink.text() + totalPosts).trim(), 
-	    				threadhrefs.get(index).attr("style"));
+	    				(formattedTitle + totalPosts).trim(), 
+	    				threadLink.attr("style"));
 	    		tlContents.userMap.put(
-	    				(threadLink.text() + totalPosts).trim(), 
+	    				(formattedTitle + totalPosts).trim(), 
 	    				threaduser.text());
 	    		tlContents.lastUserMap.put(
-	    				(threadLink.text() + totalPosts).trim(), 
-	    				repliesText.get(zindex).select("a[href*=members]").text());
-	    		
-	    		zindex++;
+	    				(formattedTitle + totalPosts).trim(), 
+	    				repliesText.select("a[href*=members]").text());
     		}
     	}
     	
@@ -473,7 +477,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 				break;
 			case R.id.newThreadButton:
 				_intent = new Intent(CategoryActivity.this, NewThreadActivity.class);
-				_intent.putExtra("link", "http://www.rx8club.com/newthread.php?do=newthread&f=" + forumId);
+				_intent.putExtra("link", WebUrls.newThreadAddress + forumId);
 				_intent.putExtra("source", link);
 				_intent.putExtra("forumid", forumId);
 				result = true;
