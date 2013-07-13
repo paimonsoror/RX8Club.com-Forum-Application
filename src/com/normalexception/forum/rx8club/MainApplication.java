@@ -37,6 +37,8 @@ public class MainApplication extends Application {
 	private static String TAG = "Application";
 	
 	public static final String APP_PACKAGE = "com.normalexception.forum.rx8club";
+	
+	private static final int LOG_LEVEL = Log.DEBUG;
 
 	/*
 	 * (non-Javadoc)
@@ -44,7 +46,7 @@ public class MainApplication extends Application {
 	 */
     public void onCreate(){
     	// Set the logger level for our log wrapper
-    	Log.setLevel(Log.DEBUG);
+    	Log.setLevel(LOG_LEVEL);
     	
     	Log.v(TAG, "Starting Application");
         super.onCreate();

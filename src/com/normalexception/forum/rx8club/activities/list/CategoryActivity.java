@@ -187,7 +187,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		    	for(String lst : list) {     
 		    		final String[] rowText = lst.split("µ");
 		    		int clr = Color.DKGRAY;
-		    		if(lst.startsWith("Sticky:"))
+		    		if(PreferenceHelper.isHighlightStickies(src) && lst.startsWith("Sticky:"))
 		    			clr = Color.GRAY;
 		    		
 		    		viewContents.add(
@@ -373,16 +373,15 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     		} catch (Exception e) { }
     		
     		String totalPostsInThreadTitle = threadicon.attr("alt");
-    		String totalPosts;
+    		String totalPosts = "";	
     		
-    		if(totalPostsInThreadTitle != null && totalPostsInThreadTitle.length() > 0)
+    		if(PreferenceHelper.isShowPostCountButton(this) && 
+    				totalPostsInThreadTitle != null && totalPostsInThreadTitle.length() > 0)
     			totalPosts = lpad +
     				totalPostsInThreadTitle.split(" ")[2] + 
     				" " + 
     				totalPostsInThreadTitle.split(" ")[3] +
     				rpad;
-    		else
-    			totalPosts = "";
     		
     		// Remove page from the link
     		String realLink = Utils.removePageFromLink(link);  			

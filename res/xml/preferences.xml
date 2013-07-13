@@ -36,6 +36,11 @@
 	        android:defaultValue="true"
 	        android:summary="Show 'Posted From' On Thread Posts"
 	        android:key="advertise" />
+	    <CheckBoxPreference
+	   	    android:title="Highlight Stickies"
+	   	    android:defaultValue="true"
+	   	    android:summary="Stickies will have a different bg color"
+	   	    android:key="highlightstickies" /> 
 	   	<CheckBoxPreference
 	   	    android:title="Show Delete Post Button"
 	   	    android:defaultValue="true"

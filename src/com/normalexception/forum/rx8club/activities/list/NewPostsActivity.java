@@ -187,8 +187,12 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 		    	
 		    	for(String lst : list) {     
 		    		final String[] rowText = lst.split("µ");
+		    		int clr = Color.DKGRAY;
+		    		if(PreferenceHelper.isHighlightStickies(src) && lst.startsWith("Sticky:"))
+		    			clr = Color.GRAY;
+		    		
 		    		viewContents.add(
-		    				new ViewContents(Color.DKGRAY, new String[]{rowText[0], rowText[1], rowText[2]}, 90, false));
+		    				new ViewContents(clr, new String[]{rowText[0], rowText[1], rowText[2]}, 90, false));
 				}
 		    	
 		    	updateView(viewContents);
@@ -340,55 +344,58 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
     	// Update pagination
     	updatePagination(doc);
     	
-    	Elements threadLinks = doc.select("a[id^=thread_title]");
-    	Elements repliesText = doc.select("td[title^=Replies");
-    	
-    	int zindex = 0;
-    	for(Element threadLink : threadLinks) {
-    		String idnumber = Utils.parseInts(threadLink.id());
-    		Elements threadhrefs = doc.select("#td_threadtitle_" + idnumber + " a");
-    		Elements threaduser = doc.select("#td_threadtitle_" + idnumber + " div.smallfont");
-    		Elements threadicon = doc.select("img[id=thread_statusicon_" + idnumber + "]");
-    		String totalPostsInThreadTitle = threadicon.attr("alt");
-    		String totalPosts = "";	
+    	// Grab each thread
+    	Elements threadListing = doc.select("table[id=threadslist] > tbody > tr");
+ 
+    	for(Element thread : threadListing) {
+    		Elements threadTitleContainer  = thread.select("a[id^=thread_title]");
     		
-    		if(PreferenceHelper.isShowPostCountButton(this) && 
-    				totalPostsInThreadTitle != null && totalPostsInThreadTitle.length() > 0)
-    			totalPosts = lpad +
-    				totalPostsInThreadTitle.split(" ")[2] + 
-    				" " + 
-    				totalPostsInThreadTitle.split(" ")[3] +
-    				rpad;
-    		
-    		String idlink = "http://www.rx8club.com/misc.php?do=whoposted&t=" + idnumber;
-    		
-    		String txt = repliesText.get(zindex).getElementsByClass("alt2").attr("title");
-    		String splitter[] = txt.split(" ", 4);
-    		String postCount = splitter[1].substring(0, splitter[1].length() - 1);
-    		String views = splitter[3];
+    		if(threadTitleContainer != null && !threadTitleContainer.isEmpty()) {
+	    		Element threadLink  = threadTitleContainer.get(0);
+	    		Element repliesText = thread.select("td[title^=Replies]").get(0);
+	    		Element threaduser  = thread.select("td[id^=td_threadtitle_] div.smallfont").get(0);
+	    		Element threadicon  = thread.select("img[id^=thread_statusicon_]").get(0);
+	
+	    		boolean isSticky = false;
+	    		try {
+	    			isSticky = thread.select("td[id^=td_threadtitle_] > div").text().contains("Sticky:");
+	    		} catch (Exception e) { }
+	    		
+	    		String totalPostsInThreadTitle = threadicon.attr("alt");
+	    		String totalPosts = "";	
+	    		
+	    		if(PreferenceHelper.isShowPostCountButton(this) && 
+	    				totalPostsInThreadTitle != null && totalPostsInThreadTitle.length() > 0)
+	    			totalPosts = lpad +
+	    				totalPostsInThreadTitle.split(" ")[2] + 
+	    				" " + 
+	    				totalPostsInThreadTitle.split(" ")[3] +
+	    				rpad;
+	    		
+	    		String txt = repliesText.getElementsByClass("alt2").attr("title");
+	    		String splitter[] = txt.split(" ", 4);
+	    		String postCount = splitter[1].substring(0, splitter[1].length() - 1);
+	    		String views = splitter[3];
 
-    		titles.add(threadLink.text() + totalPosts + "µ" + postCount + "µ" + views);
-    		
-    		if(threadhrefs.isEmpty())
-    			Log.e(TAG, "Thread Links are empty on this iteration! " + idlink);
-    		
-    		int index = 0;
-    		if(threadhrefs.size() > 1)
-    			index = 1;
-    			
-    		linkMap.put(
-    				(threadLink.text() + totalPosts).trim(), 
-    				"http://www.rx8club.com/" + threadhrefs.get(index).attr("href"));
-    		tlContents.styleMap.put(
-    				(threadLink.text() + totalPosts).trim(), 
-    				threadhrefs.get(index).attr("style"));
-    		tlContents.userMap.put(
-    				(threadLink.text() + totalPosts).trim(), 
-    				threaduser.text());
-    		tlContents.lastUserMap.put(
-    				(threadLink.text() + totalPosts).trim(), 
-    				repliesText.get(zindex).select("a[rel=nofollow]").text());
-    		zindex++;
+	    		String formattedTitle = 
+	    				String.format("%s%s", isSticky? "Sticky: " : "", threadLink.text()); 
+	    		
+	    		titles.add(String.format(
+	    				"%s%sµ%sµ%s", formattedTitle, totalPosts, postCount, views));
+	    		
+	    		linkMap.put(
+	    				(formattedTitle + totalPosts).trim(), 
+	    				threadLink.attr("href"));
+	    		tlContents.styleMap.put(
+	    				(formattedTitle + totalPosts).trim(), 
+	    				threadLink.attr("style"));
+	    		tlContents.userMap.put(
+	    				(formattedTitle + totalPosts).trim(), 
+	    				threaduser.text());
+	    		tlContents.lastUserMap.put(
+	    				(formattedTitle + totalPosts).trim(), 
+	    				repliesText.select("a[href*=members]").text());
+    		}
     	}
     	
     	return titles;

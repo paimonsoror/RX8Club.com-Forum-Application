@@ -145,4 +145,14 @@ public class PreferenceHelper {
     	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
     	return prefs.getBoolean("stylebutton", true);
     }
+    
+    /**
+     * Highlight sticky threads
+     * @param context	Application context	
+     * @return			The option value
+     */
+    public static boolean isHighlightStickies(Context context) {
+    	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+    	return prefs.getBoolean("highlightstickies", true);
+    }
 }
