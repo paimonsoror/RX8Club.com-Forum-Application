@@ -83,6 +83,14 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	
 	public int scaledImage = 12;
 	
+	// The Forum's Main Page Has The Following Column
+	@SuppressWarnings("unused")
+	private static final int ROTOR_ICON = 0,
+			                 FORUM_NAME = 1,
+			                 LAST_POST  = 2,
+			                 THREADS_CNT= 3,
+			                 POSTS_CNT  = 4;
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -266,46 +274,51 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
     /**
      * Get the forum contents as a Map that links the category names
      * to a list of the forums within each category
-     * @param forum	The full forum document
+     * @param root	The full forum document
      * @return		A map of the categories to the forums
      */
-    private Map<String, Collection<?>> getCategories(Document forum) {
-    	Elements tborders = forum.select("table.tborder");
-        Element threads = tborders.get(LoginFactory.getInstance().isLoggedIn()? 2 : 5);
-        Elements tbodies = threads.getElementsByTag("tbody");
-        
-        Map< String, Collection<?> > container = new LinkedHashMap< String, Collection<?> >();
-        List<String> categories = new ArrayList<String>();
-        
-        Elements as = null;
-        for(Element tbody : tbodies) {
-        	Elements tcats = tbody.getElementsByClass("tcat");
-    		if(!tcats.isEmpty()) {
-	        	 as = tcats.get(0).getElementsByTag("a");
-	        	 container.put(as.get(1).text(), categories = new ArrayList<String>());
-    		} else {
-	        	Elements alts = tbody.getElementsByClass("alt1Active");
-	        	Elements alt1 = tbody.getElementsByClass("alt1");
-	        	Elements alt2 = tbody.getElementsByClass("alt2");
-	        	
-	        	int yindex = 0, zindex = 2;
-	        	for(Element alt : alts) {
-		        	Elements tds = alt.getElementsByTag("strong");
-		        	Elements href = alt.getElementsByTag("a");
-		        	if(!href.isEmpty()) {
-			        	for(Element strong : tds) {
-			        		categories.add(strong.text() + "µ" + 
-			        				alt1.get(yindex).text() + "µ" + 
-			        				alt2.get(zindex).text());
-			        		linkMap.put(strong.text(), href.get(0).attr("href"));
-			        	}
-		        	
-			        	yindex++;
-			        	zindex += 3;
-		        	}
-	        	}
+    private Map<String, Collection<?>> getCategories(Document root) {	
+    	Map< String, Collection<?> > container = new LinkedHashMap< String, Collection<?> >();
+    	
+    	// Grab each category
+    	Elements categories       = root.getElementsByClass("tcat");
+    	
+    	// We need to remove the first and last sections here because
+    	// at this forum, the first category displays the member pictures
+    	// while the last is the 'whats going on' section
+    	categories.remove(0); categories.remove(categories.size() - 1);
+    	
+    	// Now grab each section within a category
+    	Elements categorySections = root.select("tbody[id^=collapseobj_forumbit_]");
+    	
+    	// These should match in size
+    	if(categories.size() != categorySections.size()) return container;
+    	
+    	// Create a list that will hold category contents
+    	List<String> catContents = null;
+    	
+    	// Iterate over each category
+    	int catIndex = 0;
+    	for(Element category : categorySections) {
+    		container.put(categories.get(catIndex++).text(), 
+    				      catContents = new ArrayList<String>());
+    		
+    		Elements forums = category.select("tr[align=center]");
+    		for(Element forum : forums) {
+    			// Each forum object should have 5 columns
+    			Elements columns = forum.select("tr[align=center] > td");
+    			if(columns.size() != 5) continue;
+
+    			String forum_name = columns.get(MainActivity.FORUM_NAME).select("strong").text();
+    			String forum_href = columns.get(MainActivity.FORUM_NAME).select("a").attr("href");
+    			String threads    = columns.get(MainActivity.THREADS_CNT).text();
+    			String posts      = columns.get(MainActivity.POSTS_CNT).text();
+    			
+    			catContents.add(
+    					String.format("%sµ%sµ%s", forum_name, threads, posts));
+    			linkMap.put(forum_name, forum_href);
     		}
-        }
+    	}
         
         return container;
     }
