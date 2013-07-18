@@ -31,10 +31,12 @@ public class ThreadListContents implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	public LinkedHashMap<String,String> styleMap, userMap, lastUserMap;
+	public LinkedHashMap<String,Boolean> lockedMap;
 	
 	public ThreadListContents() {
 		styleMap = new LinkedHashMap<String,String>();
         userMap = new LinkedHashMap<String,String>();
 	    lastUserMap = new LinkedHashMap<String, String>();
+	    lockedMap = new LinkedHashMap<String, Boolean>();
 	}
 }

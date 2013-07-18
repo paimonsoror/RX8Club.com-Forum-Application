@@ -254,6 +254,7 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
      */
     private void addRow(int clr, String texts[], int id, boolean span) {
     	String user = "", lastuser = "";
+    	boolean isLocked = false;
     	
     	/* Create a new row to be added. */
     	TableRow tr_head = new TableRow(this);
@@ -288,13 +289,24 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	    							getResources(), R.drawable.arrow_icon), 
 	    							scaledImage, scaledImage, true);
 	        
+	    	// Do the same for the lock icon
+	    	Bitmap scaledlock = 
+	    			Bitmap.createScaledBitmap(
+	    					BitmapFactory.decodeResource(
+	    							getResources(), R.drawable.lock), 
+	    							scaledImage, scaledImage, true);
+	    	
 	        if(index == 0) {
 	        	user = tlContents.userMap.get(text);
 	        	lastuser = tlContents.lastUserMap.get(text);
 	        	
+	        	try { 
+	        		isLocked = tlContents.lockedMap.get(text); } 
+	        	catch (NullPointerException npe) { }
+	        	
 	        	// Set the information for the text line as a spannable
 	        	// for the first column
-	        	b.setUserPostInformation(text, scaledimg, clr);
+	        	b.setUserPostInformation(text, isLocked? scaledlock : scaledimg, clr);
         		b.setSpannedWidth();
 	        } else {
 	        	b.setText(text);
@@ -344,9 +356,12 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	    		Element threaduser  = thread.select("td[id^=td_threadtitle_] div.smallfont").get(0);
 	    		Element threadicon  = thread.select("img[id^=thread_statusicon_]").get(0);
 	
-	    		boolean isSticky = false;
+	    		boolean isSticky = false, isLocked = false;
 	    		try {
 	    			isSticky = thread.select("td[id^=td_threadtitle_] > div").text().contains("Sticky:");
+	    		} catch (Exception e) { }
+	    		try {
+	    			isLocked = threadicon.attr("src").contains("lock.gif");
 	    		} catch (Exception e) { }
 	    		
 	    		String totalPostsInThreadTitle = threadicon.attr("alt");
@@ -383,6 +398,9 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	    		tlContents.lastUserMap.put(
 	    				(formattedTitle + totalPosts).trim(), 
 	    				repliesText.select("a[href*=members]").text());
+	    		tlContents.lockedMap.put(
+	    				(formattedTitle + totalPosts).trim(),
+	    				isLocked);
     		}
     	}
     	
