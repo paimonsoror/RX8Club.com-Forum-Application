@@ -33,6 +33,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.util.TypedValue;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
@@ -111,4 +112,16 @@ public class CTextView extends TextView {
     					TypedValue.COMPLEX_UNIT_DIP, 0, r.getDisplayMetrics());
     	setWidth(px);
 	}
+
+	/**
+	 * Report the text parameters
+	 * @return	Text parameters for view
+	 */
+	public TableRow.LayoutParams getTextParameters(int index) {
+		TableRow.LayoutParams params = new TableRow.LayoutParams();
+	    params.span = 1;  
+	    if(index == 0) params.weight = 1f;
+	    return params;
+	}
 }
+

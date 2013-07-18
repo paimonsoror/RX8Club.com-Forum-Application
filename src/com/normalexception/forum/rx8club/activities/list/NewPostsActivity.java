@@ -300,12 +300,7 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	        	b.setText(text);
 	        }
 	
-	    	/* Add Button to row. */
-	        TableRow.LayoutParams params = new TableRow.LayoutParams();
-	        params.span = span? 5 :	1;  
-	        if(index == 0) params.weight = 1f;
-	        tr_head.addView(b,params);
-
+	        tr_head.addView(b, b.getTextParameters(index));
 	        index++;
     	}
 
