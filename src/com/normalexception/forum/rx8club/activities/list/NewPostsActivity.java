@@ -63,6 +63,7 @@ import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
+import com.normalexception.forum.rx8club.view.CTextDetail;
 import com.normalexception.forum.rx8club.view.CTextView;
 import com.normalexception.forum.rx8club.view.ViewContents;
 
@@ -350,17 +351,8 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 		        tr_head = new TableRow(this);
 		    	tr_head.setBackgroundColor(clr);
 		    	
-		    	TextView b = new TextView(this);
-		    	float scaledText = (float) PreferenceHelper.getFontSize(this);
-		    	b.setTextSize((float) (scaledText * 0.75));
-		    	b.setTextColor(Color.WHITE);
-		    	b.setTypeface(null, Typeface.ITALIC);
-		    	b.setText("\tStarted By: " + user + ",\tLast: " + lastuser);
-		    	
-		    	TableRow.LayoutParams params = new TableRow.LayoutParams();
-		        params.span = 5;  
-		        params.weight = 1f;
-		    	tr_head.addView(b, params);
+		    	CTextDetail b = new CTextDetail(this, user, lastuser);		    			    	
+		    	tr_head.addView(b, b.getTextParameters());
 		    	
 		    	tl.addView(tr_head, tl.getChildCount() - 1);
 	        }
