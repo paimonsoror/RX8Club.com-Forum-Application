@@ -24,17 +24,27 @@ package com.normalexception.forum.rx8club.view;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
-
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
+import android.util.TypedValue;
 import android.widget.TextView;
+
+import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 
 /**
  * A custom textview that handles a lot of the common settings for what
  * a textview entails in the ui
  */
 public class CTextView extends TextView {
+	
+	public static final char LPAD = '«';
+	public static final char RPAD = '»';
 	
 	/**
 	 * Default constructor
@@ -57,5 +67,48 @@ public class CTextView extends TextView {
     	setTextSize((float) PreferenceHelper.getFontSize(context));
     	setTextColor(Color.WHITE);
         setPadding(5, 5, 5, 5);
+	}
+	
+	/**
+	 * Set the post detail information
+	 * @param text			The string to set
+	 * @param scaledimg		The image that will be set
+	 * @param clr			The color of the text
+	 */
+	public void setUserPostInformation(String text, Bitmap scaledimg, int clr) {
+		int spanStart = text.lastIndexOf(LPAD);
+		if(spanStart > -1) {
+			int spanEnd = text.lastIndexOf(RPAD) + 1;
+			String preDetail = text.substring(0, spanStart);
+			String postDetail = text.substring(spanStart, spanEnd);
+			SpannableStringBuilder htext = new SpannableStringBuilder(
+					Html.fromHtml("&nbsp;" + preDetail + "&nbsp;&nbsp;" +
+					"<font color='yellow'>" + 
+					postDetail + 
+					"</font>"));
+			
+			htext.setSpan(new ImageSpan(scaledimg), 
+	    			0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
+			
+			setText( htext,
+						TextView.BufferType.SPANNABLE);
+		} else {
+			SpannableStringBuilder htext = new SpannableStringBuilder(" " + text);
+			htext.setSpan(new ImageSpan(scaledimg), 
+	    			0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
+			setText(clr == Color.BLUE? text : htext);
+		}
+	}
+	
+	/**
+	 * Set the spanned width of the view
+	 */
+	public void setSpannedWidth() {
+		// Convert dip to px
+    	Resources r = getResources();
+    	int px = 
+    			(int)TypedValue.applyDimension(
+    					TypedValue.COMPLEX_UNIT_DIP, 0, r.getDisplayMetrics());
+    	setWidth(px);
 	}
 }

@@ -81,10 +81,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	
 	private static final String TAG = "Application:Category";
 	private static String link;
-	
-	private static char lpad = '«';
-	private static char rpad = '»';
-	
+
 	private String pageNumber = "";
 	
 	private String forumId = "";
@@ -302,35 +299,10 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        	user = tlContents.userMap.get(text);
 	        	lastuser = tlContents.lastUserMap.get(text);
 	        	
-        		int spanStart = text.lastIndexOf(lpad);
-        		if(spanStart > -1) {
-        			int spanEnd = text.lastIndexOf(rpad) + 1;
-        			String preDetail = text.substring(0, spanStart);
-        			String postDetail = text.substring(spanStart, spanEnd);
-        			SpannableStringBuilder htext = new SpannableStringBuilder(
-        					Html.fromHtml("&nbsp;" + preDetail + "&nbsp;&nbsp;" +
-    						"<font color='yellow'>" + 
-    						postDetail + 
-    						"</font>"));
-        			
-        			htext.setSpan(new ImageSpan(scaledimg), 
-        	    			0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
-        			
-        			b.setText( htext,
-	    						TextView.BufferType.SPANNABLE);
-        		} else {
-        			SpannableStringBuilder htext = new SpannableStringBuilder(" " + text);
-        			htext.setSpan(new ImageSpan(scaledimg), 
-        	    			0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
-        			b.setText(clr == Color.BLUE? text : htext);
-        		}
-        		
-        		// Convert dip to px
-            	Resources r = getResources();
-            	int px = 
-            			(int)TypedValue.applyDimension(
-            					TypedValue.COMPLEX_UNIT_DIP, 0, r.getDisplayMetrics());
-            	b.setWidth(px);
+	        	// Set the information for the text line as a spannable
+	        	// for the first column
+	        	b.setUserPostInformation(text, scaledimg, clr);
+	        	b.setSpannedWidth();
 	        } else {
 	        	b.setText(text);
 	        }
@@ -396,11 +368,11 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     		
     		if(PreferenceHelper.isShowPostCountButton(this) && 
     				totalPostsInThreadTitle != null && totalPostsInThreadTitle.length() > 0)
-    			totalPosts = lpad +
+    			totalPosts = CTextView.LPAD +
     				totalPostsInThreadTitle.split(" ")[2] + 
     				" " + 
     				totalPostsInThreadTitle.split(" ")[3] +
-    				rpad;
+    				CTextView.RPAD;
     		
     		// Remove page from the link
     		String realLink = Utils.removePageFromLink(link);  			
