@@ -47,7 +47,6 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
-import com.normalexception.forum.rx8club.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -56,14 +55,14 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bugsense.trace.BugSenseHandler;
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
 import com.normalexception.forum.rx8club.activities.list.CategoryUtils;
-import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
+import com.normalexception.forum.rx8club.view.CTextView;
 import com.normalexception.forum.rx8club.view.ViewContents;
 
 /**
@@ -116,7 +115,6 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	        }
     	} catch (Exception e) {
     		Log.e(TAG, "Fatal Error In Main Activity! " + e.getMessage());
-    		BugSenseHandler.sendException(e);
     	}
     }
     
@@ -178,7 +176,6 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	                updateView(viewContents);
 	                Log.v(TAG, "Dismissing Wait Dialog");
         		} catch(Exception e) {
-        			BugSenseHandler.sendException(e);
         			thisActivity.runOnUiThread(new Runnable() {
         				public void run() {
         					Toast.makeText(thisActivity, 
@@ -235,23 +232,17 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
     		Log.e(TAG, iae.getMessage());
     	}
     	
-    	int index = 0;
+    	int index = ROTOR_ICON;
     	for(String text : texts) {
 	    	// Create a Button to be the row-content.
-	    	TextView b = new TextView(this);
-	    	b.setId(id);
+	    	CTextView b = new CTextView(this, this, id);
 	    	
 	    	SpannableStringBuilder htext = new SpannableStringBuilder(" " + text);
 			htext.setSpan(new ImageSpan(scaledimg), 
 	    			0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
-			b.setText(clr == Color.BLUE || clr == Color.DKGRAY || index > 0? text : htext);
+			b.setText(clr == Color.BLUE || clr == Color.DKGRAY || index > ROTOR_ICON? text : htext);
 			
-	    	b.setOnClickListener(this);
-	    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
-	    	b.setTextColor(Color.WHITE);
-	        b.setPadding(5, 5, 5, 5);
-
-	        if(index == 0) {
+	        if(index == ROTOR_ICON) {
 	        	// Convert dip to px
 	        	Resources r = getResources();
         		int px = 
@@ -262,7 +253,7 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	
 	        TableRow.LayoutParams params = new TableRow.LayoutParams();
 	        params.span = span? 5 :	1;  
-	        if(index == 0) params.weight = 1f;
+	        if(index == ROTOR_ICON) params.weight = 1f;
 	        tr_head.addView(b,params);
 	        index++;
     	}
@@ -338,7 +329,6 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 			output = ff.getForumFrontpage(this, lf);
 		} catch (IOException ioe) {
 			Log.e(TAG, "Error Grabbing Forum Frontpage: " + ioe.getMessage());
-			BugSenseHandler.sendException(ioe);
 		}		
 		
 	   	return Jsoup.parse(output);

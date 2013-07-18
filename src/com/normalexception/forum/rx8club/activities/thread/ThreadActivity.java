@@ -59,7 +59,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
@@ -129,7 +128,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			}				
 		} catch (Exception e) {
 			Log.e(TAG, "Error Restoring Contents: " + e.getMessage());
-			BugSenseHandler.sendException(e);
 		}
 	}
 	
@@ -192,7 +190,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	         }
 	 	} catch (Exception e) {
 	 		Log.e(TAG, "Fatal Error In Thread Activity! " + e.getMessage());
-	 		BugSenseHandler.sendException(e);
 	 	}
     }
     

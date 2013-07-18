@@ -54,7 +54,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
@@ -83,7 +82,6 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 			outState.putSerializable("token", token);
 		} catch (Exception e) {
 			Log.e(TAG, "Error Serializing: " + e.getMessage());
-			BugSenseHandler.sendException(e);
 		}
 	}
 	
@@ -103,7 +101,6 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "Error UnSerializing: " + e.getMessage());
-			BugSenseHandler.sendException(e);
 		}
 	}
 	

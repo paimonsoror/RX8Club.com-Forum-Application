@@ -43,7 +43,6 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
@@ -97,7 +96,6 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 			}				
 		} catch (Exception e) {
 			Log.e(TAG, "Error Restoring Contents: " + e.getMessage());
-			BugSenseHandler.sendException(e);
 		}
 	}
 	

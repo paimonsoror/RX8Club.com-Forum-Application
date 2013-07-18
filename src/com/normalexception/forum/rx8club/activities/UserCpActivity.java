@@ -34,7 +34,6 @@ import com.normalexception.forum.rx8club.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.task.ProfileTask;
@@ -62,7 +61,6 @@ public class UserCpActivity extends ForumBaseActivity {
 			outState.putSerializable("occupation", occupation);
 		} catch (Exception e) {
 			Log.e(TAG, "Error Serializing: " + e.getMessage());
-			BugSenseHandler.sendException(e);
 		}
 	}
 	
@@ -90,7 +88,6 @@ public class UserCpActivity extends ForumBaseActivity {
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "Error UnSerializing: " + e.getMessage());
-			BugSenseHandler.sendException(e);
 		}
 	}
 	

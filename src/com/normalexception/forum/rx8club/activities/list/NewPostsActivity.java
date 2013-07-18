@@ -43,15 +43,19 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
-import com.normalexception.forum.rx8club.Log;
 import android.util.TypedValue;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bugsense.trace.BugSenseHandler;
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
@@ -59,6 +63,7 @@ import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
+import com.normalexception.forum.rx8club.view.CTextView;
 import com.normalexception.forum.rx8club.view.ViewContents;
 
 /**
@@ -107,7 +112,6 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 					(ThreadListContents) savedInstanceState.getSerializable("contents");			
 		} catch (Exception e) {
 			Log.e(TAG, "Error Restoring Contents: " + e.getMessage());
-			BugSenseHandler.sendException(e);
 		}
 	}
 	
@@ -141,9 +145,9 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	        else {
 	        	updateView(viewContents);
 	        }
+	        
     	} catch (Exception e) {
     		Log.e(TAG, "Fatal Error In New Post Activity! " + e.getMessage());
-    		BugSenseHandler.sendException(e);
     	}
     }
     
@@ -174,10 +178,9 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
  						link = ele.attr("href");
  					}
  				}
- 				viewContents = new ArrayList<ViewContents>();
- 		        
- 				linkMap = new LinkedHashMap<String,String>();
  				
+ 				viewContents = new ArrayList<ViewContents>();     
+ 				linkMap = new LinkedHashMap<String,String>();			
  				tlContents = new ThreadListContents();
  		        
 				final ArrayList<String> list = getContents(doc);
@@ -226,6 +229,31 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
     	});
     }
     
+    /*
+	 * (non-Javadoc)
+	 * @see android.app.Fragment#onCreateContextMenu(android.view.ContextMenu, android.view.View, android.view.ContextMenu.ContextMenuInfo)
+	 */
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+	    menu.add(Menu.NONE, v.getId(), Menu.NONE, "Add As Favorite");   
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see android.app.Fragment#onContextItemSelected(android.view.MenuItem)
+	 */
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+	    if(item.getItemId() > -1) {
+	        	TextView tv = (TextView) findViewById(item.getItemId());
+	        	Toast.makeText(this, tv.getText(), Toast.LENGTH_SHORT).show();
+	            return true;
+	    } else {
+	            return super.onContextItemSelected(item);
+	    }
+	}
+    
     /**
      * Add a row to the view
      * @param clr	The background color of the row
@@ -242,13 +270,19 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
     			
         int index = 0;
     	for(String text : texts) {
+    		// Thread ID
+    		int threadId = -1;
+    		
+    		try { 
+    			threadId = 
+    				Integer.parseInt(Utils.parseInts(linkMap.get(text)));
+    		} catch (StringIndexOutOfBoundsException si) {
+    		} catch (NumberFormatException nf) {
+    		} catch (NullPointerException np) { }
+    		
 	    	/* Create a Button to be the row-content. */
-	    	TextView b = new TextView(this);
-	    	b.setId(id);
-	    	b.setOnClickListener(this);
-	    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
-	    	b.setTextColor(Color.WHITE);
-	        b.setPadding(5, 5, 5, 5);
+	    	CTextView b = new CTextView(this, this, threadId);
+			registerForContextMenu(b);
 	        
 	        String style = tlContents.styleMap.get(text);
 	        if(style != null && !style.equals(""))

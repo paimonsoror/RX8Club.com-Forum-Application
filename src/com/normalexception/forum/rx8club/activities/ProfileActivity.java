@@ -47,7 +47,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
@@ -217,7 +216,6 @@ public class ProfileActivity extends ForumBaseActivity implements OnClickListene
     	try {
     		UserProfile.setUserPostCount(post.get(0).text() + " / " + post.get(1).text().split(" ",4)[3] + " per day");
     	} catch (Exception e) {
-    		BugSenseHandler.sendExceptionMessage("Post Object", post.text(), e);
     		UserProfile.setUserPostCount("Error Getting Post Count");
     	}
     	
@@ -225,7 +223,6 @@ public class ProfileActivity extends ForumBaseActivity implements OnClickListene
     	try {
     		UserProfile.setUserJoinDate(post.get(13).text());
     	} catch (Exception e) {
-    		BugSenseHandler.sendExceptionMessage("Post Object", post.text(), e);
     		UserProfile.setUserJoinDate("Error Getting Join Date");
     	}
     	

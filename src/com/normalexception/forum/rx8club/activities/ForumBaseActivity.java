@@ -49,7 +49,6 @@ import android.view.View.OnClickListener;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.preferences.Preferences;
@@ -109,7 +108,6 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 				loadingDialog.dismiss();
 		} catch (Exception e) {
 			Log.e(TAG, "Error dismissing loading dialog");
-			BugSenseHandler.sendException(e);
 		}
 		
 		try {
@@ -118,7 +116,6 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 			outState.putString("final", finalPage);
 		} catch (Exception e) {
 			Log.e(TAG, "Error Serializing: " + e.getMessage());
-			BugSenseHandler.sendException(e);
 		}
 		
 	}
@@ -166,7 +163,6 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "Error Restoring Contents: " + e.getMessage());
-			BugSenseHandler.sendException(e);
 		}
 	}
 	

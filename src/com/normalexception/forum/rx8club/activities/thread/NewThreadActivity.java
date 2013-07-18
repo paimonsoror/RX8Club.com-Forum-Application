@@ -32,7 +32,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.task.NewThreadTask;
@@ -113,7 +112,6 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
 	        
     	} catch (Exception e) {
     		Log.e(TAG, "Error In New Thread Activity");
-    		BugSenseHandler.sendException(e);
     	}
     }
     

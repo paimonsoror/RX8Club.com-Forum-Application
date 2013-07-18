@@ -44,7 +44,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
@@ -72,7 +71,6 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
     	try {
 	        super.onCreate(savedInstanceState);
 	        super.setTitle("Please Enter Credentials");
-	        BugSenseHandler.initAndStartSession(this, APIKEY);
 	        setContentView(R.layout.activity_login);
 	        
 	        Button loginButton = (Button)findViewById(R.id.loginButton);
@@ -102,7 +100,6 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 	    		   getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName);
     	} catch (Exception e) {
     		Log.e(TAG, "Unexpected Error!: " + e.getMessage());
-    		BugSenseHandler.sendException(e);
     	}
     }
     
@@ -111,8 +108,7 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
      * @see android.app.Activity#onDestroy()
      */
     @Override
-    public void onDestroy() {	
-    	BugSenseHandler.closeSession(this);
+    public void onDestroy() {
     	super.onDestroy();
     }
 
@@ -163,13 +159,10 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 				loggedIn = lf.login();
 			} catch (NoSuchAlgorithmException e) {
 				Log.e(TAG, "Error Logging In " + e.getMessage());
-				BugSenseHandler.sendException(e);
 			} catch (ClientProtocolException e) {
 				Log.e(TAG, "Error Logging In " + e.getMessage());
-				BugSenseHandler.sendException(e);
 			} catch (IOException e) {
 				Log.e(TAG, "Error Logging In " + e.getMessage());
-				BugSenseHandler.sendException(e);
 			} finally {
 				runOnUiThread(new Runnable() {
 					public void run() {

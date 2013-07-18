@@ -39,7 +39,6 @@ import org.jsoup.nodes.Document;
 import com.normalexception.forum.rx8club.Log;
 import android.widget.Toast;
 
-import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
@@ -117,7 +116,7 @@ public class VBForumFactory {
 				client = lf.getClient();
 			}
 		} catch (Exception e) {
-			BugSenseHandler.sendException(e);
+			Log.e(TAG, e.getMessage());
 		}
 		
 		// If client isn't null, continue
@@ -134,7 +133,7 @@ public class VBForumFactory {
 			try {
 				httpost = new HttpGet(addr);
 			} catch (IllegalStateException e) {
-				BugSenseHandler.sendExceptionMessage("Address", addr, e);		
+				Log.e(TAG, e.getMessage());
 			}
 			
 			try {
@@ -188,9 +187,6 @@ public class VBForumFactory {
 						Toast.LENGTH_SHORT).show();
 			  }
 		});
-		
-		if(e != null)
-			BugSenseHandler.sendException(e);
 	}
 	
 	/**
