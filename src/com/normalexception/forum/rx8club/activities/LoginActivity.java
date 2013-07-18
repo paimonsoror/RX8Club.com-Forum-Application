@@ -60,8 +60,6 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 
 	private static String TAG = "LoginActivity";
 	
-	private static final String APIKEY = "fd9ce344";
-	
 	/*
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
