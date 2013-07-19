@@ -389,17 +389,12 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	    		linkMap.put(
 	    				(formattedTitle + totalPosts).trim(), 
 	    				threadLink.attr("href"));
-	    		tlContents.styleMap.put(
+	    		
+	    		tlContents.add(
 	    				(formattedTitle + totalPosts).trim(), 
-	    				threadLink.attr("style"));
-	    		tlContents.userMap.put(
-	    				(formattedTitle + totalPosts).trim(), 
-	    				threaduser.text());
-	    		tlContents.lastUserMap.put(
-	    				(formattedTitle + totalPosts).trim(), 
-	    				repliesText.select("a[href*=members]").text());
-	    		tlContents.lockedMap.put(
-	    				(formattedTitle + totalPosts).trim(),
+	    				threadLink.attr("style"), 
+	    				threaduser.text(), 
+	    				repliesText.select("a[href*=members]").text(),
 	    				isLocked);
     		}
     	}

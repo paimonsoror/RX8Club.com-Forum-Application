@@ -39,4 +39,11 @@ public class ThreadListContents implements Serializable {
 	    lastUserMap = new LinkedHashMap<String, String>();
 	    lockedMap = new LinkedHashMap<String, Boolean>();
 	}
+	
+	public void add(String key, String style, String user, String lastUser, boolean isLocked) {
+		styleMap.put(key, style);
+		userMap.put(key, user);
+		lastUserMap.put(key, lastUser);
+		lockedMap.put(key, isLocked);
+	}
 }
