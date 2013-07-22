@@ -254,7 +254,7 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
      */
     private void addRow(int clr, String texts[], int id, boolean span) {
     	String user = "", lastuser = "";
-    	boolean isLocked = false;
+    	boolean isLocked = false, isSticky = false;
     	
     	/* Create a new row to be added. */
     	TableRow tr_head = new TableRow(this);
@@ -280,33 +280,24 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	        String style = tlContents.styleMap.get(text);
 	        if(style != null && !style.equals(""))
 	        	b.setTypeface(null, Typeface.BOLD);
-	        
-	        // We need to decode the resource, and then scale
-	    	// down the image
-	    	Bitmap scaledimg = 
-	    			Bitmap.createScaledBitmap(
-	    					BitmapFactory.decodeResource(
-	    							getResources(), R.drawable.arrow_icon), 
-	    							scaledImage, scaledImage, true);
-	        
-	    	// Do the same for the lock icon
-	    	Bitmap scaledlock = 
-	    			Bitmap.createScaledBitmap(
-	    					BitmapFactory.decodeResource(
-	    							getResources(), R.drawable.lock), 
-	    							scaledImage, scaledImage, true);
-	    	
+	        	    	
 	        if(index == 0) {
 	        	user = tlContents.userMap.get(text);
 	        	lastuser = tlContents.lastUserMap.get(text);
 	        	
 	        	try { 
-	        		isLocked = tlContents.lockedMap.get(text); } 
-	        	catch (NullPointerException npe) { }
+	        		isLocked = tlContents.lockedMap.get(text);
+	        		isSticky = tlContents.stickyMap.get(text);
+	        	} catch (NullPointerException npe) { }      	
+		        
+		        // We need to decode the resource, and then scale
+		    	// down the image
+		        Bitmap scaledimg = 
+		    			ThreadTypeFactory.getBitmap(this, scaledImage, scaledImage, isLocked, isSticky);
 	        	
 	        	// Set the information for the text line as a spannable
 	        	// for the first column
-	        	b.setUserPostInformation(text, isLocked? scaledlock : scaledimg, clr);
+	        	b.setUserPostInformation(text, scaledimg, clr);
         		b.setSpannedWidth();
 	        } else {
 	        	b.setText(text);
@@ -395,7 +386,7 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	    				threadLink.attr("style"), 
 	    				threaduser.text(), 
 	    				repliesText.select("a[href*=members]").text(),
-	    				isLocked);
+	    				isLocked, isSticky);
     		}
     	}
     	

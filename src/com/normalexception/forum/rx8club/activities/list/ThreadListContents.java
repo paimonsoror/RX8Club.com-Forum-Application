@@ -31,19 +31,22 @@ public class ThreadListContents implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	public LinkedHashMap<String,String> styleMap, userMap, lastUserMap;
-	public LinkedHashMap<String,Boolean> lockedMap;
+	public LinkedHashMap<String,Boolean> lockedMap, stickyMap;
 	
 	public ThreadListContents() {
 		styleMap = new LinkedHashMap<String,String>();
         userMap = new LinkedHashMap<String,String>();
 	    lastUserMap = new LinkedHashMap<String, String>();
 	    lockedMap = new LinkedHashMap<String, Boolean>();
+	    stickyMap = new LinkedHashMap<String, Boolean>();
 	}
 	
-	public void add(String key, String style, String user, String lastUser, boolean isLocked) {
+	public void add(String key, String style, String user, 
+			        String lastUser, boolean isLocked, boolean isSticky) {
 		styleMap.put(key, style);
 		userMap.put(key, user);
 		lastUserMap.put(key, lastUser);
 		lockedMap.put(key, isLocked);
+		stickyMap.put(key, isSticky);
 	}
 }

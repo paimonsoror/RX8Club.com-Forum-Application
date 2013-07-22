@@ -31,14 +31,14 @@ import java.io.InputStreamReader;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
-import com.normalexception.forum.rx8club.Log;
 import android.widget.Toast;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
@@ -101,7 +101,7 @@ public class VBForumFactory {
 	 */
 	public String getForumPage(ForumBaseActivity src, LoginFactory lf, String addr) 
 			throws ClientProtocolException, IOException {
-		DefaultHttpClient client = null;
+		HttpClient client = null;
 		String output = null;
 		
 		// Grab the login client
@@ -137,12 +137,12 @@ public class VBForumFactory {
 			}
 			
 			try {
-		    	HttpResponse response = client.execute(httpost);
+		    	HttpResponse response = client.execute(httpost, lf.getLocalContext());
 		    	HttpEntity entity = response.getEntity();
 		    	
 		    	// Get login results (in this case the forum frontpage0
 				BufferedReader in = new BufferedReader(new InputStreamReader(
-						entity.getContent()));
+						entity.getContent(),"iso-8859-1"), 8);
 				
 				StringBuilder sb = new StringBuilder();
 				

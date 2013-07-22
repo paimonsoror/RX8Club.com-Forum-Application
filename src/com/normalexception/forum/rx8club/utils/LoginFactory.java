@@ -35,15 +35,22 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import com.normalexception.forum.rx8club.Log;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.WebUrls;
 
@@ -71,6 +78,12 @@ public class LoginFactory {
 	private static final String PREF_PASSWORD = "password";
 	private static final String PREF_AUTOLOGIN = "autologin";
 	private static final String PREF_REMEMBERME = "rememberme";
+	
+	private static final int CONNECTION_TIMEOUT = 5000;
+	private static final int WAIT_RESPONSE_TIMEOUT = 5000;
+	
+	private BasicHttpContext localContext;
+	private BasicCookieStore cookieStore;
 	
 	/**
 	 * Constructor
@@ -156,6 +169,14 @@ public class LoginFactory {
 	 * @return	A DefaultHttpClient object
 	 */
 	public DefaultHttpClient getClient() {
+		if(httpclient == null) {
+			Log.v(TAG, "Login Client Created");
+			HttpParams httpParameters = new BasicHttpParams();
+			HttpConnectionParams.setConnectionTimeout(httpParameters, CONNECTION_TIMEOUT);
+			HttpConnectionParams.setSoTimeout(httpParameters, WAIT_RESPONSE_TIMEOUT);
+			HttpConnectionParams.setTcpNoDelay(httpParameters, true);
+			httpclient = new DefaultHttpClient(httpParameters);
+		}
 		return httpclient;
 	}
 	
@@ -197,7 +218,7 @@ public class LoginFactory {
 			return false;
 		}
 		
-		httpclient = new DefaultHttpClient();
+		httpclient = getClient();
     	HttpPost httpost = new HttpPost(WebUrls.loginUrl);
 
     	List<NameValuePair> nvps = new ArrayList<NameValuePair>();
@@ -209,11 +230,11 @@ public class LoginFactory {
 
     	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
 
-    	HttpResponse response = httpclient.execute(httpost);
+    	HttpResponse response = httpclient.execute(httpost, getLocalContext());
     	HttpEntity entity = response.getEntity();
 
     	if (entity != null) {
-    		List<Cookie> cookies = httpclient.getCookieStore().getCookies();
+    		List<Cookie> cookies = cookieStore.getCookies();
         	for(Cookie cookie : cookies)
         		cookieList.add(cookie.toString());
         	
@@ -229,6 +250,25 @@ public class LoginFactory {
     	
     	return false;
 	}
+	
+	/**
+	 * Report the local context, and create one if it doesn't already
+	 * exist
+	 * @return	a reference to the local context
+	 */
+	public HttpContext getLocalContext()
+    {
+        if (localContext == null)
+        {
+        	Log.v(TAG, "Local Context Created");
+            localContext = new BasicHttpContext();
+            cookieStore = new BasicCookieStore();
+            
+            // to make sure that cookies provided by the server can be reused
+            localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);  
+        }
+        return localContext;
+    }
 	
 	/**
 	 * Get the list of cookies
