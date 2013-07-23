@@ -27,7 +27,22 @@ package com.normalexception.forum.rx8club.utils;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import com.normalexception.forum.rx8club.WebUrls;
+
 public class Utils {
+	
+	/**
+	 * Resolve the URL by making sure that the root preceeds it
+	 * @param url	The url to check
+	 * @return		The resolved URL
+	 */
+	public static String resolveUrl(String url) {
+		if(!url.startsWith(WebUrls.rootUrl)) {
+			url = url.startsWith("/")? url : "/" + url;
+			url = WebUrls.rootUrl + url;
+		}
+		return url;
+	}
 	
 	/**	
 	 * Parse the integers from a string

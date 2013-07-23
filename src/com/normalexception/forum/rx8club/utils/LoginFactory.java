@@ -37,6 +37,7 @@ import ch.boye.httpclientandroidlib.NameValuePair;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
 import ch.boye.httpclientandroidlib.client.methods.HttpPost;
+import ch.boye.httpclientandroidlib.client.params.ClientPNames;
 import ch.boye.httpclientandroidlib.client.protocol.ClientContext;
 import ch.boye.httpclientandroidlib.conn.ClientConnectionManager;
 import ch.boye.httpclientandroidlib.cookie.Cookie;
@@ -69,8 +70,6 @@ public class LoginFactory {
 	
 	private boolean isLoggedIn = false;
 	
-	private List<String> cookieList = null;
-	
 	private SharedPreferences pref = null;
 	
 	private static final String PREFS_NAME = "MyPrefsFile";
@@ -87,7 +86,6 @@ public class LoginFactory {
 	 */
 	protected LoginFactory() {
 		Log.v(TAG, "Initializing Login Factory");
-		cookieList = new ArrayList<String>();
 		pref = MainApplication
 				.getAppContext()
 				.getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
@@ -107,10 +105,12 @@ public class LoginFactory {
 	    httpclient = new DefaultHttpClient(
 	    		new PoolingClientConnectionManager(mgr.getSchemeRegistry()),
 	    		httpclient.getParams());
+	    httpclient.log.enableDebug(true);
 	    HttpParams params = new BasicHttpParams();
+	    params.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true); 
 	    HttpConnectionParams.setConnectionTimeout(params, 5000);
 	    HttpConnectionParams.setSoTimeout(params, 5000);
-	    HttpConnectionParams.setTcpNoDelay(params, true);
+	    HttpConnectionParams.setTcpNoDelay(params, true);    
 	    httpclient.setParams(params);
 	}
 	
@@ -254,12 +254,10 @@ public class LoginFactory {
     	HttpEntity entity = response.getEntity();
 
     	if (entity != null) {
-    		List<Cookie> cookies = cookieStore.getCookies();
-        	for(Cookie cookie : cookies)
-        		cookieList.add(cookie.toString());
-        	
+    		List<Cookie> cookies = cookieStore.getCookies();        	
         	boolean val = response.getStatusLine().getStatusCode() != 400;
         	//entity.consumeContent();
+        	httpost.releaseConnection();
         	
         	for(Cookie cookie : cookies)
         		if(cookie.getName().equals("bbimloggedin") && cookie.getValue().toLowerCase().equals("yes"))

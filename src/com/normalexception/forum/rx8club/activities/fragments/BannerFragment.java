@@ -95,7 +95,6 @@ public class BannerFragment extends Fragment implements OnClickListener {
 			case R.id.favoritesButton:
 				_intent = null;
 				createFavoritesMenu();
-				
 				break;
 			
 			case R.id.inboxButton:

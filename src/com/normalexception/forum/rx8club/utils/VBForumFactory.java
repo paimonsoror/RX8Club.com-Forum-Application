@@ -105,41 +105,18 @@ public class VBForumFactory {
 		String output = null;
 		
 		// Grab the login client
-		try {
-			client = lf.getClient();
-			if(client == null) {
-				Log.w(TAG,"HTTPClient was null!");
-				
-				// Try logging in again
-				lf.login();
-				
-				client = lf.getClient();
-			}
-		} catch (Exception e) {
-			Log.e(TAG, e.getMessage());
-		}
+		client = lf.getClient();
 		
 		// If client isn't null, continue
 		if(client != null && (addr != null && !addr.equals(""))) {
 			HttpGet httpost = null;
-			
-			// Lets make sure that the host was passed in with the 
-			// link
-			if(!addr.startsWith(getRootAddress())) {
-				addr = addr.startsWith("/")? addr : "/" + addr;
-				addr = getRootAddress() + addr;
-			}
+			addr = Utils.resolveUrl(addr);
 			
 			try {
 				httpost = new HttpGet(addr);
-			} catch (IllegalStateException e) {
-				Log.e(TAG, e.getMessage());
-			}
-			
-			try {
 		    	HttpResponse response = client.execute(httpost, lf.getHttpContext());
 		    	HttpEntity entity = response.getEntity();
-		    	
+
 		    	// Get login results (in this case the forum frontpage0
 				BufferedReader in = new BufferedReader(new InputStreamReader(
 						entity.getContent(),"iso-8859-1"), 8);
@@ -155,6 +132,7 @@ public class VBForumFactory {
 				in.close();	
 				
 				//entity.consumeContent();
+				httpost.releaseConnection();
 				
 				if(output == null || 
 						output.equals("") || 
@@ -163,6 +141,8 @@ public class VBForumFactory {
 			} catch (NullPointerException e) {		
 				notifyError(src, 
 						"Error Opening Page. This Has Been Logged", e);
+			} catch (IllegalStateException e) {
+				Log.e(TAG, e.getMessage());
 			}	
 		} else {
 			notifyError(src, 
