@@ -26,7 +26,7 @@ package com.normalexception.forum.rx8club.task;
 
 import java.io.IOException;
 
-import org.apache.http.client.ClientProtocolException;
+import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

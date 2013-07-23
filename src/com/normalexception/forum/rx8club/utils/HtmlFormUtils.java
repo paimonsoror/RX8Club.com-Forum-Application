@@ -30,26 +30,28 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.ExecutionContext;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.protocol.HttpContext;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import ch.boye.httpclientandroidlib.HttpEntity;
+import ch.boye.httpclientandroidlib.HttpResponse;
+import ch.boye.httpclientandroidlib.NameValuePair;
+import ch.boye.httpclientandroidlib.StatusLine;
+import ch.boye.httpclientandroidlib.client.ClientProtocolException;
+import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
+import ch.boye.httpclientandroidlib.client.methods.HttpPost;
+import ch.boye.httpclientandroidlib.client.methods.HttpUriRequest;
+import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
+import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
+import ch.boye.httpclientandroidlib.protocol.ExecutionContext;
+import ch.boye.httpclientandroidlib.protocol.HttpContext;
+
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.WebUrls;
 
 public class HtmlFormUtils {	
 	private static String responseUrl = "";
+	private static final String TAG = "HtmlFormUtils";
 	
 	/**
 	 * Submit a form and its contents
@@ -63,20 +65,25 @@ public class HtmlFormUtils {
 			throws ClientProtocolException, IOException {
 		DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
 		
-		HttpPost httpost = new HttpPost(url);	    
-	    httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+		HttpPost httpost = new HttpPost(url);	
+		Log.d(TAG, "[Submit] Submit URL: " + url);
+		
+	    httpost.setEntity(new UrlEncodedFormEntity(nvps));
 
-    	HttpContext context = new BasicHttpContext();
+    	HttpContext context = LoginFactory.getInstance().getHttpContext();
     	HttpResponse response = httpclient.execute(httpost, context);
     	HttpEntity entity = response.getEntity();
-
+    	StatusLine statusLine = response.getStatusLine();
+    	
+    	Log.d(TAG, "[Submit] Status: " + statusLine.getStatusCode());
     	if (entity != null) {
-    		entity.consumeContent();
+    		//entity.consumeContent();
     		
     		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
     		        ExecutionContext.HTTP_REQUEST);
 
     		responseUrl = request.getURI().toString();
+    		Log.d(TAG, "[Submit] Response URL: " + responseUrl);
     		
     		return true;
     	}
@@ -185,9 +192,11 @@ public class HtmlFormUtils {
 		nvps.add(new BasicNameValuePair("p", postNumber));
 		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
 		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
+		nvps.add(new BasicNameValuePair("fromquickreply", "1"));
+		nvps.add(new BasicNameValuePair("parseurl", "1"));
     	nvps.add(new BasicNameValuePair("do", doType));
     	
-    	return formSubmit(WebUrls.postSubmitAddress + postNumber, nvps);
+    	return formSubmit(WebUrls.quickPostAddress + thread, nvps);
 	}
 	
 	/**
@@ -248,15 +257,17 @@ public class HtmlFormUtils {
 			throws ClientProtocolException, IOException {
 		String output = "";
 		
-		DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
+		DefaultHttpClient httpclient = 
+				LoginFactory.getInstance().getClient();
 		
 		HttpPost httpost = new HttpPost(WebUrls.editPostAddress + postid);
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
     	nvps.add(new BasicNameValuePair("securitytoken", securityToken));
     	
-    	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+    	httpost.setEntity(new UrlEncodedFormEntity(nvps));
 
-    	HttpResponse response = httpclient.execute(httpost);
+    	HttpResponse response = 
+    			httpclient.execute(httpost, LoginFactory.getInstance().getHttpContext());
     	HttpEntity entity = response.getEntity();
     	
     	if(entity != null) {
@@ -274,7 +285,7 @@ public class HtmlFormUtils {
 			
 			in.close();	
 			
-			entity.consumeContent();
+			//entity.consumeContent();
     	}
 		
 		return Jsoup.parse(output);

@@ -27,7 +27,7 @@ package com.normalexception.forum.rx8club.activities;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-import org.apache.http.client.ClientProtocolException;
+import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
 import android.app.ProgressDialog;
 import android.content.Context;

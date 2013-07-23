@@ -9,5 +9,6 @@
 			<attribute name="javadoc_location" value="jar:file:/C:/Users/Corei7/Downloads/jsoup-1.7.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="libs/httpclientandroidlib-1.1.2.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

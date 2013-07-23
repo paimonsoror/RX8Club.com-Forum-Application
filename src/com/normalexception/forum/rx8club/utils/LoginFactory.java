@@ -29,26 +29,26 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.protocol.ClientContext;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.client.BasicCookieStore;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.protocol.HttpContext;
-
 import android.app.Activity;
 import android.content.SharedPreferences;
+import ch.boye.httpclientandroidlib.HttpEntity;
+import ch.boye.httpclientandroidlib.HttpResponse;
+import ch.boye.httpclientandroidlib.NameValuePair;
+import ch.boye.httpclientandroidlib.client.ClientProtocolException;
+import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
+import ch.boye.httpclientandroidlib.client.methods.HttpPost;
+import ch.boye.httpclientandroidlib.client.protocol.ClientContext;
+import ch.boye.httpclientandroidlib.conn.ClientConnectionManager;
+import ch.boye.httpclientandroidlib.cookie.Cookie;
+import ch.boye.httpclientandroidlib.impl.client.BasicCookieStore;
+import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
+import ch.boye.httpclientandroidlib.impl.conn.PoolingClientConnectionManager;
+import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
+import ch.boye.httpclientandroidlib.params.BasicHttpParams;
+import ch.boye.httpclientandroidlib.params.HttpConnectionParams;
+import ch.boye.httpclientandroidlib.params.HttpParams;
+import ch.boye.httpclientandroidlib.protocol.BasicHttpContext;
+import ch.boye.httpclientandroidlib.protocol.HttpContext;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
@@ -79,11 +79,8 @@ public class LoginFactory {
 	private static final String PREF_AUTOLOGIN = "autologin";
 	private static final String PREF_REMEMBERME = "rememberme";
 	
-	private static final int CONNECTION_TIMEOUT = 5000;
-	private static final int WAIT_RESPONSE_TIMEOUT = 5000;
-	
-	private BasicHttpContext localContext;
-	private BasicCookieStore cookieStore;
+	private static BasicCookieStore cookieStore;
+	private static HttpContext httpContext;
 	
 	/**
 	 * Constructor
@@ -91,7 +88,38 @@ public class LoginFactory {
 	protected LoginFactory() {
 		Log.v(TAG, "Initializing Login Factory");
 		cookieList = new ArrayList<String>();
-		pref = MainApplication.getAppContext().getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
+		pref = MainApplication
+				.getAppContext()
+				.getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
+		
+		initializeClientInformation();
+	}
+	
+	/**
+	 * Initialize the client, cookie store, and context
+	 */
+	private void initializeClientInformation() {
+	    cookieStore = new BasicCookieStore();
+	    httpContext = new BasicHttpContext();
+	    httpContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+	    httpclient = new DefaultHttpClient();
+	    ClientConnectionManager mgr = httpclient.getConnectionManager();
+	    httpclient = new DefaultHttpClient(
+	    		new PoolingClientConnectionManager(mgr.getSchemeRegistry()),
+	    		httpclient.getParams());
+	    HttpParams params = new BasicHttpParams();
+	    HttpConnectionParams.setConnectionTimeout(params, 5000);
+	    HttpConnectionParams.setSoTimeout(params, 5000);
+	    HttpConnectionParams.setTcpNoDelay(params, true);
+	    httpclient.setParams(params);
+	}
+	
+	/**
+	 * Report the context
+	 * @return	The http context
+	 */
+	public HttpContext getHttpContext() {
+		return httpContext;
 	}
 	
 	/**
@@ -169,14 +197,6 @@ public class LoginFactory {
 	 * @return	A DefaultHttpClient object
 	 */
 	public DefaultHttpClient getClient() {
-		if(httpclient == null) {
-			Log.v(TAG, "Login Client Created");
-			HttpParams httpParameters = new BasicHttpParams();
-			HttpConnectionParams.setConnectionTimeout(httpParameters, CONNECTION_TIMEOUT);
-			HttpConnectionParams.setSoTimeout(httpParameters, WAIT_RESPONSE_TIMEOUT);
-			HttpConnectionParams.setTcpNoDelay(httpParameters, true);
-			httpclient = new DefaultHttpClient(httpParameters);
-		}
 		return httpclient;
 	}
 	
@@ -228,9 +248,9 @@ public class LoginFactory {
     	nvps.add(new BasicNameValuePair("vb_login_md5password_utf", password));
     	nvps.add(new BasicNameValuePair("do", "login"));
 
-    	httpost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+    	httpost.setEntity(new UrlEncodedFormEntity(nvps));
 
-    	HttpResponse response = httpclient.execute(httpost, getLocalContext());
+    	HttpResponse response = httpclient.execute(httpost, getHttpContext());
     	HttpEntity entity = response.getEntity();
 
     	if (entity != null) {
@@ -239,7 +259,7 @@ public class LoginFactory {
         		cookieList.add(cookie.toString());
         	
         	boolean val = response.getStatusLine().getStatusCode() != 400;
-        	entity.consumeContent();
+        	//entity.consumeContent();
         	
         	for(Cookie cookie : cookies)
         		if(cookie.getName().equals("bbimloggedin") && cookie.getValue().toLowerCase().equals("yes"))
@@ -249,40 +269,5 @@ public class LoginFactory {
     	}
     	
     	return false;
-	}
-	
-	/**
-	 * Report the local context, and create one if it doesn't already
-	 * exist
-	 * @return	a reference to the local context
-	 */
-	public HttpContext getLocalContext()
-    {
-        if (localContext == null)
-        {
-        	Log.v(TAG, "Local Context Created");
-            localContext = new BasicHttpContext();
-            cookieStore = new BasicCookieStore();
-            
-            // to make sure that cookies provided by the server can be reused
-            localContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);  
-        }
-        return localContext;
-    }
-	
-	/**
-	 * Get the list of cookies
-	 * @return	The cookie list
-	 */
-	public List<String> getCookieList() {
-		return cookieList;
-	}
-	
-	/**
-	 * Get the count of available cookies
-	 * @return	The number of cookies
-	 */
-	public int getCookieListCount() {
-		return cookieList.size();
 	}
 }

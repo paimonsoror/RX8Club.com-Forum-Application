@@ -28,11 +28,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
+import ch.boye.httpclientandroidlib.HttpEntity;
+import ch.boye.httpclientandroidlib.HttpResponse;
+import ch.boye.httpclientandroidlib.client.ClientProtocolException;
+import ch.boye.httpclientandroidlib.client.HttpClient;
+import ch.boye.httpclientandroidlib.client.methods.HttpGet;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -137,7 +137,7 @@ public class VBForumFactory {
 			}
 			
 			try {
-		    	HttpResponse response = client.execute(httpost, lf.getLocalContext());
+		    	HttpResponse response = client.execute(httpost, lf.getHttpContext());
 		    	HttpEntity entity = response.getEntity();
 		    	
 		    	// Get login results (in this case the forum frontpage0
@@ -154,7 +154,7 @@ public class VBForumFactory {
 				
 				in.close();	
 				
-				entity.consumeContent();
+				//entity.consumeContent();
 				
 				if(output == null || 
 						output.equals("") || 

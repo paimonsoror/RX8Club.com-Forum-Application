@@ -452,6 +452,11 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     	// Update pagination
     	updatePagination(doc);
     	
+    	// Get the user's actual ID, there is a chance they never got it
+    	// before
+    	UserProfile.setUserId(
+    			HtmlFormUtils.getInputElementValue(doc, "loggedinuser"));
+    	
     	// Get Post Number and security token
     	securityToken = HtmlFormUtils.getInputElementValue(doc, "securitytoken");
     	Elements pNumber = 
@@ -552,13 +557,14 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			case R.id.submitButton:
 				_intent = null;
 				String advert = PreferenceHelper.isAdvertiseEnabled(MainApplication.getAppContext())?
-						"\n\nPosted From RX8Club.com Android App" : "";
+						"Posted From RX8Club.com Android App" : "";
 				String toPost = 
-						((TextView)findViewById(R.id.postBox)).getText() + 
-						advert;
+						String.format("%s\n\n%s", 
+								((TextView)findViewById(R.id.postBox)).getText().toString(), advert);
 				SubmitTask sTask = new SubmitTask(this, this.securityToken, 
 						this.threadNumber, this.postNumber,
 						toPost, this.currentPageTitle, this.pageNumber);
+				sTask.debug();
 				sTask.execute();
 				break;
 			case R.id.paginationText:

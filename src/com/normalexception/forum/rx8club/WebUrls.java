@@ -36,6 +36,7 @@ public class WebUrls {
 	public static final String searchUrl = rootUrl + "/search.php?do=process&query=";
 	
 	public static final String postSubmitAddress = 	rootUrl + "/newreply.php?do=newreply&noquote=1&p=";
+	public static final String quickPostAddress = rootUrl + "/newreply.php?do=postreply&t=";
 	public static final String newPmAddress = rootUrl + "/private.php?do=newpm";
 	public static final String newThreadAddress = rootUrl + "/newthread.php?do=newthread&f=";
 	public static final String editPostAddress = rootUrl + "/editpost.php?do=editpost&p=";

@@ -26,7 +26,7 @@ package com.normalexception.forum.rx8club.task;
 
 import java.io.IOException;
 
-import org.apache.http.client.ClientProtocolException;
+import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -74,6 +74,12 @@ public class SubmitTask extends AsyncTask<Void,Void,Void>{
 		this.pageNumber = pageNumber;
 		this.doType = "postreply";
 		this.postClazz = ThreadActivity.class;
+	}
+	
+	public void debug() {
+		Log.d(TAG, 
+				String.format("Token: %s, Thread: %s, Post: %s, Text: %s", 
+						this.token, this.thread, this.post, this.text));
 	}
 
 	/*
