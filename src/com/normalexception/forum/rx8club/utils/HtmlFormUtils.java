@@ -25,6 +25,7 @@ package com.normalexception.forum.rx8club.utils;
  ************************************************************************/
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -41,6 +42,10 @@ import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
 import ch.boye.httpclientandroidlib.client.methods.HttpPost;
 import ch.boye.httpclientandroidlib.client.methods.HttpUriRequest;
+import ch.boye.httpclientandroidlib.entity.mime.HttpMultipartMode;
+import ch.boye.httpclientandroidlib.entity.mime.MultipartEntity;
+import ch.boye.httpclientandroidlib.entity.mime.content.FileBody;
+import ch.boye.httpclientandroidlib.entity.mime.content.StringBody;
 import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
 import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
 import ch.boye.httpclientandroidlib.protocol.ExecutionContext;
@@ -52,7 +57,7 @@ import com.normalexception.forum.rx8club.WebUrls;
 public class HtmlFormUtils {	
 	private static String responseUrl = "";
 	private static final String TAG = "HtmlFormUtils";
-	
+
 	/**
 	 * Submit a form and its contents
 	 * @param url	The url to submit the form to
@@ -244,6 +249,48 @@ public class HtmlFormUtils {
     	nvps.add(new BasicNameValuePair("deletepost", "delete"));
  
     	return formSubmit(WebUrls.deletePostAddress + postNum, nvps);
+	}
+	
+	/**
+	 * Submit a request to upload an attachment to the server
+	 * @param securityToken
+	 * @param filePath
+	 * @param thread
+	 * @param postnum
+	 * @return
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	//TODO Coming Soon....
+	public static boolean submitAttachment(String securityToken, String filePath, 
+			String thread, String postnum) throws ClientProtocolException, IOException {
+		DefaultHttpClient httpclient = 
+				LoginFactory.getInstance().getClient();
+		
+		MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+		entity.addPart("s", new StringBody(""));
+		entity.addPart("securitytoken", new StringBody(securityToken));
+		entity.addPart("do", new StringBody("manageattach"));
+		entity.addPart("t", new StringBody(thread));
+		entity.addPart("f", new StringBody("6"));
+		entity.addPart("p", new StringBody(""));
+		entity.addPart("poststarttime", new StringBody(""));
+		entity.addPart("editpost", new StringBody("0"));
+		entity.addPart("posthash", new StringBody(""));
+		entity.addPart("MAX_FILE_SIZE", new StringBody("2097152"));
+		entity.addPart("upload", new StringBody("Upload"));
+		entity.addPart("attachmenturl[]", new StringBody(""));
+		
+		File fileToUpload = new File(filePath);
+		FileBody fileBody = new FileBody(fileToUpload, "application/octet-stream");
+		entity.addPart("attachment[]", fileBody);
+
+		HttpPost httpPost = new HttpPost("http://some-web-site");
+		httpPost.setEntity(entity);
+		HttpResponse response = httpclient.execute(httpPost);
+		HttpEntity result = response.getEntity();
+		
+		return false;
 	}
 	
 	/**
