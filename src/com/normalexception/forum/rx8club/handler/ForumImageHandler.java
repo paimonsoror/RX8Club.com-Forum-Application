@@ -99,8 +99,8 @@ public class ForumImageHandler implements ImageGetter {
 		@Override
 		protected void onPostExecute(Drawable result) {
 			if(result != null) {
-				urlDrawable.setBounds(0, 0, 
-						0+result.getIntrinsicWidth(), 0+result.getIntrinsicHeight());  
+				urlDrawable.setBounds(result.getIntrinsicWidth(), result.getIntrinsicHeight(), 
+						result.getIntrinsicWidth(), result.getIntrinsicHeight());  
 	
 			    // change the reference of the current drawable to the result 
 			    // from the HTTP call 

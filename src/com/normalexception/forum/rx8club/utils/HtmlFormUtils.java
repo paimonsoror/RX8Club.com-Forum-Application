@@ -78,6 +78,7 @@ public class HtmlFormUtils {
     	Log.d(TAG, "[Submit] Status: " + statusLine.getStatusCode());
     	if (entity != null) {
     		//entity.consumeContent();
+    		httpost.releaseConnection();
     		
     		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
     		        ExecutionContext.HTTP_REQUEST);
@@ -286,6 +287,7 @@ public class HtmlFormUtils {
 			in.close();	
 			
 			//entity.consumeContent();
+			httpost.releaseConnection();
     	}
 		
 		return Jsoup.parse(output);

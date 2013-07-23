@@ -54,6 +54,7 @@ import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.WebUrls;
+import com.normalexception.forum.rx8club.handler.RedirectStrategy;
 
 /**
  * Singleton class for the login information
@@ -106,6 +107,10 @@ public class LoginFactory {
 	    		new PoolingClientConnectionManager(mgr.getSchemeRegistry()),
 	    		httpclient.getParams());
 	    httpclient.log.enableDebug(true);
+	    
+	    // Follow Redirects
+	    httpclient.setRedirectStrategy(new RedirectStrategy());
+	    
 	    HttpParams params = new BasicHttpParams();
 	    params.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true); 
 	    HttpConnectionParams.setConnectionTimeout(params, 5000);
