@@ -25,8 +25,6 @@ package com.normalexception.forum.rx8club.handler;
  ************************************************************************/
 
 import java.io.BufferedInputStream;
-import java.net.URL;
-import java.net.URLConnection;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -36,6 +34,11 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.Html.ImageGetter;
 import android.widget.TextView;
+import ch.boye.httpclientandroidlib.HttpResponse;
+import ch.boye.httpclientandroidlib.client.methods.HttpGet;
+import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
+
+import com.normalexception.forum.rx8club.utils.LoginFactory;
 
 /**
  * Handler designed to display the images within a textview
@@ -99,8 +102,8 @@ public class ForumImageHandler implements ImageGetter {
 		@Override
 		protected void onPostExecute(Drawable result) {
 			if(result != null) {
-				urlDrawable.setBounds(result.getIntrinsicWidth(), result.getIntrinsicHeight(), 
-						result.getIntrinsicWidth(), result.getIntrinsicHeight());  
+				urlDrawable.setBounds(0, 0, 
+						0+result.getIntrinsicWidth(), 0+result.getIntrinsicHeight());  
 	
 			    // change the reference of the current drawable to the result 
 			    // from the HTTP call 
@@ -110,11 +113,11 @@ public class ForumImageHandler implements ImageGetter {
 			    ForumImageHandler.this.container.invalidate();
 	
 			    // For ICS
-			    ForumImageHandler.this.container.setHeight(
-			    		ForumImageHandler.this.container.getHeight() + result.getIntrinsicHeight());
+			    //ForumImageHandler.this.container.setHeight(
+			    //		ForumImageHandler.this.container.getHeight() + result.getIntrinsicHeight());
 	
 			    // Pre ICS
-			    ForumImageHandler.this.container.setEllipsize(null);
+			    //ForumImageHandler.this.container.setEllipsize(null);
 			}
 		}
 
@@ -124,21 +127,29 @@ public class ForumImageHandler implements ImageGetter {
 		 * @return			The drawable container that holds the image
 		 */
 		public Drawable fetchDrawable(String urlString) {
+			HttpGet httpget = null;
 			try {
-				URL aURL = new URL(urlString);
-				final URLConnection conn = aURL.openConnection(); 
-				conn.connect(); 
-				final BufferedInputStream bis = new BufferedInputStream(conn.getInputStream()); 
+				DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
+				httpget = new HttpGet(urlString);
+				HttpResponse response = 
+						httpclient.execute(httpget, LoginFactory.getInstance().getHttpContext());
+				
+				final BufferedInputStream bis = 
+						new BufferedInputStream(response.getEntity().getContent()); 
 				Bitmap bm = BitmapFactory.decodeStream(bis);
+				
 				while(bm.getWidth() > 400) {
 					bm = Bitmap.createScaledBitmap(bm, bm.getWidth() / 2, bm.getHeight() / 2, true);
 				}
+				
 				Drawable drawable = new BitmapDrawable(bm);
 				drawable.setBounds(0,0,bm.getWidth(),bm.getHeight());
 				return drawable;
 			} catch (Exception e) {
 				return null;
-			} 
+			} finally {
+				httpget.releaseConnection();
+			}
 		}
 	}
 }

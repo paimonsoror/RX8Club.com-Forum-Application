@@ -54,7 +54,9 @@ import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.WebUrls;
-import com.normalexception.forum.rx8club.handler.RedirectStrategy;
+import com.normalexception.forum.rx8club.httpclient.KeepAliveStrategy;
+import com.normalexception.forum.rx8club.httpclient.RedirectStrategy;
+import com.normalexception.forum.rx8club.httpclient.RetryHandler;
 
 /**
  * Singleton class for the login information
@@ -110,6 +112,12 @@ public class LoginFactory {
 	    
 	    // Follow Redirects
 	    httpclient.setRedirectStrategy(new RedirectStrategy());
+	    
+	    // Setup retry handler
+	    httpclient.setHttpRequestRetryHandler(new RetryHandler());
+	    
+	    // Setup KAS
+	    httpclient.setKeepAliveStrategy(new KeepAliveStrategy());
 	    
 	    HttpParams params = new BasicHttpParams();
 	    params.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true); 

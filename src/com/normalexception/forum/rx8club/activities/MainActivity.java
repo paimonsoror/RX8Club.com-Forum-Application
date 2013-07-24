@@ -41,7 +41,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -59,6 +58,7 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
 import com.normalexception.forum.rx8club.activities.list.CategoryUtils;
+import com.normalexception.forum.rx8club.activities.list.ThreadTypeFactory;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
@@ -218,19 +218,11 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
     	TableRow tr_head = new TableRow(this);
     	tr_head.setId(id);
     	tr_head.setBackgroundColor(clr);
-    	
+
     	// We need to decode the resource, and then scale
     	// down the image
-    	Bitmap scaledimg = null;
-    	try {
-    		scaledimg = 
-    			Bitmap.createScaledBitmap(
-    					BitmapFactory.decodeResource(
-    							getResources(), R.drawable.arrow_icon), 
-    							scaledImage, scaledImage, true);
-    	} catch (IllegalArgumentException iae) {
-    		Log.e(TAG, iae.getMessage());
-    	}
+    	Bitmap scaledimg = 
+    			ThreadTypeFactory.getBitmap(this, scaledImage, scaledImage, false, false);
     	
     	int index = ROTOR_ICON;
     	for(String text : texts) {

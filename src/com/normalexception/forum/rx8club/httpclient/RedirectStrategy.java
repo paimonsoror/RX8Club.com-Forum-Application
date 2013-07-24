@@ -1,4 +1,4 @@
-package com.normalexception.forum.rx8club.handler;
+package com.normalexception.forum.rx8club.httpclient;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
