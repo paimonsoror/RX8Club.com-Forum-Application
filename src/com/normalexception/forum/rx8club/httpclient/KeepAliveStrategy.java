@@ -32,24 +32,34 @@ import ch.boye.httpclientandroidlib.message.BasicHeaderElementIterator;
 import ch.boye.httpclientandroidlib.protocol.HTTP;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
 
+/**
+ * Custom Keep alive strategy
+ */
 public class KeepAliveStrategy extends DefaultConnectionKeepAliveStrategy {
-	 public long getKeepAliveDuration(HttpResponse response, HttpContext context) {
-        // Honor 'keep-alive' header
-        HeaderElementIterator it = new BasicHeaderElementIterator(
-                response.headerIterator(HTTP.CONN_KEEP_ALIVE));
-        while (it.hasNext()) {
-            HeaderElement he = it.nextElement();
-            String param = he.getName(); 
-            String value = he.getValue();
-            if (value != null && param.equalsIgnoreCase("timeout")) {
-                try {
-                    return Long.parseLong(value) * 1000;
-                } catch(NumberFormatException ignore) {
-                }
-            }
-        }
 
-        //keep alive for 30 seconds
-        return 30 * 1000;
-    }
+	private static final int KAL_TIME = 30; // seconds
+	
+	/*
+	 * (non-Javadoc)
+	 * @see ch.boye.httpclientandroidlib.impl.client.DefaultConnectionKeepAliveStrategy#getKeepAliveDuration(ch.boye.httpclientandroidlib.HttpResponse, ch.boye.httpclientandroidlib.protocol.HttpContext)
+	 */
+	public long getKeepAliveDuration(HttpResponse response, HttpContext context) {
+		// Honor 'keep-alive' header
+		HeaderElementIterator it = new BasicHeaderElementIterator(
+				response.headerIterator(HTTP.CONN_KEEP_ALIVE));
+		while (it.hasNext()) {
+			HeaderElement he = it.nextElement();
+			String param = he.getName(); 
+			String value = he.getValue();
+			if (value != null && param.equalsIgnoreCase("timeout")) {
+				try {
+					return Long.parseLong(value) * 1000;
+				} catch(NumberFormatException ignore) {
+				}
+			}
+		}
+
+		//keep alive for 30 seconds
+		return KAL_TIME * 1000;
+	}
 }

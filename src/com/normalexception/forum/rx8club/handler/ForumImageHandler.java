@@ -103,21 +103,23 @@ public class ForumImageHandler implements ImageGetter {
 		protected void onPostExecute(Drawable result) {
 			if(result != null) {
 				urlDrawable.setBounds(0, 0, 
-						0+result.getIntrinsicWidth(), 0+result.getIntrinsicHeight());  
+						0 + result.getIntrinsicWidth(), 
+						0 + result.getIntrinsicHeight());  
 	
 			    // change the reference of the current drawable to the result 
 			    // from the HTTP call 
 			    urlDrawable.drawable = result; 
 	
 			    // redraw the image by invalidating the container 
-			    ForumImageHandler.this.container.invalidate();
+			    container.invalidate();
 	
 			    // For ICS
-			    //ForumImageHandler.this.container.setHeight(
-			    //		ForumImageHandler.this.container.getHeight() + result.getIntrinsicHeight());
+			    container.setHeight(
+			    		container.getHeight() + 
+			    		result.getIntrinsicHeight());
 	
 			    // Pre ICS
-			    //ForumImageHandler.this.container.setEllipsize(null);
+			    container.setEllipsize(null);
 			}
 		}
 

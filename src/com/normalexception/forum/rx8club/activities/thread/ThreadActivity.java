@@ -34,25 +34,16 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.InputType;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
-import android.text.style.StyleSpan;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -63,13 +54,13 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
-import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.task.SubmitTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
+import com.normalexception.forum.rx8club.view.CThreadTextView;
 import com.normalexception.forum.rx8club.view.PostButtonView;
 import com.normalexception.forum.rx8club.view.ViewContents;
 
@@ -271,7 +262,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
      * @param html		True if the text contains html
      * @param span		True if we are creating a spannable string
      */
-    private void addRow(int clr, String text, int id, String postid, boolean html, boolean span) {
+    private void addRow(int clr, String text, int id, String postid, boolean html, boolean threadName) {
     	/* Create a new row to be added. */
     	TableRow tr_head = new TableRow(this);
     	tr_head.setId(id);
@@ -282,54 +273,25 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     		tr_head.setPadding(5, 5, 5, 15);
 
     	/* Create a Button to be the row-content. */
-    	TextView b = new TextView(this);
+    	CThreadTextView b = new CThreadTextView(this);
     	b.setId(ThreadActivity.ThreadIdIndex + id);
-    	b.setMovementMethod(LinkMovementMethod.getInstance());
     	if(!html && text.indexOf("\n") != -1) {
-    		SpannableString spanString = new SpannableString(text);
-    		spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, text.indexOf("\n"), 0);
-    		b.setText(spanString);
+    		b.setTitleText(text);
+    	} else if (!threadName ){
+    		b.setContentText(reformatQuotes(text));
     	} else {
-    		// remove quotes for now
-    		text = reformatQuotes(text);
-    		
-    		try {
-    			ForumImageHandler imageHandler = new ForumImageHandler(b, this);
-    			b.setText(html? Html.fromHtml(text + "<br><br><br>", imageHandler, null) : text);
-    		} catch (Exception e) {
-    			b.setText(html? Html.fromHtml(text + "<br><br><br>") : text);
-    		}
+    		b.setThreadTitle(text);
     	}
     	
-    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
-    	b.setTextColor(Color.WHITE);
-    	
-    	/* Add Button to row. */
-    	TableRow.LayoutParams params = new TableRow.LayoutParams(
-                ViewGroup.LayoutParams.FILL_PARENT,
-                ViewGroup.LayoutParams.FILL_PARENT,
-                1.0f);
-    	params.weight = 0;
-    	
-    	if(span) {
-	        params.gravity = Gravity.CENTER;
-    	} else {
-        	// Convert dip to px
-        	Resources r = getResources();
-        	int px = 
-        			(int)TypedValue.applyDimension(
-        					TypedValue.COMPLEX_UNIT_DIP, 0, r.getDisplayMetrics());
-        	b.setWidth(px);        	
-        	params.weight = 1;
-    	}
+    	b.setSpannedWidth();
 
     	/* Add Button to row. */
-        tr_head.addView(b, params);      
+        tr_head.addView(b, b.getTextParameters());      
         
         // Thread title information, so add the edit button
-        if(!html && !span) { 	
+        if(!html && !threadName) { 	
     		addPostButtons(tr_head, getPostUser(text), 
-    				postid, id, params);
+    				postid, id, b.getTextParameters());
         }
 
     	/* Add row to TableLayout. */
