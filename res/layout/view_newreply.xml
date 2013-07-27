@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#888888"
+    android:orientation="horizontal">
+
+    <!-- ListRow Left sied Thumbnail image -->
+	<RelativeLayout
+        android:id="@+id/titleContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="3dip">
+        
+	    <LinearLayout
+	        android:id="@+id/thumbnail"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_marginRight="5dip"
+	        android:padding="3dip" >
+	
+	        <ImageView
+	            android:id="@+id/nr_image"
+	            android:layout_width="25dip"
+	            android:layout_height="25dip"
+	            android:src="@drawable/black_mail" />
+	    </LinearLayout>
+	
+	    <!-- Title Of Thread -->
+		<RelativeLayout
+	        android:id="@+id/titleTextContainer"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/thumbnail"
+	        android:padding="3dip">
+		    <TextView
+		        android:id="@+id/nr_username"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="User Name Goes Here"
+		        android:textColor="#ffffff"
+		        android:textSize="15dip"
+		        android:textStyle="bold"
+		        android:typeface="sans" />
+		
+		    <TextView
+		        android:id="@+id/nr_userTitle"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/nr_username"
+		        android:layout_marginTop="1dip"
+		        android:text="User Title"
+		        android:textColor="#ffffff"
+		        android:textSize="10dip" />
+	
+		    <TextView
+		        android:id="@+id/nr_userPosts_label"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/nr_userTitle"
+		        android:layout_marginTop="1dip"
+		        android:text="Posts: "
+		        android:textColor="#ffffff"
+		        android:textSize="10dip" />
+		    
+		    <TextView
+		        android:id="@+id/nr_userPosts"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/nr_userTitle"
+		        android:layout_marginTop="1dip"
+		        android:layout_toRightOf="@id/nr_userPosts_label"
+		        android:text="1000"
+		        android:textColor="#ffffff"
+		        android:textSize="10dip" />
+		    
+		    <TextView
+		        android:id="@+id/nr_userJoin_label"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/nr_userPosts_label"
+		        android:layout_marginTop="1dip"
+		        android:text="Joined: "
+		        android:textColor="#ffffff"
+		        android:textSize="10dip" />
+		    
+		    <TextView
+		        android:id="@+id/nr_userJoin"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/nr_userPosts"
+		        android:layout_marginTop="1dip"
+		        android:layout_toRightOf="@id/nr_userJoin_label"
+		        android:text="June 2013"
+		        android:textColor="#ffffff"
+		        android:textSize="10dip" />
+		    
+		    <TextView
+		        android:id="@+id/nr_postDate_label"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/nr_userJoin_label"
+		        android:layout_marginTop="10dip"
+		        android:text="Post Date: "
+		        android:textColor="#ffffff"
+		        android:textSize="10dip" />
+		    
+		    <TextView
+		        android:id="@+id/nr_postDate"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/nr_userJoin"
+		        android:layout_marginTop="10dip"
+		        android:layout_toRightOf="@id/nr_postDate_label"
+		        android:text="07-16-2013"
+		        android:textColor="#ffffff"
+		        android:textSize="10dip" />
+		</RelativeLayout>
+	</RelativeLayout>
+
+	<RelativeLayout
+	    android:id="@+id/postContainer"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/titleContainer"
+	    android:background="#444444"
+	    android:paddingBottom="30dip" >
+
+	    <TextView
+	        android:id="@+id/nr_postText"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="5dip"
+	        android:paddingTop="5dip"
+	        android:paddingLeft="5dip"
+	        android:paddingRight="5dip"
+	        android:paddingBottom="5dip"
+	        android:text="This is some random text oh man this is cool"
+	        android:textColor="#ffffff"
+	        android:textSize="10dip" />
+	</RelativeLayout>
+</RelativeLayout>

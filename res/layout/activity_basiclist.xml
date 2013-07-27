@@ -1,25 +1,24 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:scrollbars="vertical"
-    tools:context=".MainActivity" >
+    android:layout_height="fill_parent"
+    android:background="@android:color/darker_gray"
+    android:baselineAligned="false"
+    android:orientation="vertical" >
 
-    <TableLayout
-        android:id="@+id/myTableLayout"
+    <fragment
+        android:id="@+id/fragment_content"
+        android:name="com.normalexception.forum.rx8club.activities.fragments.BannerFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:spacing="40dip"
-        android:stretchColumns="3" >
-        
-	    <fragment
-	        android:id="@+id/fragment_content"
-	        android:name="com.normalexception.forum.rx8club.activities.fragments.BannerFragment"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent" >
-	
-	        <!-- Preview: layout=@layout/fragment_banner -->
-	    </fragment>
+        tools:layout="@layout/fragment_banner" >
+    </fragment>
 
-    </TableLayout>
-</ScrollView>
+    <ListView
+        android:id="@+id/mainlistview"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:divider="#b5b5b5"
+        android:dividerHeight="1dp"
+        android:layout_below="@id/fragment_content"/>
+</RelativeLayout>

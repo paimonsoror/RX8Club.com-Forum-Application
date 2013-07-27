@@ -30,39 +30,38 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.ImageSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.TextView.BufferType;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
+import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.task.SubmitTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
-import com.normalexception.forum.rx8club.view.CThreadTextView;
-import com.normalexception.forum.rx8club.view.PostButtonView;
 import com.normalexception.forum.rx8club.view.ViewContents;
+import com.normalexception.forum.rx8club.view.thread.ThreadView;
+import com.normalexception.forum.rx8club.view.thread.ThreadViewArrayAdapter;
+import com.normalexception.forum.rx8club.view.threadpost.PostView;
+import com.normalexception.forum.rx8club.view.threadpost.PostViewArrayAdapter;
 
 /**
  * Activity used to display thread contents.  Within this activity a user can
@@ -89,6 +88,10 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	private String postNumber = "none";
 	
 	private int scaledImage = 12;
+	
+	private ArrayList<PostView> postlist;
+	private PostViewArrayAdapter pva;
+	private ListView lv;
 	
 	/*
 	 * (non-Javadoc)
@@ -144,41 +147,18 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     	try{
 	    	 super.onCreate(savedInstanceState);
 	         super.setTitle("RX8Club.com Forums");
-	         setContentView(R.layout.activity_thread);
+	         setContentView(R.layout.activity_basiclist);
 	         
 	         Log.v(TAG, "Category Activity Started");
 	         
-	         findViewById(R.id.previousButton).setOnClickListener(this);
-	         findViewById(R.id.nextButton)    .setOnClickListener(this);
-	         findViewById(R.id.paginationText).setOnClickListener(this);
-	         findViewById(R.id.submitButton)  .setOnClickListener(this);
-	         findViewById(R.id.firstButton)   .setOnClickListener(this);
-	         findViewById(R.id.lastButton)    .setOnClickListener(this);
-	         
-	         runOnUiThread(new Runnable() {
-		            public void run() {
-		            	findViewById(R.id.controlsRow).setVisibility(View.GONE);
-		            }
-	         });
-	         
 	         scaledImage = ThreadUtils.setScaledImageSizes(this);
 	         
-	         if(savedInstanceState == null)
+	         postlist = new ArrayList<PostView>();
+	        if(savedInstanceState == null)
 	        	constructView();
-	         else {
-	        	viewContents = 
-	        			(ArrayList<ViewContents>) 
-	        			savedInstanceState.getSerializable("contents");
-	        	updateView(viewContents);
-	         }
-	         
-	         if(!PreferenceHelper.isShowStyleButtons(this)) {
-		         runOnUiThread(new Runnable() {
-			            public void run() {
-			            	findViewById(R.id.stylerRow).setVisibility(View.GONE);
-			            }
-		         });
-	         }
+	        else
+	        	updateList();
+
 	 	} catch (Exception e) {
 	 		Log.e(TAG, "Fatal Error In Thread Activity! " + e.getMessage());
 	 	}
@@ -189,7 +169,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
      */
     private void constructView() {
     	loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
-    	final ForumBaseActivity src = this;
+    	final ThreadActivity src = this;
     	    	
         updaterThread = new Thread("CategoryThread") {
 			public void run() {
@@ -206,178 +186,36 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 				Document doc = VBForumFactory.getInstance().get(src, currentPageLink);
 				viewContents = new ArrayList<ViewContents>();
 				
-				final ArrayList<ThreadPost> list = getThreadContents(doc);
+				lv = (ListView)findViewById(R.id.mainlistview);
+		    	View v = getLayoutInflater().inflate(R.layout.view_newreply_footer, null);
+		    	v.setOnClickListener(src);
+		    	lv.addFooterView(v);
 				
-				viewContents.add(
-						new ViewContents(Color.BLUE, currentPageTitle, 40, "", false, true));
-		        
-               	for(ThreadPost post : list) {                   		
-               		String text = post.name + "\n" + post.title + "\n" + 
-               				post.location + "\n" + post.join + "\n" + 
-               				post.postcount + "\n\n" + "Post Date: " + post.postDate;
-               		
-               		viewContents.add(new ViewContents(Color.GRAY, text, 22, 
-               				post.postid, false, false));
-               		viewContents.add(new ViewContents(Color.DKGRAY, post.post, 23, 
-               				post.postid, true, false));
-               	}
-		    	
-		    	runOnUiThread(new Runnable() {
-		            public void run() {
-		            	findViewById(R.id.controlsRow).setVisibility(View.VISIBLE);
-		            }
-		    	});
-		    	
-		    	updateView(viewContents);
+				getThreadContents(doc);
+				
+		    	updateList();
 		    	loadingDialog.dismiss();			
 			}
         };
         updaterThread.start();
     }
     
-    /**
-     * Update the view contents
-     * @param contents	List of view rows
-     */
-    private void updateView(final ArrayList<ViewContents> contents) {
+	private void updateList() {
+		final ForumBaseActivity a = this;
     	runOnUiThread(new Runnable() {
-    		public void run() {
-    			tl = (TableLayout)findViewById(R.id.myTableLayoutThread);
-    			
-    			int index = 0;
-    			for(ViewContents view : contents) {
-    				addRow(view.getClr(), view.getText(), index++, 
-    						view.getPostId(), view.isHtml(), view.isSpan());
-    			}
-    		}
+            public void run() {    	    	
+		    	pva = new PostViewArrayAdapter(a, R.layout.view_thread, postlist);
+				lv.setAdapter(pva);
+				lv.setOnItemClickListener(new OnItemClickListener() {
+		            @Override
+		            public void onItemClick(AdapterView<?> parent, View view,
+		                    int position, long id) {
+
+		            }
+		        });
+            }
     	});
-    }
-    
-    /**
-     * Add a row to the view
-     * @param clr		The background color of the row
-     * @param text		The text for the row
-     * @param id		The id of the row
-     * @param postid 	The id of the post
-     * @param html		True if the text contains html
-     * @param span		True if we are creating a spannable string
-     */
-    private void addRow(int clr, String text, int id, String postid, boolean html, boolean threadName) {
-    	/* Create a new row to be added. */
-    	TableRow tr_head = new TableRow(this);
-    	tr_head.setId(id);
-    	tr_head.setBackgroundColor(clr);
-    	tr_head.setWeightSum(1);
-    	
-    	if(clr == Color.DKGRAY)
-    		tr_head.setPadding(5, 5, 5, 15);
-
-    	/* Create a Button to be the row-content. */
-    	CThreadTextView b = new CThreadTextView(this);
-    	b.setId(ThreadActivity.ThreadIdIndex + id);
-    	if(!html && text.indexOf("\n") != -1) {
-    		b.setTitleText(text);
-    	} else if (!threadName ){
-    		b.setContentText(reformatQuotes(text));
-    	} else {
-    		b.setThreadTitle(text);
-    	}
-    	
-    	b.setSpannedWidth();
-
-    	/* Add Button to row. */
-        tr_head.addView(b, b.getTextParameters());      
-        
-        // Thread title information, so add the edit button
-        if(!html && !threadName) { 	
-    		addPostButtons(tr_head, getPostUser(text), 
-    				postid, id, b.getTextParameters());
-        }
-
-    	/* Add row to TableLayout. */
-        tl.addView(tr_head, tl.getChildCount() - 1);
-    }
-    
-    /**
-     * Add the buttons to the post title that allow the user to quote, edit, or
-     * delete their posts
-     * @param tr_head	The row object
-     * @param user		The user of the current post 
-     * @param postid	The id number of the post
-     * @param id		The id number of the view object
-     * @param params	The layout params
-     */
-    private void addPostButtons(TableRow tr_head, String user, 
-    		String postid, int id, TableRow.LayoutParams params) {
-    	int image = R.drawable.quote_icon;
-		int buttonType = PostButtonView.QUOTEBUTTON;
-		
-		// First time around, we add the pencil icon, then
-		// we set the image object to the X
-		for(int i = 0; i < 4; i++) {
-			if(i == 1) {
-				image = R.drawable.black_pencil_icon;
-				buttonType = PostButtonView.EDITBUTTON;
-			} else if (i == 2) {
-				image = R.drawable.black_x;
-				buttonType = PostButtonView.DELETEBUTTON;
-			} else if (i == 3) {
-				image = R.drawable.black_mail;
-				buttonType = PostButtonView.PMBUTTON;
-			}
-	
-			// If the post is not by the user, we are going
-			// to skip this iteration if it is an edit or
-			// delete button
-			if(buttonType == PostButtonView.EDITBUTTON &&
-					!isPostByUser(user))
-				continue;
-			
-			if(buttonType == PostButtonView.DELETEBUTTON && 
-					!isPostByUser(user))
-				continue;
-			
-			if(buttonType == PostButtonView.PMBUTTON &&
-					isPostByUser(user))
-				continue;
-				
-			// Check our preferences if the user disabled any of the 
-			// buttons
-			if(buttonType == PostButtonView.EDITBUTTON && 
-					!PreferenceHelper.isShowEditButton(this))
-				continue;
-			
-			if(buttonType == PostButtonView.DELETEBUTTON && 
-					!PreferenceHelper.isShowDeleteButton(this))
-				continue;
-			
-			if(buttonType == PostButtonView.PMBUTTON &&
-					!PreferenceHelper.isShowPMButton(this))
-				continue;
-			
-        	PostButtonView b = new PostButtonView(this, buttonType,
-        			ThreadActivity.ThreadIdIndex+id+1, this.securityToken,
-        			user, currentPageTitle, pageNumber);
-        	SpannableStringBuilder ssb = 
-        			new SpannableStringBuilder(" ");
-        	
-        	// We need to decode the resource, and then scale
-        	// down the image
-        	Bitmap scaledimg = 
-        			Bitmap.createScaledBitmap(
-        					BitmapFactory.decodeResource(
-        							getResources(), image), 
-        							scaledImage, scaledImage, true);
-        	ssb.setSpan(new ImageSpan(scaledimg), 
-        			0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
-        	
-        	// Set the text, padding, and add
-        	b.setText(ssb, BufferType.SPANNABLE);
-        	((PostButtonView)b).setPostId(postid);
-        	b.setPadding(0, 15, 15, 0);
-        	tr_head.addView(b, params);
-    	}
-    }
+	}
     
     /**
      * Get the user that posted the message
@@ -465,7 +303,14 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	// User Post Content
         	user.post = innerPost.select("td[class=alt1]").select("div[id^=post_message]").html();
         	
-        	titles.add(user);
+        	PostView pv = new PostView();
+        	pv.setUserName(user.name);
+        	pv.setUserTitle(user.title);
+        	pv.setPostDate(user.postDate);
+        	pv.setJoinDate(user.join);
+        	pv.setUserPostCount(user.postcount);
+        	pv.setUserPost(user.post);
+        	postlist.add(pv);
     	}
     	
     	return titles;

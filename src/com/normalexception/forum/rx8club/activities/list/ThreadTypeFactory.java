@@ -27,10 +27,12 @@ package com.normalexception.forum.rx8club.activities.list;
 import java.util.HashMap;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.normalexception.forum.rx8club.Log;
+import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 
 public class ThreadTypeFactory {
@@ -59,13 +61,16 @@ public class ThreadTypeFactory {
 			boolean isLocked, boolean isSticky) {
 		Bitmap scaledimg;
 		
+		Resources rsc = (src == null)? 
+				MainApplication.getAppContext().getResources() : src.getResources();
+		
 		if(isLocked) {
 			scaledimg = sBitmapCache.get(Type.LOCKED);
 			if(scaledimg == null) {
 				scaledimg = 
 					Bitmap.createScaledBitmap(
 							BitmapFactory.decodeResource(
-									src.getResources(), R.drawable.lock), 
+									rsc, R.drawable.lock), 
 									width, height, true);
 				Log.d(TAG, "Caching Locked Icon");
 				sBitmapCache.put(Type.LOCKED, scaledimg);
@@ -77,7 +82,7 @@ public class ThreadTypeFactory {
 				scaledimg =  
 					Bitmap.createScaledBitmap(
 							BitmapFactory.decodeResource(
-									src.getResources(), R.drawable.sticky), 
+									rsc, R.drawable.sticky), 
 									width, height, true);
 				Log.d(TAG, "Caching Sticky Icon");
 				sBitmapCache.put(Type.STICKY, scaledimg);
@@ -88,7 +93,7 @@ public class ThreadTypeFactory {
 				scaledimg = 
 						Bitmap.createScaledBitmap(
 								BitmapFactory.decodeResource(
-										src.getResources(), R.drawable.arrow_icon), 
+										rsc, R.drawable.arrow_icon), 
 										width, height, true);
 				Log.d(TAG, "Caching Normal Icon");
 				sBitmapCache.put(Type.NORMAL, scaledimg);

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dip" >
+ 
+    <!--  ListRow Left sied Thumbnail image -->
+    <LinearLayout android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="5dip">
+ 
+        <ImageView
+            android:id="@+id/cv_image"
+            android:layout_width="15dip"
+            android:layout_height="15dip"
+            android:src="@drawable/arrow_icon"/>
+ 
+    </LinearLayout>
+ 
+    <!-- Title Of Thread-->
+    <TextView
+        android:id="@+id/cv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="Rihanna Love the way lie"
+        android:textColor="#040404"
+        android:typeface="sans"
+        android:textSize="15dip"
+        android:textStyle="bold"/>
+ 
+    <!-- Rightend Post Counts -->    
+    <TextView
+        android:id="@+id/cv_postCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:text="5:45"
+        android:layout_marginTop="20dip"
+        android:layout_marginRight="5dip"
+        android:textSize="10dip"
+        android:textColor="#ffffff"
+        android:textStyle="bold"/>
+    
+    <TextView
+        android:id="@+id/cv_postCount_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/cv_postCount"
+        android:gravity="right"
+        android:text="Posts: "
+        android:layout_marginTop="20dip"
+        android:layout_marginRight="5dip"
+        android:textSize="10dip"
+        android:textColor="#000000"
+        android:textStyle="bold"/>
+    
+    <TextView
+        android:id="@+id/cv_threadCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/cv_postCount_label"
+        android:gravity="right"
+        android:text="5:45"
+        android:layout_marginTop="20dip"
+        android:layout_marginRight="5dip"
+        android:textSize="10dip"
+        android:textColor="#ffffff"
+        android:textStyle="bold"/>
+        
+    <TextView
+        android:id="@+id/cv_threadCount_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/cv_threadCount"
+        android:gravity="right"
+        android:text="Threads: "
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="20dip"
+        android:textSize="10dip"
+        android:textColor="#000000"
+        android:textStyle="bold"/>
+ 
+</RelativeLayout>

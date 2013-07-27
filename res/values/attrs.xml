@@ -1,0 +1,14 @@
+<resources>
+    <declare-styleable name="ThreadView">
+    	<attr name="title"     format="string" />
+    	<attr name="postCount" format="string" />
+    	<attr name="viewCount" format="string"/>
+    	<attr name="startUser" format="string"/>
+    	<attr name="lastUser"  format="string"/>
+    	<attr name="type" format="enum">
+           <enum name="normal" value="0"/>
+           <enum name="locked" value="1"/>
+           <enum name="sticky" value="2"/>
+       </attr>
+	</declare-styleable>
+</resources>

@@ -26,44 +26,33 @@ package com.normalexception.forum.rx8club.activities;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.ImageSpan;
-import android.util.TypedValue;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
 import com.normalexception.forum.rx8club.activities.list.CategoryUtils;
-import com.normalexception.forum.rx8club.activities.list.ThreadTypeFactory;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
-import com.normalexception.forum.rx8club.view.CTextView;
 import com.normalexception.forum.rx8club.view.ViewContents;
+import com.normalexception.forum.rx8club.view.category.CategoryView;
+import com.normalexception.forum.rx8club.view.category.CategoryViewArrayAdapter;
 
 /**
  * Main activity for the application.  This is the main forum view that 
@@ -72,15 +61,14 @@ import com.normalexception.forum.rx8club.view.ViewContents;
  * Required Intent Parameters:
  * none
  */
-public class MainActivity extends ForumBaseActivity implements OnClickListener {
-    
-    private Map<String,String> linkMap;
+public class MainActivity extends ForumBaseActivity {
     
 	private static final String TAG = "Application";
 	
-	private Map<String, Collection<?>> mainForumContainer;
+	private ArrayList<CategoryView> mainList;
+	private CategoryViewArrayAdapter cva;
 	
-	public int scaledImage = 12;
+	private int scaledImage = 12;
 	
 	// The Forum's Main Page Has The Following Column
 	@SuppressWarnings("unused")
@@ -103,7 +91,7 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	        super.onCreate(savedInstanceState);
 	        super.setTitle("RX8Club.com Forums");
 	        
-	        setContentView(R.layout.activity_main);
+	        setContentView(R.layout.activity_basiclist);
 	        
 	        scaledImage = CategoryUtils.setScaledImageSizes(this);
 
@@ -150,28 +138,8 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	        		
 	        		doc = getForum();
 	        		
-	                mainForumContainer = getCategories(doc);
-	                
-	                Log.v(TAG, "Document Container Read, size=" + mainForumContainer.size());
-	                
-	                viewContents.add(new ViewContents(Color.BLUE, new String[]{"Forum","Threads","Posts"}, 40, false));
-
-	                Iterator<?> it = mainForumContainer.entrySet().iterator();
-	                while (it.hasNext()) {
-	        			@SuppressWarnings("unchecked")
-						Map.Entry<String, List<String>> pairs = (Map.Entry<String, List<String>>)it.next();
-	                    
-	                    // Always add view objects on a Ui Thread
-	                    viewContents.add(new ViewContents(Color.DKGRAY, pairs.getKey().split("µ"), 10, true));           	
-	                    
-	                    List<String> vals = pairs.getValue();
-	                    for(final String val : vals) {
-	                    	 viewContents.add(new ViewContents(Color.GRAY, val.split("µ"), 20, false));  
-	                    }
-	                    
-	                    // avoids a ConcurrentModificationException
-	                    it.remove(); 
-	                }
+	        		mainList           = new ArrayList<CategoryView>();
+	                getCategories(doc);
 	                
 	                updateView(viewContents);
 	                Log.v(TAG, "Dismissing Wait Dialog");
@@ -182,6 +150,7 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
                 					"Sorry, there was an error connecting!", Toast.LENGTH_SHORT).show();
         				}
         			});
+        			e.printStackTrace();
         		} finally {
         			if(loadingDialog != null)
         				loadingDialog.dismiss();
@@ -196,62 +165,28 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
      * @param contents	List of view rows
      */
     private void updateView(final ArrayList<ViewContents> contents) {
+    	final Activity a = this;
     	runOnUiThread(new Runnable() {
-    		public void run() {
-    			tl = (TableLayout)findViewById(R.id.myTableLayout);
-    			tl.setColumnStretchable(0, true);
-    			for(ViewContents view : contents) {
-    				addRow(view.getClr(), view.getTexts(), view.getId(), view.isSpan());
-    			}
-    		}
+            public void run() {	        
+		    	ListView lv = (ListView)findViewById(R.id.mainlistview);
+		    	cva = new CategoryViewArrayAdapter(a, R.layout.view_category, mainList);
+				lv.setAdapter(cva);
+				lv.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+		            public void onItemClick(AdapterView<?> parent, View view,
+		                    int position, long id) {
+						CategoryView cv = (CategoryView) parent.getItemAtPosition(position);
+						Log.v(TAG, "Category Clicked: " + cv.getTitle());
+						if(cv.getLink() != null) {
+							Intent intent = 
+									new Intent(MainActivity.this, CategoryActivity.class);
+							intent.putExtra("link", cv.getLink());
+							startActivity(intent);
+						}
+					}
+				});
+            }
     	});
-    }
-    
-    /**
-     * Add a row to the view
-     * @param clr	The background color of the row
-     * @param text	The text for the row
-     * @param id	The id of the row
-     */
-    private void addRow(int clr, String texts[], int id, boolean span) {
-    	// Create a new row to be added.
-    	TableRow tr_head = new TableRow(this);
-    	tr_head.setId(id);
-    	tr_head.setBackgroundColor(clr);
-
-    	// We need to decode the resource, and then scale
-    	// down the image
-    	Bitmap scaledimg = 
-    			ThreadTypeFactory.getBitmap(this, scaledImage, scaledImage, false, false);
-    	
-    	int index = ROTOR_ICON;
-    	for(String text : texts) {
-	    	// Create a Button to be the row-content.
-	    	CTextView b = new CTextView(this, this, id);
-	    	
-	    	SpannableStringBuilder htext = new SpannableStringBuilder(" " + text);
-			htext.setSpan(new ImageSpan(scaledimg), 
-	    			0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE );
-			b.setText(clr == Color.BLUE || clr == Color.DKGRAY || index > ROTOR_ICON? text : htext);
-			
-	        if(index == ROTOR_ICON) {
-	        	// Convert dip to px
-	        	Resources r = getResources();
-        		int px = 
-        			(int)TypedValue.applyDimension(
-        					TypedValue.COMPLEX_UNIT_DIP, 0, r.getDisplayMetrics());
-        		b.setWidth(px);
-	        }
-	
-	        TableRow.LayoutParams params = new TableRow.LayoutParams();
-	        params.span = span? 5 :	1;  
-	        if(index == ROTOR_ICON) params.weight = 1f;
-	        tr_head.addView(b,params);
-	        index++;
-    	}
-
-    	// Add row to TableLayout.
-        tl.addView(tr_head);
     }
     
     /**
@@ -260,8 +195,7 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
      * @param root	The full forum document
      * @return		A map of the categories to the forums
      */
-    private Map<String, Collection<?>> getCategories(Document root) {	
-    	Map< String, Collection<?> > container = new LinkedHashMap< String, Collection<?> >();
+    private void getCategories(Document root) {	
     	
     	// Grab each category
     	Elements categories       = root.getElementsByClass("tcat");
@@ -275,19 +209,20 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
     	Elements categorySections = root.select("tbody[id^=collapseobj_forumbit_]");
     	
     	// These should match in size
-    	if(categories.size() != categorySections.size()) return container;
-    	
-    	// Create a list that will hold category contents
-    	List<String> catContents = null;
+    	if(categories.size() != categorySections.size()) return;
     	
     	// Iterate over each category
     	int catIndex = 0;
     	for(Element category : categorySections) {
-    		container.put(categories.get(catIndex++).text(), 
-    				      catContents = new ArrayList<String>());
+    		
+    		CategoryView cv = new CategoryView();
+    		cv.setTitle(categories.get(catIndex++).text());
+    		mainList.add(cv);
     		
     		Elements forums = category.select("tr[align=center]");
     		for(Element forum : forums) {
+    			cv = new CategoryView();
+    			
     			// Each forum object should have 5 columns
     			Elements columns = forum.select("tr[align=center] > td");
     			if(columns.size() != 5) continue;
@@ -297,13 +232,15 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
     			String threads    = columns.get(MainActivity.THREADS_CNT).text();
     			String posts      = columns.get(MainActivity.POSTS_CNT).text();
     			
-    			catContents.add(
-    					String.format("%sµ%sµ%s", forum_name, threads, posts));
-    			linkMap.put(forum_name, forum_href);
+    			cv.setTitle(forum_name);
+    			cv.setThreadCount(threads);
+    			cv.setPostCount(posts);
+    			cv.setLink(forum_href);
+    			mainList.add(cv);
     		}
     	}
         
-        return container;
+        return;
     }
 
     /**
@@ -326,43 +263,7 @@ public class MainActivity extends ForumBaseActivity implements OnClickListener {
 	   	return Jsoup.parse(output);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
 	@Override
-	public void onClick(View arg0) {
-		super.onClick(arg0);		
-				
-		switch(arg0.getId()) {	
-			default:			
-				TextView tv = (TextView)arg0;
-				Log.v(TAG, "Category Clicked: " + tv.getText());
-				final String link = linkMap.get(tv.getText().toString().trim());
-				if(link != null && !link.equals("")) {
-					Log.v(TAG, "User Clicked: " + link);
-					
-					// Open new thread
-					new Thread("RefreshDisplayList") {
-						public void run() {
-							Intent intent = 
-									new Intent(MainActivity.this, CategoryActivity.class);
-							intent.putExtra("link", link);
-							startActivity(intent);
-						}
-					}.start();	
-				}
-				break;
-		}	
-
+	protected void enforceVariants(int currentPage, int lastPage) {	
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#enforceVariants(int, int)
-	 */
-	@Override
-	protected void enforceVariants(int currentPage, int lastPage) {
-		// Do Nothing
-	} 
 }

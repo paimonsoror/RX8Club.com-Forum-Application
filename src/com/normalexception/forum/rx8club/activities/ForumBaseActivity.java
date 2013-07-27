@@ -278,7 +278,7 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
     protected void updatePagination(Document doc) {
     	String myPage = "1";
     	String label;
-    	
+
     	// Grab page number
     	try {
     		Elements pageNumbers = doc.select("div[class=pagenav]");
