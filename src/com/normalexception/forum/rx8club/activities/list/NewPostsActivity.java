@@ -25,7 +25,6 @@ package com.normalexception.forum.rx8club.activities.list;
  ************************************************************************/
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -34,9 +33,6 @@ import org.jsoup.select.Elements;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -45,24 +41,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
-import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
-import com.normalexception.forum.rx8club.view.CTextDetail;
-import com.normalexception.forum.rx8club.view.CTextView;
-import com.normalexception.forum.rx8club.view.ViewContents;
 import com.normalexception.forum.rx8club.view.thread.ThreadView;
 import com.normalexception.forum.rx8club.view.thread.ThreadViewArrayAdapter;
 
@@ -76,7 +66,6 @@ import com.normalexception.forum.rx8club.view.thread.ThreadViewArrayAdapter;
 public class NewPostsActivity extends ForumBaseActivity implements OnClickListener {
 	
 	private static final String TAG = "Application:NewPostsActivity";
-	private static TableLayout tl;
 	
 	private ArrayList<ThreadView> threadlist;
 	private ThreadViewArrayAdapter tva;
@@ -173,15 +162,7 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 				getContents(doc);
 		    	
 				updateList();
-		    	
-		    	/**
-		    	runOnUiThread(new Runnable() {
-		            public void run() {
-		            	// Restore pagination
-		            	findViewById(R.id.paginationRow).setVisibility(View.VISIBLE);
-		            }
-		    	});*/
-		        
+
 		    	loadingDialog.dismiss();
  			}
          };

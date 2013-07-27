@@ -53,16 +53,6 @@
 		        android:text="User Title"
 		        android:textColor="#ffffff"
 		        android:textSize="10dip" />
-	
-		    <TextView
-		        android:id="@+id/nr_userPosts_label"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_below="@id/nr_userTitle"
-		        android:layout_marginTop="1dip"
-		        android:text="Posts: "
-		        android:textColor="#ffffff"
-		        android:textSize="10dip" />
 		    
 		    <TextView
 		        android:id="@+id/nr_userPosts"
@@ -70,18 +60,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_below="@id/nr_userTitle"
 		        android:layout_marginTop="1dip"
-		        android:layout_toRightOf="@id/nr_userPosts_label"
 		        android:text="1000"
-		        android:textColor="#ffffff"
-		        android:textSize="10dip" />
-		    
-		    <TextView
-		        android:id="@+id/nr_userJoin_label"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_below="@id/nr_userPosts_label"
-		        android:layout_marginTop="1dip"
-		        android:text="Joined: "
 		        android:textColor="#ffffff"
 		        android:textSize="10dip" />
 		    
@@ -91,7 +70,6 @@
 		        android:layout_height="wrap_content"
 		        android:layout_below="@id/nr_userPosts"
 		        android:layout_marginTop="1dip"
-		        android:layout_toRightOf="@id/nr_userJoin_label"
 		        android:text="June 2013"
 		        android:textColor="#ffffff"
 		        android:textSize="10dip" />
@@ -100,7 +78,7 @@
 		        android:id="@+id/nr_postDate_label"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_below="@id/nr_userJoin_label"
+		        android:layout_below="@id/nr_userJoin"
 		        android:layout_marginTop="10dip"
 		        android:text="Post Date: "
 		        android:textColor="#ffffff"

@@ -37,10 +37,19 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
 
+/**
+ * Custom category view array adapter
+ */
 public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
 	private Context activity;
 	private List<CategoryView> data;
 
+	/**
+	 * A custom adapter that handles Category View objects
+	 * @param context				The source context
+	 * @param textViewResourceId	The resource ID
+	 * @param objects				The objects in the list
+	 */
 	public CategoryViewArrayAdapter(Context context, int textViewResourceId,
 			List<CategoryView> objects) {
 		super(context, textViewResourceId, objects);
@@ -84,6 +93,11 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
         return vi;
 	}
 	
+	/**
+	 * Set the mode of the category line
+	 * @param vi		The view line
+	 * @param isTitle	If we are going to represent a title
+	 */
 	private void setMode(View vi, boolean isTitle) {
 		int showMode = isTitle? View.GONE : View.VISIBLE;
 		int colorMode= isTitle? Color.DKGRAY : Color.GRAY;

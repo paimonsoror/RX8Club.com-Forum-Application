@@ -98,8 +98,7 @@ public class MainActivity extends ForumBaseActivity {
 	        if(savedInstanceState == null)
 	        	constructView();
 	        else {
-	        	viewContents = (ArrayList<ViewContents>) savedInstanceState.getSerializable("contents");
-	        	updateView(viewContents);
+	        	updateList();
 	        }
     	} catch (Exception e) {
     		Log.e(TAG, "Fatal Error In Main Activity! " + e.getMessage());
@@ -141,7 +140,7 @@ public class MainActivity extends ForumBaseActivity {
 	        		mainList           = new ArrayList<CategoryView>();
 	                getCategories(doc);
 	                
-	                updateView(viewContents);
+	                updateList();
 	                Log.v(TAG, "Dismissing Wait Dialog");
         		} catch(Exception e) {
         			thisActivity.runOnUiThread(new Runnable() {
@@ -164,7 +163,7 @@ public class MainActivity extends ForumBaseActivity {
      * Update the view contents
      * @param contents	List of view rows
      */
-    private void updateView(final ArrayList<ViewContents> contents) {
+    private void updateList() {
     	final Activity a = this;
     	runOnUiThread(new Runnable() {
             public void run() {	        

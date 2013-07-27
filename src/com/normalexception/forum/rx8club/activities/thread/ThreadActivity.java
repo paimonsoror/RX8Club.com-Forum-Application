@@ -30,12 +30,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -50,7 +48,6 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
-import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.task.SubmitTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
@@ -58,8 +55,6 @@ import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.ViewContents;
-import com.normalexception.forum.rx8club.view.thread.ThreadView;
-import com.normalexception.forum.rx8club.view.thread.ThreadViewArrayAdapter;
 import com.normalexception.forum.rx8club.view.threadpost.PostView;
 import com.normalexception.forum.rx8club.view.threadpost.PostViewArrayAdapter;
 
@@ -141,7 +136,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
-    @SuppressWarnings("unchecked")
 	@Override
     public void onCreate(Bundle savedInstanceState) {
     	try{
