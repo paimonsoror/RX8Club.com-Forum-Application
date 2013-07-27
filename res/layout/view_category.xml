@@ -22,17 +22,18 @@
     </LinearLayout>
  
     <!-- Title Of Thread-->
+
     <TextView
         android:id="@+id/cv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
-        android:text="Rihanna Love the way lie"
+        android:text="Here is a cool category name"
         android:textColor="#040404"
-        android:typeface="sans"
         android:textSize="15dip"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:typeface="sans" />
  
     <!-- Rightend Post Counts -->    
     <TextView

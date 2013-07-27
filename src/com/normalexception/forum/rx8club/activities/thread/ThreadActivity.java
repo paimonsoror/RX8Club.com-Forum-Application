@@ -38,8 +38,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -70,7 +68,6 @@ import com.normalexception.forum.rx8club.view.threadpost.PostViewArrayAdapter;
 public class ThreadActivity extends ForumBaseActivity implements OnClickListener {
 
 	private static final String TAG = "Application:Thread";
-	public static final int ThreadIdIndex = 9000;
 	
 	private String currentPageLink;
 	private String currentPageTitle;
@@ -195,43 +192,13 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     }
     
 	private void updateList() {
-		final ForumBaseActivity a = this;
+		final ThreadActivity a = this;
     	runOnUiThread(new Runnable() {
             public void run() {    	    	
 		    	pva = new PostViewArrayAdapter(a, R.layout.view_thread, postlist);
 				lv.setAdapter(pva);
-				lv.setOnItemClickListener(new OnItemClickListener() {
-		            @Override
-		            public void onItemClick(AdapterView<?> parent, View view,
-		                    int position, long id) {
-
-		            }
-		        });
             }
     	});
-	}
-    
-    /**
-     * Get the user that posted the message
-     * @param text	The thread text
-     * @return		The user
-     */
-    private String getPostUser(String text) {
-    	return text.split("\n")[0];
-    }
-    
-    /**
-     * Check if the post is by the logged in user
-     * @param text	The post text
-     * @return		True if the post is by the logged in user
-     */
-    private boolean isPostByUser(String text) {
-		// if the post is by the user, the user name should
-    	// be the first string
-    	String assumedUser = getPostUser(text);
-    	if(UserProfile.getUsername().equals(assumedUser))
-    		return true;
-		return false;
 	}
     
     /**
@@ -299,11 +266,14 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	
         	PostView pv = new PostView();
         	pv.setUserName(user.name);
+        	pv.setIsLoggedInUser(UserProfile.getUsername().equals(user.name));
         	pv.setUserTitle(user.title);
         	pv.setPostDate(user.postDate);
         	pv.setJoinDate(user.join);
         	pv.setUserPostCount(user.postcount);
         	pv.setUserPost(user.post);
+        	pv.setPostId(user.postid);
+        	pv.setSecurityToken(securityToken);
         	postlist.add(pv);
     	}
     	
@@ -340,6 +310,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	@Override
 	public void onClick(View arg0) {	
 		super.onClick(arg0);
+		Log.d(TAG, "BUTTON CLICKED");
 		Intent _intent = null;
 		_intent = new Intent(ThreadActivity.this, ThreadActivity.class);
 		_intent.putExtra("title", this.currentPageTitle);

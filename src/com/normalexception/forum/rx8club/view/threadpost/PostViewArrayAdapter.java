@@ -26,15 +26,24 @@ package com.normalexception.forum.rx8club.view.threadpost;
 
 import java.util.List;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.activities.pm.NewPrivateMessageActivity;
+import com.normalexception.forum.rx8club.activities.thread.EditPostActivity;
 
 /**
  * Custom adapter to handle PostView objects
@@ -42,6 +51,7 @@ import com.normalexception.forum.rx8club.R;
 public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	private Context activity;
 	private List<PostView> data;
+	private final String TAG = "PostViewArrayAdapter";
 
 	/**
 	 * Custom adapter to handle PostView's
@@ -77,7 +87,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
             vi = vinf.inflate(R.layout.view_newreply, null);
         }
         
-        PostView cv = data.get(position);
+        final PostView cv = data.get(position);
         
         ((TextView)vi.findViewById(R.id.nr_username)).setText(cv.getUserName());
         ((TextView)vi.findViewById(R.id.nr_userTitle)).setText(cv.getUserTitle());
@@ -85,7 +95,113 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         ((TextView)vi.findViewById(R.id.nr_userJoin)).setText(cv.getJoinDate());
         ((TextView)vi.findViewById(R.id.nr_postDate)).setText(cv.getPostDate());
         ((TextView)vi.findViewById(R.id.nr_postText)).setText(Html.fromHtml(cv.getUserPost()));
+        
+        // Display the right items if the user is logged in
+        setUserIcons(vi, cv.isLoggedInUser());
+        
+        // Set click listeners
+        ((ImageView)vi.findViewById(R.id.nr_quoteButton)).setOnClickListener(new OnClickListener() {
+        	@Override
+            public void onClick(View arg0) {
+        		Log.d(TAG, "Quote Clicked");
+				String txt = cv.getUserPost();
+				String finalText = String.format("[quote=%s]%s[/quote]",
+						cv.getUserName(), txt);
+				((TextView)((Activity) activity).findViewById(R.id.postBox)).setText(finalText);
+				((TextView)((Activity) activity).findViewById(R.id.postBox)).requestFocus();
+        	}
+        });
+        
+        ((ImageView)vi.findViewById(R.id.nr_editButton)).setOnClickListener(new OnClickListener() {
+        	@Override
+        	public void onClick(View arg0) {
+        		Log.d(TAG, "Edit Clicked");
+        		Intent _intent = new Intent(activity, EditPostActivity.class); 
+        		_intent.putExtra("postid", cv.getPostId());
+				_intent.putExtra("securitytoken", cv.getToken());
+				activity.startActivity(_intent);
+        	}
+        });
+        
+        ((ImageView)vi.findViewById(R.id.nr_pmButton)).setOnClickListener(new OnClickListener() {
+        	@Override
+        	public void onClick(View arg0) {
+        		Log.d(TAG, "PM Clicked");
+        		Intent _intent =  new Intent(activity, NewPrivateMessageActivity.class);
+				_intent.putExtra("user", cv.getUserName());
+				activity.startActivity(_intent);
+        	}
+        });
     	
+        final boolean isFirstPost = (position == 0);
+        ((ImageView)vi.findViewById(R.id.nr_deleteButton)).setOnClickListener(new OnClickListener() {
+        	@Override
+        	public void onClick(View arg0) {
+        		final Intent _intent = new Intent(activity, EditPostActivity.class);     		
+				DialogInterface.OnClickListener dialogClickListener = 
+					new DialogInterface.OnClickListener() {
+				    @Override
+				    public void onClick(DialogInterface dialog, int which) {
+				        switch (which){
+				        case DialogInterface.BUTTON_POSITIVE:  
+				        	_intent.putExtra("postid", cv.getPostId());
+				        	_intent.putExtra("securitytoken", cv.getToken());
+				        	_intent.putExtra("delete", true);
+				        	_intent.putExtra("deleteThread", isFirstPost && cv.isLoggedInUser());
+				        	activity.startActivity(_intent);
+				            break;
+				        }
+				    }
+				};
+	
+				AlertDialog.Builder builder = 
+						new AlertDialog.Builder(activity);
+				builder
+					.setMessage("Are you sure you want to delete your post?")
+					.setPositiveButton("Yes", dialogClickListener)
+				    .setNegativeButton("No", dialogClickListener)
+				    .show();
+        	}
+        });
+        
         return vi;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see android.widget.BaseAdapter#areAllItemsEnabled()
+	 */
+	@Override
+	public boolean  areAllItemsEnabled() {
+	    return false;			
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see android.widget.BaseAdapter#isEnabled(int)
+	 */
+	@Override
+	public boolean isEnabled(int position) {
+	        return false;
+	}
+	
+	/**
+	 * If the post is by the logged in user, make sure that they can see the edit and 
+	 * delete buttons
+	 * @param vi				The thread view object
+	 * @param isLoggedInUser	True if post is by logged user
+	 */
+	private void setUserIcons(View vi, boolean isLoggedInUser) {
+		((ImageView)vi.findViewById(R.id.nr_quoteButton))
+			.setVisibility(View.VISIBLE);
+		
+		((ImageView)vi.findViewById(R.id.nr_pmButton))
+			.setVisibility(View.VISIBLE);
+		
+		((ImageView)vi.findViewById(R.id.nr_editButton))
+			.setVisibility(isLoggedInUser? View.VISIBLE : View.GONE);
+		
+		((ImageView)vi.findViewById(R.id.nr_deleteButton))
+			.setVisibility(isLoggedInUser? View.VISIBLE : View.GONE);
 	}
 }

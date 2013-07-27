@@ -28,6 +28,56 @@ public class PostView {
 	private String userName, userTitle;
 	private String joinDate, postDate;
 	private String userPostCount, userPost;
+	private String postId, token;
+	private boolean isLoggedInUser = false;
+	
+	/**
+	 * Set the security token
+	 * @param tok	The security token
+	 */
+	public void setSecurityToken(String tok) {
+		token = tok;
+	}
+	
+	/**
+	 * Get the security token for the user
+	 * @return	The security token
+	 */
+	public String getToken() {
+		return token;
+	}
+	
+	/**
+	 * Get the post id for the post
+	 * @return	The post ID
+	 */
+	public String getPostId() {
+		return postId;
+	}
+	
+	/**
+	 * Set the id number of the post
+	 * @param pid	The post id number
+	 */
+	public void setPostId(String pid) {
+		postId = pid;
+	}
+	
+	/**
+	 * Report if post is by logged in user
+	 * @return True if post is by logged in user
+	 */
+	public boolean isLoggedInUser() {
+		return isLoggedInUser;
+	}
+	
+	/**
+	 * Set if the post is by the logged in user
+	 * @param isl	True if post is by logged in user
+	 */
+	public void setIsLoggedInUser(boolean isl) {
+		isLoggedInUser = isl;
+	}
 	
 	/**
 	 * Report the user name

@@ -99,7 +99,7 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 		String url = HtmlFormUtils.getResponseUrl();
 		Intent _intent = null;
 		
-		if(pageNumber.equals("1") && deleteThread) {
+		if(deleteThread) {
 			_intent = new Intent(sourceActivity, CategoryActivity.class);
 		} else {
 			_intent = new Intent(sourceActivity, ThreadActivity.class);			
