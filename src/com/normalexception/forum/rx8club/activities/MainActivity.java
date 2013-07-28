@@ -26,7 +26,6 @@ package com.normalexception.forum.rx8club.activities;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -50,7 +49,6 @@ import com.normalexception.forum.rx8club.activities.list.CategoryUtils;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
-import com.normalexception.forum.rx8club.view.ViewContents;
 import com.normalexception.forum.rx8club.view.category.CategoryView;
 import com.normalexception.forum.rx8club.view.category.CategoryViewArrayAdapter;
 
@@ -226,7 +224,11 @@ public class MainActivity extends ForumBaseActivity {
 
     			String forum_name = columns.get(MainActivity.FORUM_NAME).select("strong").text();
     			String forum_href = columns.get(MainActivity.FORUM_NAME).select("a").attr("href");
-    			String forum_desc = columns.get(MainActivity.FORUM_NAME).select("div[class=smallfont]").text();
+    			String forum_desc = "";
+    			try {
+    				forum_desc = 
+    					columns.get(MainActivity.FORUM_NAME).select("div[class=smallfont]").first().text();
+    			} catch (NullPointerException npe) { /* Some might not have a desc */ }
     			String threads    = columns.get(MainActivity.THREADS_CNT).text();
     			String posts      = columns.get(MainActivity.POSTS_CNT).text();
     			
