@@ -192,6 +192,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 				getCategoryContents(doc, 
 						link.substring(link.lastIndexOf('-') + 1, link.lastIndexOf('/')),
 						link.contains("sale-wanted"));
+				
+				findViewById(R.id.mainlisttitle).setVisibility(View.GONE);
 		    			    	
 		    	updateList();
 				

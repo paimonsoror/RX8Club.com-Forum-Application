@@ -28,8 +28,16 @@ package com.normalexception.forum.rx8club.view.category;
  * Class that represents a Category item
  */
 public class CategoryView {
-	private String title, link;
+	private String title, link, description;
 	private String threadCount, postCount;
+	
+	public String getDescription() {
+		return description;
+	}
+	
+	public void setDescription(String desc) {
+		description = desc;
+	}
 	
 	/**
 	 * Report the category title

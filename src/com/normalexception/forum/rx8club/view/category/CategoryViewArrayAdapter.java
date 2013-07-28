@@ -81,6 +81,7 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
         CategoryView cv = data.get(position);
         
         ((TextView) vi.findViewById(R.id.cv_title)).setText(cv.getTitle());
+        ((TextView) vi.findViewById(R.id.cv_desc)).setText(cv.getDescription());
         
         if(cv.getPostCount() == null || cv.getThreadCount() == null) {
         	setMode(vi, true);

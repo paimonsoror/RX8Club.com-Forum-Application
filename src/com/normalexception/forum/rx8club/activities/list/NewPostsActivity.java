@@ -312,22 +312,6 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) + 1));
 				this.finish();
 				break;
-			default:
-				TextView tv = (TextView)arg0;
-				final String linkText = tv.getText().toString();		
-				Log.v(TAG, "User clicked '" + linkText + "'");
-				final String trimmedLinkText = linkText.trim().replace("\u00a0", "");
-				final String link = linkMap.get(trimmedLinkText);
-				
-				if(link == null) {
-					Log.e(TAG, "Could Not Find Key of '" + trimmedLinkText + "'");
-					Log.e(TAG, "Keys: " + linkMap.keySet().toString());
-				} else {
-					_intent = 
-							new Intent(NewPostsActivity.this, ThreadActivity.class);
-					_intent.putExtra("link", link);
-					_intent.putExtra("title", linkText);
-				}
 		}
 		
 		if(_intent != null)

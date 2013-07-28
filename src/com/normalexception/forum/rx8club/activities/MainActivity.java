@@ -82,7 +82,6 @@ public class MainActivity extends ForumBaseActivity {
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
-    @SuppressWarnings("unchecked")
 	@Override
     public void onCreate(Bundle savedInstanceState) {
     	try {
@@ -92,6 +91,7 @@ public class MainActivity extends ForumBaseActivity {
 	        super.setTitle("RX8Club.com Forums");
 	        
 	        setContentView(R.layout.activity_basiclist);
+	        findViewById(R.id.mainlisttitle).setVisibility(View.GONE);
 	        
 	        scaledImage = CategoryUtils.setScaledImageSizes(this);
 
@@ -123,9 +123,7 @@ public class MainActivity extends ForumBaseActivity {
 	        		Log.v(TAG, "Updater Thread Started");
 	        		
 	        		Document doc = null;
-	        		viewContents = new ArrayList<ViewContents>();
-	        		linkMap = new LinkedHashMap<String,String>();
-	        		
+
 	        		// User information
 	        		if(!UserProfile.isInitialized() || UserProfile.getUserProfileLink().equals("")) {
 	        			doc = 
@@ -228,6 +226,7 @@ public class MainActivity extends ForumBaseActivity {
 
     			String forum_name = columns.get(MainActivity.FORUM_NAME).select("strong").text();
     			String forum_href = columns.get(MainActivity.FORUM_NAME).select("a").attr("href");
+    			String forum_desc = columns.get(MainActivity.FORUM_NAME).select("div[class=smallfont]").text();
     			String threads    = columns.get(MainActivity.THREADS_CNT).text();
     			String posts      = columns.get(MainActivity.POSTS_CNT).text();
     			
@@ -235,6 +234,7 @@ public class MainActivity extends ForumBaseActivity {
     			cv.setThreadCount(threads);
     			cv.setPostCount(posts);
     			cv.setLink(forum_href);
+    			cv.setDescription(forum_desc);
     			mainList.add(cv);
     		}
     	}

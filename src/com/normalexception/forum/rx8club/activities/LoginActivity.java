@@ -100,16 +100,7 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
     		Log.e(TAG, "Unexpected Error!: " + e.getMessage());
     	}
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.app.Activity#onDestroy()
-     */
-    @Override
-    public void onDestroy() {
-    	super.onDestroy();
-    }
-
+   
     /*
      * (non-Javadoc)
      * @see android.view.View.OnClickListener#onClick(android.view.View)

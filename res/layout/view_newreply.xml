@@ -24,7 +24,7 @@
 	            android:id="@+id/nr_image"
 	            android:layout_width="25dip"
 	            android:layout_height="25dip"
-	            android:src="@drawable/black_mail" />
+	            android:src="@drawable/rotor_icon" />
 	    </LinearLayout>
 	
 	    <!-- Title Of Thread -->

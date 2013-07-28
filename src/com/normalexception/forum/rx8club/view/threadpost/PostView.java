@@ -25,11 +25,27 @@ package com.normalexception.forum.rx8club.view.threadpost;
  ************************************************************************/
 
 public class PostView {
-	private String userName, userTitle;
+	private String userName, userTitle, userLocation;
 	private String joinDate, postDate;
 	private String userPostCount, userPost;
 	private String postId, token;
 	private boolean isLoggedInUser = false;
+	
+	/**
+	 * Set the user's location
+	 * @param loc	The user location
+	 */
+	public void setUserLocation(String loc) {
+		userLocation = loc;
+	}
+	
+	/**
+	 * Report the user's location
+	 * @return	The user's location
+	 */
+	public String getUserLocation() {
+		return userLocation;
+	}
 	
 	/**
 	 * Set the security token

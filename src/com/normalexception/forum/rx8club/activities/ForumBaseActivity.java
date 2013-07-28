@@ -61,9 +61,7 @@ import com.normalexception.forum.rx8club.view.ViewContents;
  * GUI handlers
  */
 public abstract class ForumBaseActivity extends FragmentActivity implements OnClickListener {
-	
-	protected LinkedHashMap<String,String> linkMap;
-	protected ArrayList<ViewContents> viewContents;
+
 	
 	protected Thread updaterThread;
 	protected ProgressDialog loadingDialog;
@@ -111,8 +109,6 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 		}
 		
 		try {
-			outState.putSerializable("contents", viewContents);
-			outState.putSerializable("links", (LinkedHashMap<String,String>)linkMap);
 			outState.putString("final", finalPage);
 		} catch (Exception e) {
 			Log.e(TAG, "Error Serializing: " + e.getMessage());
@@ -154,10 +150,6 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		try {
 			if(savedInstanceState != null) {
-				viewContents = 
-					(ArrayList<ViewContents>) savedInstanceState.getSerializable("contents");
-				linkMap = 
-						(LinkedHashMap<String, String>) savedInstanceState.getSerializable("links");
 				finalPage = 
 						savedInstanceState.getString("final");
 			}

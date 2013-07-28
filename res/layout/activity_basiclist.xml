@@ -13,6 +13,17 @@
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_banner" >
     </fragment>
+    
+    <TextView 
+        android:id="@+id/mainlisttitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fragment_content"
+        android:text="Thread Title"
+        android:background="#0000ff"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:visibility="gone"/>
 
     <ListView
         android:id="@+id/mainlistview"
@@ -20,5 +31,5 @@
         android:layout_height="fill_parent"
         android:divider="#b5b5b5"
         android:dividerHeight="1dp"
-        android:layout_below="@id/fragment_content"/>
+        android:layout_below="@id/mainlisttitle"/>
 </RelativeLayout>

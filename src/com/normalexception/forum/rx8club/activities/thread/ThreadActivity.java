@@ -52,7 +52,6 @@ import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
-import com.normalexception.forum.rx8club.view.ViewContents;
 import com.normalexception.forum.rx8club.view.threadpost.PostView;
 import com.normalexception.forum.rx8club.view.threadpost.PostViewArrayAdapter;
 
@@ -117,18 +116,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		}
 	}
 	
-	/**
-	 * Container for thread posts and thread post related information
-	 */
-	private class ThreadPost {
-		private String name, title, location, join, postcount, post, 
-					   postDate, postid;
-		public String toString() {
-			return postid + "|" + name + "|" + title + "|" + location + 
-					"|" + join + "|" + postcount + "|" + post + "|" + postDate;
-		}
-	}
-	
 	/*
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -174,8 +161,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 				
 				Log.v(TAG, "Grabbing link: " + currentPageLink);
 				
-				Document doc = VBForumFactory.getInstance().get(src, currentPageLink);
-				viewContents = new ArrayList<ViewContents>();
+				Document doc = 
+						VBForumFactory.getInstance().get(src, currentPageLink);
 				
 				lv = (ListView)findViewById(R.id.mainlistview);
 		    	View v = getLayoutInflater().inflate(R.layout.view_newreply_footer, null);
@@ -194,7 +181,9 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	private void updateList() {
 		final ThreadActivity a = this;
     	runOnUiThread(new Runnable() {
-            public void run() {    	    	
+            public void run() {    	
+		    	findViewById(R.id.mainlisttitle).setVisibility(View.VISIBLE);
+    			((TextView)findViewById(R.id.mainlisttitle)).setText(currentPageTitle);
 		    	pva = new PostViewArrayAdapter(a, R.layout.view_thread, postlist);
 				lv.setAdapter(pva);
             }
@@ -207,9 +196,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
      * @param id	The id number of the link
      * @return		An arraylist of forum contents
      */
-    public ArrayList<ThreadPost> getThreadContents(Document doc) {
-    	ArrayList<ThreadPost> titles = new ArrayList<ThreadPost>();
-    	
+    public void getThreadContents(Document doc) {    	
     	// Update pagination
     	updatePagination(doc);
     	
@@ -239,45 +226,40 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	catch(Exception e) { userSubDetail = userDetail.get(1).select("div"); }
     	
         	// User Information
-        	ThreadPost user = new ThreadPost();
-        	user.name = userCp.select("div[id^=postmenu]").text();
-        	user.title = userDetail.get(0).text();
-        	user.postDate = innerPost.select("td[class=thead]").get(0).text();
-        	user.postid = Utils.parseInts(post.attr("id"));
+        	PostView pv = new PostView();
+        	pv.setUserName(userCp.select("div[id^=postmenu]").text());
+        	pv.setIsLoggedInUser(
+        			UserProfile.getUsername().equals(pv.getUserName()));
+        	
+        	
+        	pv.setUserTitle(userDetail.get(0).text());
+        	pv.setPostDate(innerPost.select("td[class=thead]").get(0).text());
+        	pv.setPostId(Utils.parseInts(post.attr("id")));
         	
         	for(int i = 1; i < userSubDetail.size(); i++) {
         		switch(i) {
         		case 1:
         			break;
         		case 2:
-        			user.join = userSubDetail.get(i).text();
+        			pv.setJoinDate(userSubDetail.get(i).text());
         			break;
         		case 3:
-        			user.location  = userSubDetail.get(i).text();
+        			pv.setUserLocation(userSubDetail.get(i).text());
         			break;
         		case 4:
-        			user.postcount  = userSubDetail.get(i).text();
+        			pv.setUserPostCount(userSubDetail.get(i).text());
         			break;
         		}
         	}
         	
         	// User Post Content
-        	user.post = innerPost.select("td[class=alt1]").select("div[id^=post_message]").html();
-        	
-        	PostView pv = new PostView();
-        	pv.setUserName(user.name);
-        	pv.setIsLoggedInUser(UserProfile.getUsername().equals(user.name));
-        	pv.setUserTitle(user.title);
-        	pv.setPostDate(user.postDate);
-        	pv.setJoinDate(user.join);
-        	pv.setUserPostCount(user.postcount);
-        	pv.setUserPost(user.post);
-        	pv.setPostId(user.postid);
+        	pv.setUserPost(
+        			innerPost.select("td[class=alt1]")
+        			.select("div[id^=post_message]").html());
+
         	pv.setSecurityToken(securityToken);
         	postlist.add(pv);
     	}
-    	
-    	return titles;
     }
     
     /*
