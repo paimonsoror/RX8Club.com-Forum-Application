@@ -76,6 +76,9 @@ public class ThreadItemViewArrayAdapter extends ArrayAdapter<ThreadItemView> {
             vi = vinf.inflate(R.layout.view_newthread, null);
         }
         
+        
+        // Because we use this class when handling edits, we need to make
+        // sure that we cast this properly and then rename our submit button
         if(activity instanceof NewThreadActivity) {
         	((Button)vi.findViewById(R.id.newThreadButton))
         		.setOnClickListener((NewThreadActivity)activity);
