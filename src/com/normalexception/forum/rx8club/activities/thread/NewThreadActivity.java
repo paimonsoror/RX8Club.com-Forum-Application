@@ -24,19 +24,27 @@ package com.normalexception.forum.rx8club.activities.thread;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.util.ArrayList;
+
 import org.jsoup.nodes.Document;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
-import com.normalexception.forum.rx8club.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.task.NewThreadTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
+import com.normalexception.forum.rx8club.view.threaditem.ThreadItemView;
+import com.normalexception.forum.rx8club.view.threaditem.ThreadItemViewArrayAdapter;
 
 /**
  * Activity that is loaded when the user is creating a new thread.
@@ -48,9 +56,17 @@ import com.normalexception.forum.rx8club.utils.VBForumFactory;
  */
 public class NewThreadActivity extends ForumBaseActivity implements OnClickListener {
 	
-	private String forumId = "", link = "", s, token, f, posthash, poststart, subject, post, source;
+	private String forumId = "", link = "", 
+			       s, token, f, posthash, 
+			       poststart, subject, post, 
+			       source;
 	
 	private static final String TAG = "NewThreadActivity";
+	
+	private ListView lv;
+	
+	private ArrayList<ThreadItemView> tlist;
+	private ThreadItemViewArrayAdapter pva;
 	
 	/*
 	 * (non-Javadoc)
@@ -60,16 +76,6 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
 		// First save the subject and post
 		subject = ((TextView)findViewById(R.id.postSubject)).getText().toString();
 		post = ((TextView)findViewById(R.id.postPost)).getText().toString();
-		
-		outState.putSerializable("forumid", forumId);
-		outState.putSerializable("link", link);
-		outState.putSerializable("s", s);
-		outState.putSerializable("token", token);
-		outState.putSerializable("f", f);
-		outState.putSerializable("posthash", posthash);
-		outState.putSerializable("poststart", poststart);
-		outState.putSerializable("post", post);
-		outState.putSerializable("subject", subject);
 	}
 	
 	/*
@@ -78,13 +84,6 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
 	 */
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		if(savedInstanceState != null) {
-			forumId 	= savedInstanceState.getString("forumid");
-			link 		= savedInstanceState.getString("link");
-			s 			= savedInstanceState.getString("s");
-			token 		= savedInstanceState.getString("token");
-			f 			= savedInstanceState.getString("f");
-			posthash 	= savedInstanceState.getString("posthash");
-			poststart 	= savedInstanceState.getString("poststart");
 			subject 	= savedInstanceState.getString("subject");
 			post 		= savedInstanceState.getString("post");
 		}
@@ -99,19 +98,22 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
     	try {
 	        super.onCreate(savedInstanceState);
 	        super.setTitle("RX8Club.com Forums");
-	        setContentView(R.layout.activity_new_thread);
-	        
-	        findViewById(R.id.newThreadButton).setOnClickListener(this);
+	        setContentView(R.layout.activity_basiclist);
 	        
 	        forumId = getIntent().getStringExtra("forumid");
-	        link = getIntent().getStringExtra("link");
-	        source = getIntent().getStringExtra("source");
+	        link    = getIntent().getStringExtra("link");
+	        source  = getIntent().getStringExtra("source");
+	        lv      = (ListView)findViewById(R.id.mainlistview);
+	        lv.setDescendantFocusability(ListView.FOCUS_AFTER_DESCENDANTS);
+	        lv.setScrollContainer(false);
+	        tlist   = new ArrayList<ThreadItemView>();
 	        
 	        if(savedInstanceState == null)
 	        	constructView();
 	        
     	} catch (Exception e) {
     		Log.e(TAG, "Error In New Thread Activity");
+    		e.printStackTrace();
     	}
     }
     
@@ -125,6 +127,16 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
     	f 			= HtmlFormUtils.getInputElementValue(doc, "f");
     	posthash 	= HtmlFormUtils.getInputElementValue(doc, "posthash");
     	poststart	= HtmlFormUtils.getInputElementValue(doc, "poststarttime");
+    	
+    	tlist.add(new ThreadItemView());
+    	
+    	final NewThreadActivity a = this;
+    	runOnUiThread(new Runnable() {
+            public void run() {
+		    	pva = new ThreadItemViewArrayAdapter(a, R.layout.view_newthread, tlist);
+				lv.setAdapter(pva);		        
+            }
+    	});
     }
     
     /*

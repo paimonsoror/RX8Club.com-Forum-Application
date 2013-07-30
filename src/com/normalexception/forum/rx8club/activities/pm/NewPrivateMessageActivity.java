@@ -52,42 +52,6 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onSaveInstanceState(android.os.Bundle)
-	 */
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putString("postUser", postUser);
-		outState.putString("securitytoken", securityToken);
-		outState.putString("postText", postText);
-		outState.putString("recipients", recipients);
-		outState.putString("pmid", pmid);
-		outState.putString("title", title);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onRestoreInstanceState(android.os.Bundle)
-	 */
-	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		try {
-			if(savedInstanceState != null) {
-				postText = savedInstanceState.getString("postText");
-				securityToken = savedInstanceState.getString("securitytoken");
-				postUser = savedInstanceState.getString("postUser");
-				recipients = savedInstanceState.getString("recipients");
-				pmid = savedInstanceState.getString("pmid");
-				title = savedInstanceState.getString("title");
-			}				
-		} catch (Exception e) {
-			Log.e(TAG, "Error Restoring Contents: " + e.getMessage());
-		}
-	}
-	
-	/*
-	 * (non-Javadoc)
 	 * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
 	 */
     @Override

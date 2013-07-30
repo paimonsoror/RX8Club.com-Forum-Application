@@ -1,28 +1,17 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:scrollbars="vertical" >
-    
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#888888"
+    android:orientation="horizontal">
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:background="@android:color/darker_gray"
         android:orientation="vertical" >
-
-		<fragment
-	        android:id="@+id/fragment_content"
-	        android:name="com.normalexception.forum.rx8club.activities.fragments.BannerFragment"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent" >
-	
-	        <!-- Preview: layout=@layout/fragment_banner -->
-	    </fragment>
 		
 		<LinearLayout
-		    xmlns:android="http://schemas.android.com/apk/res/android"
-		    xmlns:tools="http://schemas.android.com/tools"
 		    android:layout_width="match_parent"
 		    android:layout_height="400dp"
 		    android:background="@android:color/darker_gray"
@@ -38,7 +27,7 @@
 		
 		<EditText
 		    android:id="@+id/postSubject"
-		    android:layout_width="match_parent"
+		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content" >
 		
 		    <requestFocus />
@@ -53,21 +42,18 @@
 		
 		<EditText
 		    android:id="@+id/postPost"
-		    android:layout_width="match_parent"
+		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
-		    android:layout_gravity="top"
-		    android:layout_weight="1"
 		    android:ems="10"
-		    android:gravity="top"
-		    android:inputType="textMultiLine" />
+		    android:inputType="textMultiLine"
+		    android:minHeight="200dp" />
 		
 		<Button
 		    android:id="@+id/newThreadButton"
 		    style="?android:attr/buttonStyleSmall"
-		    android:layout_width="wrap_content"
+		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
-		    android:layout_gravity="center"
 		    android:text="Submit New Thread" />
 		</LinearLayout>
 	</LinearLayout>
-</ScrollView>
+</RelativeLayout>

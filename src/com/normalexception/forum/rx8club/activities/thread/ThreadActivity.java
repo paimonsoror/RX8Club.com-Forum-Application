@@ -86,36 +86,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	
 	/*
 	 * (non-Javadoc)
-	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onSaveInstanceState(android.os.Bundle)
-	 */
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putString("threadnumber",  threadNumber);
-		outState.putString("securitytoken", securityToken);
-		outState.putString("postnumber",    postNumber);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onRestoreInstanceState(android.os.Bundle)
-	 */
-	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		try {
-			if(savedInstanceState != null) {
-				threadNumber =  savedInstanceState.getString("threadnumber");
-				securityToken = savedInstanceState.getString("securitytoken");
-				postNumber =    savedInstanceState.getString("postnumber");
-			}				
-		} catch (Exception e) {
-			Log.e(TAG, "Error Restoring Contents: " + e.getMessage());
-		}
-	}
-	
-	/*
-	 * (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override

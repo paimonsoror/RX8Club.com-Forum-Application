@@ -88,28 +88,6 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see android.app.Activity#onSaveInstanceState(android.os.Bundle)
-	 */
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		try {
-			if(loadingDialog != null && loadingDialog.isShowing())
-				loadingDialog.dismiss();
-		} catch (Exception e) {
-			Log.e(TAG, "Error dismissing loading dialog");
-		}
-		
-		try {
-			outState.putString("final", finalPage);
-		} catch (Exception e) {
-			Log.e(TAG, "Error Serializing: " + e.getMessage());
-		}
-		
-	}
-	
 	/**
      * Reformat the quotes to blockquotes since Android fromHtml does
      * not parse tables
@@ -134,23 +112,7 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
         
         return finalText.toString();
     }
-	
-	/*
-	 * (non-Javadoc)
-	 * @see android.app.Activity#onRestoreInstanceState(android.os.Bundle)
-	 */
-	@Override
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		try {
-			if(savedInstanceState != null) {
-				finalPage = 
-						savedInstanceState.getString("final");
-			}
-		} catch (Exception e) {
-			Log.e(TAG, "Error Restoring Contents: " + e.getMessage());
-		}
-	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)

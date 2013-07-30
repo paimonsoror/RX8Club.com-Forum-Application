@@ -84,28 +84,6 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	private ListView lv;
 	
 	private final int NEW_THREAD = 5000;
-	
-	/*
-	 * (non-Javadoc)
-	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onSaveInstanceState(android.os.Bundle)
-	 */
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putSerializable("forumid", forumId);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onRestoreInstanceState(android.os.Bundle)
-	 */
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		
-		if(savedInstanceState != null) {
-			forumId = 
-					savedInstanceState.getString("forumid");
-		}
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -254,51 +232,53 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     	Elements threadListing = doc.select("tbody[id^=threadbits_] > tr");
  
     	for(Element thread : threadListing) {
-    		Element threadLink  = thread.select("a[id^=thread_title]").get(0);
-    		Element repliesText = thread.select("td[title^=Replies]").get(0);
-    		Element threaduser  = thread.select("td[id^=td_threadtitle_] div.smallfont").get(0);
-    		Element threadicon  = thread.select("img[id^=thread_statusicon_]").get(0);
-
-    		boolean isSticky = false, isLocked = false;
     		try {
-    			isSticky = thread.select("td[id^=td_threadtitle_] > div").text().contains("Sticky:");
-    		} catch (Exception e) { }
-    		
-    		try {
-    			isLocked = threadicon.attr("src").contains("lock.gif");
-    		} catch (Exception e) { }
-    		
-    		String totalPostsInThreadTitle = threadicon.attr("alt");
-    		String totalPosts = "";	
-    		
-    		if(totalPostsInThreadTitle != null && totalPostsInThreadTitle.length() > 0)
-    			totalPosts = totalPostsInThreadTitle.split(" ")[2];
-    		
-    		// Remove page from the link
-    		String realLink = Utils.removePageFromLink(link);  			
-    		
-    		if(threadLink.attr("href").contains(realLink) || isMarket) {
+	    		Element threadLink  = thread.select("a[id^=thread_title]").get(0);
+	    		Element repliesText = thread.select("td[title^=Replies]").get(0);
+	    		Element threaduser  = thread.select("td[id^=td_threadtitle_] div.smallfont").get(0);
+	    		Element threadicon  = thread.select("img[id^=thread_statusicon_]").get(0);
+	
+	    		boolean isSticky = false, isLocked = false;
+	    		try {
+	    			isSticky = thread.select("td[id^=td_threadtitle_] > div").text().contains("Sticky:");
+	    		} catch (Exception e) { }
 	    		
-	    		String txt = repliesText.getElementsByClass("alt2").attr("title");
-	    		String splitter[] = txt.split(" ", 4);
-	    		String postCount = splitter[1].substring(0, splitter[1].length() - 1);
-	    		String views = splitter[3];
-
-	    		String formattedTitle = 
-	    				String.format("%s%s", isSticky? "Sticky: " : "", threadLink.text()); 
+	    		try {
+	    			isLocked = threadicon.attr("src").contains("lock.gif");
+	    		} catch (Exception e) { }
 	    		
-	    		ThreadView tv = new ThreadView();
-	    		tv.setTitle(formattedTitle);
-	    		tv.setStartUser(threaduser.text());
-	    		tv.setLastUser(repliesText.select("a[href*=members]").text());
-	    		tv.setLink(threadLink.attr("href"));
-	    		tv.setPostCount(postCount);
-	    		tv.setMyPosts(totalPosts);
-	    		tv.setViewCount(views);
-	    		tv.setLocked(isLocked);
-	    		tv.setSticky(isSticky);
-	    		threadlist.add(tv);
-    		}
+	    		String totalPostsInThreadTitle = threadicon.attr("alt");
+	    		String totalPosts = "";	
+	    		
+	    		if(totalPostsInThreadTitle != null && totalPostsInThreadTitle.length() > 0)
+	    			totalPosts = totalPostsInThreadTitle.split(" ")[2];
+	    		
+	    		// Remove page from the link
+	    		String realLink = Utils.removePageFromLink(link);  			
+	    		
+	    		if(threadLink.attr("href").contains(realLink) || isMarket) {
+		    		
+		    		String txt = repliesText.getElementsByClass("alt2").attr("title");
+		    		String splitter[] = txt.split(" ", 4);
+		    		String postCount = splitter[1].substring(0, splitter[1].length() - 1);
+		    		String views = splitter[3];
+	
+		    		String formattedTitle = 
+		    				String.format("%s%s", isSticky? "Sticky: " : "", threadLink.text()); 
+		    		
+		    		ThreadView tv = new ThreadView();
+		    		tv.setTitle(formattedTitle);
+		    		tv.setStartUser(threaduser.text());
+		    		tv.setLastUser(repliesText.select("a[href*=members]").text());
+		    		tv.setLink(threadLink.attr("href"));
+		    		tv.setPostCount(postCount);
+		    		tv.setMyPosts(totalPosts);
+		    		tv.setViewCount(views);
+		    		tv.setLocked(isLocked);
+		    		tv.setSticky(isSticky);
+		    		threadlist.add(tv);
+	    		}
+    		} catch (Exception e) { Log.w(TAG, "Error Parsing That Thread..."); }
     	}
     }
     

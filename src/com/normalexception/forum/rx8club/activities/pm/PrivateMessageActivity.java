@@ -309,14 +309,11 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 		super.onClick(arg0);
 		
 		switch(arg0.getId()) {	
-		case R.id.newPmButton:
+		case NEW_PM:
 			Log.v(TAG, "New PM Clicked");
 			Intent intent = new Intent(PrivateMessageActivity.this, 
 					NewPrivateMessageActivity.class);
 			startActivity(intent);
-			break;
-		default:
-			replyPm(arg0);
 			break;
 		}
 	}
