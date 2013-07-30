@@ -112,14 +112,18 @@ public class ForumImageHandler implements ImageGetter {
 	
 			    // redraw the image by invalidating the container 
 			    container.invalidate();
-	
+	/*
 			    // For ICS
 			    container.setHeight(
 			    		container.getHeight() + 
 			    		result.getIntrinsicHeight());
 	
 			    // Pre ICS
-			    container.setEllipsize(null);
+			    container.setEllipsize(null);		    
+	*/	        
+		        // A hack to properly resize the text view
+		        CharSequence cs = container.getText();
+		        container.setText(cs);
 			}
 		}
 

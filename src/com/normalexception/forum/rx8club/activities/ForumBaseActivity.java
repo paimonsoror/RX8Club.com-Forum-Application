@@ -26,13 +26,7 @@ package com.normalexception.forum.rx8club.activities;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.StringTokenizer;
-
-import ch.boye.httpclientandroidlib.client.ClientProtocolException;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -40,7 +34,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import com.normalexception.forum.rx8club.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,12 +41,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.preferences.Preferences;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
-import com.normalexception.forum.rx8club.view.ViewContents;
 
 /**
  * Abstract activity that handles all common tasks for the activities
@@ -76,7 +70,7 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	
 	protected static TableLayout tl = null;
 	
-	protected String finalPage = "1";
+	protected String thisPage = "1", finalPage = "1";
 	
 	/*
 	 * (non-Javadoc)
@@ -145,7 +139,6 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onRestoreInstanceState(android.os.Bundle)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void onRestoreInstanceState(Bundle savedInstanceState) {
 		try {
@@ -267,34 +260,27 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
      * Update the pagination text
      * @param doc	The webpage document
      */
-    protected void updatePagination(Document doc) {
-    	String myPage = "1";
-    	String label;
-
-    	// Grab page number
+    protected void updatePagination(String thisPage, String finalPage) {
     	try {
-    		Elements pageNumbers = doc.select("div[class=pagenav]");
-    		Elements pageLinks = pageNumbers.get(0).select("td[class^=vbmenu_control]");
-    		myPage = pageLinks.text().split(" ")[1];
-    		finalPage = pageLinks.text().split(" ")[3];
-
-    	} catch (Exception e) {
-    		myPage = "1";
-    		finalPage = "1";
-    	} finally {
-    		final TextView pagination = (TextView)findViewById(R.id.paginationText);
-        	label = pagination.getText().toString();            	
-        	label = label.replace("X", myPage);
-        	label = label.replace("Y", finalPage);
-        	final String finalizedLabel = label;
-    		runOnUiThread(new Runnable() {
+	    	this.thisPage = thisPage;
+	    	this.finalPage = finalPage;
+	
+			final TextView pagination = (TextView)findViewById(R.id.paginationText);
+	    	String label = pagination.getText().toString();            	
+	    	label = label.replace("X", thisPage);
+	    	label = label.replace("Y", finalPage);
+	    	final String finalizedLabel = label;
+			runOnUiThread(new Runnable() {
 	            public void run() {	
 	            	pagination.setText(finalizedLabel);
 	            }
-	    	});
+	       	});
+	    	
+	    	enforceVariants(Integer.parseInt(thisPage), Integer.parseInt(finalPage));
+    	} catch (Exception e) { 
+    		Log.d(TAG, "Error Parsing Pagination");
+    		Log.d(TAG, e.getMessage());
     	}
-    	
-    	enforceVariants(Integer.parseInt(myPage), Integer.parseInt(finalPage));
     }
     
     /**

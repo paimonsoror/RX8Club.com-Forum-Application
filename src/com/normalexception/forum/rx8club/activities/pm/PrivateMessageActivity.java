@@ -26,83 +26,51 @@ package com.normalexception.forum.rx8club.activities.pm;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.LinkedHashMap;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
-import com.normalexception.forum.rx8club.Log;
+import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
-import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
-import com.normalexception.forum.rx8club.task.DeletePmTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
+import com.normalexception.forum.rx8club.view.pm.PMView;
+import com.normalexception.forum.rx8club.view.pm.PMViewArrayAdapter;
 
 public class PrivateMessageActivity extends ForumBaseActivity implements OnClickListener {
 
 	private static String TAG = "PrivateMessageActivity";
 
-	private ArrayList<PrivateMessageParcel> privateMessages;
-	private Map<Integer, String> linkMap;
-	private Random idGenerator;
 	private String token;
 	
-	/*
-	 * (non-Javadoc)
-	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onSaveInstanceState(android.os.Bundle)
-	 */
-	public void onSaveInstanceState(Bundle outState) {	
-		//super.onSaveInstanceState(outState);
-		try {
-			outState.putSerializable("contents", privateMessages);
-			outState.putSerializable("token", token);
-		} catch (Exception e) {
-			Log.e(TAG, "Error Serializing: " + e.getMessage());
-		}
-	}
+	private ArrayList<PMView> pmlist;
+	private PMViewArrayAdapter pmva;
 	
-	/*
-	 * (non-Javadoc)
-	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onRestoreInstanceState(android.os.Bundle)
-	 */
-	@SuppressWarnings("unchecked")
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		//super.onRestoreInstanceState(savedInstanceState);
-		try {
-			if(savedInstanceState != null) {
-				privateMessages = 
-						(ArrayList<PrivateMessageParcel>)savedInstanceState.getSerializable("contents");
-				token =
-						(String)savedInstanceState.getSerializable("token");
-			}
-		} catch (Exception e) {
-			Log.e(TAG, "Error UnSerializing: " + e.getMessage());
-		}
-	}
+	private ListView lv;
+	
+	private static final int NEW_PM = 1;
 	
 	/*
 	 * (non-Javadoc)
@@ -112,109 +80,44 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
         super.setTitle("RX8Club.com Forums");
-        setContentView(R.layout.activity_private_message);
+        setContentView(R.layout.activity_basiclist);
         
-        findViewById(R.id.newPmButton).setOnClickListener(this);
+        pmlist = new ArrayList<PMView>();
+        lv = (ListView)findViewById(R.id.mainlistview);
         
-        idGenerator = new Random(19580427);
+        Button bv = new Button(this);
+        bv.setId(NEW_PM);
+        bv.setOnClickListener(this);
+        bv.setText("New PM");
+        bv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
+        lv.addHeaderView(bv);
         
         Log.v(TAG, "PM Activity Started");
         
         if(savedInstanceState == null)
         	constructView();
         else {
-        	updateView(privateMessages);
+        	updateList();
         }
     }
     
-    /**
-     * Update the view contents
-     * @param contents	List of view rows
-     */
-    private void updateView(final ArrayList<PrivateMessageParcel> contents) {
+    private void updateList() {
+		final Activity a = this;
     	runOnUiThread(new Runnable() {
-    		public void run() {
-    			tl = (TableLayout)findViewById(R.id.myTableLayoutPM);
-    			tl.setColumnStretchable(0, true);
-    			
-				linkMap = new LinkedHashMap<Integer, String>();
-
-    			addRow(Color.BLUE, "Subject", "User", "Date");
-    			
-    			String month = getMonthForInt(0);
-    			for(PrivateMessageParcel pm : privateMessages) {
-    				String moNum = 
-    						getMonthForInt(
-    								Integer.parseInt(pm.date.split("-")[0]));
-    				
-    				if(!month.equals(moNum)) {
-    					month = moNum;
-    					addRow(Color.DKGRAY, month);
-    				}
-    				
-    				int lineId = addRow(Color.GRAY, pm.subject, pm.user, pm.date);
-    				
-    				linkMap.put(lineId, pm.link);
-    			}
-    		}
+            public void run() {
+		    	pmva = new PMViewArrayAdapter(a, R.layout.view_pm, pmlist);
+				lv.setAdapter(pmva);
+				lv.setOnItemClickListener(new OnItemClickListener() {
+		            @Override
+		            public void onItemClick(AdapterView<?> parent, View view,
+		                    int position, long id) {
+		            	
+		            }
+		        });
+            }
     	});
-    }
-    
-    /**
-     * Convert an integer month to a string month
-     * @param m	The integer month to convert
-     * @return	A string representation of a month
-     */
-    private String getMonthForInt(int m) {
-    	Calendar cal = Calendar.getInstance();
-    	cal.set(Calendar.MONTH, m - 1);
-    	
-    	// For API 9
-    	//cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US);
-    	
-    	return String.format(Locale.US,"%tB",cal);
-    }
-    
-    /**
-     * Add a row to the view table
-     * @param clr	The color of the background
-     * @param texts	The text array that will be added to each row
-     */
-    private int addRow(int clr, String... texts) {
-    	/* Create a new row to be added. */
-    	TableRow tr_head = new TableRow(this);
-    	tr_head.setId(31);
-    	
-    	int style = Typeface.NORMAL;
-    	int index = 0;
-    	int id = idGenerator.nextInt();
-    	for(String text : texts) {
-	    	TextView b = new TextView(this);
-	    	b.setId(id);
-	    	b.setTextColor(Color.WHITE);
-	    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
-	    	b.setPadding(5,5,5,5);
-	    	tr_head.setBackgroundColor(clr);
-			SpannableString spanString = new SpannableString(text);
-			spanString.setSpan(new StyleSpan(style), 0, text.length(), 0);
-			b.setText(spanString);
-			b.setOnClickListener(this);
-			
-			/* Add Button to row. */
-	        TableRow.LayoutParams params = new TableRow.LayoutParams();
-	        if(index == 0) params.weight = 1f;
-	        tr_head.addView(b,params);
-	        index++;
-	        	    	
-	        registerForContextMenu(b);
-    	}
-        
-        /* Add row to TableLayout. */
-        tl.addView(tr_head);
-        
-        return id;
-    }
-       
+	}
+     
     /*
      * (non-Javadoc)
      * @see android.app.Activity#onCreateContextMenu(android.view.ContextMenu, android.view.View, android.view.ContextMenu.ContextMenuInfo)
@@ -270,7 +173,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
      * @param arg0	The view associated with the private message
      */
     private void replyPm(View arg0) {
-    	Log.v(TAG, "Reply PM Clicked");
+    	/**Log.v(TAG, "Reply PM Clicked");
 		TextView tv = (TextView)arg0;
 		final String link = linkMap.get(tv.getId()); //tv.getText().toString());
 		if(link != null && !link.equals("")) {
@@ -286,7 +189,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 					startActivity(intent);
 				}
 			}.start();	
-		}
+		}*/
     }
     
     /**
@@ -294,8 +197,9 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
      * @param arg0	The view associated with the private message
      */
     private void deletePm(View arg0) {
+    	/**
     	Log.v(TAG, "Delete PM Clicked");
-    	TextView tv = (TextView)arg0;
+    	PMView tv = (PMView)arg0;
     	final String link = linkMap.get(tv.getId()); //tv.getText().toString());
     	
     	if(link != null && !link.equals("")) {
@@ -304,7 +208,22 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 
 			DeletePmTask dpm = new DeletePmTask(this, token, id);
 			dpm.execute();
-		}
+		}*/
+    }
+    
+    /**
+     * Convert an integer month to a string month
+     * @param m	The integer month to convert
+     * @return	A string representation of a month
+     */
+    private String getMonthForInt(int m) {
+    	Calendar cal = Calendar.getInstance();
+    	cal.set(Calendar.MONTH, m - 1);
+    	
+    	// For API 9
+    	//cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US);
+    	
+    	return String.format(Locale.US,"%tB",cal);
     }
     
     /**
@@ -319,16 +238,16 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
         updaterThread = new Thread("NewPostsThread") {
  			public void run() { 		
  				Document doc = VBForumFactory.getInstance().get(src, WebUrls.pmUrl);
- 				privateMessages = new ArrayList<PrivateMessageParcel>();
  				
  				token = HtmlFormUtils.getInputElementValue(doc, "securitytoken");
- 				
+ 				String current_month = getMonthForInt(0);
  				Elements collapse = doc.select("tbody[id^=collapseobj_pmf0]");
  				for(Element coll : collapse) {
  					Elements trs = coll.select("tr");
  					for(Element tr : trs) {
  						Elements alt1s = tr.getElementsByClass("alt1Active");
  						for(Element alt1 : alt1s) {
+ 							
  							Elements divs = alt1.select("div");
  							
  							// First grab our link
@@ -345,23 +264,31 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
  							String[] timeTimeUserSplit = timeTimeUser.split(" ", 3);
  							
  							// Create new pm
- 							PrivateMessageParcel pm = new PrivateMessageParcel();
- 							pm.date = dateSubjectSplit[0];
- 							pm.subject = dateSubjectSplit[1];
- 							pm.time = timeTimeUserSplit[0] + timeTimeUserSplit[1];
- 							pm.user = timeTimeUserSplit[2];
- 							pm.link = pmLink;
+ 							PMView pm = new PMView();
+ 							pm.setDate(dateSubjectSplit[0]);
  							
- 							Log.v(TAG, pm.toString());
+ 							// Check the month before we go further
+ 							String this_month = getMonthForInt(
+    								Integer.parseInt(pm.getDate().split("-")[0]));
+ 							if(!current_month.equals(this_month)) {
+ 								current_month = this_month;
+ 								PMView pm_m = new PMView();
+ 								pm_m.setTitle(this_month);
+ 								pmlist.add(pm_m);
+ 							}
  							
- 							// Save new pm
- 							privateMessages.add(pm);
+ 							pm.setTime(timeTimeUserSplit[0] + timeTimeUserSplit[1]);
+ 							pm.setTitle(dateSubjectSplit[1]);
+ 							pm.setUser(timeTimeUserSplit[2]);
+ 							pm.setLink(pmLink); 
+ 							pm.setToken(token);
+ 							
+ 							Log.v(TAG, "Adding PM From: " + pm.getUser());
+ 							pmlist.add(pm);
  						}
  					}
  				}
- 				
- 				updateView(privateMessages);
- 				
+ 				updateList();
  				loadingDialog.dismiss();
  			}
         };

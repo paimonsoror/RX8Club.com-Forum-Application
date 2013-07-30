@@ -127,6 +127,7 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 						startActivity(_intent);
 		            }
 		        });
+				updatePagination(thisPage, finalPage);
             }
     	});
 	}
@@ -203,8 +204,14 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
     	ArrayList<String> titles = new ArrayList<String>();
     	
     	// Update pagination
-    	updatePagination(doc);
-    	
+    	try {
+	    	Elements pageNumbers = doc.select("div[class=pagenav]");
+			Elements pageLinks = 
+					pageNumbers.first().select("td[class^=vbmenu_control]");
+			thisPage = pageLinks.text().split(" ")[1];
+			finalPage = pageLinks.text().split(" ")[3];
+    	} catch (Exception e) { }
+   	
     	// Grab each thread
     	Elements threadListing = doc.select("table[id=threadslist] > tbody > tr");
  

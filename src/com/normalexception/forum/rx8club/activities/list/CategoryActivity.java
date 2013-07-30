@@ -164,6 +164,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 						startActivity(_intent);
 		            }
 		        });
+				updatePagination(thisPage, finalPage);
             }
     	});
 	}
@@ -233,14 +234,19 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
      * @param doc		The document parsed from the link
      * @param id		The id number of the link
      * @param isMarket 	True if the link is from a marketplace category
-     * @return			An arraylist of forum contents
      */
-    public ArrayList<String> getCategoryContents(Document doc, String id, boolean isMarket) {
+    public void getCategoryContents(Document doc, String id, boolean isMarket) {
     	ArrayList<String> titles = new ArrayList<String>();
     	
     	// Update pagination
-    	updatePagination(doc);
-    	
+    	try {
+	    	Elements pageNumbers = doc.select("div[class=pagenav]");
+			Elements pageLinks = 
+					pageNumbers.first().select("td[class^=vbmenu_control]");
+			thisPage = pageLinks.text().split(" ")[1];
+			finalPage = pageLinks.text().split(" ")[3];
+    	} catch (Exception e) { }
+    	    	
     	// Make sure id contains only numbers
     	id = Utils.parseInts(id);
     	
@@ -294,8 +300,6 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	    		threadlist.add(tv);
     		}
     	}
-    	
-    	return titles;
     }
     
     /*

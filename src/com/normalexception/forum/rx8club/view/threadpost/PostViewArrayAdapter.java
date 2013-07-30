@@ -44,6 +44,7 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.pm.NewPrivateMessageActivity;
 import com.normalexception.forum.rx8club.activities.thread.EditPostActivity;
+import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 
 /**
  * Custom adapter to handle PostView objects
@@ -94,7 +95,10 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         ((TextView)vi.findViewById(R.id.nr_userPosts)).setText(cv.getUserPostCount());
         ((TextView)vi.findViewById(R.id.nr_userJoin)).setText(cv.getJoinDate());
         ((TextView)vi.findViewById(R.id.nr_postDate)).setText(cv.getPostDate());
-        ((TextView)vi.findViewById(R.id.nr_postText)).setText(Html.fromHtml(cv.getUserPost()));
+        
+        TextView postText = ((TextView)vi.findViewById(R.id.nr_postText));
+        ForumImageHandler fih = new ForumImageHandler(postText, activity);        
+        postText.setText(Html.fromHtml(cv.getUserPost(), fih, null));
         
         // Display the right items if the user is logged in
         setUserIcons(vi, cv.isLoggedInUser());

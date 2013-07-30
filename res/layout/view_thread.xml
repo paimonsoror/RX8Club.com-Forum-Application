@@ -32,7 +32,7 @@
         android:layout_toRightOf="@+id/thumbnail"
         android:text="This is one super duper long thread name"
         android:textColor="#040404"
-        android:textSize="15dip"
+        android:textSize="12dip"
         android:textStyle="bold"
         android:typeface="sans" />
  
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_title"
         android:textColor="#000000"
-        android:textSize="10dip"
+        android:textSize="8dip"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/thumbnail"
         android:text="Started By: " />
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_title"
         android:textColor="#ffffff"
-        android:textSize="10dip"
+        android:textSize="8dip"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/tv_postUser_label"
         android:text="The Thread Starter" />
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_postUser_label"
         android:textColor="#000000"
-        android:textSize="10dip"
+        android:textSize="8dip"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/thumbnail"
         android:text="Last Post: " />
@@ -77,7 +77,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_postUser"
         android:textColor="#ffffff"
-        android:textSize="10dip"
+        android:textSize="8dip"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/tv_lastUser_label"
         android:text="The Thread Last Person" />
@@ -92,7 +92,7 @@
         android:gravity="right"
         android:text="5:45"
         android:layout_marginRight="5dip"
-        android:textSize="10dip"
+        android:textSize="8dip"
         android:textColor="#ffffff"
         android:textStyle="bold"/>
         
@@ -105,7 +105,7 @@
         android:gravity="right"
         android:text="Posts: "
         android:layout_marginRight="5dip"
-        android:textSize="10dip"
+        android:textSize="8dip"
         android:textColor="#000000"
         android:textStyle="bold"/>
     
@@ -118,7 +118,7 @@
         android:gravity="right"
         android:text="5:45"
         android:layout_marginRight="5dip"
-        android:textSize="10dip"
+        android:textSize="8dip"
         android:textColor="#ffffff"
         android:textStyle="bold"/>
     
@@ -131,7 +131,7 @@
         android:gravity="right"
         android:text="Views: "
         android:layout_marginRight="5dip"
-        android:textSize="10dip"
+        android:textSize="8dip"
         android:textColor="#000000"
         android:textStyle="bold"/>
     
@@ -144,7 +144,7 @@
         android:gravity="right"
         android:text="5:45"
         android:layout_marginRight="5dip"
-        android:textSize="10dip"
+        android:textSize="8dip"
         android:textColor="#ffffff"
         android:textStyle="bold"/>
     
@@ -157,7 +157,7 @@
         android:gravity="right"
         android:text="Yours: "
         android:layout_marginRight="5dip"
-        android:textSize="10dip"
+        android:textSize="8dip"
         android:textColor="#000000"
         android:textStyle="bold"/>
  

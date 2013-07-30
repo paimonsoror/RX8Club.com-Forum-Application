@@ -94,7 +94,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		outState.putString("threadnumber",  threadNumber);
 		outState.putString("securitytoken", securityToken);
 		outState.putString("postnumber",    postNumber);
-		outState.putString("final",         finalPage);
 	}
 	
 	/*
@@ -109,7 +108,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 				threadNumber =  savedInstanceState.getString("threadnumber");
 				securityToken = savedInstanceState.getString("securitytoken");
 				postNumber =    savedInstanceState.getString("postnumber");
-				finalPage =     savedInstanceState.getString("final");
 			}				
 		} catch (Exception e) {
 			Log.e(TAG, "Error Restoring Contents: " + e.getMessage());
@@ -165,9 +163,15 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 						VBForumFactory.getInstance().get(src, currentPageLink);
 				
 				lv = (ListView)findViewById(R.id.mainlistview);
-		    	View v = getLayoutInflater().inflate(R.layout.view_newreply_footer, null);
-		    	v.setOnClickListener(src);
-		    	lv.addFooterView(v);
+				
+				runOnUiThread(new Runnable() {
+		            public void run() {
+		            	View v = getLayoutInflater().
+		            			inflate(R.layout.view_newreply_footer, null);
+		            	v.setOnClickListener(src);
+		            	lv.addFooterView(v);
+		            }
+	            });
 				
 				getThreadContents(doc);
 				
@@ -186,6 +190,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     			((TextView)findViewById(R.id.mainlisttitle)).setText(currentPageTitle);
 		    	pva = new PostViewArrayAdapter(a, R.layout.view_thread, postlist);
 				lv.setAdapter(pva);
+		    	updatePagination(thisPage, finalPage);
             }
     	});
 	}
@@ -198,7 +203,13 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
      */
     public void getThreadContents(Document doc) {    	
     	// Update pagination
-    	updatePagination(doc);
+    	try {
+	    	Elements pageNumbers = doc.select("div[class=pagenav]");
+			Elements pageLinks = 
+					pageNumbers.first().select("td[class^=vbmenu_control]");
+			thisPage = pageLinks.text().split(" ")[1];
+			finalPage = pageLinks.text().split(" ")[3];
+    	} catch (Exception e) { }
     	
     	// Get the user's actual ID, there is a chance they never got it
     	// before
@@ -229,9 +240,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	PostView pv = new PostView();
         	pv.setUserName(userCp.select("div[id^=postmenu]").text());
         	pv.setIsLoggedInUser(
-        			UserProfile.getUsername().equals(pv.getUserName()));
-        	
-        	
+        			UserProfile.getUsername().equals(pv.getUserName()));	
         	pv.setUserTitle(userDetail.get(0).text());
         	pv.setPostDate(innerPost.select("td[class=thead]").get(0).text());
         	pv.setPostId(Utils.parseInts(post.attr("id")));
@@ -253,9 +262,9 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	}
         	
         	// User Post Content
-        	pv.setUserPost(
+        	pv.setUserPost(reformatQuotes(
         			innerPost.select("td[class=alt1]")
-        			.select("div[id^=post_message]").html());
+        			.select("div[id^=post_message]").html()));
 
         	pv.setSecurityToken(securityToken);
         	postlist.add(pv);

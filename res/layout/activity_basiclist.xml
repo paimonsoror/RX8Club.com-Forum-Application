@@ -21,6 +21,7 @@
         android:layout_below="@id/fragment_content"
         android:text="Thread Title"
         android:background="#0000ff"
+        android:textSize="10dip"
         android:textColor="#ffffff"
         android:textStyle="bold"
         android:visibility="gone"/>

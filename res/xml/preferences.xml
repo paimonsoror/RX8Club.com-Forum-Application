@@ -17,50 +17,12 @@
 	        android:summary=""/>
 	</PreferenceCategory>
 	<PreferenceCategory
-	    		android:title="Category Options">
-	    <CheckBoxPreference 
-	        android:title="Show User Post Count"
-	        android:defaultValue="true"
-	        android:summary="Show your total posts in thread"
-	        android:key="postcount" />
-	    <CheckBoxPreference
-	        android:title="Show Post Detail"
-	        android:defaultValue="true"
-	        android:summary="Display Thread Starter and Last Poster Information"
-	        android:key="postdetail" />
-	</PreferenceCategory>
-	<PreferenceCategory
                 android:title="Thread Options">
 	    <CheckBoxPreference
 	        android:title="Advertise Application"
 	        android:defaultValue="true"
 	        android:summary="Show 'Posted From' On Thread Posts"
-	        android:key="advertise" />
-	    <CheckBoxPreference
-	   	    android:title="Highlight Stickies"
-	   	    android:defaultValue="true"
-	   	    android:summary="Stickies will have a different bg color"
-	   	    android:key="highlightstickies" /> 
-	   	<CheckBoxPreference
-	   	    android:title="Show Delete Post Button"
-	   	    android:defaultValue="true"
-	   	    android:summary="Show the delete button on users posts"
-	   	    android:key="deletebutton" />
-	   	<CheckBoxPreference
-	   	    android:title="Show Edit Post Button"
-	   	    android:defaultValue="true"
-	   	    android:summary="Show the edit button on users posts"
-	   	    android:key="editbutton" />	
-	   	<CheckBoxPreference
-	   	    android:title="Show PM Button"
-	   	    android:defaultValue="true"
-	   	    android:summary="Show the pm button on posts"
-	   	    android:key="pmbutton" />
-	   	<CheckBoxPreference
-	   	    android:title="Show Style Buttons"
-	   	    android:defaultValue="true"
-	   	    android:summary="Show the style buttons above comment box"
-	   	    android:key="stylebutton" />   	    
+	        android:key="advertise" />  
 	</PreferenceCategory>
     <PreferenceCategory
                 android:title="Misc Options">

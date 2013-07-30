@@ -38,7 +38,6 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.list.ThreadTypeFactory;
-import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 
 /**
  * A custom view adapter for a thread view object
@@ -106,7 +105,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         vViewCount.setText(   m.getViewCount());
         vImage.setImageBitmap(scaledimg);
 		
-		if (PreferenceHelper.isHighlightStickies(activity) && m.isSticky()) {
+		if (m.isSticky()) {
 			setMode(vi, true, Color.CYAN);
 		} else if(m.isLocked())
 			setMode(vi, false, Color.DKGRAY);
@@ -116,6 +115,14 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         return vi;
 	}
 	
+	/**
+	 * Set the mode of the thread view object.  If the view is a 
+	 * special view, we want to set a different font color and 
+	 * background color
+	 * @param vi		The source view
+	 * @param isSpecial	If true, this is a special view
+	 * @param bgColor	The bg color to set
+	 */
 	private void setMode(View vi, boolean isSpecial, int bgColor) {
 		vi.setBackgroundColor(bgColor);
 		vPostCount.setTextColor(isSpecial? Color.BLACK : Color.WHITE);

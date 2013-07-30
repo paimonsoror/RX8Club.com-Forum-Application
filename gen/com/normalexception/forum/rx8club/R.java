@@ -99,10 +99,10 @@ containing a value of this type.
         public static final int customTitle=0x7f050043;
         public static final int cv_desc=0x7f050059;
         public static final int cv_image=0x7f050056;
-        public static final int cv_postCount=0x7f05005b;
-        public static final int cv_postCount_label=0x7f05005c;
-        public static final int cv_threadCount=0x7f05005d;
-        public static final int cv_threadCount_label=0x7f05005e;
+        public static final int cv_postCount=0x7f05005c;
+        public static final int cv_postCount_label=0x7f05005b;
+        public static final int cv_threadCount=0x7f05005e;
+        public static final int cv_threadCount_label=0x7f05005d;
         public static final int cv_title=0x7f050057;
         public static final int deleteButton=0x7f050035;
         public static final int editTextDialogUserInput=0x7f050054;
@@ -129,7 +129,7 @@ containing a value of this type.
         public static final int mainlistview=0x7f050010;
         public static final int menuControlsRow=0x7f050032;
         public static final int menuRow=0x7f050031;
-        public static final int menu_settings=0x7f050082;
+        public static final int menu_settings=0x7f050088;
         public static final int myTableLayoutPM=0x7f050030;
         public static final int myTableLayoutProfile=0x7f050036;
         public static final int newPmButton=0x7f050007;
@@ -160,6 +160,12 @@ containing a value of this type.
         public static final int pmRecipientsText=0x7f050029;
         public static final int pmSubject=0x7f05002a;
         public static final int pmSubjectText=0x7f05002b;
+        public static final int pm_date=0x7f05007b;
+        public static final int pm_datelabel=0x7f05007a;
+        public static final int pm_from=0x7f050079;
+        public static final int pm_fromlabel=0x7f050078;
+        public static final int pm_image=0x7f050076;
+        public static final int pm_subject=0x7f050077;
         public static final int postBox=0x7f050033;
         public static final int postContainer=0x7f050070;
         public static final int postMessage=0x7f050012;
@@ -202,18 +208,18 @@ containing a value of this type.
         public static final int thumbnail=0x7f050055;
         public static final int titleContainer=0x7f050062;
         public static final int titleTextContainer=0x7f050064;
-        public static final int tv_image=0x7f050076;
-        public static final int tv_lastUser=0x7f05007b;
-        public static final int tv_lastUser_label=0x7f05007a;
-        public static final int tv_myCount=0x7f050080;
-        public static final int tv_myCount_label=0x7f050081;
-        public static final int tv_postCount=0x7f05007c;
-        public static final int tv_postCount_label=0x7f05007d;
-        public static final int tv_postUser=0x7f050079;
-        public static final int tv_postUser_label=0x7f050078;
-        public static final int tv_title=0x7f050077;
-        public static final int tv_viewCount=0x7f05007e;
-        public static final int tv_viewCount_label=0x7f05007f;
+        public static final int tv_image=0x7f05007c;
+        public static final int tv_lastUser=0x7f050081;
+        public static final int tv_lastUser_label=0x7f050080;
+        public static final int tv_myCount=0x7f050086;
+        public static final int tv_myCount_label=0x7f050087;
+        public static final int tv_postCount=0x7f050082;
+        public static final int tv_postCount_label=0x7f050083;
+        public static final int tv_postUser=0x7f05007f;
+        public static final int tv_postUser_label=0x7f05007e;
+        public static final int tv_title=0x7f05007d;
+        public static final int tv_viewCount=0x7f050084;
+        public static final int tv_viewCount_label=0x7f050085;
         public static final int underlineButton=0x7f05004f;
         public static final int userNameButton=0x7f05003f;
         public static final int userNameText=0x7f050037;
@@ -242,7 +248,8 @@ containing a value of this type.
         public static final int view_category_footer=0x7f03000f;
         public static final int view_newreply=0x7f030010;
         public static final int view_newreply_footer=0x7f030011;
-        public static final int view_thread=0x7f030012;
+        public static final int view_pm=0x7f030012;
+        public static final int view_thread=0x7f030013;
     }
     public static final class menu {
         public static final int activity_about=0x7f0a0000;
