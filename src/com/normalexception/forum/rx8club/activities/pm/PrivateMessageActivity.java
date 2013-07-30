@@ -111,7 +111,12 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 		            @Override
 		            public void onItemClick(AdapterView<?> parent, View view,
 		                    int position, long id) {
-		            	
+		            	PMView pm = (PMView) parent.getItemAtPosition(position);
+		            	Intent intent = 
+								new Intent(PrivateMessageActivity.this, 
+										PrivateMessageViewActivity.class);
+						intent.putExtra("link", pm.getLink());
+						startActivity(intent);
 		            }
 		        });
             }

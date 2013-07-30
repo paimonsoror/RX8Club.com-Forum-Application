@@ -1,4 +1,4 @@
-package com.normalexception.forum.rx8club.view.pm;
+package com.normalexception.forum.rx8club.view.pmitem;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -27,7 +27,7 @@ package com.normalexception.forum.rx8club.view.pm;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,19 +36,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.handler.ForumImageHandler;
+import com.normalexception.forum.rx8club.view.threadpost.PostView;
 
-public class PMViewArrayAdapter extends ArrayAdapter<PMView> {
+public class PMItemViewArrayAdapter extends ArrayAdapter<PMItemView> {
 	private Context activity;
-	private List<PMView> data;
+	private List<PMItemView> data;
 
 	/**
-	 * A custom adapter that handles PM View objects
+	 * Custom adapter to handle PMItemView's
 	 * @param context				The source context
-	 * @param textViewResourceId	The resource ID
-	 * @param objects				The objects in the list
+	 * @param textViewResourceId	The resource id
+	 * @param objects				The list of objects
 	 */
-	public PMViewArrayAdapter(Context context, int textViewResourceId,
-			List<PMView> objects) {
+	public PMItemViewArrayAdapter(Context context, int textViewResourceId,
+			List<PMItemView> objects) {
 		super(context, textViewResourceId, objects);
 		activity = context;
 		data = objects;
@@ -59,7 +61,7 @@ public class PMViewArrayAdapter extends ArrayAdapter<PMView> {
      * @see android.widget.ArrayAdapter#getItem(int)
      */
     @Override  
-    public PMView getItem(int position) {     
+    public PMItemView getItem(int position) {     
         return data.get(position);  
     } 
     
@@ -72,43 +74,45 @@ public class PMViewArrayAdapter extends ArrayAdapter<PMView> {
         if(vi == null) {
         	LayoutInflater vinf =
                     (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            vi = vinf.inflate(R.layout.view_pm, null);
+            vi = vinf.inflate(R.layout.view_newreply, null);
         }
         
-        PMView pm = data.get(position);
+        final PostView cv = data.get(position);
         
-        ((TextView) vi.findViewById(R.id.pm_subject)).setText(pm.getTitle());
+        ((TextView)vi.findViewById(R.id.nr_username)).setText(cv.getUserName());
+        ((TextView)vi.findViewById(R.id.nr_userTitle)).setText(cv.getUserTitle());
+        ((TextView)vi.findViewById(R.id.nr_userPosts)).setText(cv.getUserPostCount());
+        ((TextView)vi.findViewById(R.id.nr_userJoin)).setText(cv.getJoinDate());
+        ((TextView)vi.findViewById(R.id.nr_postDate)).setText(cv.getPostDate());
         
-        if(pm.getUser() == null || pm.getDate() == null) {
-        	setMode(vi, true);
-        } else {
-        	setMode(vi, false);
-        	((TextView) vi.findViewById(R.id.pm_from)).setText(pm.getUser());
-        	((TextView) vi.findViewById(R.id.pm_date)).setText(
-        			String.format("%s, %s", pm.getDate(), pm.getTime())
-        	);
-        }
+        TextView postText = ((TextView)vi.findViewById(R.id.nr_postText));
+        ForumImageHandler fih = new ForumImageHandler(postText, activity);        
+        postText.setText(Html.fromHtml(cv.getUserPost(), fih, null));
+        
+        // Set click listeners
+        ((ImageView)vi.findViewById(R.id.nr_quoteButton)).setVisibility(View.GONE);
+        ((ImageView)vi.findViewById(R.id.nr_editButton)).setVisibility(View.GONE);
+        ((ImageView)vi.findViewById(R.id.nr_pmButton)).setVisibility(View.GONE);
+        ((ImageView)vi.findViewById(R.id.nr_deleteButton)).setVisibility(View.GONE);
         
         return vi;
 	}
 	
-	/**
-	 * Set the mode of the category line
-	 * @param vi		The view line
-	 * @param isTitle	If we are going to represent a title
+	/*
+	 * (non-Javadoc)
+	 * @see android.widget.BaseAdapter#areAllItemsEnabled()
 	 */
-	private void setMode(View vi, boolean isTitle) {
-		int showMode = isTitle? View.GONE : View.VISIBLE;
-		int colorMode= isTitle? Color.DKGRAY : Color.GRAY;
-		int textColor= isTitle? Color.WHITE : Color.BLACK;
+	@Override
+	public boolean  areAllItemsEnabled() {
+	    return false;			
+	}
 
-		((TextView) vi.findViewById(R.id.pm_from)).setVisibility(showMode);
-    	((TextView) vi.findViewById(R.id.pm_fromlabel)).setVisibility(showMode);
-    	((TextView) vi.findViewById(R.id.pm_date)).setVisibility(showMode);
-    	((TextView) vi.findViewById(R.id.pm_datelabel)).setVisibility(showMode);
-    	((ImageView)vi.findViewById(R.id.pm_image)).setVisibility(showMode);
-    	vi.setBackgroundColor(colorMode);
-    	
-    	((TextView) vi.findViewById(R.id.pm_subject)).setTextColor(textColor);
+	/*
+	 * (non-Javadoc)
+	 * @see android.widget.BaseAdapter#isEnabled(int)
+	 */
+	@Override
+	public boolean isEnabled(int position) {
+	        return false;
 	}
 }

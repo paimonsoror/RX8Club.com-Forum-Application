@@ -24,6 +24,8 @@ package com.normalexception.forum.rx8club.activities.pm;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.util.ArrayList;
+
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
@@ -31,26 +33,22 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
-import com.normalexception.forum.rx8club.Log;
 import android.view.View;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
-import com.normalexception.forum.rx8club.handler.ForumImageHandler;
-import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.task.DeletePmTask;
 import com.normalexception.forum.rx8club.task.PmTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
+import com.normalexception.forum.rx8club.view.pmitem.PMItemView;
+import com.normalexception.forum.rx8club.view.pmitem.PMItemViewArrayAdapter;
 
 public class PrivateMessageViewActivity extends ForumBaseActivity {
 
@@ -62,6 +60,11 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 	private String recipients = null;
 	private String pmid = null;
 	private String title = null;
+	
+	private ArrayList<PMItemView> pmlist;
+	private PMItemViewArrayAdapter pmva;
+	
+	private ListView lv;
 	
 	/*
 	 * (non-Javadoc)
@@ -107,19 +110,40 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setTitle("RX8Club.com Forums");
-        setContentView(R.layout.activity_private_message_view);
-        
-        findViewById(R.id.submitButton).setOnClickListener(this);
-        findViewById(R.id.deleteButton).setOnClickListener(this);
+        setContentView(R.layout.activity_basiclist);
         
         Log.v(TAG, "PM View Activity Started");
+        
+        pmlist = new ArrayList<PMItemView>();
+        lv = (ListView)findViewById(R.id.mainlistview);
+        
+        View v = getLayoutInflater().inflate(R.layout.view_pmitem_footer, null);
+    	v.setOnClickListener(this);
+    	lv.addFooterView(v);
         
         if(savedInstanceState == null)
         	constructView();
         else {
-        	updateView();
+        	updateList();
         }
     }
+    
+    private void updateList() {
+		final Activity a = this;
+    	runOnUiThread(new Runnable() {
+            public void run() {
+		    	pmva = new PMItemViewArrayAdapter(a, R.layout.view_newreply, pmlist);
+				lv.setAdapter(pmva);
+				lv.setOnItemClickListener(new OnItemClickListener() {
+		            @Override
+		            public void onItemClick(AdapterView<?> parent, View view,
+		                    int position, long id) {
+		            	
+		            }
+		        });
+            }
+    	});
+	}
     
     /**
      * Construct the view elements
@@ -152,67 +176,18 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 				
 				postText = postMessage.html();
 		    	
+				PMItemView pmi = new PMItemView();
+				pmi.setUserName(postUser);
+				pmi.setUserPost(postText);
+				pmi.setSecurityToken(securityToken);
+				pmlist.add(pmi);
+				
 				loadingDialog.dismiss();	
 				
-				updateView();
+				updateList();
 			}
         };
         updaterThread.start();
-    }
-    
-    /**
-     * Update the view information with the saved class objects
-     */
-    private void updateView() {
-    	runOnUiThread(new Runnable() {
-    		public void run() {
-    			tl = (TableLayout)findViewById(R.id.myTableLayoutPM);
-    			
-    			addRow(Color.DKGRAY, false, postUser);
-    			addRow(Color.GRAY, true, reformatQuotes(postText));
-    		}
-    	});
-    }
-    
-    /**
-     * Add a row to the view table
-     * @param clr	The color of the background
-     * @param texts	The text array that will be added to each row
-     */
-    private void addRow(int clr, boolean html, String... texts) {
-    	/* Create a new row to be added. */
-    	TableRow tr_head = new TableRow(this);
-    	tr_head.setId(31);
-    	
-    	int style = Typeface.NORMAL;
-    	int index = 0;
-    	for(String text : texts) {
-	    	TextView b = new TextView(this);
-	    	b.setId(32);
-	    	b.setTextColor(Color.WHITE);
-	    	b.setTextSize((float) PreferenceHelper.getFontSize(this));
-	    	b.setPadding(5,5,5,5);
-	    	tr_head.setBackgroundColor(clr);
-			SpannableString spanString = null;
-			
-			if(!html) {
-				spanString = new SpannableString("Private Message From " + text);
-				spanString.setSpan(new StyleSpan(style), 0, text.length(), 0);
-			}
-			
-			ForumImageHandler imageHandler = new ForumImageHandler(b, this);
-			b.setText(html? Html.fromHtml(text + "<br><br><br>", imageHandler, null) : spanString);
-			b.setOnClickListener(this);
-			
-			/* Add Button to row. */
-	        TableRow.LayoutParams params = new TableRow.LayoutParams();
-	        if(index == 0) params.weight = 1f;
-	        tr_head.addView(b,params);
-	        index++;
-    	}
-        
-        /* Add row to TableLayout. */
-        tl.addView(tr_head, tl.getChildCount() - 3);
     }
     
     /*
@@ -224,7 +199,7 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
    		super.onClick(arg0);
    		
    		switch(arg0.getId()) {	
-   		case R.id.submitButton:
+   		case R.id.pmitem_submit:
    			Log.v(TAG, "PM Submit Clicked");
    			String toPost = 
 					((TextView)findViewById(R.id.postBox)).getText().toString();
@@ -233,7 +208,7 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 							toPost, this.postUser, this.pmid);
 			sTask.execute();
    			break;
-   		case R.id.deleteButton:
+   		case R.id.pmitem_delete:
    			final Activity ctx = this;
    			// Lets make sure the user didn't accidentally click this
 			DialogInterface.OnClickListener dialogClickListener = 
