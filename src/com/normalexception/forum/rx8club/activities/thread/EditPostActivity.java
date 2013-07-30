@@ -24,6 +24,8 @@ package com.normalexception.forum.rx8club.activities.thread;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.util.ArrayList;
+
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
@@ -31,12 +33,15 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import com.normalexception.forum.rx8club.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.task.UpdateTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
+import com.normalexception.forum.rx8club.view.threaditem.ThreadItemView;
+import com.normalexception.forum.rx8club.view.threaditem.ThreadItemViewArrayAdapter;
 
 /**
  * Activity used whenever the user wants to edit the post
@@ -53,8 +58,13 @@ public class EditPostActivity extends ForumBaseActivity {
 
 	private static final String TAG = "EditPostActivity";
 	private String postId, securityToken, postHash, poststart, 
-		pageNumber, pageTitle;
+		pageNumber, pageTitle, postMessage;
 	private boolean delete = false, deleteThread = false;
+	
+	private ListView lv;
+	
+	private ArrayList<ThreadItemView> tlist;
+	private ThreadItemViewArrayAdapter pva;
 	
 	/*
 	 * (non-Javadoc)
@@ -64,11 +74,9 @@ public class EditPostActivity extends ForumBaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setTitle("RX8Club.com Forums");
-        setContentView(R.layout.activity_edit_post);
+        setContentView(R.layout.activity_basiclist);
         
         Log.v(TAG, "Edit Thread Activity Started");
-        
-        findViewById(R.id.editThreadSubmit).setOnClickListener(this);
         
         postId = 
         		(String) getIntent().getStringExtra("postid");
@@ -83,6 +91,11 @@ public class EditPostActivity extends ForumBaseActivity {
         deleteThread = 
         		(Boolean) getIntent().getBooleanExtra("deleteThread", false);
         
+        lv      = (ListView)findViewById(R.id.mainlistview);
+        lv.setDescendantFocusability(ListView.FOCUS_AFTER_DESCENDANTS);
+        lv.setScrollContainer(false);
+        tlist   = new ArrayList<ThreadItemView>();
+        
         constructView();
     }
     
@@ -95,9 +108,8 @@ public class EditPostActivity extends ForumBaseActivity {
     	try {
     		Document editPage = 
     			HtmlFormUtils.getEditPostPage(securityToken, postId);
-    		String msg = editPage.select("textarea[name=message]").text();
-    		((TextView)findViewById(R.id.postMessage)).setText(msg);
-    		
+    		postMessage = editPage.select("textarea[name=message]").text();
+    		  		
     		Elements pansurr = editPage.select("td[class=panelsurround]");
     		this.securityToken = getInputElementValue(pansurr, "securitytoken");
     		this.postId = getInputElementValue(pansurr, "p");
@@ -106,8 +118,20 @@ public class EditPostActivity extends ForumBaseActivity {
     		
     		if(delete)
     			deletePost();
-    	} catch (Exception e) {
     		
+    		ThreadItemView ti = new ThreadItemView();
+    		ti.setPost(postMessage);
+    		tlist.add(ti);
+        	
+        	final EditPostActivity a = this;
+        	runOnUiThread(new Runnable() {
+                public void run() {
+    		    	pva = new ThreadItemViewArrayAdapter(a, R.layout.view_newthread, tlist);
+    				lv.setAdapter(pva);	
+                }
+        	});
+    	} catch (Exception e) {
+    		e.printStackTrace();
     	} finally {
     		loadingDialog.dismiss();
     	}
@@ -134,7 +158,6 @@ public class EditPostActivity extends ForumBaseActivity {
     	return pan.select("input[name=" + name + "]").attr("value");
     }
 
-
     /*
      * (non-Javadoc)
      * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#enforceVariants(int, int)
@@ -151,9 +174,9 @@ public class EditPostActivity extends ForumBaseActivity {
 	public void onClick(View arg0) {
 		super.onClick(arg0);
 		switch(arg0.getId()) {
-		case R.id.editThreadSubmit:
+		case R.id.newThreadButton:
 			String toPost = 
-					((TextView)findViewById(R.id.postMessage)).getText().toString();
+					((TextView)findViewById(R.id.postPost)).getText().toString();
 			UpdateTask utask = 
 					new UpdateTask(this, this.securityToken, this.postId,
 								   this.postHash, this.poststart, this.pageNumber, 

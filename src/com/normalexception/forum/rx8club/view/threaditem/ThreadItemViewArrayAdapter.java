@@ -32,8 +32,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.activities.thread.EditPostActivity;
 import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
 
 public class ThreadItemViewArrayAdapter extends ArrayAdapter<ThreadItemView> {
@@ -74,8 +76,19 @@ public class ThreadItemViewArrayAdapter extends ArrayAdapter<ThreadItemView> {
             vi = vinf.inflate(R.layout.view_newthread, null);
         }
         
-        ((Button)vi.findViewById(R.id.newThreadButton))
-        	.setOnClickListener((NewThreadActivity)activity);
+        if(activity instanceof NewThreadActivity) {
+        	((Button)vi.findViewById(R.id.newThreadButton))
+        		.setOnClickListener((NewThreadActivity)activity);
+        } else if (activity instanceof EditPostActivity) {
+        	((Button)vi.findViewById(R.id.newThreadButton))
+    			.setOnClickListener((EditPostActivity)activity);
+        	((Button)vi.findViewById(R.id.newThreadButton))
+        		.setText("Submit Changes");
+        	
+        	ThreadItemView ti = getItem(position);
+        	((EditText)vi.findViewById(R.id.postPost))
+        		.setText(ti.getPost());
+        }
                
         return vi;
 	}
