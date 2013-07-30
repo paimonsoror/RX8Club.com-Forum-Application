@@ -1,4 +1,4 @@
-package com.normalexception.forum.rx8club.view.pmpost;
+package com.normalexception.forum.rx8club.view.pmitem;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -27,21 +27,18 @@ package com.normalexception.forum.rx8club.view.pmpost;
 import java.util.List;
 
 import android.content.Context;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Button;
 
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.handler.ForumImageHandler;
-import com.normalexception.forum.rx8club.view.threadpost.PostView;
+import com.normalexception.forum.rx8club.activities.pm.NewPrivateMessageActivity;
 
-public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
+public class PMItemViewArrayAdapter extends ArrayAdapter<PMItemView> {
 	private Context activity;
-	private List<PMPostView> data;
+	private List<PMItemView> data;
 
 	/**
 	 * Custom adapter to handle PMItemView's
@@ -49,8 +46,8 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
 	 * @param textViewResourceId	The resource id
 	 * @param objects				The list of objects
 	 */
-	public PMPostViewArrayAdapter(Context context, int textViewResourceId,
-			List<PMPostView> objects) {
+	public PMItemViewArrayAdapter(Context context, int textViewResourceId,
+			List<PMItemView> objects) {
 		super(context, textViewResourceId, objects);
 		activity = context;
 		data = objects;
@@ -61,7 +58,7 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
      * @see android.widget.ArrayAdapter#getItem(int)
      */
     @Override  
-    public PMPostView getItem(int position) {     
+    public PMItemView getItem(int position) {     
         return data.get(position);  
     } 
     
@@ -74,27 +71,12 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
         if(vi == null) {
         	LayoutInflater vinf =
                     (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            vi = vinf.inflate(R.layout.view_newreply, null);
+            vi = vinf.inflate(R.layout.view_newpm, null);
         }
         
-        final PostView cv = data.get(position);
-        
-        ((TextView)vi.findViewById(R.id.nr_username)).setText(cv.getUserName());
-        ((TextView)vi.findViewById(R.id.nr_userTitle)).setText(cv.getUserTitle());
-        ((TextView)vi.findViewById(R.id.nr_userPosts)).setText(cv.getUserPostCount());
-        ((TextView)vi.findViewById(R.id.nr_userJoin)).setText(cv.getJoinDate());
-        ((TextView)vi.findViewById(R.id.nr_postDate)).setText(cv.getPostDate());
-        
-        TextView postText = ((TextView)vi.findViewById(R.id.nr_postText));
-        ForumImageHandler fih = new ForumImageHandler(postText, activity);        
-        postText.setText(Html.fromHtml(cv.getUserPost(), fih, null));
-        
-        // Set click listeners
-        ((ImageView)vi.findViewById(R.id.nr_quoteButton)).setVisibility(View.GONE);
-        ((ImageView)vi.findViewById(R.id.nr_editButton)).setVisibility(View.GONE);
-        ((ImageView)vi.findViewById(R.id.nr_pmButton)).setVisibility(View.GONE);
-        ((ImageView)vi.findViewById(R.id.nr_deleteButton)).setVisibility(View.GONE);
-        
+        ((Button)vi.findViewById(R.id.newPmButton))
+        	.setOnClickListener((NewPrivateMessageActivity)activity);
+               
         return vi;
 	}
 	
@@ -104,7 +86,7 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
 	 */
 	@Override
 	public boolean  areAllItemsEnabled() {
-	    return false;			
+	    return true;			
 	}
 
 	/*

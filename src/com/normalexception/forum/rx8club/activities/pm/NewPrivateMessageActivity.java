@@ -24,20 +24,28 @@ package com.normalexception.forum.rx8club.activities.pm;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.util.ArrayList;
+
 import org.jsoup.nodes.Document;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import com.normalexception.forum.rx8club.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
+import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
 import com.normalexception.forum.rx8club.task.PmTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
+import com.normalexception.forum.rx8club.view.pmitem.PMItemView;
+import com.normalexception.forum.rx8club.view.pmitem.PMItemViewArrayAdapter;
+import com.normalexception.forum.rx8club.view.threaditem.ThreadItemView;
+import com.normalexception.forum.rx8club.view.threaditem.ThreadItemViewArrayAdapter;
 
 public class NewPrivateMessageActivity extends ForumBaseActivity {
 
@@ -50,6 +58,41 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 	private String pmid = null;
 	private String title = null;
 	
+	private ListView lv;
+	
+	private ArrayList<PMItemView> tlist;
+	private PMItemViewArrayAdapter pva;
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onSaveInstanceState(android.os.Bundle)
+	 */
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString("postUser", postUser);
+		outState.putString("postText", postText);
+		outState.putString("title", title);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onRestoreInstanceState(android.os.Bundle)
+	 */
+	@Override
+	public void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		try {
+			if(savedInstanceState != null) {
+				postText = savedInstanceState.getString("postText");
+				postUser = savedInstanceState.getString("postUser");
+				title = savedInstanceState.getString("title");
+			}				
+		} catch (Exception e) {
+			Log.e(TAG, "Error Restoring Contents: " + e.getMessage());
+		}
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
@@ -58,10 +101,12 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setTitle("RX8Club.com Forums");
+        setContentView(R.layout.activity_basiclist);
         
-        setContentView(R.layout.activity_new_private_message);
-        
-        findViewById(R.id.newPmButton).setOnClickListener(this);
+        lv      = (ListView)findViewById(R.id.mainlistview);
+        lv.setDescendantFocusability(ListView.FOCUS_AFTER_DESCENDANTS);
+        lv.setScrollContainer(false);
+        tlist   = new ArrayList<PMItemView>();
     
 	    if(savedInstanceState == null)
 	    	constructView();
@@ -72,7 +117,7 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 	 */
 	private void constructView() {
 		loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
-		final ForumBaseActivity src = this;
+		final NewPrivateMessageActivity src = this;
 		
 	    updaterThread = new Thread("PrivateMessageThread") {
 			public void run() {
@@ -96,6 +141,16 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 			    			((TextView)findViewById(R.id.pmRecipientsText)).setText(postUser);
 			    		}
 					});
+		    	
+				
+				tlist.add(new PMItemView());
+		    	
+		    	runOnUiThread(new Runnable() {
+		            public void run() {
+				    	pva = new PMItemViewArrayAdapter(src, R.layout.view_newpm, tlist);
+						lv.setAdapter(pva);		        
+		            }
+		    	});
 		    	
 				loadingDialog.dismiss();	
 			}

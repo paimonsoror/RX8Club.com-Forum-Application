@@ -47,8 +47,8 @@ import com.normalexception.forum.rx8club.task.DeletePmTask;
 import com.normalexception.forum.rx8club.task.PmTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
-import com.normalexception.forum.rx8club.view.pmitem.PMItemView;
-import com.normalexception.forum.rx8club.view.pmitem.PMItemViewArrayAdapter;
+import com.normalexception.forum.rx8club.view.pmpost.PMPostView;
+import com.normalexception.forum.rx8club.view.pmpost.PMPostViewArrayAdapter;
 
 public class PrivateMessageViewActivity extends ForumBaseActivity {
 
@@ -61,8 +61,8 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 	private String pmid = null;
 	private String title = null;
 	
-	private ArrayList<PMItemView> pmlist;
-	private PMItemViewArrayAdapter pmva;
+	private ArrayList<PMPostView> pmlist;
+	private PMPostViewArrayAdapter pmva;
 	
 	private ListView lv;
 	
@@ -78,7 +78,7 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
         
         Log.v(TAG, "PM View Activity Started");
         
-        pmlist = new ArrayList<PMItemView>();
+        pmlist = new ArrayList<PMPostView>();
         lv = (ListView)findViewById(R.id.mainlistview);
         
         View v = getLayoutInflater().inflate(R.layout.view_pmitem_footer, null);
@@ -96,7 +96,7 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 		final Activity a = this;
     	runOnUiThread(new Runnable() {
             public void run() {
-		    	pmva = new PMItemViewArrayAdapter(a, R.layout.view_newreply, pmlist);
+		    	pmva = new PMPostViewArrayAdapter(a, R.layout.view_newreply, pmlist);
 				lv.setAdapter(pmva);
 				lv.setOnItemClickListener(new OnItemClickListener() {
 		            @Override
@@ -140,7 +140,7 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 				
 				postText = postMessage.html();
 		    	
-				PMItemView pmi = new PMItemView();
+				PMPostView pmi = new PMPostView();
 				pmi.setUserName(postUser);
 				pmi.setUserPost(postText);
 				pmi.setSecurityToken(securityToken);

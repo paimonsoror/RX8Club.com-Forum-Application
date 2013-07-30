@@ -1,4 +1,4 @@
-package com.normalexception.forum.rx8club.view.pmpost;
+package com.normalexception.forum.rx8club.view.pmitem;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -24,15 +24,12 @@ package com.normalexception.forum.rx8club.view.pmpost;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import com.normalexception.forum.rx8club.view.threadpost.PostView;
+import com.normalexception.forum.rx8club.view.threaditem.ThreadItemView;
 
-public class PMPostView extends PostView {
+public class PMItemView extends ThreadItemView {
 	
-	/**
-	 * We will basically leverage off of the PostView class
-	 * since there isn't much difference at this point
-	 */
-	public PMPostView() {
+	public PMItemView() {
 		super();
 	}
+
 }
