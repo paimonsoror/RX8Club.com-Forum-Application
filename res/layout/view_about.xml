@@ -1,125 +1,47 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:background="@android:color/darker_gray"
-    android:scrollbars="vertical" >
-    
-	<LinearLayout
-	    xmlns:android="http://schemas.android.com/apk/res/android"
-	    xmlns:tools="http://schemas.android.com/tools"
-	    android:layout_width="match_parent"
-	    android:layout_height="fill_parent"
-	    android:background="@android:color/darker_gray"
-	    android:orientation="vertical" >
-		
-	    <ImageView
-	            android:id="@+id/imageView1"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_margin="0px"
-	            android:layout_marginBottom="0px"
-	            android:layout_marginLeft="0px"
-	            android:layout_marginRight="0px"
-	            android:layout_marginTop="0px"
-	            android:adjustViewBounds="true"
-	            android:cropToPadding="true"
-	            android:padding="0px"
-	            android:paddingBottom="0px"
-	            android:paddingLeft="0px"
-	            android:paddingRight="0px"
-	            android:paddingTop="0px"
-	            android:scaleType="centerCrop"
-	            android:src="@drawable/rx8club_logo" />
-	    
-	    <TableRow
-	        android:id="@+id/tableRow1"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_gravity="left"
-	        android:background="@android:color/darker_gray"
-	        android:paddingTop="5dip" >
-            
-            <Button
-                android:id="@+id/profileButton"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/profileButton"
-                android:textSize="10dip" />
-
-            <Button
-                android:id="@+id/newTopicsButton"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/newTopics"
-                android:textSize="10dip" />
-
-            <Button
-                android:id="@+id/newPmButton"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/newPms"
-                android:textSize="10dip" />
-
-            <Button
-                android:id="@+id/searchButton"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/searchButton"
-                android:textSize="10dip" />
-
-
-        </TableRow>
+    android:orientation="vertical"
+    android:padding="10dip" >
 
 	    <TextView
 	        android:id="@+id/textView1"
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center"
 	        android:layout_marginTop="10dip"
-	        android:shadowColor="#888"
-	        android:shadowDx="1"
-	        android:shadowDy="1"
-	        android:shadowRadius="0.5"
 	        android:text="About"
 	        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 	    <TextView
 	        android:id="@+id/versionNumber"
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:text="Version Number: " />
 
 	    <TextView
 	        android:id="@+id/textView2"
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_marginBottom="10dip"
-	        android:layout_marginTop="10dip"
+	        android:layout_marginBottom="30dip"
+	        android:layout_marginTop="30dip"
 	        android:text="@string/aboutstring"
 	        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 	    <TextView
 	        android:id="@+id/textView3"
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:text="GitHub Link: https://github.com/paimonsoror/RX8Club.com-Forum-Application" />
+	        android:text="GitHub Link:\nhttps://github.com/paimonsoror/RX8Club.com-Forum-Application" />
 
 	    <TextView
 	        android:id="@+id/textView6"
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center"
-	        android:layout_marginTop="10dip"
-	        android:text="http://www.normalexception.net" />
-        
-    </LinearLayout>
+	        android:layout_marginTop="30dip"
+	        android:text="Website:\nhttp://www.normalexception.net" />
 
-</ScrollView>
+</LinearLayout>

@@ -26,6 +26,9 @@ package com.normalexception.forum.rx8club.activities;
 
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.Log;
@@ -48,7 +51,17 @@ public class AboutActivity extends ForumBaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
+        setContentView(R.layout.activity_basiclist);
+                
+        View rowView = 
+        		getLayoutInflater().inflate(R.layout.view_about, null);
+        RelativeLayout rl = 
+        		(RelativeLayout)findViewById(R.id.rootLayout);
+        RelativeLayout.LayoutParams rLParams = 
+        		new RelativeLayout.LayoutParams(
+        				LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+        rLParams.addRule(RelativeLayout.BELOW, R.id.fragment_content);
+        rl.addView(rowView,rLParams);
         
         TextView version = ((TextView)findViewById(R.id.versionNumber));
         try {
