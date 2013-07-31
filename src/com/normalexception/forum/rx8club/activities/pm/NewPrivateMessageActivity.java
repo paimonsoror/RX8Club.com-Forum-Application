@@ -133,22 +133,17 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 						HtmlFormUtils.getInputElementValue(doc, "pmid");
 				
 				postUser = 
-						getIntent().getStringExtra("user");
+						getIntent().getStringExtra("user");    	
 				
+				PMItemView pm = new PMItemView();
 				if(validateInputs(postUser))
-					runOnUiThread(new Runnable() {
-			    		public void run() {
-			    			((TextView)findViewById(R.id.pmRecipientsText)).setText(postUser);
-			    		}
-					});
-		    	
-				
-				tlist.add(new PMItemView());
+					pm.setName(postUser);
+				tlist.add(pm);
 		    	
 		    	runOnUiThread(new Runnable() {
 		            public void run() {
 				    	pva = new PMItemViewArrayAdapter(src, R.layout.view_newpm, tlist);
-						lv.setAdapter(pva);		        
+						lv.setAdapter(pva);	
 		            }
 		    	});
 		    	

@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.pm.NewPrivateMessageActivity;
@@ -76,6 +77,9 @@ public class PMItemViewArrayAdapter extends ArrayAdapter<PMItemView> {
         
         ((Button)vi.findViewById(R.id.newPmButton))
         	.setOnClickListener((NewPrivateMessageActivity)activity);
+        
+        ((TextView)vi.findViewById(R.id.pmRecipientsText))
+        	.setText(getItem(0).getName());
                
         return vi;
 	}

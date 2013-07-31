@@ -39,6 +39,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -190,8 +191,7 @@ public class MainActivity extends ForumBaseActivity {
      * @param root	The full forum document
      * @return		A map of the categories to the forums
      */
-    private void getCategories(Document root) {	
-    	
+    private void getCategories(Document root) {	    	
     	// Grab each category
     	Elements categories       = root.getElementsByClass("tcat");
     	
