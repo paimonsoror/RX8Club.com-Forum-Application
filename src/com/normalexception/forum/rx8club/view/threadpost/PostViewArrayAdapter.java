@@ -32,6 +32,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.Html;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -108,7 +109,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         	@Override
             public void onClick(View arg0) {
         		Log.d(TAG, "Quote Clicked");
-				String txt = cv.getUserPost();
+				String txt = Html.fromHtml(cv.getUserPost()).toString();
 				String finalText = String.format("[quote=%s]%s[/quote]",
 						cv.getUserName(), txt);
 				((TextView)((Activity) activity).findViewById(R.id.postBox)).setText(finalText);
