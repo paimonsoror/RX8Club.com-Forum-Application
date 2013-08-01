@@ -85,10 +85,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
  
         ThreadView m = new ThreadView();
         m = data.get(position);
-        
-        Bitmap scaledimg = 
-    			ThreadTypeFactory.getBitmap(null, 15, 15, m.isLocked(), m.isSticky());
- 
+         
         vTitle 	   = (TextView) vi.findViewById(R.id.tv_title);
         vPostCount = (TextView) vi.findViewById(R.id.tv_postCount);
         vPostUser  = (TextView) vi.findViewById(R.id.tv_postUser);
@@ -103,6 +100,11 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         vLastUser.setText(    m.getLastUser());
         vMyCount.setText(     m.getMyPosts().length() == 0? "0" : m.getMyPosts());
         vViewCount.setText(   m.getViewCount());
+        
+        boolean hasPosts = !vMyCount.getText().equals("0");
+        Bitmap scaledimg = 
+    			ThreadTypeFactory.getBitmap(
+    					null, 15, 13, m.isLocked(), m.isSticky(), hasPosts);
         vImage.setImageBitmap(scaledimg);
 		
 		if (m.isSticky()) {

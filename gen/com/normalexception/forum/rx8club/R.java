@@ -78,17 +78,20 @@ containing a value of this type.
     public static final class drawable {
         public static final int arrow_icon=0x7f020000;
         public static final int black_mail=0x7f020001;
-        public static final int black_pencil_icon=0x7f020002;
-        public static final int black_x=0x7f020003;
-        public static final int email_icon_small=0x7f020004;
-        public static final int ic_action_search=0x7f020005;
-        public static final int ic_launcher=0x7f020006;
-        public static final int icon_small_pencil=0x7f020007;
-        public static final int lock=0x7f020008;
-        public static final int quote_icon=0x7f020009;
-        public static final int rotor_icon=0x7f02000a;
-        public static final int rx8club_logo=0x7f02000b;
-        public static final int sticky=0x7f02000c;
+        public static final int black_mail_a=0x7f020002;
+        public static final int black_pencil_icon=0x7f020003;
+        public static final int black_x=0x7f020004;
+        public static final int email_icon_small=0x7f020005;
+        public static final int ic_action_search=0x7f020006;
+        public static final int ic_launcher=0x7f020007;
+        public static final int icon_small_pencil=0x7f020008;
+        public static final int lock=0x7f020009;
+        public static final int lock_a=0x7f02000a;
+        public static final int quote_icon=0x7f02000b;
+        public static final int rotor_icon=0x7f02000c;
+        public static final int rx8club_logo=0x7f02000d;
+        public static final int sticky=0x7f02000e;
+        public static final int sticky_a=0x7f02000f;
     }
     public static final class id {
         public static final int Password=0x7f05000e;
@@ -123,7 +126,7 @@ containing a value of this type.
         public static final int loginButton=0x7f050019;
         public static final int mainlisttitle=0x7f050005;
         public static final int mainlistview=0x7f050006;
-        public static final int menu_settings=0x7f050085;
+        public static final int menu_settings=0x7f050086;
         public static final int myTableLayoutProfile=0x7f05001c;
         public static final int newPmButton=0x7f050055;
         public static final int newThreadButton=0x7f05006e;
@@ -167,6 +170,7 @@ containing a value of this type.
         public static final int postContainer=0x7f050064;
         public static final int postPost=0x7f05006d;
         public static final int postSubject=0x7f05006c;
+        public static final int postcount_details=0x7f05007f;
         public static final int previousButton=0x7f05004c;
         public static final int profileButton=0x7f050034;
         public static final int quoteCodeButton=0x7f05003f;
@@ -208,15 +212,15 @@ containing a value of this type.
         public static final int tv_image=0x7f050079;
         public static final int tv_lastUser=0x7f05007e;
         public static final int tv_lastUser_label=0x7f05007d;
-        public static final int tv_myCount=0x7f050083;
-        public static final int tv_myCount_label=0x7f050084;
-        public static final int tv_postCount=0x7f05007f;
-        public static final int tv_postCount_label=0x7f050080;
+        public static final int tv_myCount=0x7f050084;
+        public static final int tv_myCount_label=0x7f050085;
+        public static final int tv_postCount=0x7f050080;
+        public static final int tv_postCount_label=0x7f050081;
         public static final int tv_postUser=0x7f05007c;
         public static final int tv_postUser_label=0x7f05007b;
         public static final int tv_title=0x7f05007a;
-        public static final int tv_viewCount=0x7f050081;
-        public static final int tv_viewCount_label=0x7f050082;
+        public static final int tv_viewCount=0x7f050082;
+        public static final int tv_viewCount_label=0x7f050083;
         public static final int underlineButton=0x7f05003c;
         public static final int userNameButton=0x7f050027;
         public static final int userNameText=0x7f05001d;

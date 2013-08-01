@@ -42,8 +42,11 @@ public class ThreadTypeFactory {
 	// Three different types of images
 	private static enum Type { 
 		NORMAL, 				// Normal thread
+		POSTED,					// Posted thread
 		LOCKED, 				// Locked thread
-		STICKY 					// Sticky thread
+		POSTED_LOCKED,          // Locked w/ Posts
+		STICKY,					// Sticky thread
+		POSTED_STICKY			// Sticky w/ Posts
 	};
 	
 	private static final String TAG = "ThreadTypeFactory";
@@ -55,49 +58,55 @@ public class ThreadTypeFactory {
 	 * @param height	The height of the bitmap
 	 * @param isLocked	True if the thread is locked
 	 * @param isSticky  True if the thread is sticky
+	 * @param hasPosts  True if user has posts within thread
 	 * @return			A reference to the bitmap
 	 */
 	public static Bitmap getBitmap(Activity src, int width, int height, 
-			boolean isLocked, boolean isSticky) {
+			boolean isLocked, boolean isSticky, boolean hasPosts) {
 		Bitmap scaledimg;
 		
 		Resources rsc = (src == null)? 
 				MainApplication.getAppContext().getResources() : src.getResources();
 		
+		Type theType = Type.NORMAL;
+		int  res     = R.drawable.black_mail;
+		
 		if(isLocked) {
-			scaledimg = sBitmapCache.get(Type.LOCKED);
-			if(scaledimg == null) {
-				scaledimg = 
-					Bitmap.createScaledBitmap(
-							BitmapFactory.decodeResource(
-									rsc, R.drawable.lock), 
-									width, height, true);
-				Log.d(TAG, "Caching Locked Icon");
-				sBitmapCache.put(Type.LOCKED, scaledimg);
+			if(hasPosts) {
+				theType = Type.POSTED_LOCKED;
+				res     = R.drawable.lock_a;
+			} else {
+				theType = Type.LOCKED;
+				res     = R.drawable.lock;
 			}
     	
 		} else if (isSticky) {
-			scaledimg = sBitmapCache.get(Type.STICKY);
-			if(scaledimg == null) {
-				scaledimg =  
-					Bitmap.createScaledBitmap(
-							BitmapFactory.decodeResource(
-									rsc, R.drawable.sticky), 
-									width, height, true);
-				Log.d(TAG, "Caching Sticky Icon");
-				sBitmapCache.put(Type.STICKY, scaledimg);
+			if(hasPosts) {
+				theType = Type.POSTED_STICKY;
+				res     = R.drawable.sticky_a;
+			} else {
+				theType = Type.STICKY;
+				res     = R.drawable.sticky;
 			}
 		} else {
-			scaledimg = sBitmapCache.get(Type.NORMAL);
-			if(scaledimg == null) {
-				scaledimg = 
-						Bitmap.createScaledBitmap(
-								BitmapFactory.decodeResource(
-										rsc, R.drawable.arrow_icon), 
-										width, height, true);
-				Log.d(TAG, "Caching Normal Icon");
-				sBitmapCache.put(Type.NORMAL, scaledimg);
+			if (hasPosts) {
+				theType = Type.POSTED;
+				res     = R.drawable.black_mail_a;
+			} else {
+				theType = Type.NORMAL;
+				res     = R.drawable.black_mail;
 			}
+		}
+		
+		scaledimg = sBitmapCache.get(theType);
+		if(scaledimg == null) {
+			scaledimg = 
+				Bitmap.createScaledBitmap(
+						BitmapFactory.decodeResource(
+								rsc, res), 
+								width, height, true);
+			Log.d(TAG, "Caching Icon");
+			sBitmapCache.put(theType, scaledimg);
 		}
 		
 		return scaledimg;
