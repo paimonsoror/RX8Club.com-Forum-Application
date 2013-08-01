@@ -38,14 +38,11 @@ import android.widget.Toast;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
-import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
 import com.normalexception.forum.rx8club.task.PmTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.pmitem.PMItemView;
 import com.normalexception.forum.rx8club.view.pmitem.PMItemViewArrayAdapter;
-import com.normalexception.forum.rx8club.view.threaditem.ThreadItemView;
-import com.normalexception.forum.rx8club.view.threaditem.ThreadItemViewArrayAdapter;
 
 public class NewPrivateMessageActivity extends ForumBaseActivity {
 
@@ -161,7 +158,7 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
    	public void onClick(View arg0) {
    		super.onClick(arg0);
    		
-   		postUser = ((TextView)findViewById(R.id.pmRecipientsText)).getText().toString();
+   		recipients = ((TextView)findViewById(R.id.pmRecipientsText)).getText().toString();
    		postText = ((TextView)findViewById(R.id.pmMessageText)).getText().toString();
    		title    = ((TextView)findViewById(R.id.pmSubjectText)).getText().toString();
    		
@@ -170,7 +167,7 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 	   		case R.id.newPmButton:
 	   			Log.v(TAG, "PM Submit Clicked");
 				PmTask sTask = 
-						new PmTask(this, this.securityToken, this.title, postText, this.postUser, this.pmid);
+						new PmTask(this, this.securityToken, this.title, postText, this.recipients, this.pmid);
 				sTask.execute();
 	   			break;
 	   		}

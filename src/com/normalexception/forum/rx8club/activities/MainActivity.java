@@ -39,14 +39,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
-import com.normalexception.forum.rx8club.activities.list.CategoryUtils;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
@@ -66,8 +64,6 @@ public class MainActivity extends ForumBaseActivity {
 	
 	private ArrayList<CategoryView> mainList;
 	private CategoryViewArrayAdapter cva;
-	
-	private int scaledImage = 12;
 	
 	// The Forum's Main Page Has The Following Column
 	@SuppressWarnings("unused")
@@ -91,8 +87,6 @@ public class MainActivity extends ForumBaseActivity {
 	        
 	        setContentView(R.layout.activity_basiclist);
 	        findViewById(R.id.mainlisttitle).setVisibility(View.GONE);
-	        
-	        scaledImage = CategoryUtils.setScaledImageSizes(this);
 
 	        if(savedInstanceState == null)
 	        	constructView();

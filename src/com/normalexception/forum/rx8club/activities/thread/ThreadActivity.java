@@ -78,8 +78,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	private String securityToken = "none";
 	private String postNumber = "none";
 	
-	private int scaledImage = 12;
-	
 	private ArrayList<PostView> postlist;
 	private PostViewArrayAdapter pva;
 	private ListView lv;
@@ -96,8 +94,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	         setContentView(R.layout.activity_basiclist);
 	         
 	         Log.v(TAG, "Category Activity Started");
-	         
-	         scaledImage = ThreadUtils.setScaledImageSizes(this);
 	         
 	         postlist = new ArrayList<PostView>();
 	        if(savedInstanceState == null)

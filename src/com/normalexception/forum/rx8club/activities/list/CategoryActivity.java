@@ -79,8 +79,6 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	private ArrayList<ThreadView> threadlist;
 	private ThreadViewArrayAdapter tva;
 	
-	public int scaledImage = 12;
-	
 	private ListView lv;
 	
 	private final int NEW_THREAD = 5000;
@@ -98,7 +96,6 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        
 	        Log.v(TAG, "Category Activity Started");
 	        
-	        scaledImage = CategoryUtils.setScaledImageSizes(this);
 	        threadlist = new ArrayList<ThreadView>();
 	        lv = (ListView)findViewById(R.id.mainlistview);
 	        
@@ -214,7 +211,6 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
      * @param isMarket 	True if the link is from a marketplace category
      */
     public void getCategoryContents(Document doc, String id, boolean isMarket) {
-    	ArrayList<String> titles = new ArrayList<String>();
     	
     	// Update pagination
     	try {

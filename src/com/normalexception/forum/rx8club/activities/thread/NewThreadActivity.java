@@ -28,10 +28,7 @@ import java.util.ArrayList;
 
 import org.jsoup.nodes.Document;
 
-import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
@@ -58,8 +55,7 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
 	
 	private String forumId = "", link = "", 
 			       s, token, f, posthash, 
-			       poststart, subject, post, 
-			       source;
+			       subject, post, source;
 	
 	private static final String TAG = "NewThreadActivity";
 	
@@ -126,7 +122,6 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
     	token 		= HtmlFormUtils.getInputElementValue(doc, "securitytoken");
     	f 			= HtmlFormUtils.getInputElementValue(doc, "f");
     	posthash 	= HtmlFormUtils.getInputElementValue(doc, "posthash");
-    	poststart	= HtmlFormUtils.getInputElementValue(doc, "poststarttime");
     	
     	tlist.add(new ThreadItemView());
     	

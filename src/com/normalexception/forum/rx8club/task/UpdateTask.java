@@ -48,7 +48,7 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 	private Activity sourceActivity;
 	
 	private String securitytoken, p, posthash, 
-		poststarttime, msg, pageNumber, pageTitle;
+		poststarttime, msg, pageTitle;
 	
 	private boolean delete = false, deleteThread = false;
 	
@@ -62,7 +62,6 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 		this.posthash = posthash;
 		this.poststarttime = poststarttime;
 		this.msg = message;
-		this.pageNumber = pageNumber;
 		this.pageTitle = pageTitle;
 		this.delete = delete;
 		this.deleteThread = deleteThread;

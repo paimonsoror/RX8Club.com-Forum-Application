@@ -57,7 +57,6 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 	private String postUser = null;
 	private String postText = null;
 	private String securityToken = null;
-	private String recipients = null;
 	private String pmid = null;
 	private String title = null;
 	
