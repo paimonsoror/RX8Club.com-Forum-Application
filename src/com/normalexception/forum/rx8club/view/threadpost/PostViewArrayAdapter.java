@@ -32,7 +32,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.text.Html;
-import android.text.util.Linkify;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -98,7 +98,8 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         ((TextView)vi.findViewById(R.id.nr_postDate)).setText(cv.getPostDate());
         
         TextView postText = ((TextView)vi.findViewById(R.id.nr_postText));
-        ForumImageHandler fih = new ForumImageHandler(postText, activity);        
+        ForumImageHandler fih = new ForumImageHandler(postText, activity);  
+        postText.setMovementMethod(LinkMovementMethod.getInstance());
         postText.setText(Html.fromHtml(cv.getUserPost(), fih, null));
         
         // Display the right items if the user is logged in
@@ -172,23 +173,6 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         return vi;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see android.widget.BaseAdapter#areAllItemsEnabled()
-	 */
-	@Override
-	public boolean  areAllItemsEnabled() {
-	    return false;			
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see android.widget.BaseAdapter#isEnabled(int)
-	 */
-	@Override
-	public boolean isEnabled(int position) {
-	        return false;
-	}
 	
 	/**
 	 * If the post is by the logged in user, make sure that they can see the edit and 
