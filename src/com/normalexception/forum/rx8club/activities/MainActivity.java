@@ -26,6 +26,7 @@ package com.normalexception.forum.rx8club.activities;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -51,6 +52,7 @@ import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.category.CategoryView;
 import com.normalexception.forum.rx8club.view.category.CategoryViewArrayAdapter;
+import com.normalexception.forum.rx8club.view.category.SubCategoryView;
 
 /**
  * Main activity for the application.  This is the main forum view that 
@@ -209,6 +211,7 @@ public class MainActivity extends ForumBaseActivity {
     	for(Element category : categorySections) {
     		
     		CategoryView cv = new CategoryView();
+    		List<SubCategoryView> scvList = new ArrayList<SubCategoryView>();
     		cv.setTitle(categories.get(catIndex++).text());
     		mainList.add(cv);
     		
@@ -230,11 +233,21 @@ public class MainActivity extends ForumBaseActivity {
     			String threads    = columns.get(MainActivity.THREADS_CNT).text();
     			String posts      = columns.get(MainActivity.POSTS_CNT).text();
     			
+    			// Lets grab each subcategory
+    			Elements subCats  = columns.select("tbody a");
+    			for(Element subCat : subCats) {
+    				SubCategoryView scv = new SubCategoryView();
+    				scv.setLink(subCat.attr("href"));
+    				scv.setTitle(subCat.text().toString());
+    				scvList.add(scv);
+    			}
+    			
     			cv.setTitle(forum_name);
     			cv.setThreadCount(threads);
     			cv.setPostCount(posts);
     			cv.setLink(forum_href);
     			cv.setDescription(forum_desc);
+    			cv.setSubCategories(scvList);
     			mainList.add(cv);
     		}
     	}

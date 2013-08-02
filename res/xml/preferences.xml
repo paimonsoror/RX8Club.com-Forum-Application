@@ -2,15 +2,7 @@
 <PreferenceScreen 
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-                android:title="General">
-	    <ListPreference
-	        android:title="Font Size"
-			android:summary="Set the application's font size (Restart Required)"
-			android:key="fontsize"
-			android:defaultValue="Medium"
-			android:entries="@array/fontsizes"
-			android:entryValues="@array/fontsizevalue"/>
-	    
+                android:title="General">	    
 	    <Preference 
 	        android:title="Version Number"
 	        android:key="version"
@@ -25,6 +17,13 @@
 	</PreferenceCategory>
 	<PreferenceCategory
                 android:title="Thread Options">
+	   	<ListPreference
+	        android:title="Font Size"
+			android:summary="Set the application's font size"
+			android:key="fontsize"
+			android:defaultValue="Normal"
+			android:entries="@array/fontsizes"
+			android:entryValues="@array/fontsizevalue"/>
 	    <CheckBoxPreference
 	        android:title="Advertise Application"
 	        android:defaultValue="true"

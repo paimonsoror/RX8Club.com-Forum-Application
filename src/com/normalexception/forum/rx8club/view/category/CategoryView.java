@@ -1,5 +1,8 @@
 package com.normalexception.forum.rx8club.view.category;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /************************************************************************
  * NormalException.net Software, and other contributors
  * http://www.normalexception.net
@@ -30,11 +33,36 @@ package com.normalexception.forum.rx8club.view.category;
 public class CategoryView {
 	private String title, link, description;
 	private String threadCount, postCount;
+	private List<SubCategoryView> subCategories;
 	
+	/**
+	 * Report category description
+	 * @return Category description
+	 */
 	public String getDescription() {
 		return description;
 	}
 	
+	/**
+	 * Report sub categories
+	 * @return	A list of sub categories
+	 */
+	public List<SubCategoryView> getSubCategories() {
+		return subCategories;
+	}
+
+	/**
+	 * Set sub categories
+	 * @param subCategories	Sub categories
+	 */
+	public void setSubCategories(List<SubCategoryView> subCategories) {
+		this.subCategories = subCategories;
+	}
+
+	/**
+	 * Set category description
+	 * @param desc	Category description
+	 */
 	public void setDescription(String desc) {
 		description = desc;
 	}

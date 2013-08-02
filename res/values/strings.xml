@@ -87,14 +87,18 @@
         <item>forum</item>
     </string-array>
     <string-array name="fontsizes">
+        <item>Smaller</item>
         <item>Small</item>
-        <item>Medium</item>
-        <item>Large</item>
+        <item>Normal</item>
+        <item>Big</item>
+        <item>Bigger</item>
     </string-array>
     <string-array name="fontsizevalue">
+        <item>8</item>
         <item>10</item>
         <item>12</item>
         <item>14</item>
+        <item>16</item>
     </string-array>
 
     <string name="title_activity_styler_fragment">StylerFragment</string>

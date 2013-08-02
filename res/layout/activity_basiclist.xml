@@ -25,7 +25,9 @@
         android:textSize="10dip"
         android:textColor="#ffffff"
         android:textStyle="bold"
-        android:visibility="gone"/>
+        android:gravity="center"
+        android:visibility="gone"
+        />
 
     <ListView
         android:id="@+id/mainlistview"

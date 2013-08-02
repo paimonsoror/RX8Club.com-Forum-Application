@@ -46,6 +46,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.pm.NewPrivateMessageActivity;
 import com.normalexception.forum.rx8club.activities.thread.EditPostActivity;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
+import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 
 /**
  * Custom adapter to handle PostView objects
@@ -101,6 +102,9 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         ForumImageHandler fih = new ForumImageHandler(postText, activity);  
         postText.setMovementMethod(LinkMovementMethod.getInstance());
         postText.setText(Html.fromHtml(cv.getUserPost(), fih, null));
+        
+        int font_size = PreferenceHelper.getFontSize(activity);
+        postText.setTextSize(font_size);
         
         // Display the right items if the user is logged in
         setUserIcons(vi, cv.isLoggedInUser());
