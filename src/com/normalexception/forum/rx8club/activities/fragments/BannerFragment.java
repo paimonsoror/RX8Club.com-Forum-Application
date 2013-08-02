@@ -24,11 +24,6 @@ package com.normalexception.forum.rx8club.activities.fragments;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import java.util.ArrayList;
-import java.util.List;
-
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -36,7 +31,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.MainActivity;
@@ -44,10 +38,7 @@ import com.normalexception.forum.rx8club.activities.ProfileActivity;
 import com.normalexception.forum.rx8club.activities.SearchActivity;
 import com.normalexception.forum.rx8club.activities.list.NewPostsActivity;
 import com.normalexception.forum.rx8club.activities.pm.PrivateMessageActivity;
-import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
-import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
-import com.normalexception.forum.rx8club.favorites.FavoriteThreads;
-import com.normalexception.forum.rx8club.view.thread.ThreadView;
+import com.normalexception.forum.rx8club.favorites.FavoriteDialog;
 
 /**
  * Implementation of the banner found on all views
@@ -94,7 +85,9 @@ public class BannerFragment extends Fragment implements OnClickListener {
 				
 			case R.id.favoritesButton:
 				_intent = null;
-				createFavoritesMenu();
+				FavoriteDialog fd = new FavoriteDialog(getActivity());
+				fd.registerToExecute();
+				fd.show();
 				break;
 			
 			case R.id.inboxButton:
@@ -117,40 +110,4 @@ public class BannerFragment extends Fragment implements OnClickListener {
 		if(_intent != null)
 			startActivity(_intent);
 	}
-	
-	/**
-	 * Create the favorites menu with the list of the saved favorites
-	 * from the internal memory
-	 */
-	private void createFavoritesMenu() {
-		// 1. Instantiate an AlertDialog.Builder with its constructor
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-		List<String>    ls = new ArrayList<String>();
-		final FavoriteThreads ft = 
-				FavoriteFactory.getInstance().getFavorites();
-		for(ThreadView tv : ft)
-			ls.add(tv.getTitle());
-		CharSequence[] cs = ls.toArray(new CharSequence[ls.size()]);
-		
-		// 2. Chain together various setter methods to set the dialog characteristics
-		builder.setItems(cs, 
-					new DialogInterface.OnClickListener() {
-				    	public void onClick(DialogInterface dialog, int which) {
-				          	// The 'which' argument contains the index position
-				           	// of the selected item
-				    		ThreadView tv = ft.get(which);
-				    		Intent _intent = 
-									new Intent(getActivity(), ThreadActivity.class);
-							_intent.putExtra("link", tv.getLink());
-							_intent.putExtra("title", tv.getTitle());
-							startActivity(_intent);
-				        }
-				  	})
-		       .setTitle("Favorites");
-
-		// 3. Get the AlertDialog from create()
-		builder.create().show();
-	}
-
 }
