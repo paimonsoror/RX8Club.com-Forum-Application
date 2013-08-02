@@ -1,5 +1,7 @@
 package com.normalexception.forum.rx8club.view.thread;
 
+import java.io.Serializable;
+
 /************************************************************************
  * NormalException.net Software, and other contributors
  * http://www.normalexception.net
@@ -24,7 +26,10 @@ package com.normalexception.forum.rx8club.view.thread;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-public class ThreadView {
+public class ThreadView implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
 	private String title;
 	private String postCount, viewCount, myPosts;
 	private String startUser, lastUser;

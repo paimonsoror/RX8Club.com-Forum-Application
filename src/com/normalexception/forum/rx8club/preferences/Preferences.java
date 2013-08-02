@@ -24,7 +24,13 @@ package com.normalexception.forum.rx8club.preferences;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.util.ArrayList;
+import java.util.List;
+
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,6 +41,9 @@ import android.widget.Toast;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
+import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
+import com.normalexception.forum.rx8club.favorites.FavoriteThreads;
+import com.normalexception.forum.rx8club.view.thread.ThreadView;
 
 /**
  * Class used to set and save preferences
@@ -52,12 +61,47 @@ public class Preferences extends PreferenceActivity {
                 PreferenceHelper.PREFS_NAME);
         addPreferencesFromResource(R.xml.preferences);
         
+        final Context ctx = this;
+        Preference man_fave = (Preference)findPreference("manage_favorites");
+        man_fave.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {			
+			@Override
+			public boolean onPreferenceClick(Preference arg0) {
+				// 1. Instantiate an AlertDialog.Builder with its constructor
+				AlertDialog.Builder builder = 
+						new AlertDialog.Builder(ctx);
+				
+				List<String>    ls = new ArrayList<String>();
+				final FavoriteThreads ft = 
+						FavoriteFactory.getInstance().getFavorites();
+				for(ThreadView tv : ft)
+					ls.add(tv.getTitle());
+				CharSequence[] cs = ls.toArray(new CharSequence[ls.size()]);
+				
+				// 2. Chain together various setter methods to set the dialog characteristics
+				builder.setItems(cs, 
+							new DialogInterface.OnClickListener() {
+						    	public void onClick(DialogInterface dialog, int which) {
+						          	// The 'which' argument contains the index position
+						           	// of the selected item
+						    		FavoriteFactory
+						    			.getInstance()
+						    			.removeFavorite(ft.get(which));
+						        }
+						  	})
+				       .setTitle("Favorites");
+
+				// 3. Get the AlertDialog from create()
+				builder.create().show();
+				return true;
+			}
+		});
+        
         Preference button = (Preference)findPreference("donate");
         button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference arg0) { 
             	try {
-            	startActivity(new Intent(Intent.ACTION_VIEW, 
+            		startActivity(new Intent(Intent.ACTION_VIEW, 
             			Uri.parse(WebUrls.paypalUrl)));
             	} catch (ActivityNotFoundException e) {
             		// In the event that the browser isn't working

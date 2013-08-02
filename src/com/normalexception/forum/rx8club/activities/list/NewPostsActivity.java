@@ -41,6 +41,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
+import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.thread.ThreadView;
@@ -108,6 +110,9 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
     	}
     }
 	
+	/**
+	 * Update the list view
+	 */
 	private void updateList() {
 		final Activity a = this;
     	runOnUiThread(new Runnable() {
@@ -127,6 +132,7 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 						startActivity(_intent);
 		            }
 		        });
+				registerForContextMenu(lv);
 				updatePagination(thisPage, finalPage);
             }
     	});
@@ -177,7 +183,10 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-	    menu.add(Menu.NONE, v.getId(), Menu.NONE, "Add As Favorite");   
+		AdapterContextMenuInfo info = 
+				(AdapterContextMenuInfo) menuInfo;
+        int position = info.position;
+	    menu.add(Menu.NONE, position, Menu.NONE, "Add As Favorite");   
 	}
 	
 	/*
@@ -187,11 +196,12 @@ public class NewPostsActivity extends ForumBaseActivity implements OnClickListen
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 	    if(item.getItemId() > -1) {
-	        	TextView tv = (TextView) findViewById(item.getItemId());
-	        	Toast.makeText(this, tv.getText(), Toast.LENGTH_SHORT).show();
-	            return true;
+	    	int menuItemIndex = item.getItemId();
+	    	ThreadView tv = (ThreadView) lv.getAdapter().getItem(menuItemIndex);
+	    	FavoriteFactory.getInstance().addFavorite(tv);
+	        return true;
 	    } else {
-	            return super.onContextItemSelected(item);
+	        return super.onContextItemSelected(item);
 	    }
 	}
     

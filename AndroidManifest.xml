@@ -2,14 +2,12 @@
     android:name="com.normalexception.forum.MainApplication"
     package="com.normalexception.forum.rx8club"
     android:installLocation="auto"
-    android:versionCode="11100"
-    android:versionName="1.1.01" >
+    android:versionCode="11110"
+    android:versionName="1.1.1" >
 
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="10" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <supports-screens
         android:anyDensity="true"
@@ -17,6 +15,8 @@
         android:normalScreens="true"
         android:smallScreens="true"
         android:xlargeScreens="true" />
+    
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="MainApplication"

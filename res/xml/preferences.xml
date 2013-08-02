@@ -17,6 +17,13 @@
 	        android:summary=""/>
 	</PreferenceCategory>
 	<PreferenceCategory
+	    		android:title="Favorites">
+	    <Preference 
+	        android:title="Manage Favorites"
+	        android:key="manage_favorites"
+	        android:summary="Remove favorites from your list"/>
+	</PreferenceCategory>
+	<PreferenceCategory
                 android:title="Thread Options">
 	    <CheckBoxPreference
 	        android:title="Advertise Application"
