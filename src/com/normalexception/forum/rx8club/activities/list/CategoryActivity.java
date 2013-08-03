@@ -76,6 +76,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	private String pageNumber = "";
 	private String forumId = "";
 	
+	private boolean isNewTopicActivity = false;
+	
 	private ArrayList<ThreadView> threadlist;
 	private ThreadViewArrayAdapter tva;
 	
@@ -99,12 +101,17 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        threadlist = new ArrayList<ThreadView>();
 	        lv = (ListView)findViewById(R.id.mainlistview);
 	        
-	        Button bv = new Button(this);
-	        bv.setId(NEW_THREAD);
-	        bv.setOnClickListener(this);
-	        bv.setText("New Thread");
-	        bv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
-	        lv.addHeaderView(bv);
+	        isNewTopicActivity =
+					getIntent().getBooleanExtra("isNewTopics", false);
+	        
+	        if(!isNewTopicActivity) {
+		        Button bv = new Button(this);
+		        bv.setId(NEW_THREAD);
+		        bv.setOnClickListener(this);
+		        bv.setText("New Thread");
+		        bv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
+		        lv.addHeaderView(bv);
+	        }
 	        
 	        View v = getLayoutInflater().inflate(R.layout.view_category_footer, null);
 	    	v.setOnClickListener(this);
@@ -158,18 +165,35 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		        		(String) getIntent().getSerializableExtra("link");
 				pageNumber = 
 						(String) getIntent().getStringExtra("page");
+								
 				if(pageNumber == null) pageNumber = "1";
 				
-		        Document doc = VBForumFactory.getInstance().get(src, link);
-		        forumId = link.substring(link.lastIndexOf("-") + 1);
+		        Document doc = VBForumFactory.getInstance().get(src, 
+		        		link == null? WebUrls.newPostUrl : link);
 		        
-		        // Make sure forumid doesn't end with a "/"
-		        forumId = Utils.parseInts(forumId);
+		        // if doc came back, and link was null, we need to update
+ 				// the link reference to reflect the new post URL
+ 				if(link == null) {
+ 					// <link rel="canonical" href="http://www.rx8club.com/search.php?searchid=10961740" />
+ 					Elements ele = doc.select("link[rel^=canonical]");
+ 					if(ele != null) {
+ 						link = ele.attr("href");
+ 					}
+ 				}
 		        
-				getCategoryContents(doc, 
-						link.substring(link.lastIndexOf('-') + 1, link.lastIndexOf('/')),
-						link.contains("sale-wanted"));
-				
+		        if(!isNewTopicActivity) {
+			        forumId = link.substring(link.lastIndexOf("-") + 1);
+			        
+			        // Make sure forumid doesn't end with a "/"
+			        forumId = Utils.parseInts(forumId);
+			        
+			        getCategoryContents(doc, 
+							link.substring(link.lastIndexOf('-') + 1, link.lastIndexOf('/')),
+							link.contains("sale-wanted"));
+		        } else {
+		        	getCategoryContents(doc, null, false);
+		        }
+		        				
 				findViewById(R.id.mainlisttitle).setVisibility(View.GONE);
 		    			    	
 		    	updateList();
@@ -227,58 +251,74 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     	} catch (Exception e) { }
     	    	
     	// Make sure id contains only numbers
-    	id = Utils.parseInts(id);
+    	if(!isNewTopicActivity)
+    		id = Utils.parseInts(id);
     	
     	// Grab each thread
-    	Elements threadListing = doc.select("tbody[id^=threadbits_] > tr");
+    	Elements threadListing = isNewTopicActivity? 
+    			doc.select("table[id=threadslist] > tbody > tr") : 
+    				doc.select("tbody[id^=threadbits_] > tr");
  
     	for(Element thread : threadListing) {
     		try {
-	    		Element threadLink  = thread.select("a[id^=thread_title]").get(0);
-	    		Element repliesText = thread.select("td[title^=Replies]").get(0);
-	    		Element threaduser  = thread.select("td[id^=td_threadtitle_] div.smallfont").get(0);
-	    		Element threadicon  = thread.select("img[id^=thread_statusicon_]").get(0);
-	
-	    		boolean isSticky = false, isLocked = false;
-	    		try {
-	    			isSticky = thread.select("td[id^=td_threadtitle_] > div").text().contains("Sticky:");
-	    		} catch (Exception e) { }
-	    		
-	    		try {
-	    			isLocked = threadicon.attr("src").contains("lock.gif");
-	    		} catch (Exception e) { }
-	    		
-	    		String totalPostsInThreadTitle = threadicon.attr("alt");
-	    		String totalPosts = "";	
-	    		
-	    		if(totalPostsInThreadTitle != null && totalPostsInThreadTitle.length() > 0)
-	    			totalPosts = totalPostsInThreadTitle.split(" ")[2];
-	    		
-	    		// Remove page from the link
-	    		String realLink = Utils.removePageFromLink(link);  			
-	    		
-	    		if(threadLink.attr("href").contains(realLink) || isMarket) {
+    			Elements threadTitleContainer  = thread.select("a[id^=thread_title]");
+        		
+        		if(threadTitleContainer != null && !threadTitleContainer.isEmpty()) {
+		    		Element threadLink  = thread.select("a[id^=thread_title]").first();
+		    		Element repliesText = thread.select("td[title^=Replies]").first();
+		    		Element threaduser  = thread.select("td[id^=td_threadtitle_] div.smallfont").first();
+		    		Element threadicon  = thread.select("img[id^=thread_statusicon_]").first();
+		    		Element threadDiv   = thread.select("td[id^=td_threadtitle_] > div").first();
 		    		
-		    		String txt = repliesText.getElementsByClass("alt2").attr("title");
-		    		String splitter[] = txt.split(" ", 4);
-		    		String postCount = splitter[1].substring(0, splitter[1].length() - 1);
-		    		String views = splitter[3];
-	
-		    		String formattedTitle = 
-		    				String.format("%s%s", isSticky? "Sticky: " : "", threadLink.text()); 
+		    		boolean isSticky = false, isLocked = false;    		
+		    		try {
+		    			isSticky = threadDiv.text().contains("Sticky:");
+		    		} catch (Exception e) { }
 		    		
-		    		ThreadView tv = new ThreadView();
-		    		tv.setTitle(formattedTitle);
-		    		tv.setStartUser(threaduser.text());
-		    		tv.setLastUser(repliesText.select("a[href*=members]").text());
-		    		tv.setLink(threadLink.attr("href"));
-		    		tv.setPostCount(postCount);
-		    		tv.setMyPosts(totalPosts);
-		    		tv.setViewCount(views);
-		    		tv.setLocked(isLocked);
-		    		tv.setSticky(isSticky);
-		    		threadlist.add(tv);
-	    		}
+		    		try {
+		    			isLocked = threadicon.attr("src").contains("lock.gif");
+		    		} catch (Exception e) { }
+		    		
+		    		String preString = "";
+		    		try {
+		    			preString = threadDiv.select("span > b").text();
+		    		} catch (Exception e) { }
+		    		
+		    		String totalPostsInThreadTitle = threadicon.attr("alt");
+		    		String totalPosts = "";	
+		    		
+		    		if(totalPostsInThreadTitle != null && totalPostsInThreadTitle.length() > 0)
+		    			totalPosts = totalPostsInThreadTitle.split(" ")[2];
+		    		
+		    		// Remove page from the link
+		    		String realLink = Utils.removePageFromLink(link);  			
+		    		
+		    		if(threadLink.attr("href").contains(realLink) || (isNewTopicActivity || isMarket) ) {
+			    		
+			    		String txt = repliesText.getElementsByClass("alt2").attr("title");
+			    		String splitter[] = txt.split(" ", 4);
+			    		String postCount = splitter[1].substring(0, splitter[1].length() - 1);
+			    		String views = splitter[3];
+		
+			    		String formattedTitle = 
+			    				String.format("%s%s%s", 
+			    						isSticky? "Sticky: " : "",
+			    								preString.length() == 0? "" : preString + " ",
+			    								threadLink.text()); 
+			    		
+			    		ThreadView tv = new ThreadView();
+			    		tv.setTitle(formattedTitle);
+			    		tv.setStartUser(threaduser.text());
+			    		tv.setLastUser(repliesText.select("a[href*=members]").text());
+			    		tv.setLink(threadLink.attr("href"));
+			    		tv.setPostCount(postCount);
+			    		tv.setMyPosts(totalPosts);
+			    		tv.setViewCount(views);
+			    		tv.setLocked(isLocked);
+			    		tv.setSticky(isSticky);
+			    		threadlist.add(tv);
+		    		}
+        		}
     		} catch (Exception e) { Log.w(TAG, "Error Parsing That Thread..."); }
     	}
     }
@@ -332,12 +372,14 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 				_intent = new Intent(CategoryActivity.this, CategoryActivity.class);
 				_intent.putExtra("link", Utils.decrementPage(link, this.pageNumber));
 				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) - 1));
+				_intent.putExtra("isNewTopics", this.isNewTopicActivity);
 				this.finish();
 				break;
 			case R.id.nextButton:
 				_intent = new Intent(CategoryActivity.this, CategoryActivity.class);
 				_intent.putExtra("link", Utils.incrementPage(link, this.pageNumber));
 				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) + 1));
+				_intent.putExtra("isNewTopics", this.isNewTopicActivity);
 				this.finish();
 				break;
 			case NEW_THREAD:

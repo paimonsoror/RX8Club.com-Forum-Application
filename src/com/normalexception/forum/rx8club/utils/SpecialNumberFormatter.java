@@ -36,10 +36,16 @@ public class SpecialNumberFormatter {
 	 * @return 			a formatted string.
 	 */
 	public static String collapseNumber(double n, int iteration) {
-		if(n < 1000 && iteration == 0) return Double.toString(n).replace(".0", "");
+		// No need to simplify anything under 1000,
+		// and remove the decimal
+		if(n < 1000 && iteration == 0) 
+			return Double.toString(n).replace(".0", "");
 		
 	    double d = ((long) n / 100) / 10.0;
-	    boolean isRound = (d * 10) %10 == 0;//true if the decimal part is equal to 0 (then it's trimmed anyway)
+	    
+	    // true if the decimal part is equal to 0 (then it's trimmed anyway)
+	    boolean isRound = (d * 10) %10 == 0;
+	   
 	    return (d < 1000? //this determines the class, i.e. 'k', 'm' etc
 	        ((d > 99.9 || isRound || (!isRound && d > 9.99)? //this decides whether to trim the decimals
 	         (int) d * 10 / 10 : d + "" // (int) d * 10 / 10 drops the decimal

@@ -26,16 +26,16 @@ package com.normalexception.forum.rx8club.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.normalexception.forum.rx8club.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
-import com.normalexception.forum.rx8club.activities.list.NewPostsActivity;
+import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
 
 /**
  * Activity used to create a search in the forum.
@@ -100,8 +100,9 @@ public class SearchActivity extends ForumBaseActivity implements OnClickListener
 		switch(arg0.getId()) {
 			case R.id.searchSubmitButton:	
 				String searchText = getSearchUrl();
-				Intent _intent = new Intent(SearchActivity.this, NewPostsActivity.class);
+				Intent _intent = new Intent(SearchActivity.this, CategoryActivity.class);
 				_intent.putExtra("link", WebUrls.searchUrl + searchText);
+				_intent.putExtra("isNewTopics", true);
 				Log.v(TAG, "Adding Link To Search: " + _intent.getStringExtra("link"));
 				startActivity(_intent);
 			break;

@@ -36,7 +36,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.MainActivity;
 import com.normalexception.forum.rx8club.activities.ProfileActivity;
 import com.normalexception.forum.rx8club.activities.SearchActivity;
-import com.normalexception.forum.rx8club.activities.list.NewPostsActivity;
+import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
 import com.normalexception.forum.rx8club.activities.pm.PrivateMessageActivity;
 import com.normalexception.forum.rx8club.favorites.FavoriteDialog;
 
@@ -80,7 +80,8 @@ public class BannerFragment extends Fragment implements OnClickListener {
 		Intent _intent = null;
 		switch(arg0.getId()) {
 			case R.id.newTopicsButton:
-				_intent = new Intent(arg0.getContext(), NewPostsActivity.class);
+				_intent = new Intent(arg0.getContext(), CategoryActivity.class);
+				_intent.putExtra("isNewTopics", true);
 				break;
 				
 			case R.id.favoritesButton:
