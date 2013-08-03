@@ -37,6 +37,7 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
+import com.normalexception.forum.rx8club.view.ViewHolder;
 import com.normalexception.forum.rx8club.view.threadpost.PostView;
 
 public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
@@ -79,21 +80,21 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
         
         final PostView cv = data.get(position);
         
-        ((TextView)vi.findViewById(R.id.nr_username)).setText(cv.getUserName());
-        ((TextView)vi.findViewById(R.id.nr_userTitle)).setText(cv.getUserTitle());
-        ((TextView)vi.findViewById(R.id.nr_userPosts)).setText(cv.getUserPostCount());
-        ((TextView)vi.findViewById(R.id.nr_userJoin)).setText(cv.getJoinDate());
-        ((TextView)vi.findViewById(R.id.nr_postDate)).setText(cv.getPostDate());
+        ((TextView) ViewHolder.get(vi,R.id.nr_username)).setText(cv.getUserName());
+        ((TextView) ViewHolder.get(vi,R.id.nr_userTitle)).setText(cv.getUserTitle());
+        ((TextView) ViewHolder.get(vi,R.id.nr_userPosts)).setText(cv.getUserPostCount());
+        ((TextView) ViewHolder.get(vi,R.id.nr_userJoin)).setText(cv.getJoinDate());
+        ((TextView) ViewHolder.get(vi,R.id.nr_postDate)).setText(cv.getPostDate());
         
-        TextView postText = ((TextView)vi.findViewById(R.id.nr_postText));
+        TextView postText = ((TextView) ViewHolder.get(vi,R.id.nr_postText));
         ForumImageHandler fih = new ForumImageHandler(postText, activity);        
         postText.setText(Html.fromHtml(cv.getUserPost(), fih, null));
         
         // Set click listeners
-        ((ImageView)vi.findViewById(R.id.nr_quoteButton)).setVisibility(View.GONE);
-        ((ImageView)vi.findViewById(R.id.nr_editButton)).setVisibility(View.GONE);
-        ((ImageView)vi.findViewById(R.id.nr_pmButton)).setVisibility(View.GONE);
-        ((ImageView)vi.findViewById(R.id.nr_deleteButton)).setVisibility(View.GONE);
+        ((ImageView) ViewHolder.get(vi,R.id.nr_quoteButton)).setVisibility(View.GONE);
+        ((ImageView) ViewHolder.get(vi,R.id.nr_editButton)).setVisibility(View.GONE);
+        ((ImageView) ViewHolder.get(vi,R.id.nr_pmButton)).setVisibility(View.GONE);
+        ((ImageView) ViewHolder.get(vi,R.id.nr_deleteButton)).setVisibility(View.GONE);
         
         return vi;
 	}

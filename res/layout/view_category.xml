@@ -4,24 +4,26 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="5dip" >
- 
-    <!--  ListRow Left sied Thumbnail image -->
-    <LinearLayout android:id="@+id/thumbnail"
+
+    <!-- ListRow Left sied Thumbnail image -->
+
+    <LinearLayout
+        android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="1dip"
         android:layout_alignParentLeft="true"
-        android:layout_marginRight="5dip">
- 
+        android:layout_marginRight="5dip"
+        android:padding="1dip" >
+
         <ImageView
             android:id="@+id/cv_image"
             android:layout_width="15dip"
             android:layout_height="15dip"
-            android:src="@drawable/arrow_icon"/>
- 
+            android:src="@drawable/arrow_icon" />
     </LinearLayout>
- 
-    <!-- Title Of Thread-->
+
+    <!-- Title Of Thread -->
+
     <TextView
         android:id="@+id/cv_title"
         android:layout_width="wrap_content"
@@ -33,84 +35,86 @@
         android:textSize="14dip"
         android:textStyle="bold"
         android:typeface="sans" />
-     
-     <LinearLayout
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:padding="1dip"
-	    android:layout_below="@id/cv_title" >
-           
-	   	<LinearLayout
-	   	    android:id="@+id/thread_desc"
-	   	    android:layout_width="wrap_content"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_marginRight="5dip"
-	   	    android:padding="3dip"
-	   	    android:orientation="horizontal"
-	   	    android:layout_weight="1" >
-		    <TextView
-		        android:id="@+id/cv_desc"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="My Description that is really long to make sure it doesn't overlap"
-		        android:textColor="#040404"
-		        android:textSize="10dip"
-		        android:typeface="sans"/>
-	    </LinearLayout>
-	    
-	   	<LinearLayout
-	   	    android:id="@+id/thread_detail"
-	   	    android:layout_width="wrap_content"
-	   	    android:layout_height="wrap_content"
-	   	    android:layout_marginRight="1dip"
-	   	    android:padding="3dip"
-	   	    android:orientation="horizontal"
-	   	    android:layout_weight="0" >
-	
-		    <!-- Rightend Post Counts -->
 
-	   		<TextView
-	   		    android:id="@+id/cv_postCount_label"
-	   		    android:layout_width="wrap_content"
-	   		    android:layout_height="wrap_content"
-	   		    android:layout_marginTop="20dip"
-	   		    android:text="Posts: "
-	   		    android:textColor="#000000"
-	   		    android:textSize="10dip"
-	   		    android:textStyle="bold" />
-    
-		    <TextView
-		        android:id="@+id/cv_postCount"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="5:45"
-		        android:layout_marginTop="20dip"
-		        android:layout_marginRight="5dip"
-		        android:textSize="10dip"
-		        android:textColor="#ffffff"
-		        android:textStyle="bold"/>
+    <LinearLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cv_title"
+        android:orientation="horizontal"
+        android:padding="1dip" >
 
-		    <TextView
-		        android:id="@+id/cv_threadCount_label"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="20dip"
-		        android:text="Threads: "
-		        android:textColor="#000000"
-		        android:textSize="10dip"
-		        android:textStyle="bold" />
-		    
-		    <TextView
-		        android:id="@+id/cv_threadCount"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="5:45"
-		        android:layout_marginTop="20dip"
-		        android:textSize="10dip"
-		        android:textColor="#ffffff"
-		        android:textStyle="bold"/>
-	    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/thread_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dip"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:padding="3dip" >
+
+            <TextView
+                android:id="@+id/cv_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="My Description that is really long to make sure it doesn&apos;t overlap"
+                android:textColor="#040404"
+                android:textSize="10dip"
+                android:typeface="sans" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/thread_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dip"
+            android:layout_weight="0"
+            android:orientation="horizontal"
+            android:padding="3dip" >
+
+            <!-- Rightend Post Counts -->
+
+            <TextView
+                android:id="@+id/cv_postCount_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:text="Posts: "
+                android:textColor="#000000"
+                android:textSize="10dip"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/cv_postCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dip"
+                android:layout_marginTop="20dip"
+                android:text="5:45"
+                android:textColor="#ffffff"
+                android:textSize="10dip"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/cv_threadCount_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:text="Threads: "
+                android:textColor="#000000"
+                android:textSize="10dip"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/cv_threadCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:text="5:45"
+                android:textColor="#ffffff"
+                android:textSize="10dip"
+                android:textStyle="bold" />
+        </LinearLayout>
     </LinearLayout>
- 
+
 </RelativeLayout>

@@ -211,13 +211,13 @@ public class MainActivity extends ForumBaseActivity {
     	for(Element category : categorySections) {
     		
     		CategoryView cv = new CategoryView();
-    		List<SubCategoryView> scvList = new ArrayList<SubCategoryView>();
     		cv.setTitle(categories.get(catIndex++).text());
     		mainList.add(cv);
     		
     		Elements forums = category.select("tr[align=center]");
     		for(Element forum : forums) {
     			cv = new CategoryView();
+    			List<SubCategoryView> scvList = cv.getSubCategories();
     			
     			// Each forum object should have 5 columns
     			Elements columns = forum.select("tr[align=center] > td");

@@ -35,6 +35,10 @@ public class CategoryView {
 	private String threadCount, postCount;
 	private List<SubCategoryView> subCategories;
 	
+	public CategoryView() {
+		subCategories = new ArrayList<SubCategoryView>();
+	}
+	
 	/**
 	 * Report category description
 	 * @return Category description

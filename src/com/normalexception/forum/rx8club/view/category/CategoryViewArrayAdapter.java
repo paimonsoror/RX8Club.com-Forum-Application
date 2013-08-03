@@ -36,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.view.ViewHolder;
 
 /**
  * Custom category view array adapter
@@ -78,17 +79,17 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
             vi = vinf.inflate(R.layout.view_category, null);
         }
         
-        CategoryView cv = data.get(position);
+        CategoryView cv = data.get(position);    
         
-        ((TextView) vi.findViewById(R.id.cv_title)).setText(cv.getTitle());
-        ((TextView) vi.findViewById(R.id.cv_desc)).setText(cv.getDescription());
+        ((TextView) ViewHolder.get(vi, R.id.cv_title)).setText(cv.getTitle());
+        ((TextView) ViewHolder.get(vi, R.id.cv_desc)).setText(cv.getDescription());
         
         if(cv.getPostCount() == null || cv.getThreadCount() == null) {
         	setMode(vi, true);
         } else {
         	setMode(vi, false);
-        	((TextView) vi.findViewById(R.id.cv_postCount)).setText(cv.getPostCount());
-        	((TextView) vi.findViewById(R.id.cv_threadCount)).setText(cv.getThreadCount());
+        	((TextView) ViewHolder.get(vi, R.id.cv_postCount)).setText(cv.getPostCount());
+        	((TextView) ViewHolder.get(vi, R.id.cv_threadCount)).setText(cv.getThreadCount());
         }
         
         return vi;
@@ -104,13 +105,13 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
 		int colorMode= isTitle? Color.DKGRAY : Color.GRAY;
 		int textColor= isTitle? Color.WHITE : Color.BLACK;
 
-		((TextView) vi.findViewById(R.id.cv_postCount)).setVisibility(showMode);
-    	((TextView) vi.findViewById(R.id.cv_postCount_label)).setVisibility(showMode);
-    	((TextView) vi.findViewById(R.id.cv_threadCount)).setVisibility(showMode);
-    	((TextView) vi.findViewById(R.id.cv_threadCount_label)).setVisibility(showMode);
-    	((ImageView)vi.findViewById(R.id.cv_image)).setVisibility(showMode);
+		((TextView)  ViewHolder.get(vi, R.id.cv_postCount)).setVisibility(showMode);
+		((TextView)  ViewHolder.get(vi, R.id.cv_postCount_label)).setVisibility(showMode);
+		((TextView)  ViewHolder.get(vi, R.id.cv_threadCount)).setVisibility(showMode);
+		((TextView)  ViewHolder.get(vi, R.id.cv_threadCount_label)).setVisibility(showMode);
+		((ImageView) ViewHolder.get(vi, R.id.cv_image)).setVisibility(showMode);
     	vi.setBackgroundColor(colorMode);
     	
-    	((TextView) vi.findViewById(R.id.cv_title)).setTextColor(textColor);
+    	((TextView) ViewHolder.get(vi, R.id.cv_title)).setTextColor(textColor);
 	}
 }

@@ -47,6 +47,7 @@ import com.normalexception.forum.rx8club.activities.pm.NewPrivateMessageActivity
 import com.normalexception.forum.rx8club.activities.thread.EditPostActivity;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
+import com.normalexception.forum.rx8club.view.ViewHolder;
 
 /**
  * Custom adapter to handle PostView objects
@@ -92,13 +93,13 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         
         final PostView cv = data.get(position);
         
-        ((TextView)vi.findViewById(R.id.nr_username)).setText(cv.getUserName());
-        ((TextView)vi.findViewById(R.id.nr_userTitle)).setText(cv.getUserTitle());
-        ((TextView)vi.findViewById(R.id.nr_userPosts)).setText(cv.getUserPostCount());
-        ((TextView)vi.findViewById(R.id.nr_userJoin)).setText(cv.getJoinDate());
-        ((TextView)vi.findViewById(R.id.nr_postDate)).setText(cv.getPostDate());
+        ((TextView)ViewHolder.get(vi,R.id.nr_username)).setText(cv.getUserName());
+        ((TextView)ViewHolder.get(vi,R.id.nr_userTitle)).setText(cv.getUserTitle());
+        ((TextView)ViewHolder.get(vi,R.id.nr_userPosts)).setText(cv.getUserPostCount());
+        ((TextView)ViewHolder.get(vi,R.id.nr_userJoin)).setText(cv.getJoinDate());
+        ((TextView)ViewHolder.get(vi,R.id.nr_postDate)).setText(cv.getPostDate());
         
-        TextView postText = ((TextView)vi.findViewById(R.id.nr_postText));
+        TextView postText = ((TextView)ViewHolder.get(vi,R.id.nr_postText));
         ForumImageHandler fih = new ForumImageHandler(postText, activity);  
         postText.setMovementMethod(LinkMovementMethod.getInstance());
         postText.setText(Html.fromHtml(cv.getUserPost(), fih, null));
@@ -110,7 +111,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         setUserIcons(vi, cv.isLoggedInUser());
         
         // Set click listeners
-        ((ImageView)vi.findViewById(R.id.nr_quoteButton)).setOnClickListener(new OnClickListener() {
+        ((ImageView)ViewHolder.get(vi,R.id.nr_quoteButton)).setOnClickListener(new OnClickListener() {
         	@Override
             public void onClick(View arg0) {
         		Log.d(TAG, "Quote Clicked");
@@ -122,7 +123,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         	}
         });
         
-        ((ImageView)vi.findViewById(R.id.nr_editButton)).setOnClickListener(new OnClickListener() {
+        ((ImageView)ViewHolder.get(vi,R.id.nr_editButton)).setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View arg0) {
         		Log.d(TAG, "Edit Clicked");
@@ -133,7 +134,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         	}
         });
         
-        ((ImageView)vi.findViewById(R.id.nr_pmButton)).setOnClickListener(new OnClickListener() {
+        ((ImageView)ViewHolder.get(vi,R.id.nr_pmButton)).setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View arg0) {
         		Log.d(TAG, "PM Clicked");
@@ -144,7 +145,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         });
     	
         final boolean isFirstPost = (position == 0);
-        ((ImageView)vi.findViewById(R.id.nr_deleteButton)).setOnClickListener(new OnClickListener() {
+        ((ImageView)ViewHolder.get(vi,R.id.nr_deleteButton)).setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View arg0) {
         		final Intent _intent = new Intent(activity, EditPostActivity.class);     		
@@ -185,16 +186,16 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	 * @param isLoggedInUser	True if post is by logged user
 	 */
 	private void setUserIcons(View vi, boolean isLoggedInUser) {
-		((ImageView)vi.findViewById(R.id.nr_quoteButton))
+		((ImageView)ViewHolder.get(vi,R.id.nr_quoteButton))
 			.setVisibility(View.VISIBLE);
 		
-		((ImageView)vi.findViewById(R.id.nr_pmButton))
+		((ImageView)ViewHolder.get(vi,R.id.nr_pmButton))
 			.setVisibility(View.VISIBLE);
 		
-		((ImageView)vi.findViewById(R.id.nr_editButton))
+		((ImageView)ViewHolder.get(vi,R.id.nr_editButton))
 			.setVisibility(isLoggedInUser? View.VISIBLE : View.GONE);
 		
-		((ImageView)vi.findViewById(R.id.nr_deleteButton))
+		((ImageView)ViewHolder.get(vi,R.id.nr_deleteButton))
 			.setVisibility(isLoggedInUser? View.VISIBLE : View.GONE);
 	}
 }

@@ -38,6 +38,7 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.list.ThreadTypeFactory;
+import com.normalexception.forum.rx8club.view.ViewHolder;
 
 /**
  * A custom view adapter for a thread view object
@@ -86,13 +87,13 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         ThreadView m = new ThreadView();
         m = data.get(position);
          
-        vTitle 	   = (TextView) vi.findViewById(R.id.tv_title);
-        vPostCount = (TextView) vi.findViewById(R.id.tv_postCount);
-        vPostUser  = (TextView) vi.findViewById(R.id.tv_postUser);
-        vLastUser  = (TextView) vi.findViewById(R.id.tv_lastUser);
-        vMyCount   = (TextView) vi.findViewById(R.id.tv_myCount);
-        vViewCount = (TextView) vi.findViewById(R.id.tv_viewCount);
-        vImage 	   = (ImageView)vi.findViewById(R.id.tv_image);
+        vTitle 	   = (TextView) ViewHolder.get(vi,R.id.tv_title);
+        vPostCount = (TextView) ViewHolder.get(vi,R.id.tv_postCount);
+        vPostUser  = (TextView) ViewHolder.get(vi,R.id.tv_postUser);
+        vLastUser  = (TextView) ViewHolder.get(vi,R.id.tv_lastUser);
+        vMyCount   = (TextView) ViewHolder.get(vi,R.id.tv_myCount);
+        vViewCount = (TextView) ViewHolder.get(vi,R.id.tv_viewCount);
+        vImage 	   = (ImageView) ViewHolder.get(vi,R.id.tv_image);
         
         vTitle.setText(       m.getTitle());
         vPostCount.setText(   m.getPostCount());

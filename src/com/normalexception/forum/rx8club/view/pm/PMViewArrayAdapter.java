@@ -36,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.view.ViewHolder;
 
 public class PMViewArrayAdapter extends ArrayAdapter<PMView> {
 	private Context activity;
@@ -77,14 +78,14 @@ public class PMViewArrayAdapter extends ArrayAdapter<PMView> {
         
         PMView pm = data.get(position);
         
-        ((TextView) vi.findViewById(R.id.pm_subject)).setText(pm.getTitle());
+        ((TextView) ViewHolder.get(vi,R.id.pm_subject)).setText(pm.getTitle());
         
         if(pm.getUser() == null || pm.getDate() == null) {
         	setMode(vi, true);
         } else {
         	setMode(vi, false);
-        	((TextView) vi.findViewById(R.id.pm_from)).setText(pm.getUser());
-        	((TextView) vi.findViewById(R.id.pm_date)).setText(
+        	((TextView) ViewHolder.get(vi,R.id.pm_from)).setText(pm.getUser());
+        	((TextView) ViewHolder.get(vi,R.id.pm_date)).setText(
         			String.format("%s, %s", pm.getDate(), pm.getTime())
         	);
         }
@@ -102,13 +103,13 @@ public class PMViewArrayAdapter extends ArrayAdapter<PMView> {
 		int colorMode= isTitle? Color.DKGRAY : Color.GRAY;
 		int textColor= isTitle? Color.WHITE : Color.BLACK;
 
-		((TextView) vi.findViewById(R.id.pm_from)).setVisibility(showMode);
-    	((TextView) vi.findViewById(R.id.pm_fromlabel)).setVisibility(showMode);
-    	((TextView) vi.findViewById(R.id.pm_date)).setVisibility(showMode);
-    	((TextView) vi.findViewById(R.id.pm_datelabel)).setVisibility(showMode);
-    	((ImageView)vi.findViewById(R.id.pm_image)).setVisibility(showMode);
+		((TextView) ViewHolder.get(vi,R.id.pm_from)).setVisibility(showMode);
+		((TextView) ViewHolder.get(vi,R.id.pm_fromlabel)).setVisibility(showMode);
+		((TextView) ViewHolder.get(vi,R.id.pm_date)).setVisibility(showMode);
+		((TextView) ViewHolder.get(vi,R.id.pm_datelabel)).setVisibility(showMode);
+		((ImageView) ViewHolder.get(vi,R.id.pm_image)).setVisibility(showMode);
     	vi.setBackgroundColor(colorMode);
     	
-    	((TextView) vi.findViewById(R.id.pm_subject)).setTextColor(textColor);
+    	((TextView) ViewHolder.get(vi,R.id.pm_subject)).setTextColor(textColor);
 	}
 }
