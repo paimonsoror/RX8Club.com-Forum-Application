@@ -36,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
 /**
@@ -88,8 +89,20 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
         	setMode(vi, true);
         } else {
         	setMode(vi, false);
-        	((TextView) ViewHolder.get(vi, R.id.cv_postCount)).setText(cv.getPostCount());
-        	((TextView) ViewHolder.get(vi, R.id.cv_threadCount)).setText(cv.getThreadCount());
+        	((TextView) ViewHolder.get(vi, R.id.cv_postCount)).setText(
+        			SpecialNumberFormatter.collapseNumber(
+        					Double.parseDouble(cv.getPostCount().replace(",","")), 0));
+        	((TextView) ViewHolder.get(vi, R.id.cv_threadCount)).setText(
+        			SpecialNumberFormatter.collapseNumber(
+        					Double.parseDouble(cv.getThreadCount().replace(",","")), 0));
+        	
+        	if(cv.getSubCategories().size() > 0) 
+        		((TextView) ViewHolder.get(vi, R.id.cv_subCount))
+        			.setText(Integer.toString(cv.getSubCategories().size()));
+        	else {
+        		((TextView) ViewHolder.get(vi, R.id.cv_subCount_label)).setVisibility(View.GONE);
+        		((TextView) ViewHolder.get(vi, R.id.cv_subCount)).setVisibility(View.GONE);
+        	}
         }
         
         return vi;
@@ -109,6 +122,8 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
 		((TextView)  ViewHolder.get(vi, R.id.cv_postCount_label)).setVisibility(showMode);
 		((TextView)  ViewHolder.get(vi, R.id.cv_threadCount)).setVisibility(showMode);
 		((TextView)  ViewHolder.get(vi, R.id.cv_threadCount_label)).setVisibility(showMode);
+		((TextView)  ViewHolder.get(vi, R.id.cv_subCount)).setVisibility(showMode);
+		((TextView)  ViewHolder.get(vi, R.id.cv_subCount_label)).setVisibility(showMode);
 		((ImageView) ViewHolder.get(vi, R.id.cv_image)).setVisibility(showMode);
     	vi.setBackgroundColor(colorMode);
     	

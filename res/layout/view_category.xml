@@ -36,7 +36,7 @@
         android:textStyle="bold"
         android:typeface="sans" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,77 +44,92 @@
         android:orientation="horizontal"
         android:padding="1dip" >
 
-        <LinearLayout
-            android:id="@+id/thread_desc"
+        <TextView
+            android:id="@+id/cv_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="7dp"
+            android:text="My Description that is really long to make sure it doesn&apos;t overlap because sometimes when you have a long desc it does"
+            android:textColor="#040404"
+            android:textSize="10dip"
+            android:typeface="sans" />
+
+        <!-- Rightend Post Counts -->		
+        <TextView
+            android:id="@+id/cv_postCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_marginRight="5dip"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:padding="3dip" >
-
-            <TextView
-                android:id="@+id/cv_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="My Description that is really long to make sure it doesn&apos;t overlap"
-                android:textColor="#040404"
-                android:textSize="10dip"
-                android:typeface="sans" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/thread_detail"
+            android:layout_below="@+id/cv_desc"
+            android:layout_marginTop="2dp"
+            android:text="5:45"
+            android:textColor="#ffffff"
+            android:textSize="10dip"
+            android:textStyle="bold" />
+		<TextView
+            android:id="@+id/cv_postCount_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="1dip"
-            android:layout_weight="0"
-            android:orientation="horizontal"
-            android:padding="3dip" >
-
-            <!-- Rightend Post Counts -->
-
-            <TextView
-                android:id="@+id/cv_postCount_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dip"
-                android:text="Posts: "
-                android:textColor="#000000"
-                android:textSize="10dip"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/cv_postCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dip"
-                android:layout_marginTop="20dip"
-                android:text="5:45"
-                android:textColor="#ffffff"
-                android:textSize="10dip"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/cv_threadCount_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dip"
-                android:text="Threads: "
-                android:textColor="#000000"
-                android:textSize="10dip"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/cv_threadCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dip"
-                android:text="5:45"
-                android:textColor="#ffffff"
-                android:textSize="10dip"
-                android:textStyle="bold" />
-        </LinearLayout>
-    </LinearLayout>
-
+            android:layout_toLeftOf="@+id/cv_postCount"
+            android:layout_below="@+id/cv_desc"
+            android:layout_marginTop="2dp"
+            android:text="Pst: "
+            android:textColor="#000000"
+            android:textSize="10dip"
+            android:textStyle="bold" />
+		
+		
+        <TextView
+            android:id="@+id/cv_threadCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cv_desc"
+            android:layout_toLeftOf="@+id/cv_postCount_label"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="5dip"
+            android:text="5:45"
+            android:textColor="#ffffff"
+            android:textSize="10dip"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/cv_threadCount_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/cv_threadCount"
+            android:layout_below="@+id/cv_desc"
+            android:layout_marginTop="2dp"
+            android:text="Thr: "
+            android:textColor="#000000"
+            android:textSize="10dip"
+            android:textStyle="bold" />
+	
+        
+  		<TextView
+            android:id="@+id/cv_subCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/cv_threadCount_label"
+            android:layout_below="@+id/cv_desc"
+            android:layout_marginTop="2dip"
+            android:layout_marginRight="5dip"
+            android:text="2"
+            android:textColor="#ffffff"
+            android:textSize="10dip"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/cv_subCount_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/cv_subCount"
+            android:layout_below="@+id/cv_desc"
+            android:layout_marginTop="2dp"
+            android:text="Sub: "
+            android:textColor="#000000"
+            android:textSize="10dip"
+            android:textStyle="bold" />
+    </RelativeLayout>
 </RelativeLayout>
