@@ -167,20 +167,7 @@ public class MainActivity extends ForumBaseActivity {
 		    	ListView lv = (ListView)findViewById(R.id.mainlistview);
 		    	cva = new CategoryViewArrayAdapter(a, R.layout.view_category, mainList);
 				lv.setAdapter(cva);
-				lv.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-		            public void onItemClick(AdapterView<?> parent, View view,
-		                    int position, long id) {
-						CategoryView cv = (CategoryView) parent.getItemAtPosition(position);
-						Log.v(TAG, "Category Clicked: " + cv.getTitle());
-						if(cv.getLink() != null) {
-							Intent intent = 
-									new Intent(MainActivity.this, CategoryActivity.class);
-							intent.putExtra("link", cv.getLink());
-							startActivity(intent);
-						}
-					}
-				});
+		        lv.setLongClickable(true);
             }
     	});
     }
