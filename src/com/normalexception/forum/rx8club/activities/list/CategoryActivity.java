@@ -93,7 +93,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     public void onCreate(Bundle savedInstanceState) {
         try {
         	super.onCreate(savedInstanceState);
-	        super.setTitle("RX8Club.com Forums");
+	        
 	        setContentView(R.layout.activity_basiclist);        
 	        
 	        Log.v(TAG, "Category Activity Started");
@@ -266,9 +266,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     		id = Utils.parseInts(id);
     	
     	// Grab each thread
-    	Elements threadListing = isNewTopicActivity? 
-    			doc.select("table[id=threadslist] > tbody > tr") : 
-    				doc.select("tbody[id^=threadbits_] > tr");
+    	Elements threadListing =  
+    			doc.select("table[id=threadslist] > tbody > tr");
  
     	for(Element thread : threadListing) {
     		try {

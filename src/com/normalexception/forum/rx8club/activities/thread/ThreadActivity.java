@@ -90,7 +90,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
     public void onCreate(Bundle savedInstanceState) {
     	try{
 	    	 super.onCreate(savedInstanceState);
-	         super.setTitle("RX8Club.com Forums");
+	         
 	         setContentView(R.layout.activity_basiclist);
 	         
 	         Log.v(TAG, "Category Activity Started");

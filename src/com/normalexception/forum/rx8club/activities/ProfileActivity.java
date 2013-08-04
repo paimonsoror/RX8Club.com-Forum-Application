@@ -83,7 +83,7 @@ public class ProfileActivity extends ForumBaseActivity implements OnClickListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setTitle("RX8Club.com Forums");
+        
         setContentView(R.layout.activity_profile);
         
         Log.v(TAG, "Category Activity Started");

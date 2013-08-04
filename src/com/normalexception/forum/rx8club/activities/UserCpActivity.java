@@ -98,7 +98,7 @@ public class UserCpActivity extends ForumBaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); 
-        super.setTitle("RX8Club.com Forums");
+        
         setContentView(R.layout.activity_user_cp);
 
         findViewById(R.id.submitUserCpButton).setOnClickListener(this);

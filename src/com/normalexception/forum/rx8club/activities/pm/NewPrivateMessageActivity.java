@@ -97,7 +97,7 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setTitle("RX8Club.com Forums");
+        
         setContentView(R.layout.activity_basiclist);
         
         lv      = (ListView)findViewById(R.id.mainlistview);

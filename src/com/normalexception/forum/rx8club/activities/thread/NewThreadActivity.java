@@ -93,7 +93,7 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
     public void onCreate(Bundle savedInstanceState) {
     	try {
 	        super.onCreate(savedInstanceState);
-	        super.setTitle("RX8Club.com Forums");
+	        
 	        setContentView(R.layout.activity_basiclist);
 	        
 	        forumId = getIntent().getStringExtra("forumid");

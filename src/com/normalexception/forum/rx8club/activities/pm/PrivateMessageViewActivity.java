@@ -72,7 +72,7 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.setTitle("RX8Club.com Forums");
+        
         setContentView(R.layout.activity_basiclist);
         
         Log.v(TAG, "PM View Activity Started");

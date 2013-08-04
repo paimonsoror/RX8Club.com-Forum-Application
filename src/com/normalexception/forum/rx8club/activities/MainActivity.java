@@ -82,7 +82,7 @@ public class MainActivity extends ForumBaseActivity {
 	    	Log.v(TAG, "Application Started");
 	    	
 	        super.onCreate(savedInstanceState);
-	        super.setTitle("RX8Club.com Forums");
+	        
 	        
 	        setContentView(R.layout.activity_basiclist);
 	        findViewById(R.id.mainlisttitle).setVisibility(View.GONE);
