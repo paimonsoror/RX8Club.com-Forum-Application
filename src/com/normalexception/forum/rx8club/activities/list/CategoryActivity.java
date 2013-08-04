@@ -73,7 +73,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	private static final String TAG = "Application:Category";
 	private static String link;
 
-	private String pageNumber = "";
+	private String pageNumber = "1";
 	private String forumId = "";
 	
 	private boolean isNewTopicActivity = false;
@@ -101,9 +101,13 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        threadlist = new ArrayList<ThreadView>();
 	        lv = (ListView)findViewById(R.id.mainlistview);
 	        
+	        // If the user clicked "New Posts" then we need to
+	        // handle things a little bit differently
 	        isNewTopicActivity =
 					getIntent().getBooleanExtra("isNewTopics", false);
 	        
+	        // We do not need to have a "New Thread" button if the
+	        // user clicked New Posts.
 	        if(!isNewTopicActivity) {
 		        Button bv = new Button(this);
 		        bv.setId(NEW_THREAD);
@@ -113,6 +117,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		        lv.addHeaderView(bv);
 	        }
 	        
+	        // Footer has pagination information
 	        View v = getLayoutInflater().inflate(R.layout.view_category_footer, null);
 	    	v.setOnClickListener(this);
 	    	lv.addFooterView(v);
@@ -127,6 +132,9 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		}	
     }
 	
+	/**
+	 * Update the view's list with the appropriate data
+	 */
 	private void updateList() {
 		final Activity a = this;
     	runOnUiThread(new Runnable() {
@@ -181,6 +189,9 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
  					}
  				}
 		        
+ 				// The forum id data is only required if we are within a category
+ 				// and not if we are in a New Posts page.  This data is used when
+ 				// we create new threads.
 		        if(!isNewTopicActivity) {
 			        forumId = link.substring(link.lastIndexOf("-") + 1);
 			        
