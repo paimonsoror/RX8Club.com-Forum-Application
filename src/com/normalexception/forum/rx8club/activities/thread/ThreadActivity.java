@@ -25,6 +25,7 @@ package com.normalexception.forum.rx8club.activities.thread;
  ************************************************************************/
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -206,10 +207,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	// User Control Panel
         	Elements userCp = innerPost.select("td[class=alt2]");
         	Elements userDetail = userCp.select("div[class=smallfont]");
-        	Elements userSubDetail = null;
-        	
-        	try{ userSubDetail = userDetail.get(2).select("div"); }
-        	catch(Exception e) { userSubDetail = userDetail.get(1).select("div"); }
+        	Elements userSubDetail = userDetail.last().select("div");       	
     	
         	// User Information
         	PostView pv = new PostView();
@@ -221,20 +219,22 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	pv.setPostDate(innerPost.select("td[class=thead]").get(0).text());
         	pv.setPostId(Utils.parseInts(post.attr("id")));
         	
-        	for(int i = 1; i < userSubDetail.size(); i++) {
-        		switch(i) {
-        		case 1:
-        			break;
-        		case 2:
-        			pv.setJoinDate(userSubDetail.get(i).text());
-        			break;
-        		case 3:
-        			pv.setUserLocation(userSubDetail.get(i).text());
-        			break;
-        		case 4:
-        			pv.setUserPostCount(userSubDetail.get(i).text());
-        			break;
-        		}
+        	// userSubDetail
+        	// 0 - full container , full container
+        	// 1 - Trader Score   , Trader Score
+        	// 2 - Join Date      , Join Date
+        	// 3 - Post Count     , Location
+        	// 4 - Blank          , Post Count
+        	// 5 -                , Blank || Social
+        	//
+        	pv.setJoinDate(userSubDetail.get(2).text());
+        	Iterator<Element> itr = userSubDetail.listIterator(2);
+        	while(itr.hasNext()) {
+        		String txt = itr.next().text();
+        		if(txt.contains("Location"))
+        			pv.setUserLocation(txt);
+        		else if (txt.contains("Posts"))
+        			pv.setUserPostCount(txt);
         	}
         	
         	// User Post Content
