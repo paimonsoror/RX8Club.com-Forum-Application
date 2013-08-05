@@ -33,11 +33,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.list.ThreadTypeFactory;
+import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
 /**
@@ -53,6 +55,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
     private TextView vPostUser 	= null;
     private TextView vLastUser 	= null;
     private TextView vMyCount 	= null;
+    private TextView vMyCountL  = null;
     private TextView vViewCount = null;
     ImageView vImage 	= null;
  
@@ -92,6 +95,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         vPostUser  = (TextView) ViewHolder.get(vi,R.id.tv_postUser);
         vLastUser  = (TextView) ViewHolder.get(vi,R.id.tv_lastUser);
         vMyCount   = (TextView) ViewHolder.get(vi,R.id.tv_myCount);
+        vMyCountL  = (TextView) ViewHolder.get(vi,R.id.tv_myCount_label);
         vViewCount = (TextView) ViewHolder.get(vi,R.id.tv_viewCount);
         vImage 	   = (ImageView) ViewHolder.get(vi,R.id.tv_image);
         
@@ -106,7 +110,13 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         Bitmap scaledimg = 
     			ThreadTypeFactory.getBitmap(
     					null, 15, 13, m.isLocked(), m.isSticky(), hasPosts);
-        vImage.setImageBitmap(scaledimg);
+        vImage.setImageBitmap(scaledimg);      
+        
+        // Hide a few things if we are a guest
+        if(LoginFactory.getInstance().isGuestMode()) {
+        	vMyCountL.setVisibility(View.GONE);
+        	vMyCount.setVisibility(View.GONE);
+        }
 		
 		if (m.isSticky()) {
 			setMode(vi, true, Color.CYAN);

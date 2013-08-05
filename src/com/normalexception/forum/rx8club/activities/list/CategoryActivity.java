@@ -54,6 +54,7 @@ import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
+import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.thread.ThreadView;
@@ -108,7 +109,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        
 	        // We do not need to have a "New Thread" button if the
 	        // user clicked New Posts.
-	        if(!isNewTopicActivity) {
+	        if(!isNewTopicActivity && LoginFactory.getInstance().isLoggedIn()) {
 		        Button bv = new Button(this);
 		        bv.setId(NEW_THREAD);
 		        bv.setOnClickListener(this);

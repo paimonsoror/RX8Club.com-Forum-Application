@@ -71,31 +71,42 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 	        super.setTitle("Please Enter Credentials");
 	        setContentView(R.layout.activity_login);
 	        
-	        Button loginButton = (Button)findViewById(R.id.loginButton);
-	        loginButton.setOnClickListener(this);
-	        
-	        CheckBox checkBox = (CheckBox)findViewById(R.id.autoLoginBox);
-	        checkBox.setOnCheckedChangeListener(this);
-	        
-	        LoginFactory lf = LoginFactory.getInstance();
-	        boolean autoLogin = lf.getAutoLogin();
-	        boolean rememberme = lf.getRememberMe();
-	        
-	        ((CheckBox)findViewById(R.id.autoLoginBox)).setChecked(autoLogin);
-	        ((CheckBox)findViewById(R.id.rememberMeBox)).setChecked(rememberme);
-	        
-	       if (rememberme || autoLogin) {
-	        	((TextView)findViewById(R.id.usernameText)).setText(lf.getStoredUserName());
-	        	((TextView)findViewById(R.id.passwordText)).setText(lf.getStoredPassword());
-	        	
-	        	if(autoLogin) {
-	        		// Simulate login click
-	        		onClick(findViewById(R.id.loginButton));
-	        	}
+	        // First, check to see if we are already logged in,
+	        // we could be still in memory so lets reuse the 
+	        // session
+	        if(!LoginFactory.getInstance().isLoggedIn()) {
+		        Button loginButton = (Button)findViewById(R.id.loginButton);
+		        loginButton.setOnClickListener(this);
+		        
+		        Button guestButton = (Button)findViewById(R.id.guestButton);
+		        guestButton.setOnClickListener(this);
+		        
+		        CheckBox checkBox = (CheckBox)findViewById(R.id.autoLoginBox);
+		        checkBox.setOnCheckedChangeListener(this);
+		        
+		        LoginFactory lf = LoginFactory.getInstance();
+		        boolean autoLogin = lf.getAutoLogin();
+		        boolean rememberme = lf.getRememberMe();
+		        
+		        ((CheckBox)findViewById(R.id.autoLoginBox)).setChecked(autoLogin);
+		        ((CheckBox)findViewById(R.id.rememberMeBox)).setChecked(rememberme);
+		        
+		       if (rememberme || autoLogin) {
+		        	((TextView)findViewById(R.id.usernameText)).setText(lf.getStoredUserName());
+		        	((TextView)findViewById(R.id.passwordText)).setText(lf.getStoredPassword());
+		        	
+		        	if(autoLogin) {
+		        		// Simulate login click
+		        		onClick(findViewById(R.id.loginButton));
+		        	}
+		        }
+		       
+		       ((TextView)findViewById(R.id.versonCode)).setText(
+		    		   getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName);
+	        } else {
+	        	Log.d(TAG, "Already Logged In, Moving To Main Screen");
+	        	loadMainPage();
 	        }
-	       
-	       ((TextView)findViewById(R.id.versonCode)).setText(
-	    		   getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName);
     	} catch (Exception e) {
     		Log.e(TAG, "Unexpected Error!: " + e.getMessage());
     	}
@@ -115,6 +126,10 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 					}
 				});	
 	    	   new AsyncLogin().execute(this, null, null);
+	    	   break;
+	       case R.id.guestButton :
+	    	   LoginFactory.getInstance().setGuestMode();
+	    	   loadMainPage();
 	    	   break;
 		}		
 	}
@@ -175,9 +190,7 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 			});
 			
 			if(loggedIn) {
-				Intent in = new Intent(LoginActivity.this, MainActivity.class);
-				startActivity(in);
-				finish();
+				loadMainPage();
 			} else {
 				runOnUiThread(new Runnable() {
 					public void run() {
@@ -187,6 +200,16 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 				});
 			}
 		}
+	}
+	
+	/**
+	 * Lets load the main page, generally if we are logged in
+	 */
+	private void loadMainPage() {
+		Intent in = new Intent(LoginActivity.this, MainActivity.class);
+		in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(in);
+		finish();
 	}
 
 	/*

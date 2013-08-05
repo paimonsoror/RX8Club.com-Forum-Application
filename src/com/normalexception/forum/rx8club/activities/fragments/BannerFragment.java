@@ -39,6 +39,7 @@ import com.normalexception.forum.rx8club.activities.SearchActivity;
 import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
 import com.normalexception.forum.rx8club.activities.pm.PrivateMessageActivity;
 import com.normalexception.forum.rx8club.favorites.FavoriteDialog;
+import com.normalexception.forum.rx8club.utils.LoginFactory;
 
 /**
  * Implementation of the banner found on all views
@@ -52,8 +53,22 @@ public class BannerFragment extends Fragment implements OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	// Inflate our fragment
-        View view = inflater.inflate(R.layout.fragment_banner, container, false);        
+        View view = inflater.inflate(R.layout.fragment_banner, container, false);       
         return view;
+    }
+    
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        int mode = View.VISIBLE;
+        if(LoginFactory.getInstance().isGuestMode()) {
+        	mode = View.GONE;
+        } else {
+        	mode = View.VISIBLE;
+        }
+        
+        view.findViewById(R.id.newTopicsButton).setVisibility(mode);
+        view.findViewById(R.id.favoritesButton).setVisibility(mode);
+        view.findViewById(R.id.inboxButton).setVisibility(mode);
+        view.findViewById(R.id.profileButton).setVisibility(mode);
     }
     
     /*

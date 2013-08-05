@@ -47,6 +47,7 @@ import com.normalexception.forum.rx8club.activities.pm.NewPrivateMessageActivity
 import com.normalexception.forum.rx8club.activities.thread.EditPostActivity;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
+import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
 /**
@@ -110,70 +111,82 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         // Display the right items if the user is logged in
         setUserIcons(vi, cv.isLoggedInUser());
         
-        // Set click listeners
-        ((ImageView)ViewHolder.get(vi,R.id.nr_quoteButton)).setOnClickListener(new OnClickListener() {
-        	@Override
-            public void onClick(View arg0) {
-        		Log.d(TAG, "Quote Clicked");
-				String txt = Html.fromHtml(cv.getUserPost()).toString();
-				String finalText = String.format("[quote=%s]%s[/quote]",
-						cv.getUserName(), txt);
-				((TextView)((Activity) activity).findViewById(R.id.postBox)).setText(finalText);
-				((TextView)((Activity) activity).findViewById(R.id.postBox)).requestFocus();
-        	}
-        });
-        
-        ((ImageView)ViewHolder.get(vi,R.id.nr_editButton)).setOnClickListener(new OnClickListener() {
-        	@Override
-        	public void onClick(View arg0) {
-        		Log.d(TAG, "Edit Clicked");
-        		Intent _intent = new Intent(activity, EditPostActivity.class); 
-        		_intent.putExtra("postid", cv.getPostId());
-				_intent.putExtra("securitytoken", cv.getToken());
-				activity.startActivity(_intent);
-        	}
-        });
-        
-        ((ImageView)ViewHolder.get(vi,R.id.nr_pmButton)).setOnClickListener(new OnClickListener() {
-        	@Override
-        	public void onClick(View arg0) {
-        		Log.d(TAG, "PM Clicked");
-        		Intent _intent =  new Intent(activity, NewPrivateMessageActivity.class);
-				_intent.putExtra("user", cv.getUserName());
-				activity.startActivity(_intent);
-        	}
-        });
-    	
-        final boolean isFirstPost = (position == 0);
-        ((ImageView)ViewHolder.get(vi,R.id.nr_deleteButton)).setOnClickListener(new OnClickListener() {
-        	@Override
-        	public void onClick(View arg0) {
-        		final Intent _intent = new Intent(activity, EditPostActivity.class);     		
-				DialogInterface.OnClickListener dialogClickListener = 
-					new DialogInterface.OnClickListener() {
-				    @Override
-				    public void onClick(DialogInterface dialog, int which) {
-				        switch (which){
-				        case DialogInterface.BUTTON_POSITIVE:  
-				        	_intent.putExtra("postid", cv.getPostId());
-				        	_intent.putExtra("securitytoken", cv.getToken());
-				        	_intent.putExtra("delete", true);
-				        	_intent.putExtra("deleteThread", isFirstPost && cv.isLoggedInUser());
-				        	activity.startActivity(_intent);
-				            break;
-				        }
-				    }
-				};
-	
-				AlertDialog.Builder builder = 
-						new AlertDialog.Builder(activity);
-				builder
-					.setMessage("Are you sure you want to delete your post?")
-					.setPositiveButton("Yes", dialogClickListener)
-				    .setNegativeButton("No", dialogClickListener)
-				    .show();
-        	}
-        });
+        // Set click listeners if we are logged in, hide the buttons
+        // if we are not logged in
+        if(LoginFactory.getInstance().isGuestMode()) {
+        	((ImageView)ViewHolder.get(vi,R.id.nr_quoteButton)).setVisibility(View.GONE);
+        	((ImageView)ViewHolder.get(vi,R.id.nr_editButton)).setVisibility(View.GONE);
+        	((ImageView)ViewHolder.get(vi,R.id.nr_pmButton)).setVisibility(View.GONE);
+        	((ImageView)ViewHolder.get(vi,R.id.nr_deleteButton)).setVisibility(View.GONE);
+        } else {
+	        ((ImageView)ViewHolder.get(vi,R.id.nr_quoteButton))
+	        	.setOnClickListener(new OnClickListener() {
+	        	@Override
+	            public void onClick(View arg0) {
+	        		Log.d(TAG, "Quote Clicked");
+					String txt = Html.fromHtml(cv.getUserPost()).toString();
+					String finalText = String.format("[quote=%s]%s[/quote]",
+							cv.getUserName(), txt);
+					((TextView)((Activity) activity).findViewById(R.id.postBox)).setText(finalText);
+					((TextView)((Activity) activity).findViewById(R.id.postBox)).requestFocus();
+	        	}
+	        });
+	        
+	        ((ImageView)ViewHolder.get(vi,R.id.nr_editButton))
+	        	.setOnClickListener(new OnClickListener() {
+	        	@Override
+	        	public void onClick(View arg0) {
+	        		Log.d(TAG, "Edit Clicked");
+	        		Intent _intent = new Intent(activity, EditPostActivity.class); 
+	        		_intent.putExtra("postid", cv.getPostId());
+					_intent.putExtra("securitytoken", cv.getToken());
+					activity.startActivity(_intent);
+	        	}
+	        });
+	        
+	        ((ImageView)ViewHolder.get(vi,R.id.nr_pmButton))
+	        	.setOnClickListener(new OnClickListener() {
+	        	@Override
+	        	public void onClick(View arg0) {
+	        		Log.d(TAG, "PM Clicked");
+	        		Intent _intent =  new Intent(activity, NewPrivateMessageActivity.class);
+					_intent.putExtra("user", cv.getUserName());
+					activity.startActivity(_intent);
+	        	}
+	        });
+	    	
+	        final boolean isFirstPost = (position == 0);
+	        ((ImageView)ViewHolder.get(vi,R.id.nr_deleteButton))
+	        	.setOnClickListener(new OnClickListener() {
+	        	@Override
+	        	public void onClick(View arg0) {
+	        		final Intent _intent = new Intent(activity, EditPostActivity.class);     		
+					DialogInterface.OnClickListener dialogClickListener = 
+						new DialogInterface.OnClickListener() {
+					    @Override
+					    public void onClick(DialogInterface dialog, int which) {
+					        switch (which){
+					        case DialogInterface.BUTTON_POSITIVE:  
+					        	_intent.putExtra("postid", cv.getPostId());
+					        	_intent.putExtra("securitytoken", cv.getToken());
+					        	_intent.putExtra("delete", true);
+					        	_intent.putExtra("deleteThread", isFirstPost && cv.isLoggedInUser());
+					        	activity.startActivity(_intent);
+					            break;
+					        }
+					    }
+					};
+		
+					AlertDialog.Builder builder = 
+							new AlertDialog.Builder(activity);
+					builder
+						.setMessage("Are you sure you want to delete your post?")
+						.setPositiveButton("Yes", dialogClickListener)
+					    .setNegativeButton("No", dialogClickListener)
+					    .show();
+	        	}
+	        });
+        }
         
         return vi;
 	}

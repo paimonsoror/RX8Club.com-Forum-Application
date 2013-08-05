@@ -49,9 +49,11 @@ import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.task.SubmitTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
+import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.utils.UserProfile;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
+import com.normalexception.forum.rx8club.view.ViewHolder;
 import com.normalexception.forum.rx8club.view.threadpost.PostView;
 import com.normalexception.forum.rx8club.view.threadpost.PostViewArrayAdapter;
 
@@ -135,6 +137,13 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		            	View v = getLayoutInflater().
 		            			inflate(R.layout.view_newreply_footer, null);
 		            	v.setOnClickListener(src);
+		            	
+						// If the user is guest, then hide the items that
+		            	// they generally wont be able to use
+						if(LoginFactory.getInstance().isGuestMode()) {
+							ViewHolder.get(v, R.id.nr_replycontainer)
+								.setVisibility(View.GONE);
+						}
 		            	lv.addFooterView(v);
 		            }
 	            });
@@ -206,7 +215,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	PostView pv = new PostView();
         	pv.setUserName(userCp.select("div[id^=postmenu]").text());
         	pv.setIsLoggedInUser(
-        			UserProfile.getUsername().equals(pv.getUserName()));	
+        			LoginFactory.getInstance().isLoggedIn()?
+        			UserProfile.getUsername().equals(pv.getUserName()) : false);	
         	pv.setUserTitle(userDetail.get(0).text());
         	pv.setPostDate(innerPost.select("td[class=thead]").get(0).text());
         	pv.setPostId(Utils.parseInts(post.attr("id")));
@@ -228,7 +238,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	}
         	
         	// User Post Content
-        	pv.setUserPost(reformatQuotes(
+        	pv.setUserPost(Utils.reformatQuotes(
         			innerPost.select("td[class=alt1]")
         			.select("div[id^=post_message]").html()));
 

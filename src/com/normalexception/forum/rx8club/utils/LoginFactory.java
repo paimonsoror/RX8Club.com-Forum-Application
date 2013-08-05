@@ -84,6 +84,17 @@ public class LoginFactory {
 	private static BasicCookieStore cookieStore;
 	private static HttpContext httpContext;
 	
+	private static boolean isGuestMode = false;
+	private static boolean userShutdown = true;
+	
+	public void setGuestMode() {
+		isGuestMode = true;
+	}
+	
+	public boolean isGuestMode() {
+		return isGuestMode;
+	}
+	
 	/**
 	 * Constructor
 	 */
@@ -125,6 +136,8 @@ public class LoginFactory {
 	    HttpConnectionParams.setSoTimeout(params, 5000);
 	    HttpConnectionParams.setTcpNoDelay(params, true);    
 	    httpclient.setParams(params);
+	    
+	    userShutdown = false;
 	}
 	
 	/**
@@ -231,6 +244,7 @@ public class LoginFactory {
 		httpclient.getCookieStore().clear();
 		httpclient.getConnectionManager().shutdown();
 		isLoggedIn = false;
+		userShutdown = true;
 	}
 	
 	/**
@@ -254,6 +268,9 @@ public class LoginFactory {
 		httpclient = getClient();
     	HttpPost httpost = new HttpPost(WebUrls.loginUrl);
 
+    	if(userShutdown)
+    		initializeClientInformation();
+    	
     	List<NameValuePair> nvps = new ArrayList<NameValuePair>();
     	String password = PasswordUtils.hexMd5(this.password);
     	nvps.add(new BasicNameValuePair("vb_login_username", UserProfile.getUsername()));
@@ -276,6 +293,7 @@ public class LoginFactory {
         		if(cookie.getName().equals("bbimloggedin") && cookie.getValue().toLowerCase().equals("yes"))
         			isLoggedIn = true;
         	
+        	isGuestMode = !isLoggedIn;
         	return val && isLoggedIn;
     	}
     	

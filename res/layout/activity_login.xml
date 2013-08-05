@@ -1,127 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tableLayout1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/darker_gray"
-    android:shrinkColumns="*"
-    android:stretchColumns="*" >
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/darker_gray">
 
-    <TableRow
-        android:id="@+id/tableRow4"
+    <ImageView
+        android:id="@+id/la_topimage"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:gravity="center_horizontal">
+        android:adjustViewBounds="false"
+        android:contentDescription="RX8Club Logo"
+        android:scaleType="fitXY"
+        android:src="@drawable/rx8club_logo" />
 
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_span="6"
-            android:adjustViewBounds="false"
-            android:contentDescription="RX8Club Logo"
-            android:scaleType="fitXY"
-            android:src="@drawable/rx8club_logo" />
-
-    </TableRow>
-
-    <TableRow
-        android:id="@+id/tableRow1"
+    <LinearLayout
+        android:id="@+id/la_userlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/padding_large" >
+		android:orientation="vertical"
+		android:layout_below="@id/la_topimage"
+		android:paddingTop="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" >
 
         <TextView
             android:id="@+id/UserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/usernameInput"
-            android:textStyle="bold" ></TextView>
+            android:textStyle="bold" />
+
         <EditText
             android:id="@+id/usernameText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:inputType="text"
             android:typeface="serif"
-            android:layout_span="5"></EditText>
-    </TableRow>
-    <TableRow
+            android:padding="2dp" />
+
+    </LinearLayout>
+    
+    <LinearLayout      
+        android:id="@+id/la_passwordlayout"
         android:layout_height="wrap_content"
-        android:id="@+id/tableRow2"
-        android:layout_width="match_parent">
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/la_userlayout"
+        android:paddingTop="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
+
         <TextView
-            android:text="@string/passwordInput"
             android:id="@+id/Password"
-            android:textStyle="bold"></TextView>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/passwordInput"
+            android:textStyle="bold" />
+
         <EditText
             android:id="@+id/passwordText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:typeface="serif"
-            android:layout_span="5"></EditText>
-    </TableRow>
-    <TableRow
-        android:layout_height="wrap_content"
-        android:id="@+id/tableRow3"
-        android:layout_width="match_parent">
+            android:padding="12dp" />
 
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/la_optionslayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/la_passwordlayout"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingTop="20dp" >
 
         <CheckBox
             android:id="@+id/autoLoginBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Auto Login" 
-            android:layout_span="2"/>
+            android:text="Auto Login"/>
 
         <CheckBox
             android:id="@+id/rememberMeBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Remember Me" 
-            android:layout_span="4"/>
+            android:text="Remember Me"/>
 
-    </TableRow>
-    <TableRow
+    </LinearLayout>
+    
+    <LinearLayout     
+        android:id="@+id/la_buttonlayout"
         android:layout_height="wrap_content"
-        android:id="@+id/tableRow5"
-        android:layout_width="match_parent">
-        <TextView
-            android:text=""
-            android:id="@+id/textView7"
-            android:textStyle="bold"></TextView>
-        <TextView
-            android:text=""
-            android:id="@+id/textView8"
-            android:gravity="center_horizontal"></TextView>
-        <TextView
-            android:text=""
-            android:id="@+id/textView9"
-            android:gravity="center_horizontal"></TextView>
-        <TextView
-            android:text=""
-            android:id="@+id/textView10"
-            android:gravity="center_horizontal"></TextView>
-        <TextView
-            android:text=""
-            android:id="@+id/textView11"
-            android:gravity="center_horizontal"></TextView>
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/la_optionslayout"
+        android:layout_alignParentRight="true"
+        android:paddingTop="10dp"
+        android:paddingRight="5dp">
 
         <Button
             android:id="@+id/loginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/loginButton" >
 		</Button>
+		
+        <Button
+            android:id="@+id/guestButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/guestButton" >
+		</Button>
+        
 
-    </TableRow>
+    </LinearLayout>
 
-    <TableRow
-        android:id="@+id/tableRow6"
+    <LinearLayout
+        android:id="@+id/la_versionlayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_below="@id/la_buttonlayout"
+        android:layout_alignParentRight="true"
+        android:paddingRight="10dp" >
 
         <TextView
             android:id="@+id/versonCode"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_span="6"
-            android:paddingTop="100px"
+            android:layout_height="fill_parent"
             android:text="TextView" />
 
-    </TableRow>
+    </LinearLayout>
 
-</TableLayout>
+</RelativeLayout>

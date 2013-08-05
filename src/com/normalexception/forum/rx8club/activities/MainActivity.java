@@ -58,6 +58,8 @@ import com.normalexception.forum.rx8club.view.category.SubCategoryView;
  * none
  */
 public class MainActivity extends ForumBaseActivity {
+	
+	private static final int MAX_RETRY = 5;
     
 	private static final String TAG = "Application";
 	
@@ -82,8 +84,7 @@ public class MainActivity extends ForumBaseActivity {
 	    	Log.v(TAG, "Application Started");
 	    	
 	        super.onCreate(savedInstanceState);
-	        
-	        
+	        	        
 	        setContentView(R.layout.activity_basiclist);
 	        findViewById(R.id.mainlisttitle).setVisibility(View.GONE);
 
@@ -121,11 +122,15 @@ public class MainActivity extends ForumBaseActivity {
 
 	        		// User information
 	        		if(!UserProfile.isInitialized() || UserProfile.getUserProfileLink().equals("")) {
-	        			doc = 
-	        				VBForumFactory.getInstance().get(thisActivity, VBForumFactory.getRootAddress());
-	        			Elements userElement = 
-	        				doc.select("a[href^=http://www.rx8club.com/members/" + UserProfile.getUsername().replace(".", "-") + "]");
-	        			UserProfile.setUserProfileLink(userElement.attr("href"));
+	        			if(LoginFactory.getInstance().isLoggedIn()) {
+	        				doc = 
+	        				VBForumFactory.getInstance().get(
+	        						thisActivity, VBForumFactory.getRootAddress());
+	        				Elements userElement = 
+	        				doc.select("a[href^=http://www.rx8club.com/members/" + 
+	        						UserProfile.getUsername().replace(".", "-") + "]");
+	        				UserProfile.setUserProfileLink(userElement.attr("href"));
+	        			}
 	        		}
 	        		
 	        		doc = getForum();
@@ -182,6 +187,11 @@ public class MainActivity extends ForumBaseActivity {
     	// at this forum, the first category displays the member pictures
     	// while the last is the 'whats going on' section
     	categories.remove(0); categories.remove(categories.size() - 1);
+    	
+    	// If the user isn't logged in, there is one additional section that needs
+    	// to be removed, and it is right at the top
+    	if(LoginFactory.getInstance().isGuestMode())
+    		categories.remove(0);
     	
     	// Now grab each section within a category
     	Elements categorySections = root.select("tbody[id^=collapseobj_forumbit_]");
@@ -246,16 +256,27 @@ public class MainActivity extends ForumBaseActivity {
     public Document getForum() {    	
 		LoginFactory lf = LoginFactory.getInstance();
 		
-		String output = "";
+		String output = null;
+		int retries = 0;
 		
-		try {
-			VBForumFactory ff = VBForumFactory.getInstance();
-			output = ff.getForumFrontpage(this, lf);
-		} catch (IOException ioe) {
-			Log.e(TAG, "Error Grabbing Forum Frontpage: " + ioe.getMessage());
-		}		
-		
-	   	return Jsoup.parse(output);
+		do {
+			try {
+				VBForumFactory ff = VBForumFactory.getInstance();
+				output = ff.getForumFrontpage(this, lf);
+			} catch (IOException ioe) {
+				Log.e(TAG, "Error Grabbing Forum Frontpage: " + ioe.getMessage());
+			}
+		} while (output == null && retries++ < MAX_RETRY);		
+				
+		if(output == null) {
+			Toast.makeText(this, 
+					"Sorry, We Were Unable To Connect!", 
+					Toast.LENGTH_LONG).show();
+			returnToLoginPage(false);
+			return null;
+		} else {
+			return Jsoup.parse(output);
+		}
     }
 
 	@Override

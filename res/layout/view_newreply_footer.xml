@@ -62,36 +62,42 @@
 	            android:onClick="onClick" />
 	    </RelativeLayout>
 
-        <TextView
-            android:id="@+id/textView1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/commentText"
-            android:layout_below="@id/nt_paginationLayout" />
-
-        <fragment
-            android:id="@+id/fragment_content_styler"
-            android:name="com.normalexception.forum.rx8club.activities.fragments.StylerFragment"
+        <LinearLayout
+            android:id="@+id/nr_replycontainer"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textView1"
-			tools:layout="@layout/fragment_styler">
-        </fragment>
-
-        <EditText
-            android:id="@+id/postBox"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textMultiLine"
-            android:layout_below="@id/fragment_content_styler" />
-
-        <Button
-            android:id="@+id/submitButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            android:layout_below="@id/postBox"
-            android:onClick="onClick" />
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical"
+		    android:layout_below="@id/nt_paginationLayout">          
+	        <TextView
+	            android:id="@+id/textView1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/commentText"/>
+	
+	        <fragment
+	            android:id="@+id/fragment_content_styler"
+	            android:name="com.normalexception.forum.rx8club.activities.fragments.StylerFragment"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_below="@id/textView1"
+				tools:layout="@layout/fragment_styler">
+	        </fragment>
+	
+	        <EditText
+	            android:id="@+id/postBox"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:ems="10"
+	            android:inputType="textMultiLine"
+	            android:layout_below="@id/fragment_content_styler" />
+	
+	        <Button
+	            android:id="@+id/submitButton"
+	            style="?android:attr/buttonStyleSmall"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:text="Submit"
+	            android:layout_below="@id/postBox"
+	            android:onClick="onClick" />
+        </LinearLayout>
     </RelativeLayout>

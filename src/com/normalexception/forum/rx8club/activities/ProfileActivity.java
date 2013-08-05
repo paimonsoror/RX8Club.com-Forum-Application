@@ -61,6 +61,7 @@ public class ProfileActivity extends ForumBaseActivity implements OnClickListene
 
 	private static String TAG = "ProfileActivity";
 	private ArrayList<ProfileThreadStub> stubs;
+	private TableLayout tl;
 	
 	/**
 	 * A stub inner class that defines a thread that the user

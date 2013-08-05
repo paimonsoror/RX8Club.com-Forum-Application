@@ -37,6 +37,7 @@ import android.widget.EditText;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.thread.EditPostActivity;
 import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
+import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
 public class ThreadItemViewArrayAdapter extends ArrayAdapter<ThreadItemView> {
@@ -76,7 +77,6 @@ public class ThreadItemViewArrayAdapter extends ArrayAdapter<ThreadItemView> {
                     (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             vi = vinf.inflate(R.layout.view_newthread, null);
         }
-        
         
         // Because we use this class when handling edits, we need to make
         // sure that we cast this properly and then rename our submit button

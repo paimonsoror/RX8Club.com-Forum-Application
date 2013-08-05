@@ -26,7 +26,6 @@ package com.normalexception.forum.rx8club.activities;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.StringTokenizer;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -38,7 +37,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
@@ -67,8 +65,6 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	
 	private static String TAG = "ForumBaseActivity";
 	
-	protected static TableLayout tl = null;
-	
 	protected String thisPage = "1", finalPage = "1";
 	
 	/*
@@ -86,31 +82,6 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 			} catch (IOException e1) {}
 		}
 	}
-	
-	/**
-     * Reformat the quotes to blockquotes since Android fromHtml does
-     * not parse tables
-     * @param source	The source text
-     * @return			The updated source text
-     */
-    protected String reformatQuotes(String source) {
-    	StringBuilder finalText = new StringBuilder();
-
-    	StringTokenizer st = new StringTokenizer(source, "\r\n\t");
-    	while (st.hasMoreTokens()) {
-        	String nextTok = st.nextToken();      	
-        	if(nextTok.contains("<table ")) {
-        		nextTok = "<blockquote>";
-        	}
-        	if(nextTok.contains("</table>")) {
-        		nextTok = nextTok.replace("</table>","</blockquote><br>");
-        	}
-
-        	finalText.append(nextTok + " ");
-        }
-        
-        return finalText.toString();
-    }
 
 	/*
 	 * (non-Javadoc)
@@ -121,7 +92,8 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 		menu.add(0,MAIN_MENU,0,"Goto Main");
         menu.add(0,LOGOFF_MENU,0,"Logoff");
         menu.add(0,OPTIONS_MENU,0,"Preferences");
-        menu.add(0,USERCP_MENU,0,"User CP");
+        if(LoginFactory.getInstance().isLoggedIn())
+        	menu.add(0,USERCP_MENU,0,"User CP");
         menu.add(0,ABOUT_MENU,0,"About");
         return true; 
     } 
@@ -136,7 +108,7 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 				new Intent(MainApplication.getAppContext(), 
 						LoginActivity.class);
 		_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		if(!(this instanceof MainActivity))
+		//if(!(this instanceof MainActivity))
 		finish();
 		
 		startActivity(_intent);
@@ -240,7 +212,6 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	    	enforceVariants(Integer.parseInt(thisPage), Integer.parseInt(finalPage));
     	} catch (Exception e) { 
     		Log.d(TAG, "Error Parsing Pagination");
-    		Log.d(TAG, e.getMessage());
     	}
     }
     

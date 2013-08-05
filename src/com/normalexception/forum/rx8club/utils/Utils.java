@@ -25,6 +25,7 @@ package com.normalexception.forum.rx8club.utils;
  ************************************************************************/
 
 import java.util.Calendar;
+import java.util.StringTokenizer;
 import java.util.TimeZone;
 
 import com.normalexception.forum.rx8club.WebUrls;
@@ -174,6 +175,40 @@ public class Utils {
 		} 
 		return realLink;
 	}
+	
+	/**
+     * Reformat the quotes to blockquotes since Android fromHtml does
+     * not parse tables
+     * @param source	The source text
+     * @return			The updated source text
+     */
+    public static String reformatQuotes(String source) {
+    	StringBuilder finalText = new StringBuilder();
+
+    	// If the user isn't logged in, we need to make sure that
+    	// the post doesn't contain an ad
+    	if(LoginFactory.getInstance().isGuestMode()) {
+    		int pos = -1;
+    		if((pos = source.indexOf("if(typeof(")) != -1) {
+    			source = source.substring(0, pos);
+    		}
+    	}
+    	
+    	StringTokenizer st = new StringTokenizer(source, "\r\n\t");
+    	while (st.hasMoreTokens()) {
+        	String nextTok = st.nextToken();      	
+        	if(nextTok.contains("<table ")) {
+        		nextTok = "<blockquote>";
+        	}
+        	if(nextTok.contains("</table>")) {
+        		nextTok = nextTok.replace("</table>","</blockquote><br>");
+        	}
+
+        	finalText.append(nextTok + " ");
+        }
+        
+        return finalText.toString();
+    }
 
 	
 	/**

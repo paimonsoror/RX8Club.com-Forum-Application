@@ -29,9 +29,9 @@
         android:id="@+id/tableRow1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
         android:background="@android:color/darker_gray"
-        android:paddingTop="5dip" >
+        android:paddingTop="5dip"
+        android:stretchColumns="*" >
            
            <Button
                android:id="@+id/profileButton"

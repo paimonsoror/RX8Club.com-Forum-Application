@@ -26,6 +26,7 @@
     <string name="passwordInput">Password: </string>
     <string name="usernameInput">Username: </string>
     <string name="loginButton">Login</string>
+    <string name="guestButton">Guest</string>
     <string name="commentText">Comment</string>
     <string name="newTopics">New Posts</string>
     <string name="newPms">Inbox</string>
