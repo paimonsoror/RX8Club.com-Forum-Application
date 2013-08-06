@@ -37,7 +37,6 @@ import android.widget.EditText;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.thread.EditPostActivity;
 import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
-import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
 public class ThreadItemViewArrayAdapter extends ArrayAdapter<ThreadItemView> {

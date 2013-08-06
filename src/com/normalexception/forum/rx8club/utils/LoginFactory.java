@@ -85,12 +85,21 @@ public class LoginFactory {
 	private static HttpContext httpContext;
 	
 	private static boolean isGuestMode = false;
-	private static boolean userShutdown = true;
+	private static boolean isInitialized = false;
 	
+	/**
+	 * Set that we are running in guest mode
+	 */
 	public void setGuestMode() {
+		if(!isInitialized)
+    		initializeClientInformation();
 		isGuestMode = true;
 	}
 	
+	/**
+	 * Report if running in guest mode
+	 * @return	True if guest mode
+	 */
 	public boolean isGuestMode() {
 		return isGuestMode;
 	}
@@ -111,6 +120,8 @@ public class LoginFactory {
 	 * Initialize the client, cookie store, and context
 	 */
 	private void initializeClientInformation() {
+		Log.d(TAG, "Initializing Client...");
+		
 	    cookieStore = new BasicCookieStore();
 	    httpContext = new BasicHttpContext();
 	    httpContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
@@ -137,7 +148,7 @@ public class LoginFactory {
 	    HttpConnectionParams.setTcpNoDelay(params, true);    
 	    httpclient.setParams(params);
 	    
-	    userShutdown = false;
+	    isInitialized = true;
 	}
 	
 	/**
@@ -244,7 +255,9 @@ public class LoginFactory {
 		httpclient.getCookieStore().clear();
 		httpclient.getConnectionManager().shutdown();
 		isLoggedIn = false;
-		userShutdown = true;
+		isInitialized = false;
+		
+		Log.d(TAG, "Destroying Client...");
 	}
 	
 	/**
@@ -268,7 +281,7 @@ public class LoginFactory {
 		httpclient = getClient();
     	HttpPost httpost = new HttpPost(WebUrls.loginUrl);
 
-    	if(userShutdown)
+    	if(!isInitialized)
     		initializeClientInformation();
     	
     	List<NameValuePair> nvps = new ArrayList<NameValuePair>();

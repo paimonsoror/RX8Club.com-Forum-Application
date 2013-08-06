@@ -227,14 +227,15 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	// 4 - Blank          , Post Count
         	// 5 -                , Blank || Social
         	//
-        	pv.setJoinDate(userSubDetail.get(2).text());
-        	Iterator<Element> itr = userSubDetail.listIterator(2);
+        	Iterator<Element> itr = userSubDetail.listIterator();
         	while(itr.hasNext()) {
         		String txt = itr.next().text();
-        		if(txt.contains("Location"))
+        		if(txt.contains("Location:"))
         			pv.setUserLocation(txt);
-        		else if (txt.contains("Posts"))
+        		else if (txt.contains("Posts:"))
         			pv.setUserPostCount(txt);
+        		else if (txt.contains("Join Date:"))
+        			pv.setJoinDate(txt);
         	}
         	
         	// User Post Content

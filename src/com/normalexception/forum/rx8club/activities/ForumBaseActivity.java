@@ -90,7 +90,8 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	@Override
     public boolean onCreateOptionsMenu(Menu menu){ 
 		menu.add(0,MAIN_MENU,0,"Goto Main");
-        menu.add(0,LOGOFF_MENU,0,"Logoff");
+        menu.add(0,LOGOFF_MENU,0,
+        		LoginFactory.getInstance().isLoggedIn()? "Logoff" : "Login");
         menu.add(0,OPTIONS_MENU,0,"Preferences");
         if(LoginFactory.getInstance().isLoggedIn())
         	menu.add(0,USERCP_MENU,0,"User CP");
@@ -104,14 +105,10 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	public void returnToLoginPage(boolean clearPrefs) {
 		Intent _intent = null;
 		LoginFactory.getInstance().logoff(clearPrefs);
-		_intent = 
-				new Intent(MainApplication.getAppContext(), 
-						LoginActivity.class);
+		_intent = new Intent(this, LoginActivity.class);
 		_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		//if(!(this instanceof MainActivity))
-		finish();
-		
 		startActivity(_intent);
+		finish();
 	}
 	
 	/*
@@ -143,8 +140,12 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 				builder
 					.setMessage("Are you sure you want to logoff?")
 					.setPositiveButton("Yes", dialogClickListener)
-				    .setNegativeButton("No", dialogClickListener)
-				    .show();
+				    .setNegativeButton("No", dialogClickListener);
+				if(LoginFactory.getInstance().isGuestMode())
+					returnToLoginPage(true);
+				else
+					builder.show();
+				
    				break;
            case(USERCP_MENU):
         	   Log.v(TAG, "UserCP Pressed");

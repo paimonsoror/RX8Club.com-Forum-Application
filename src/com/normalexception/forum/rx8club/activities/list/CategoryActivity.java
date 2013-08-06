@@ -155,7 +155,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 						startActivity(_intent);
 		            }
 		        });
-				registerForContextMenu(lv);
+				if(LoginFactory.getInstance().isLoggedIn())
+					registerForContextMenu(lv);
 				updatePagination(thisPage, finalPage);
             }
     	});
