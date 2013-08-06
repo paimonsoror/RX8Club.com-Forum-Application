@@ -105,6 +105,12 @@ public class LoginFactory {
 	private void initializeClientInformation() {
 		Log.d(TAG, "Initializing Client...");
 		
+		HttpParams params = new BasicHttpParams();
+	    params.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true); 
+	    HttpConnectionParams.setConnectionTimeout(params, 10000);
+	    HttpConnectionParams.setSoTimeout(params, 10000);
+	    HttpConnectionParams.setTcpNoDelay(params, true);    
+	    
 	    cookieStore = new BasicCookieStore();
 	    httpContext = new BasicHttpContext();
 	    httpContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
@@ -112,8 +118,8 @@ public class LoginFactory {
 	    ClientConnectionManager mgr = httpclient.getConnectionManager();
 	    httpclient = new DefaultHttpClient(
 	    		new PoolingClientConnectionManager(mgr.getSchemeRegistry()),
-	    		httpclient.getParams());
-	    //httpclient.log.enableDebug(true);
+	    		params);
+	    httpclient.log.enableDebug(true);
 	    
 	    // Follow Redirects
 	    httpclient.setRedirectStrategy(new RedirectStrategy());
@@ -123,13 +129,6 @@ public class LoginFactory {
 	    
 	    // Setup KAS
 	    httpclient.setKeepAliveStrategy(new KeepAliveStrategy());
-	    
-	    HttpParams params = new BasicHttpParams();
-	    params.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true); 
-	    HttpConnectionParams.setConnectionTimeout(params, 10000);
-	    HttpConnectionParams.setSoTimeout(params, 10000);
-	    HttpConnectionParams.setTcpNoDelay(params, true);    
-	    httpclient.setParams(params);
 	    
 	    isInitialized = true;
 	}
@@ -223,7 +222,10 @@ public class LoginFactory {
 	/**
 	 * Set that we are running in guest mode
 	 */
-	public void setGuestMode() {
+	public void setGuestMode() {		
+		Log.d(TAG, "Clearing Cookies");
+		httpclient.getCookieStore().clear();
+		
 		if(!isInitialized)
     		initializeClientInformation();
 		

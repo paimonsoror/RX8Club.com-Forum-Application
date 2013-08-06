@@ -181,24 +181,20 @@ public class MainActivity extends ForumBaseActivity {
      */
     private void getCategories(Document root) {	    	
     	// Grab each category
-    	Elements categories       = root.getElementsByClass("tcat");
-    	
-    	// We need to remove the first and last sections here because
-    	// at this forum, the first category displays the member pictures
-    	// while the last is the 'whats going on' section
-    	categories.remove(0); categories.remove(categories.size() - 1);
-    	
-    	// If the user isn't logged in, there is one additional section that needs
-    	// to be removed, and it is right at the top
-    	if(LoginFactory.getInstance().isGuestMode())
-    		categories.remove(0);
+    	Elements categories       = root.select("td[class=tcat][colspan=5]");	
+    	Log.d(TAG, "Category Size: " + categories.size());
     	
     	// Now grab each section within a category
     	Elements categorySections = root.select("tbody[id^=collapseobj_forumbit_]");
     	
     	// These should match in size
-    	if(categories.size() != categorySections.size()) return;
-    	
+    	if(categories.size() != categorySections.size()) {
+    		Log.w(TAG, 
+    				String.format("Size of Categories (%d) doesn't match Category Sections (%d)", 
+    						categories.size(), categorySections.size()));
+    		return;
+    	}
+    		
     	// Iterate over each category
     	int catIndex = 0;
     	for(Element category : categorySections) {
