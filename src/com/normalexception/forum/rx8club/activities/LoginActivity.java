@@ -120,12 +120,19 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 	public void onClick(View arg0) {
 		switch(arg0.getId()){
 	       case R.id.loginButton :
-	    	   runOnUiThread(new Runnable() {
-					public void run() {
-						((Button)findViewById(R.id.loginButton)).setEnabled(false);
-					}
-				});	
-	    	   new AsyncLogin().execute(this, null, null);
+	    	   if(((TextView)findViewById(R.id.usernameText)).getText().length() == 0 || 
+	    			   ((TextView)findViewById(R.id.passwordText)).getText().length() == 0) {
+	    		   Toast.makeText(this, 
+	    				   "Please Fill In Your Login Information", 
+	    				   Toast.LENGTH_LONG).show();
+	    	   } else {
+		    	   runOnUiThread(new Runnable() {
+						public void run() {
+							((Button)findViewById(R.id.loginButton)).setEnabled(false);
+						}
+					});	
+		    	   new AsyncLogin().execute(this, null, null);
+	    	   }
 	    	   break;
 	       case R.id.guestButton :
 	    	   LoginFactory.getInstance().setGuestMode();

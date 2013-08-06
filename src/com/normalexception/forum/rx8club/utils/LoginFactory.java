@@ -88,23 +88,6 @@ public class LoginFactory {
 	private static boolean isInitialized = false;
 	
 	/**
-	 * Set that we are running in guest mode
-	 */
-	public void setGuestMode() {
-		if(!isInitialized)
-    		initializeClientInformation();
-		isGuestMode = true;
-	}
-	
-	/**
-	 * Report if running in guest mode
-	 * @return	True if guest mode
-	 */
-	public boolean isGuestMode() {
-		return isGuestMode;
-	}
-	
-	/**
 	 * Constructor
 	 */
 	protected LoginFactory() {
@@ -130,7 +113,7 @@ public class LoginFactory {
 	    httpclient = new DefaultHttpClient(
 	    		new PoolingClientConnectionManager(mgr.getSchemeRegistry()),
 	    		httpclient.getParams());
-	    httpclient.log.enableDebug(true);
+	    //httpclient.log.enableDebug(true);
 	    
 	    // Follow Redirects
 	    httpclient.setRedirectStrategy(new RedirectStrategy());
@@ -143,8 +126,8 @@ public class LoginFactory {
 	    
 	    HttpParams params = new BasicHttpParams();
 	    params.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true); 
-	    HttpConnectionParams.setConnectionTimeout(params, 5000);
-	    HttpConnectionParams.setSoTimeout(params, 5000);
+	    HttpConnectionParams.setConnectionTimeout(params, 10000);
+	    HttpConnectionParams.setSoTimeout(params, 10000);
 	    HttpConnectionParams.setTcpNoDelay(params, true);    
 	    httpclient.setParams(params);
 	    
@@ -238,10 +221,31 @@ public class LoginFactory {
 	}
 	
 	/**
+	 * Set that we are running in guest mode
+	 */
+	public void setGuestMode() {
+		if(!isInitialized)
+    		initializeClientInformation();
+		
+		Log.d(TAG, "Guest Mode Enabled...");
+		isGuestMode = true;
+	}
+	
+	/**
+	 * Report if running in guest mode
+	 * @return	True if guest mode
+	 */
+	public boolean isGuestMode() {
+		Log.d(TAG, String.format("Checking If Guestmode: %B", isGuestMode));
+		return isGuestMode;
+	}
+	
+	/**
 	 * Check if the user is logged in
 	 * @return	True if logged in, false if else
 	 */
 	public boolean isLoggedIn() {
+		Log.d(TAG, String.format("Checking If Logged In: %B", isLoggedIn));
 		return isLoggedIn;
 	}
 	
