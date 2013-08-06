@@ -148,8 +148,8 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 				
    				break;
            case(USERCP_MENU):
-        	   Log.v(TAG, "UserCP Pressed");
-           	   _intent = 
+        	   	Log.v(TAG, "UserCP Pressed");
+           	   	_intent = 
            			   new Intent(MainApplication.getAppContext(), UserCpActivity.class);
         	   break;
            case(ABOUT_MENU):
@@ -158,13 +158,12 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
            				new Intent(MainApplication.getAppContext(), AboutActivity.class);
            		break;
            case(MAIN_MENU):
-        	   _intent =
+        	   	_intent =
         	   			new Intent(MainApplication.getAppContext(), MainActivity.class);
-           		if(!(this instanceof MainActivity))
-           			finish();
+           		_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
            		break;
            case(OPTIONS_MENU):
-        	   _intent =
+        	   	_intent =
         	   			new Intent(MainApplication.getAppContext(), Preferences.class);
            		break;
         } 

@@ -31,6 +31,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -104,6 +105,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         ForumImageHandler fih = new ForumImageHandler(postText, activity);  
         postText.setMovementMethod(LinkMovementMethod.getInstance());
         postText.setText(Html.fromHtml(cv.getUserPost(), fih, null));
+        postText.setLinkTextColor(Color.WHITE);
         
         int font_size = PreferenceHelper.getFontSize(activity);
         postText.setTextSize(font_size);
