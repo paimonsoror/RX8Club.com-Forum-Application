@@ -54,19 +54,30 @@ import com.normalexception.forum.rx8club.utils.Utils;
 
 public class ImageLoader {
 
-	MemoryCache memoryCache = new MemoryCache();
-	FileCache fileCache;
+	private MemoryCache memoryCache = new MemoryCache();
+	private FileCache fileCache;
 	private Map<ImageView, String> imageViews = 
 			Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
-	ExecutorService executorService; 
+	private ExecutorService executorService; 
 	private final String TAG = "ImageLoader";
 
+	// The default icon should an image not be found
+	private final int stub_id = R.drawable.rotor_icon;
+	
+	/**
+	 * Constructor
+	 * @param context	Source context
+	 */
 	public ImageLoader(Context context){
 		fileCache=new FileCache(context);
 		executorService=Executors.newFixedThreadPool(5);
 	}
 
-	final int stub_id = R.drawable.rotor_icon;
+	/**
+	 * Once we get the image, we actually want to display it
+	 * @param url		The url of the image
+	 * @param imageView	The view to put the image in
+	 */
 	public void DisplayImage(String url, ImageView imageView)
 	{
 		imageViews.put(imageView, url);
@@ -80,22 +91,33 @@ public class ImageLoader {
 		}
 	}
 
+	/**
+	 * Queue up the next photo to load
+	 * @param url		The url of hte photo
+	 * @param imageView	The view to load it to
+	 */
 	private void queuePhoto(String url, ImageView imageView)
 	{
 		PhotoToLoad p=new PhotoToLoad(url, imageView);
 		executorService.submit(new PhotosLoader(p));
 	}
 
+	/**
+	 * Grab the image url as a bitmap
+	 * @param url	The url to grab the bitmap from
+	 * @return		The image as a bitmap object
+	 */
 	private Bitmap getBitmap(String url)
 	{
 		File f=fileCache.getFile(url);
 
-		//from SD cache
+		// First check our cache to see if the
+		// image exists
 		Bitmap b = decodeFile(f);
 		if(b!=null)
 			return b;
 
-		//from web
+		// If we got here, the image wasn't cached
 		try {
 			Bitmap bitmap=null;
 			HttpClient httpclient = 
@@ -110,6 +132,9 @@ public class ImageLoader {
 			os.close();
 			bitmap = decodeFile(f);
 			return bitmap;
+		} catch (IllegalStateException iex) {
+			// No big deal, the image doesn't exist
+			return null;
 		} catch (Exception ex){
 			Log.e(TAG, ex.getMessage());
 			ex.printStackTrace();
@@ -117,7 +142,11 @@ public class ImageLoader {
 		}
 	}
 
-	//decodes image and scales it to reduce memory consumption
+	/**
+	 * Decode the image from memory, and reduce the file size
+	 * @param f	The file
+	 * @return	The image as a bitmap
+	 */
 	private Bitmap decodeFile(File f){
 		try {
 			//decode image size

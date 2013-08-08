@@ -10,7 +10,7 @@
         android:id="@+id/titleContainer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/container_dropshadow"
+        android:background="@drawable/container_thread_dropshadow"
         android:padding="3dip">
         
 	    <LinearLayout
@@ -21,7 +21,7 @@
 	        android:layout_marginRight="5dip"
 	        android:padding="3dip"
 	        android:orientation="horizontal"
-	        android:background="#44FFFFFF" >
+	        android:background="@drawable/container_avatar_square" >
 	
 	        <ImageView
 	            android:id="@+id/nr_image"

@@ -81,20 +81,21 @@ containing a value of this type.
         public static final int black_mail_a=0x7f020002;
         public static final int black_pencil_icon=0x7f020003;
         public static final int black_x=0x7f020004;
-        public static final int container_dropshadow=0x7f020005;
-        public static final int email_icon_small=0x7f020006;
-        public static final int eye=0x7f020007;
-        public static final int ic_action_search=0x7f020008;
-        public static final int ic_launcher=0x7f020009;
-        public static final int icon_small_pencil=0x7f02000a;
-        public static final int lock=0x7f02000b;
-        public static final int lock_a=0x7f02000c;
-        public static final int paper=0x7f02000d;
-        public static final int quote_icon=0x7f02000e;
-        public static final int rotor_icon=0x7f02000f;
-        public static final int rx8club_logo=0x7f020010;
-        public static final int sticky=0x7f020011;
-        public static final int sticky_a=0x7f020012;
+        public static final int container_avatar_square=0x7f020005;
+        public static final int container_thread_dropshadow=0x7f020006;
+        public static final int email_icon_small=0x7f020007;
+        public static final int eye=0x7f020008;
+        public static final int ic_action_search=0x7f020009;
+        public static final int ic_launcher=0x7f02000a;
+        public static final int icon_small_pencil=0x7f02000b;
+        public static final int lock=0x7f02000c;
+        public static final int lock_a=0x7f02000d;
+        public static final int paper=0x7f02000e;
+        public static final int quote_icon=0x7f02000f;
+        public static final int rotor_icon=0x7f020010;
+        public static final int rx8club_logo=0x7f020011;
+        public static final int sticky=0x7f020012;
+        public static final int sticky_a=0x7f020013;
     }
     public static final class id {
         public static final int Password=0x7f05000c;
