@@ -207,7 +207,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	// User Control Panel
         	Elements userCp = innerPost.select("td[class=alt2]");
         	Elements userDetail = userCp.select("div[class=smallfont]");
-        	Elements userSubDetail = userDetail.last().select("div");       	
+        	Elements userSubDetail = userDetail.last().select("div"); 
+        	Elements userAvatar = userDetail.select("img[alt$=Avatar]");
     	
         	// User Information
         	PostView pv = new PostView();
@@ -215,8 +216,9 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	pv.setIsLoggedInUser(
         			LoginFactory.getInstance().isLoggedIn()?
         			UserProfile.getUsername().equals(pv.getUserName()) : false);	
-        	pv.setUserTitle(userDetail.get(0).text());
-        	pv.setPostDate(innerPost.select("td[class=thead]").get(0).text());
+        	pv.setUserTitle(userDetail.first().text());
+        	pv.setUserImageUrl(userAvatar.attr("src"));
+        	pv.setPostDate(innerPost.select("td[class=thead]").first().text());
         	pv.setPostId(Utils.parseInts(post.attr("id")));
         	
         	// userSubDetail

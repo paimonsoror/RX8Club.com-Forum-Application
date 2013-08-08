@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#888888"
+    android:background="#444444"
     android:orientation="horizontal">
 
     <!-- ListRow Left sied Thumbnail image -->
@@ -10,6 +10,7 @@
         android:id="@+id/titleContainer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/container_dropshadow"
         android:padding="3dip">
         
 	    <LinearLayout
@@ -18,21 +19,35 @@
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
 	        android:layout_marginRight="5dip"
-	        android:padding="3dip" >
+	        android:padding="3dip"
+	        android:orientation="horizontal"
+	        android:background="#44FFFFFF" >
 	
 	        <ImageView
 	            android:id="@+id/nr_image"
-	            android:layout_width="25dip"
-	            android:layout_height="25dip"
+	            android:layout_width="50dip"
+	            android:layout_height="50dip"
 	            android:src="@drawable/rotor_icon" />
-	    </LinearLayout>
-	
+
+	    </LinearLayout> 	    
+	    		
+		<View
+            android:id="@+id/nr_sep"
+            android:layout_width="2dip"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/thumbnail"
+            android:layout_alignBottom="@id/thumbnail"
+            android:background="#FF808080" />
+	    	        	
 	    <!-- Title Of Thread -->
 		<RelativeLayout
 	        android:id="@+id/titleTextContainer"
+	        android:layout_toRightOf="@id/nr_sep"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_toRightOf="@id/thumbnail"
 	        android:padding="3dip">
 		    <TextView
 		        android:id="@+id/nr_username"
@@ -139,7 +154,6 @@
 			    android:focusable="false"/>
 		</RelativeLayout>
 	</RelativeLayout>
-
 	<RelativeLayout
 	    android:id="@+id/postContainer"
 	    android:layout_width="fill_parent"

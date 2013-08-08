@@ -55,6 +55,15 @@ public class PMViewArrayAdapter extends ArrayAdapter<PMView> {
 		data = objects;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see android.widget.ArrayAdapter#getCount()
+	 */
+	@Override
+	public int getCount() {
+		return data.size();
+	}
+	
 	 /*
      * (non-Javadoc)
      * @see android.widget.ArrayAdapter#getItem(int)

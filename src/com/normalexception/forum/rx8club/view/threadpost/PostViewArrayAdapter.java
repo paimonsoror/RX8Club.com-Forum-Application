@@ -47,6 +47,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.pm.NewPrivateMessageActivity;
 import com.normalexception.forum.rx8club.activities.thread.EditPostActivity;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
+import com.normalexception.forum.rx8club.handler.ImageLoader;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.view.ViewHolder;
@@ -57,6 +58,7 @@ import com.normalexception.forum.rx8club.view.ViewHolder;
 public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	private Context activity;
 	private List<PostView> data;
+	private ImageLoader imageLoader; 
 	private final String TAG = "PostViewArrayAdapter";
 
 	/**
@@ -70,6 +72,16 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 		super(context, textViewResourceId, objects);
 		activity = context;
 		data = objects;
+		imageLoader=new ImageLoader(activity.getApplicationContext());
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see android.widget.ArrayAdapter#getCount()
+	 */
+	@Override
+	public int getCount() {
+		return data.size();
 	}
 	
 	 /*
@@ -104,8 +116,19 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         TextView postText = ((TextView)ViewHolder.get(vi,R.id.nr_postText));
         ForumImageHandler fih = new ForumImageHandler(postText, activity);  
         postText.setMovementMethod(LinkMovementMethod.getInstance());
-        postText.setText(Html.fromHtml(cv.getUserPost(), fih, null));
+        
+        // Lets make sure we remove any font formatting that was done within
+        // the text
+        String trimmedPost = 
+        		cv.getUserPost().toLowerCase().replaceAll("<(/*)font(.*)>", "");
+        
+        postText.setText(Html.fromHtml(trimmedPost, fih, null));
+        postText.setTextColor(Color.WHITE);
         postText.setLinkTextColor(Color.WHITE);
+        
+        // Load up the avatar of hte user
+        ImageView avatar = ((ImageView)ViewHolder.get(vi,R.id.nr_image));
+        imageLoader.DisplayImage(cv.getUserImageUrl(), avatar);
         
         int font_size = PreferenceHelper.getFontSize(activity);
         postText.setTextSize(font_size);

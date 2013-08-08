@@ -24,6 +24,8 @@ package com.normalexception.forum.rx8club.utils;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
@@ -31,6 +33,23 @@ import java.util.TimeZone;
 import com.normalexception.forum.rx8club.WebUrls;
 
 public class Utils {
+	
+	public static void CopyStream(InputStream is, OutputStream os)
+	{
+		final int buffer_size=1024;
+		try
+		{
+			byte[] bytes=new byte[buffer_size];
+			for(;;)
+			{
+				int count=is.read(bytes, 0, buffer_size);
+				if(count==-1)
+					break;
+				os.write(bytes, 0, count);
+			}
+		}
+		catch(Exception ex){}
+	}
 	
 	/**
 	 * Resolve the URL by making sure that the root preceeds it

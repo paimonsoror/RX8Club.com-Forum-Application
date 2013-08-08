@@ -27,7 +27,27 @@ package com.normalexception.forum.rx8club.utils;
 public class SpecialNumberFormatter {
 	
 	private static char[] c = new char[]{'k', 'm', 'b', 't'};
+	
+	/**
+	 * Recursive implementation, invokes itself for each factor 
+	 * of a thousand, increasing the class on each invocation.
+	 * @param n 		the number to format
+	 * @return 			a formatted string.
+	 */
+	public static String collapseNumber(String n) {
+		return collapseNumber(Double.parseDouble(n.replace(",", "")));
+	}
 
+	/**
+	 * Recursive implementation, invokes itself for each factor 
+	 * of a thousand, increasing the class on each invocation.
+	 * @param n 		the number to format
+	 * @return 			a formatted string.
+	 */
+	public static String collapseNumber(double n) {
+		return collapseNumber(n, 0);
+	}
+	
 	/**
 	 * Recursive implementation, invokes itself for each factor 
 	 * of a thousand, increasing the class on each invocation.
@@ -35,7 +55,7 @@ public class SpecialNumberFormatter {
 	 * @param iteration in fact this is the class from the array c
 	 * @return 			a formatted string.
 	 */
-	public static String collapseNumber(double n, int iteration) {
+	private static String collapseNumber(double n, int iteration) {
 		// No need to simplify anything under 1000,
 		// and remove the decimal
 		if(n < 1000 && iteration == 0) 

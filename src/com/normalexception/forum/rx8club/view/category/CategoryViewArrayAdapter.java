@@ -63,6 +63,15 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
 		data = objects;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see android.widget.ArrayAdapter#getCount()
+	 */
+	@Override
+	public int getCount() {
+		return data.size();
+	}
+	
 	 /*
      * (non-Javadoc)
      * @see android.widget.ArrayAdapter#getItem(int)
@@ -94,11 +103,9 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
         } else {
         	setMode(vi, false);
         	((TextView) ViewHolder.get(vi, R.id.cv_postCount)).setText(
-        			SpecialNumberFormatter.collapseNumber(
-        					Double.parseDouble(cv.getPostCount().replace(",","")), 0));
+        			SpecialNumberFormatter.collapseNumber(cv.getPostCount()));
         	((TextView) ViewHolder.get(vi, R.id.cv_threadCount)).setText(
-        			SpecialNumberFormatter.collapseNumber(
-        					Double.parseDouble(cv.getThreadCount().replace(",","")), 0));
+        			SpecialNumberFormatter.collapseNumber(cv.getThreadCount()));
         	
         	// First we need to register a listener for a regular 
         	// click.  We simply launch the link here

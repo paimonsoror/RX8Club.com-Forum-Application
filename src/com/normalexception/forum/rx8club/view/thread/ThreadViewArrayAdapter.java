@@ -37,9 +37,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.list.ThreadTypeFactory;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
+import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
 /**
@@ -58,12 +60,23 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
     private TextView vMyCountL  = null;
     private TextView vViewCount = null;
     ImageView vImage 	= null;
+    
+    private final String TAG = "ThreadViewArrayAdapter";
  
     public ThreadViewArrayAdapter(Context context, int textViewResourceId,
 			List<ThreadView> objects) {
 		super(context, textViewResourceId, objects);
 		activity = context;
 		data = objects;
+	}
+    
+    /*
+	 * (non-Javadoc)
+	 * @see android.widget.ArrayAdapter#getCount()
+	 */
+	@Override
+	public int getCount() {
+		return data.size();
 	}
     
     /*
@@ -100,11 +113,17 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         vImage 	   = (ImageView) ViewHolder.get(vi,R.id.tv_image);
         
         vTitle.setText(       m.getTitle());
-        vPostCount.setText(   m.getPostCount());
         vPostUser.setText(    m.getStartUser());
         vLastUser.setText(    m.getLastUser());
-        vMyCount.setText(     m.getMyPosts().length() == 0? "0" : m.getMyPosts());
-        vViewCount.setText(   m.getViewCount());
+        
+        Log.d(TAG, 
+        		String.format("%s %s %s", m.getPostCount(), m.getMyPosts(), m.getViewCount()));
+        vPostCount.setText(   
+        		SpecialNumberFormatter.collapseNumber(m.getPostCount()));
+        vMyCount.setText(
+        		SpecialNumberFormatter.collapseNumber(m.getMyPosts()));
+        vViewCount.setText(
+        		SpecialNumberFormatter.collapseNumber(m.getViewCount()));
         
         boolean hasPosts = !vMyCount.getText().equals("0");
         Bitmap scaledimg = 

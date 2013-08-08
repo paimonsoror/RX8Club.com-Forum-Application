@@ -90,48 +90,28 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@id/tv_lastUser">
-	    <TextView
-	        android:id="@+id/tv_postCount"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentRight="true"
-	        android:gravity="right"
-	        android:text="5:45"
-	        android:layout_marginRight="5dip"
-	        android:textSize="10dip"
-	        android:textColor="#ffffff"
-	        android:textStyle="bold"/>
-	        
-	    <TextView
+        
+            
+    <LinearLayout 
+        android:id="@+id/tv_labels"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="left">
+        <TextView
 	        android:id="@+id/tv_postCount_label"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_toLeftOf="@id/tv_postCount"
 	        android:gravity="right"
 	        android:text="Posts: "
 	        android:layout_marginRight="5dip"
 	        android:textSize="10dip"
 	        android:textColor="#000000"
 	        android:textStyle="bold"/>
-	    
-	    <TextView
-	        android:id="@+id/tv_viewCount"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentRight="true"
-	        android:layout_below="@id/tv_postCount"
-	        android:gravity="right"
-	        android:text="5:45"
-	        android:layout_marginRight="5dip"
-	        android:textSize="10dip"
-	        android:textColor="#ffffff"
-	        android:textStyle="bold"/>
-	    
-	    <TextView
+        <TextView
 	        android:id="@+id/tv_viewCount_label"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_toLeftOf="@id/tv_viewCount"
 	        android:layout_below="@id/tv_postCount_label"
 	        android:gravity="right"
 	        android:text="Views: "
@@ -139,25 +119,10 @@
 	        android:textSize="10dip"
 	        android:textColor="#000000"
 	        android:textStyle="bold"/>
-	    
-	    <TextView
-	        android:id="@+id/tv_myCount"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentRight="true"
-	        android:layout_below="@id/tv_viewCount"
-	        android:gravity="right"
-	        android:text="5:45"
-	        android:layout_marginRight="5dip"
-	        android:textSize="10dip"
-	        android:textColor="#ffffff"
-	        android:textStyle="bold"/>
-	    
-	    <TextView
+        <TextView
 	        android:id="@+id/tv_myCount_label"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_toLeftOf="@id/tv_myCount"
 	        android:layout_below="@id/tv_viewCount_label"
 	        android:gravity="right"
 	        android:text="Yours: "
@@ -165,6 +130,49 @@
 	        android:textSize="10dip"
 	        android:textColor="#000000"
 	        android:textStyle="bold"/>
+    </LinearLayout>
+    <LinearLayout 
+        android:id="@+id/tv_label_values"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/tv_labels"
+        android:orientation="vertical"
+        android:gravity="right">
+       <TextView
+	        android:id="@+id/tv_postCount"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:gravity="right"
+	        android:text="5:45"
+	        android:layout_marginRight="5dip"
+	        android:textSize="10dip"
+	        android:textColor="#ffffff"
+	        android:textStyle="bold"/>   	    
+	    
+	    <TextView
+	        android:id="@+id/tv_viewCount"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:gravity="right"
+	        android:text="5:45"
+	        android:layout_marginRight="5dip"
+	        android:textSize="10dip"
+	        android:textColor="#ffffff"
+	        android:textStyle="bold"/>	    
+	    
+	    <TextView
+	        android:id="@+id/tv_myCount"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:gravity="right"
+	        android:text="5:45"
+	        android:layout_marginRight="5dip"
+	        android:textSize="10dip"
+	        android:textColor="#ffffff"
+	        android:textStyle="bold"/>
+	    </LinearLayout>
+	    
+	 
 	    </RelativeLayout>
  
 </RelativeLayout>

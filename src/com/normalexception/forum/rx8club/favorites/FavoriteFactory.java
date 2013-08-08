@@ -26,6 +26,7 @@ package com.normalexception.forum.rx8club.favorites;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -87,6 +88,8 @@ public class FavoriteFactory {
 			_favorites = (FavoriteThreads) is.readObject();
 			is.close();
 			rtn = true;
+		} catch (FileNotFoundException e) {
+			// Its ok, first time there wont be a file
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

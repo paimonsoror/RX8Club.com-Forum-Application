@@ -90,7 +90,10 @@ public class ThreadView implements Serializable {
 	 * @return	The current users post count within the thread
 	 */
 	public String getMyPosts() {
-		return myPosts;
+		if(myPosts == null || myPosts.length() == 0)
+			return "0";
+		else
+			return myPosts;
 	}
 	
 	/**

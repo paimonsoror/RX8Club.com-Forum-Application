@@ -29,7 +29,16 @@ public class PostView {
 	private String joinDate, postDate;
 	private String userPostCount, userPost;
 	private String postId, token;
+	private String userImageUrl;
 	private boolean isLoggedInUser = false;
+	
+	public void setUserImageUrl(String url) {
+		userImageUrl = url;
+	}
+	
+	public String getUserImageUrl() {
+		return userImageUrl;
+	}
 	
 	/**
 	 * Set the user's location
