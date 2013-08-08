@@ -81,7 +81,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	 */
 	@Override
 	public int getCount() {
-		return data.size();
+		return data == null? 0 : data.size();
 	}
 	
 	 /*

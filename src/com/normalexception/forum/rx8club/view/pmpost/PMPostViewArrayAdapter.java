@@ -63,7 +63,7 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
 	 */
 	@Override
 	public int getCount() {
-		return data.size();
+		return data == null? 0 : data.size();
 	}
 	
 	 /*

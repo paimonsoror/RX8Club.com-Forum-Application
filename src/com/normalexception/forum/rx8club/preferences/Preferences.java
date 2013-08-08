@@ -24,6 +24,7 @@ package com.normalexception.forum.rx8club.preferences;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -36,6 +37,7 @@ import android.widget.Toast;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
+import com.normalexception.forum.rx8club.cache.FileCache;
 import com.normalexception.forum.rx8club.favorites.FavoriteDialog;
 
 /**
@@ -65,6 +67,39 @@ public class Preferences extends PreferenceActivity {
 				return true;
 			}
 		});
+        
+        Preference cache = (Preference)findPreference("appcache");
+        cache.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference arg0) { 
+            	final ProgressDialog dlg = 
+            			ProgressDialog.show(
+            					ctx, 
+            					"Clearing Cache", "Please wait...", 
+            					true);
+            	new Thread("ClearCacheThread") {
+            		public void run() {
+            			try {
+			            	FileCache fc = 
+			            			new FileCache(ctx);
+			            	fc.clear();
+            			} finally {
+            				if(dlg != null)
+            					dlg.dismiss();
+            				
+            				runOnUiThread(new Runnable() {
+                				public void run() {
+                					Toast.makeText(ctx, 
+                        					"Cache Cleared!", 
+                        					Toast.LENGTH_SHORT).show();
+                				}
+                			});
+            			}
+            		}
+            	}.start();
+                return true;
+            }
+        });
         
         Preference button = (Preference)findPreference("donate");
         button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

@@ -62,7 +62,7 @@ public class ThreadItemViewArrayAdapter extends ArrayAdapter<ThreadItemView> {
 	 */
 	@Override
 	public int getCount() {
-		return data.size();
+		return data == null? 0 : data.size();
 	}
 	
 	 /*

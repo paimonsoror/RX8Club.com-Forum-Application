@@ -76,7 +76,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 	 */
 	@Override
 	public int getCount() {
-		return data.size();
+		return data == null? 0 : data.size();
 	}
     
     /*

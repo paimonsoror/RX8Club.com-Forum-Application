@@ -32,6 +32,10 @@
 	</PreferenceCategory>
     <PreferenceCategory
                 android:title="Misc Options">
+	    <Preference
+	        android:title="Clear Cache"
+	        android:key="appcache"
+	        android:summary="Clear application cache"/>
 	   	<Preference
 	   	    android:title="Rate Application"
 	   	    android:key="rate"

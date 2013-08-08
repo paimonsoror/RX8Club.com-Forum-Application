@@ -61,7 +61,7 @@ public class PMItemViewArrayAdapter extends ArrayAdapter<PMItemView> {
 	 */
 	@Override
 	public int getCount() {
-		return data.size();
+		return data == null? 0 : data.size();
 	}
 	
 	 /*
