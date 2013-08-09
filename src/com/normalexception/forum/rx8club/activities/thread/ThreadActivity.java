@@ -99,7 +99,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	         Log.v(TAG, "Category Activity Started");
 	         
 	         postlist = new ArrayList<PostView>();
-	        if(savedInstanceState == null)
+	        if(savedInstanceState == null || 
+	        		(pva == null || pva.getCount() == 0))
 	        	constructView();
 	        else
 	        	updateList();

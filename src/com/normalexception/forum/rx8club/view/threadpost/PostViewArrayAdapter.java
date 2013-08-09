@@ -120,16 +120,23 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         // Lets make sure we remove any font formatting that was done within
         // the text
         String trimmedPost = 
-        		cv.getUserPost().replaceAll("(?i)<(/*)font(.*)>", "");
-        
+        		cv.getUserPost().replaceAll("(?i)<(/*)font(.*)>", "");      
         postText.setText(Html.fromHtml(trimmedPost, fih, null));
         postText.setTextColor(Color.WHITE);
         postText.setLinkTextColor(Color.WHITE);
         
-        // Load up the avatar of hte user
+        // Load up the avatar of hte user, but remember to remove
+        // the dateline at the end of the file so that we aren't
+        // creating multiple images for a user.  The image still
+        // gets returned without a date
+        String nodate_avatar = 
+        		cv.getUserImageUrl().indexOf('?') == -1? 
+        				cv.getUserImageUrl() : 
+        					cv.getUserImageUrl().substring(0, cv.getUserImageUrl().indexOf('?'));
         ImageView avatar = ((ImageView)ViewHolder.get(vi,R.id.nr_image));
-        imageLoader.DisplayImage(cv.getUserImageUrl(), avatar);
+        imageLoader.DisplayImage(nodate_avatar, avatar);
         
+        // Set the text size based on our preferences
         int font_size = PreferenceHelper.getFontSize(activity);
         postText.setTextSize(font_size);
         

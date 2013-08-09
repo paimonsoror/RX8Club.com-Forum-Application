@@ -94,7 +94,8 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
         
         Log.v(TAG, "PM Activity Started");
         
-        if(savedInstanceState == null)
+        if(savedInstanceState == null || 
+        		(pmva == null || pmva.getCount() == 0))
         	constructView();
         else {
         	updateList();

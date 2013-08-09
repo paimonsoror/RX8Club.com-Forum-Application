@@ -123,7 +123,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	    	v.setOnClickListener(this);
 	    	lv.addFooterView(v);
 	        
-	        if(savedInstanceState == null)
+	        if(savedInstanceState == null || 
+	        		(tva == null || tva.getCount() == 0))
 	        	constructView();
 	        else
 	        	updateList();

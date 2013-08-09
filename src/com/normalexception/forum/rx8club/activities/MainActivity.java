@@ -91,7 +91,8 @@ public class MainActivity extends ForumBaseActivity {
 	        // Read in the favorites if they exist
 	        FavoriteFactory.getInstance();
 	        
-	        if(savedInstanceState == null)
+	        if(savedInstanceState == null || 
+	        		(cva == null || cva.getCount() == 0))
 	        	constructView();
 	        else {
 	        	updateList();

@@ -115,9 +115,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         vTitle.setText(       m.getTitle());
         vPostUser.setText(    m.getStartUser());
         vLastUser.setText(    m.getLastUser());
-        
-        Log.d(TAG, 
-        		String.format("%s %s %s", m.getPostCount(), m.getMyPosts(), m.getViewCount()));
+
         vPostCount.setText(   
         		SpecialNumberFormatter.collapseNumber(m.getPostCount()));
         vMyCount.setText(

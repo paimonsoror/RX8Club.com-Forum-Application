@@ -84,7 +84,8 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
     	v.setOnClickListener(this);
     	lv.addFooterView(v);
         
-        if(savedInstanceState == null)
+        if(savedInstanceState == null || 
+        		(pmva == null || pmva.getCount() == 0))
         	constructView();
         else {
         	updateList();
