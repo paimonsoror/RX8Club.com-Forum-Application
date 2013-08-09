@@ -120,7 +120,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         // Lets make sure we remove any font formatting that was done within
         // the text
         String trimmedPost = 
-        		cv.getUserPost().toLowerCase().replaceAll("<(/*)font(.*)>", "");
+        		cv.getUserPost().replaceAll("(?i)<(/*)font(.*)>", "");
         
         postText.setText(Html.fromHtml(trimmedPost, fih, null));
         postText.setTextColor(Color.WHITE);
