@@ -34,6 +34,7 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.view.ViewHolder;
 
 /**
  * Styler found on the threads
@@ -60,12 +61,12 @@ public class StylerFragment extends Fragment implements OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
     	super.onActivityCreated(savedInstanceState);
-        getView().findViewById(R.id.boldButton).setOnClickListener(this);
-        getView().findViewById(R.id.italicButton).setOnClickListener(this);
-        getView().findViewById(R.id.underlineButton).setOnClickListener(this);
-        getView().findViewById(R.id.linkCodeButton).setOnClickListener(this);
-        getView().findViewById(R.id.imageCodeButton).setOnClickListener(this);
-        getView().findViewById(R.id.quoteCodeButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.boldButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.italicButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.underlineButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.linkCodeButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.imageCodeButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.quoteCodeButton).setOnClickListener(this);
     }
     
     /*
@@ -75,7 +76,7 @@ public class StylerFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onClick(View arg0) {
 		TextView tv = 
-				(TextView)getActivity().findViewById(R.id.postBox);
+				(TextView)ViewHolder.get(arg0.getRootView(), R.id.postBox);
 		
 		if(tv == null) {
 			Log.e(TAG, "TextView is null...");

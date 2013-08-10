@@ -40,6 +40,7 @@ import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
 import com.normalexception.forum.rx8club.activities.pm.PrivateMessageActivity;
 import com.normalexception.forum.rx8club.favorites.FavoriteDialog;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
+import com.normalexception.forum.rx8club.view.ViewHolder;
 
 /**
  * Implementation of the banner found on all views
@@ -65,10 +66,10 @@ public class BannerFragment extends Fragment implements OnClickListener {
         	mode = View.VISIBLE;
         }
         
-        view.findViewById(R.id.newTopicsButton).setVisibility(mode);
-        view.findViewById(R.id.favoritesButton).setVisibility(mode);
-        view.findViewById(R.id.inboxButton).setVisibility(mode);
-        view.findViewById(R.id.profileButton).setVisibility(mode);
+        ViewHolder.get(view, R.id.newTopicsButton).setVisibility(mode);
+        ViewHolder.get(view, R.id.favoritesButton).setVisibility(mode);
+        ViewHolder.get(view, R.id.inboxButton).setVisibility(mode);
+        ViewHolder.get(view, R.id.profileButton).setVisibility(mode);
     }
     
     /*
@@ -78,12 +79,12 @@ public class BannerFragment extends Fragment implements OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
     	super.onActivityCreated(savedInstanceState);
-        getView().findViewById(R.id.imageView1).setOnClickListener(this);
-        getView().findViewById(R.id.newTopicsButton).setOnClickListener(this);
-        getView().findViewById(R.id.favoritesButton).setOnClickListener(this);
-        getView().findViewById(R.id.inboxButton).setOnClickListener(this);
-        getView().findViewById(R.id.profileButton).setOnClickListener(this);
-        getView().findViewById(R.id.searchButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.imageView1).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.newTopicsButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.favoritesButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.inboxButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.profileButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.searchButton).setOnClickListener(this);
     }
     
     /*

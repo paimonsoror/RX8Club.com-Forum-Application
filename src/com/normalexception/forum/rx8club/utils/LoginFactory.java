@@ -28,11 +28,13 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
 import ch.boye.httpclientandroidlib.HttpEntity;
 import ch.boye.httpclientandroidlib.HttpResponse;
+import ch.boye.httpclientandroidlib.HttpStatus;
 import ch.boye.httpclientandroidlib.NameValuePair;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
@@ -87,6 +89,8 @@ public class LoginFactory {
 	private static boolean isGuestMode = false;
 	private static boolean isInitialized = false;
 	
+	private static int TIMEOUT = 10000;
+	
 	/**
 	 * Constructor
 	 */
@@ -107,8 +111,8 @@ public class LoginFactory {
 		
 		HttpParams params = new BasicHttpParams();
 	    params.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true); 
-	    HttpConnectionParams.setConnectionTimeout(params, 10000);
-	    HttpConnectionParams.setSoTimeout(params, 10000);
+	    HttpConnectionParams.setConnectionTimeout(params, TIMEOUT);
+	    HttpConnectionParams.setSoTimeout(params, TIMEOUT);
 	    HttpConnectionParams.setTcpNoDelay(params, true);    
 	    
 	    cookieStore = new BasicCookieStore();
@@ -238,7 +242,7 @@ public class LoginFactory {
 	 * @return	True if guest mode
 	 */
 	public boolean isGuestMode() {
-		Log.d(TAG, String.format("Checking If Guestmode: %B", isGuestMode));
+		// Log.d(TAG, String.format("Checking If Guestmode: %B", isGuestMode));
 		return isGuestMode;
 	}
 	
@@ -247,7 +251,7 @@ public class LoginFactory {
 	 * @return	True if logged in, false if else
 	 */
 	public boolean isLoggedIn() {
-		Log.d(TAG, String.format("Checking If Logged In: %B", isLoggedIn));
+		// Log.d(TAG, String.format("Checking If Logged In: %B", isLoggedIn));
 		return isLoggedIn;
 	}
 	
@@ -295,6 +299,7 @@ public class LoginFactory {
     	nvps.add(new BasicNameValuePair("vb_login_username", UserProfile.getUsername()));
     	nvps.add(new BasicNameValuePair("vb_login_md5password", password));
     	nvps.add(new BasicNameValuePair("vb_login_md5password_utf", password));
+    	nvps.add(new BasicNameValuePair("cookieuser", "1"));
     	nvps.add(new BasicNameValuePair("do", "login"));
 
     	httpost.setEntity(new UrlEncodedFormEntity(nvps));
@@ -304,12 +309,14 @@ public class LoginFactory {
 
     	if (entity != null) {
     		List<Cookie> cookies = cookieStore.getCookies();        	
-        	boolean val = response.getStatusLine().getStatusCode() != 400;
+        	boolean val = 
+        			response.getStatusLine().getStatusCode() != HttpStatus.SC_BAD_REQUEST;
         	//entity.consumeContent();
         	httpost.releaseConnection();
         	
         	for(Cookie cookie : cookies)
-        		if(cookie.getName().equals("bbimloggedin") && cookie.getValue().toLowerCase().equals("yes"))
+        		if(cookie.getName().equals("bbimloggedin") && 
+        				cookie.getValue().toLowerCase(Locale.US).equals("yes"))
         			isLoggedIn = true;
         	
         	isGuestMode = !isLoggedIn;
