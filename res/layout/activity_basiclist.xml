@@ -20,7 +20,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/fragment_content"
-        android:text="Thread Title"
+        android:text="@string/threadTitlePlaceholder"
         android:background="#0000ff"
         android:textSize="10dip"
         android:textColor="#ffffff"

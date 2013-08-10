@@ -39,7 +39,7 @@
                android:layout_width="0dip"
                android:layout_height="wrap_content"
                android:layout_weight="1"
-               android:text="@string/profileButton"
+               android:text="@string/bannerProfileButton"
                android:textSize="10dip" />
 
            <Button
@@ -48,7 +48,7 @@
                android:layout_width="0dip"
                android:layout_height="wrap_content"
                android:layout_weight="1"
-               android:text="@string/newTopics"
+               android:text="@string/bannerNewTopics"
                android:textSize="10dip" />
 
            <Button
@@ -57,7 +57,7 @@
                android:layout_width="0dip"
                android:layout_height="wrap_content"
                android:layout_weight="1"
-               android:text="@string/favorites"
+               android:text="@string/bannerFavorites"
                android:textSize="10dip" />
            
            <Button
@@ -66,7 +66,7 @@
                android:layout_width="0dip"
                android:layout_height="wrap_content"
                android:layout_weight="1"
-               android:text="@string/newPms"
+               android:text="@string/bannerNewPms"
                android:textSize="10dip" />
 
            <Button
@@ -75,7 +75,7 @@
                android:layout_width="0dip"
                android:layout_height="wrap_content"
                android:layout_weight="1"
-               android:text="@string/searchButton"
+               android:text="@string/bannerSearchButton"
                android:textSize="10dip" />
        </TableRow>
 </LinearLayout>

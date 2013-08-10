@@ -23,7 +23,7 @@
 		    android:id="@+id/textView1"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:text="Thread Name:" />
+		    android:text="@string/ntThreadName" />
 		
 		<EditText
 		    android:id="@+id/postSubject"
@@ -39,7 +39,7 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:paddingTop="20dip"
-		    android:text="Post: " />
+		    android:text="@string/ntThreadPost" />
 		
 		<EditText
 		    android:id="@+id/postPost"
@@ -54,7 +54,7 @@
 		    style="?android:attr/buttonStyleSmall"
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
-		    android:text="Submit New Thread" />
+		    android:text="@string/submit" />
 		</LinearLayout>
 	</LinearLayout>
 </RelativeLayout>

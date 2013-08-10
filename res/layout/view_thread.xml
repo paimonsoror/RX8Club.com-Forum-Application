@@ -30,7 +30,7 @@
         android:layout_alignTop="@+id/thumbnail"
         android:layout_marginRight="60dp"
         android:layout_toRightOf="@+id/thumbnail"
-        android:text="This is one super duper long thread name that will wrap"
+        android:text="@string/tvTitle"
         android:textColor="#040404"
         android:textSize="12dip"
         android:textStyle="bold"
@@ -45,7 +45,7 @@
         android:layout_below="@id/tv_title"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/thumbnail"
-        android:text="Started By: "
+        android:text="@string/tvStarted"
         android:textColor="#000000"
         android:textSize="10dip" />
     
@@ -70,7 +70,7 @@
         android:textSize="10dip"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/thumbnail"
-        android:text="Last Post: " />
+        android:text="@string/tvLastPost" />
     
     <TextView
         android:id="@+id/tv_lastUser"
@@ -81,7 +81,7 @@
         android:textSize="10dip"
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/tv_lastUser_label"
-        android:text="The Thread Last Person" />
+        android:text="@string/tvLastPostPerson" />
  
     <!-- Rightend Post Counts -->
     <RelativeLayout 
@@ -103,7 +103,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:gravity="right"
-	        android:text="Posts: "
+	        android:text="@string/tvTotalPosts"
 	        android:layout_marginRight="5dip"
 	        android:textSize="10dip"
 	        android:textColor="#000000"
@@ -114,7 +114,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_below="@id/tv_postCount_label"
 	        android:gravity="right"
-	        android:text="Views: "
+	        android:text="@string/tvTotalViews"
 	        android:layout_marginRight="5dip"
 	        android:textSize="10dip"
 	        android:textColor="#000000"
@@ -125,7 +125,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_below="@id/tv_viewCount_label"
 	        android:gravity="right"
-	        android:text="Yours: "
+	        android:text="@string/tvMyPosts"
 	        android:layout_marginRight="5dip"
 	        android:textSize="10dip"
 	        android:textColor="#000000"

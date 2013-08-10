@@ -14,7 +14,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="[b]"
+            android:text="@string/bold"
             android:textSize="10dip" />
         
         <Button
@@ -22,7 +22,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="[i]"
+            android:text="@string/italic"
             android:textSize="10dip" />
         
         <Button
@@ -30,7 +30,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="[u]"
+            android:text="@string/underline"
             android:textSize="10dip" />
         
         <Button
@@ -38,7 +38,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="[url]"
+            android:text="@string/url"
             android:textSize="10dip" />
 
         <Button
@@ -46,7 +46,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="[img]"
+            android:text="@string/image"
             android:textSize="10dip" />
 
         <Button
@@ -54,7 +54,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="[quote]"
+            android:text="@string/quote"
             android:textSize="10dip" />
 
     </TableRow>

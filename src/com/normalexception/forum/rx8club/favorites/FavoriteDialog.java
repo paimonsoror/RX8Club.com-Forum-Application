@@ -32,6 +32,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.view.thread.ThreadView;
 
@@ -48,7 +49,7 @@ public class FavoriteDialog {
 			FavoriteFactory.getInstance().getFavorites();
 	private DialogInterface.OnClickListener listener = null;
 	
-	private final String TITLE = "Favorites";
+	private final int TITLE = R.string.bannerFavorites;
 	
 	/**
 	 * Initialize our dialog builder, and the list of 

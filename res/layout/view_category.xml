@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
-        android:text="Here is a cool category name"
+        android:text="@string/categoryName"
         android:textColor="#040404"
         android:textSize="14dip"
         android:textStyle="bold"
@@ -52,7 +52,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="7dp"
             android:layout_marginTop="7dp"
-            android:text="My Description that is really long to make sure it doesn&apos;t overlap because sometimes when you have a long desc it does"
+            android:text="@string/categoryDescription"
             android:textColor="#040404"
             android:textSize="10dip"
             android:typeface="sans" />
@@ -77,7 +77,7 @@
             android:layout_toLeftOf="@+id/cv_postCount"
             android:layout_below="@+id/cv_desc"
             android:layout_marginTop="2dp"
-            android:text="Pst: "
+            android:text="@string/categoryPost"
             android:textColor="#000000"
             android:textSize="10dip"
             android:textStyle="bold" />
@@ -102,7 +102,7 @@
             android:layout_toLeftOf="@+id/cv_threadCount"
             android:layout_below="@+id/cv_desc"
             android:layout_marginTop="2dp"
-            android:text="Thr: "
+            android:text="@string/categoryThread"
             android:textColor="#000000"
             android:textSize="10dip"
             android:textStyle="bold" />
@@ -127,7 +127,7 @@
             android:layout_toLeftOf="@+id/cv_subCount"
             android:layout_below="@+id/cv_desc"
             android:layout_marginTop="2dp"
-            android:text="Sub: "
+            android:text="@string/categorySub"
             android:textColor="#000000"
             android:textSize="10dip"
             android:textStyle="bold" />

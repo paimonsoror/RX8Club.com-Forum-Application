@@ -10,7 +10,7 @@
          style="?android:attr/buttonStyleSmall"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:text="Prev"
+         android:text="@string/previous"
          android:textSize="10dip"
          android:layout_alignParentLeft="true"
          android:onClick="onClick" />
@@ -28,7 +28,7 @@
          style="?android:attr/buttonStyleSmall"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
-         android:text="Next"
+         android:text="@string/next"
          android:textSize="10dip"
          android:layout_alignParentRight="true"
          android:onClick="onClick" />

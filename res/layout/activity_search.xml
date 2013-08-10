@@ -39,14 +39,14 @@
 	        android:id="@+id/searchSubmitButton"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:text="@string/searchButton" />
+	        android:text="@string/searchSearchButton" />
 	
 	    <TextView
 	        android:id="@+id/textView2"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="10dip"
-	        android:text="Advanced Options:"
+	        android:text="@string/advancedOptions"
 	        android:textAppearance="?android:attr/textAppearanceMedium" />
 	
 	    <TextView
@@ -88,7 +88,7 @@
 	        android:id="@+id/textView3"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="Search Date: " />
+	        android:text="@string/searchDate" />
 	
 	    <Spinner
 	        android:id="@+id/searchDateSpinner"
@@ -100,7 +100,7 @@
 	        android:id="@+id/textView4"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="Search Sort: " />
+	        android:text="@string/searchSort" />
 	
 	    <Spinner
 	        android:id="@+id/searchSortSpinner"

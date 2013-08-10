@@ -33,11 +33,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.list.ThreadTypeFactory;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
@@ -59,9 +57,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
     private TextView vMyCount 	= null;
     private TextView vMyCountL  = null;
     private TextView vViewCount = null;
-    ImageView vImage 	= null;
-    
-    private final String TAG = "ThreadViewArrayAdapter";
+    private ImageView vImage 	= null;
  
     public ThreadViewArrayAdapter(Context context, int textViewResourceId,
 			List<ThreadView> objects) {

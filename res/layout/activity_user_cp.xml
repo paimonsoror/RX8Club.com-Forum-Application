@@ -6,8 +6,6 @@
     tools:context=".ThreadActivity" >
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray"
@@ -26,7 +24,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="25dip"
-	        android:text="Custom User Title"
+	        android:text="@string/userTitle"
 	        tools:context=".UserCpActivity" />
 	
 	    <EditText
@@ -46,7 +44,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="25dip"
-	        android:text="Homepage URL"
+	        android:text="@string/homepage"
 	        tools:context=".UserCpActivity" />
 	
 	    <EditText
@@ -54,7 +52,7 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:ems="10"
-	        android:inputType="text" />
+	        android:inputType="textUri" />
 	    
 	    <TextView
 	        android:layout_width="fill_parent"
@@ -65,7 +63,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="5dip"
-	        android:text="Biography"
+	        android:text="@string/location"
 	        tools:context=".UserCpActivity" />
 	
 	    <EditText
@@ -79,7 +77,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="5dip"
-	        android:text="Location"
+	        android:text="@string/biography"
 	        tools:context=".UserCpActivity" />
 	
 	    <EditText
@@ -93,7 +91,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="5dip"
-	        android:text="Interests"
+	        android:text="@string/interests"
 	        tools:context=".UserCpActivity" />
 	
 	    <EditText
@@ -107,7 +105,7 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="5dip"
-	        android:text="Occupation"
+	        android:text="@string/occupation"
 	        tools:context=".UserCpActivity" />
 	
 	    <EditText
@@ -122,7 +120,7 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="20dip"
-	        android:text="Save Changes" />
+	        android:text="@string/saveChanges" />
 	    
 	</LinearLayout>
 	 

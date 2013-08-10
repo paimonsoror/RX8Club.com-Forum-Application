@@ -49,34 +49,28 @@
         </activity>
         <activity
             android:name=".activities.list.CategoryActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_category" >
+            android:configChanges="keyboardHidden|orientation">
         </activity>
         <activity
             android:name=".activities.thread.ThreadActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_thread" >
+            android:configChanges="keyboardHidden|orientation" >
         </activity>
         <activity
             android:name=".activities.list.NewPostsActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_new_posts" >
+            android:configChanges="keyboardHidden|orientation">
         </activity>
         <activity
             android:name=".activities.ProfileActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_profile"
             android:launchMode="singleInstance" >
         </activity>
         <activity
             android:name=".activities.SearchActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_search" >
+            android:configChanges="keyboardHidden|orientation">
         </activity>
         <activity
             android:name=".activities.AboutActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_about"
             android:launchMode="singleInstance" >
         </activity>
         <activity
@@ -86,42 +80,34 @@
         </activity>
         <activity
             android:name=".activities.thread.NewThreadActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_new_thread" >
+            android:configChanges="keyboardHidden|orientation">
         </activity>
         <activity
             android:name=".activities.thread.EditPostActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_edit_post" >
+            android:configChanges="keyboardHidden|orientation">
         </activity>
         <activity
-            android:name=".activities.fragments.BannerFragment"
-            android:label="@string/title_activity_banner_fragment" >
+            android:name=".activities.fragments.BannerFragment">
         </activity>
         <activity
             android:name=".activities.pm.PrivateMessageActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_private_message" >
+            android:configChanges="keyboardHidden|orientation" >
         </activity>
         <activity
             android:name=".activities.pm.PrivateMessageViewActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_private_message_view" >
+            android:configChanges="keyboardHidden|orientation" >
         </activity>
         <activity
             android:name=".activities.pm.NewPrivateMessageActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_new_private_message" >
+            android:configChanges="keyboardHidden|orientation" >
         </activity>
         <activity
             android:name=".activities.UserCpActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_user_cp" >
+            android:configChanges="keyboardHidden|orientation" >
         </activity>
         <activity
             android:name=".activities.fragments.StylerFragment"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_styler_fragment" >
+            android:configChanges="keyboardHidden|orientation" >
         </activity>
     </application>
 

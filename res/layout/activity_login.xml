@@ -28,7 +28,7 @@
             android:id="@+id/UserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/usernameInput"
+            android:text="@string/loginUsernameInput"
             android:textStyle="bold" />
 
         <EditText
@@ -55,7 +55,7 @@
             android:id="@+id/Password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/passwordInput"
+            android:text="@string/loginPasswordInput"
             android:textStyle="bold" />
 
         <EditText
@@ -105,14 +105,14 @@
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/loginButton" >
+            android:text="@string/loginLoginButton" >
 		</Button>
 		
         <Button
             android:id="@+id/guestButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/guestButton" >
+            android:text="@string/loginGuestButton" >
 		</Button>
         
 

@@ -13,7 +13,7 @@
 	    android:id="@+id/pmRecipients"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="Recipients: " />
+	    android:text="@string/pmRecipients" />
 	
 	<EditText
 	    android:id="@+id/pmRecipientsText"
@@ -28,7 +28,7 @@
 	    android:id="@+id/pmSubject"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="Subject: " />
+	    android:text="@string/pmSubject" />
 	
 	<EditText
 	    android:id="@+id/pmSubjectText"
@@ -44,7 +44,7 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:paddingTop="20dip"
-	    android:text="Message: " />
+	    android:text="@string/pmMessage" />
 	
 	<EditText
 	    android:id="@+id/pmMessageText"
@@ -62,5 +62,5 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_gravity="center"
-	    android:text="Send" />
+	    android:text="@string/pmSend" />
 </LinearLayout>

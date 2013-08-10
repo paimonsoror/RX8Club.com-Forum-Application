@@ -16,7 +16,7 @@
 	            style="?android:attr/buttonStyleSmall"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="First"
+	            android:text="@string/first"
 	            android:textSize="10dip"
 	            android:layout_alignParentLeft="true"
 	            android:onClick="onClick" />
@@ -27,7 +27,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_marginRight="50dip"
-	            android:text="Prev"
+	            android:text="@string/previous"
 	            android:textSize="10dip"
 	            android:layout_toRightOf="@id/firstButton"
 	            android:onClick="onClick" />
@@ -45,7 +45,7 @@
 	            style="?android:attr/buttonStyleSmall"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="Last"
+	            android:text="@string/last"
 	            android:textSize="10dip"
 	            android:layout_alignParentRight="true"
 	            android:onClick="onClick" />
@@ -56,7 +56,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_marginLeft="50dip"
-	            android:text="Next"
+	            android:text="@string/next"
 	            android:textSize="10dip"
 	            android:layout_toLeftOf="@id/lastButton"
 	            android:onClick="onClick" />
@@ -96,7 +96,7 @@
 	            style="?android:attr/buttonStyleSmall"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:text="Submit"
+	            android:text="@string/submit"
 	            android:layout_below="@id/postBox"
 	            android:onClick="onClick" />
         </LinearLayout>

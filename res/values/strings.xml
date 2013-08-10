@@ -1,49 +1,117 @@
 <resources>
-
+	<!-- App Specific Strings -->
     <string name="app_name">RX8Club</string>
-    <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">RX8Club.com</string>
-    <string name="title_activity_category">RX8Club.com</string>
-    <string name="title_activity_thread">RX8Club.com</string>
-    <string name="title_activity_new_posts">RX8Club.com</string>
-    <string name="title_activity_profile">RX8Club.com</string>
-    <string name="title_activity_bug_report">RX8Club.com</string>
-    <string name="title_activity_search">RX8Club.com</string>
-    <string name="title_activity_login">RX8Club.com</string>
-    <string name="title_activity_about">RX8Club.com</string>
-    <string name="title_activity_preferences">RX8Club.com</string>
-    <string name="title_activity_new_thread">RX8Club.com</string>
-    <string name="title_activity_edit_post">RX8Club.com</string>
-    <string name="title_activity_banner_fragment">RX8Club.com</string>
-    <string name="title_activity_private_message">RX8Club.com</string>
-    <string name="title_activity_private_message_view">RX8Club.com</string>
-    <string name="title_activity_new_private_message">RX8Club.com</string>
-    <string name="title_activity_user_cp">RX8Club.com</string>
-    <string name="app_description">This is an application designed to provide the user with a faster, and easier to use forum experience for current RX8Club.com members</string>
-    <string name="exitOption">Exit</string>
-    <string name="aboutOption">About</string>
-    <string name="passwordInput">Password: </string>
-    <string name="usernameInput">Username: </string>
-    <string name="loginButton">Login</string>
-    <string name="guestButton">Guest</string>
+    <string name="app_description">This is an application designed to provide the user with a faster, and easier to use forum experience for current RX8Club.com members</string>    
+    
+    <!-- Category Screen String -->
+    <string name="categoryDescription">My Description that is really long to make sure it doesn\'t overlap because sometimes when you have a long desc it does</string>
+    <string name="categoryName">Here is a cool category name</string>
+    <string name="categoryPost">Pst: </string>
+    <string name="categoryThread">Thr: </string>
+    <string name="categorySub">Sub: </string>
+    
+    <!-- New Thread Screen -->
+    <string name="ntThreadName">Thread Name:</string>
+    <string name="ntThreadPost">Post: </string>
+    
+    <!-- New PM Screen -->
+    <string name="pmFrom">From: </string>
+    <string name="pmRecipients">Recipients: </string>
+    <string name="pmSubject">Subject: </string>
+    <string name="pmMessage">Message: </string>
+    <string name="pmSend">Send</string>
+    <string name="pmDate">Date: </string>
+    
+    <!-- New Reply Screen -->
+    <string name="nrUserName">User Name Goes Here</string>
+    <string name="nrUserTitle">User Title</string>
+    <string name="nrPostDate">Post Date: </string>
+    <string name="nrPostText">This is some random text oh man this is cool</string>
+    
+    <!-- Login Screen Strings -->
+    <string name="loginPasswordInput">Password: </string>
+    <string name="loginUsernameInput">Username: </string>
+    <string name="loginLoginButton">Login</string>
+    <string name="loginGuestButton">Guest</string>
+    
+    <!-- Thread Screen Strings -->
+    <string name="tvTitle">This is one super duper long thread name that will wrap</string>
+    <string name="tvStarted">Started By: </string>
+    <string name="tvLastPost">Last Post: </string>
+    <string name="tvLastPostPerson">The Thread Last Person</string>
+    <string name="tvTotalPosts">Posts: </string>
+    <string name="tvTotalViews">Views: </string>
+    <string name="tvMyPosts">Yours: </string>
     <string name="commentText">Comment</string>
-    <string name="newTopics">New Posts</string>
-    <string name="newPms">Inbox</string>
-    <string name="logoff">Logoff</string>
-    <string name="profileButton">Profile</string>
-    <string name="searchButton">Search</string>
-    <string name="aboutstring">This free application was written by Paimon Sorornejad for the RX8Club.com community.  This application is designed to provide a mobile interface for Android based devices.</string>
-    <string name="recentchangesstring">Recent Changes: \n * Added about screen \n * Fixed login for some devices</string>
+        
+    <!-- Banner Fragment Strings -->
+    <string name="bannerNewTopics">New Posts</string>
+    <string name="bannerNewPms">Inbox</string>
+    <string name="bannerProfileButton">Profile</string>
+    <string name="bannerSearchButton">Search</string>
+    <string name="bannerFavorites">Favorites</string>
+    
+    <!-- Menu Strings -->
+    <string name="menuGoMain">Goto Main</string>
+    <string name="menuLogon">Logon</string>
+    <string name="menuLogoff">Logoff</string>
+    <string name="menuPreferences">Preferences</string>
+    <string name="menuControlPanel">User CP</string>
+    <string name="menuAbout">About</string>
+    
+    <!-- Search Screen Strings -->
     <string name="searchString">Please Enter Search String:</string>
     <string name="searchType">Search Type</string>
     <string name="userNameSearch">User Name</string>
+    <string name="searchSearchButton">Search</string>
+    <string name="searchDate">Search Date: </string>
+    <string name="searchSort">Search Sort: </string>
+    <string name="advancedOptions">Advanced Options:</string>
     <string name="threadContentSearch">Thread Content</string>
     <string name="threadTitleSearch">Thread Title Search</string>
+    
+    <!-- Control Panel Strings -->
+    <string name="saveChanges">Save Changes</string>
+    <string name="occupation">Occupation</string>
+    <string name="interests">Interests</string>
+    <string name="location">Location</string>
+    <string name="biography">Biography</string>
+    <string name="homepage">Homepage URL</string>
+    <string name="userTitle">Custom User Title</string>
+    
+    <!-- About Screen Strings -->
+    <string name="aboutstring">This free application was written by Paimon Sorornejad for the RX8Club.com community.  This application is designed to provide a mobile interface for Android based devices.</string>
+    <string name="githublink">GitHub Link:\nhttps://github.com/paimonsoror/RX8Club.com-Forum-Application</string>
+    <string name="websitelink">Website:\nhttp://www.normalexception.net</string>
+    
+    <!-- Pagination Strings -->
+    <string name="first">First</string>
+    <string name="previous">Prev</string>
+    <string name="last">Last</string>
+    <string name="next">Next</string>
     <string name="pageXofY">Page X of Y</string>
+    
+    <!-- Styler Strings -->
+    <string name="bold">[b]</string>
+    <string name="italic">[i]</string>
+    <string name="underline">[u]</string>
+    <string name="url">[url]</string>
+    <string name="image">[img]</string>
+    <string name="quote">[quote]</string>
+    
+    <!-- Dialog Strings -->
+    <string name="dialogLogoffConfirm">Are you sure you want to logoff?</string>
+    
+    <!-- Misc Strings -->   
+    <string name="threadTitlePlaceholder">Thread Title</string>
     <string name="preferencesLabel">Application Preferences</string>
-    <string name="favorites">Favorites</string>
     <string name="addToFavorites">Add To Favorites</string>
+    <string name="submit">Submit</string>
+    <string name="delete">Delete</string>
+    <string name="Yes">Yes</string>
+    <string name="No">No</string>
 
     <string-array name="searchDateArray">
         <item>Any Date</item>
@@ -101,7 +169,4 @@
         <item>14</item>
         <item>16</item>
     </string-array>
-
-    <string name="title_activity_styler_fragment">StylerFragment</string>
-
 </resources>

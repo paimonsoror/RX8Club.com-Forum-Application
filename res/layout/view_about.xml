@@ -34,7 +34,7 @@
 	        android:id="@+id/textView3"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:text="GitHub Link:\nhttps://github.com/paimonsoror/RX8Club.com-Forum-Application" />
+	        android:text="@string/githublink" />
 
 	    <TextView
 	        android:id="@+id/textView6"
@@ -42,6 +42,6 @@
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="center"
 	        android:layout_marginTop="30dip"
-	        android:text="Website:\nhttp://www.normalexception.net" />
+	        android:text="@string/websitelink" />
 
 </LinearLayout>

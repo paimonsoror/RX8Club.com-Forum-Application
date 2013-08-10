@@ -89,13 +89,14 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	 */
 	@Override
     public boolean onCreateOptionsMenu(Menu menu){ 
-		menu.add(0,MAIN_MENU,0,"Goto Main");
+		menu.add(0,MAIN_MENU,0,R.string.menuGoMain);
         menu.add(0,LOGOFF_MENU,0,
-        		LoginFactory.getInstance().isLoggedIn()? "Logoff" : "Login");
-        menu.add(0,OPTIONS_MENU,0,"Preferences");
+        		LoginFactory.getInstance().isLoggedIn()? 
+        				R.string.menuLogoff : R.string.menuLogon);
+        menu.add(0,OPTIONS_MENU,0,R.string.menuPreferences);
         if(LoginFactory.getInstance().isLoggedIn())
-        	menu.add(0,USERCP_MENU,0,"User CP");
-        menu.add(0,ABOUT_MENU,0,"About");
+        	menu.add(0,USERCP_MENU,0,R.string.menuControlPanel);
+        menu.add(0,ABOUT_MENU,0,R.string.menuAbout);
         return true; 
     } 
 	
@@ -138,9 +139,9 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 				};
 	    		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 				builder
-					.setMessage("Are you sure you want to logoff?")
-					.setPositiveButton("Yes", dialogClickListener)
-				    .setNegativeButton("No", dialogClickListener);
+					.setMessage(R.string.dialogLogoffConfirm)
+					.setPositiveButton(R.string.Yes, dialogClickListener)
+				    .setNegativeButton(R.string.No, dialogClickListener);
 				if(LoginFactory.getInstance().isGuestMode())
 					returnToLoginPage(true);
 				else

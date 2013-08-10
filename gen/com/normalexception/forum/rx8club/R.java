@@ -278,51 +278,120 @@ containing a value of this type.
         public static final int fragment_styler=0x7f0a0010;
     }
     public static final class string {
-        public static final int aboutOption=0x7f070016;
-        public static final int aboutstring=0x7f070021;
-        public static final int addToFavorites=0x7f07002b;
-        public static final int app_description=0x7f070014;
+        public static final int No=0x7f070051;
+        public static final int Yes=0x7f070050;
+        /**  About Screen Strings 
+         */
+        public static final int aboutstring=0x7f07003c;
+        public static final int addToFavorites=0x7f07004d;
+        public static final int advancedOptions=0x7f070032;
+        public static final int app_description=0x7f070003;
+        /**  App Specific Strings 
+         */
         public static final int app_name=0x7f070000;
-        public static final int commentText=0x7f07001b;
-        public static final int exitOption=0x7f070015;
-        public static final int favorites=0x7f07002a;
-        public static final int guestButton=0x7f07001a;
-        public static final int hello_world=0x7f070001;
-        public static final int loginButton=0x7f070019;
-        public static final int logoff=0x7f07001e;
-        public static final int menu_settings=0x7f070002;
-        public static final int newPms=0x7f07001d;
-        public static final int newTopics=0x7f07001c;
-        public static final int pageXofY=0x7f070028;
-        public static final int passwordInput=0x7f070017;
-        public static final int preferencesLabel=0x7f070029;
-        public static final int profileButton=0x7f07001f;
-        public static final int recentchangesstring=0x7f070022;
-        public static final int searchButton=0x7f070020;
-        public static final int searchString=0x7f070023;
-        public static final int searchType=0x7f070024;
-        public static final int threadContentSearch=0x7f070026;
-        public static final int threadTitleSearch=0x7f070027;
-        public static final int title_activity_about=0x7f07000b;
-        public static final int title_activity_banner_fragment=0x7f07000f;
-        public static final int title_activity_bug_report=0x7f070008;
-        public static final int title_activity_category=0x7f070004;
-        public static final int title_activity_edit_post=0x7f07000e;
-        public static final int title_activity_login=0x7f07000a;
-        public static final int title_activity_main=0x7f070003;
-        public static final int title_activity_new_posts=0x7f070006;
-        public static final int title_activity_new_private_message=0x7f070012;
-        public static final int title_activity_new_thread=0x7f07000d;
-        public static final int title_activity_preferences=0x7f07000c;
-        public static final int title_activity_private_message=0x7f070010;
-        public static final int title_activity_private_message_view=0x7f070011;
-        public static final int title_activity_profile=0x7f070007;
-        public static final int title_activity_search=0x7f070009;
-        public static final int title_activity_styler_fragment=0x7f07002c;
-        public static final int title_activity_thread=0x7f070005;
-        public static final int title_activity_user_cp=0x7f070013;
-        public static final int userNameSearch=0x7f070025;
-        public static final int usernameInput=0x7f070018;
+        public static final int bannerFavorites=0x7f070025;
+        public static final int bannerNewPms=0x7f070022;
+        /**  Banner Fragment Strings 
+         */
+        public static final int bannerNewTopics=0x7f070021;
+        public static final int bannerProfileButton=0x7f070023;
+        public static final int bannerSearchButton=0x7f070024;
+        public static final int biography=0x7f070039;
+        /**  Styler Strings 
+         */
+        public static final int bold=0x7f070044;
+        /**  Category Screen String 
+         */
+        public static final int categoryDescription=0x7f070004;
+        public static final int categoryName=0x7f070005;
+        public static final int categoryPost=0x7f070006;
+        public static final int categorySub=0x7f070008;
+        public static final int categoryThread=0x7f070007;
+        public static final int commentText=0x7f070020;
+        public static final int delete=0x7f07004f;
+        /**  Dialog Strings 
+         */
+        public static final int dialogLogoffConfirm=0x7f07004a;
+        /**  Pagination Strings 
+         */
+        public static final int first=0x7f07003f;
+        public static final int githublink=0x7f07003d;
+        public static final int homepage=0x7f07003a;
+        public static final int image=0x7f070048;
+        public static final int interests=0x7f070037;
+        public static final int italic=0x7f070045;
+        public static final int last=0x7f070041;
+        public static final int location=0x7f070038;
+        public static final int loginGuestButton=0x7f070018;
+        public static final int loginLoginButton=0x7f070017;
+        /**  Login Screen Strings 
+         */
+        public static final int loginPasswordInput=0x7f070015;
+        public static final int loginUsernameInput=0x7f070016;
+        public static final int menuAbout=0x7f07002b;
+        public static final int menuControlPanel=0x7f07002a;
+        /**  Menu Strings 
+         */
+        public static final int menuGoMain=0x7f070026;
+        public static final int menuLogoff=0x7f070028;
+        public static final int menuLogon=0x7f070027;
+        public static final int menuPreferences=0x7f070029;
+        public static final int menu_settings=0x7f070001;
+        public static final int next=0x7f070042;
+        public static final int nrPostDate=0x7f070013;
+        public static final int nrPostText=0x7f070014;
+        /**  New Reply Screen 
+         */
+        public static final int nrUserName=0x7f070011;
+        public static final int nrUserTitle=0x7f070012;
+        /**  New Thread Screen 
+         */
+        public static final int ntThreadName=0x7f070009;
+        public static final int ntThreadPost=0x7f07000a;
+        public static final int occupation=0x7f070036;
+        public static final int pageXofY=0x7f070043;
+        public static final int pmDate=0x7f070010;
+        /**  New PM Screen 
+         */
+        public static final int pmFrom=0x7f07000b;
+        public static final int pmMessage=0x7f07000e;
+        public static final int pmRecipients=0x7f07000c;
+        public static final int pmSend=0x7f07000f;
+        public static final int pmSubject=0x7f07000d;
+        public static final int preferencesLabel=0x7f07004c;
+        public static final int previous=0x7f070040;
+        public static final int quote=0x7f070049;
+        /**  Control Panel Strings 
+         */
+        public static final int saveChanges=0x7f070035;
+        public static final int searchDate=0x7f070030;
+        public static final int searchSearchButton=0x7f07002f;
+        public static final int searchSort=0x7f070031;
+        /**  Search Screen Strings 
+         */
+        public static final int searchString=0x7f07002c;
+        public static final int searchType=0x7f07002d;
+        public static final int submit=0x7f07004e;
+        public static final int threadContentSearch=0x7f070033;
+        /**  Misc Strings 
+         */
+        public static final int threadTitlePlaceholder=0x7f07004b;
+        public static final int threadTitleSearch=0x7f070034;
+        public static final int title_activity_main=0x7f070002;
+        public static final int tvLastPost=0x7f07001b;
+        public static final int tvLastPostPerson=0x7f07001c;
+        public static final int tvMyPosts=0x7f07001f;
+        public static final int tvStarted=0x7f07001a;
+        /**  Thread Screen Strings 
+         */
+        public static final int tvTitle=0x7f070019;
+        public static final int tvTotalPosts=0x7f07001d;
+        public static final int tvTotalViews=0x7f07001e;
+        public static final int underline=0x7f070046;
+        public static final int url=0x7f070047;
+        public static final int userNameSearch=0x7f07002e;
+        public static final int userTitle=0x7f07003b;
+        public static final int websitelink=0x7f07003e;
     }
     public static final class style {
         public static final int AppTheme=0x7f090000;
