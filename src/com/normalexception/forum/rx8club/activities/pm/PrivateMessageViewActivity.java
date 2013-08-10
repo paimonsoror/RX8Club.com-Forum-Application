@@ -98,13 +98,6 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
             public void run() {
 		    	pmva = new PMPostViewArrayAdapter(a, R.layout.view_newreply, pmlist);
 				lv.setAdapter(pmva);
-				lv.setOnItemClickListener(new OnItemClickListener() {
-		            @Override
-		            public void onItemClick(AdapterView<?> parent, View view,
-		                    int position, long id) {
-		            	
-		            }
-		        });
             }
     	});
 	}
@@ -189,9 +182,9 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 			};
     		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder
-				.setMessage("Are you sure you want to delete PM?")
-				.setPositiveButton("Yes", dialogClickListener)
-			    .setNegativeButton("No", dialogClickListener)
+				.setMessage(R.string.dialogPmDeleteConfirm)
+				.setPositiveButton(R.string.Yes, dialogClickListener)
+			    .setNegativeButton(R.string.No, dialogClickListener)
 			    .show();
 			break;
    		}

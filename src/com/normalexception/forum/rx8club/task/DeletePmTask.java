@@ -34,7 +34,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import com.normalexception.forum.rx8club.Log;
 
-import com.normalexception.forum.rx8club.activities.pm.PrivateMessageActivity;
+import com.normalexception.forum.rx8club.activities.pm.PrivateMessageInboxActivity;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 
 public class DeletePmTask extends AsyncTask<Void,Void,Void>{
@@ -56,7 +56,7 @@ public class DeletePmTask extends AsyncTask<Void,Void,Void>{
 		this.sourceActivity = sourceActivity;
 		this.token = securityToken;
 		this.pmid = pmid;
-		this.postClazz = PrivateMessageActivity.class;
+		this.postClazz = PrivateMessageInboxActivity.class;
 	}
 
 	/*

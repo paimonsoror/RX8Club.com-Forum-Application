@@ -37,7 +37,7 @@ import com.normalexception.forum.rx8club.activities.MainActivity;
 import com.normalexception.forum.rx8club.activities.ProfileActivity;
 import com.normalexception.forum.rx8club.activities.SearchActivity;
 import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
-import com.normalexception.forum.rx8club.activities.pm.PrivateMessageActivity;
+import com.normalexception.forum.rx8club.activities.pm.PrivateMessageInboxActivity;
 import com.normalexception.forum.rx8club.favorites.FavoriteDialog;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.view.ViewHolder;
@@ -108,7 +108,7 @@ public class BannerFragment extends Fragment implements OnClickListener {
 				break;
 			
 			case R.id.inboxButton:
-				_intent = new Intent(arg0.getContext(), PrivateMessageActivity.class);
+				_intent = new Intent(arg0.getContext(), PrivateMessageInboxActivity.class);
 				break;
 			
 			case R.id.profileButton:

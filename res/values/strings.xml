@@ -103,6 +103,7 @@
     
     <!-- Dialog Strings -->
     <string name="dialogLogoffConfirm">Are you sure you want to logoff?</string>
+    <string name="dialogPmDeleteConfirm">Are you sure you want to delete PM?</string>
     
     <!-- Misc Strings -->   
     <string name="threadTitlePlaceholder">Thread Title</string>

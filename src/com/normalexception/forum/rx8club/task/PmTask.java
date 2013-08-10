@@ -34,7 +34,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import com.normalexception.forum.rx8club.Log;
 
-import com.normalexception.forum.rx8club.activities.pm.PrivateMessageActivity;
+import com.normalexception.forum.rx8club.activities.pm.PrivateMessageInboxActivity;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 
 public class PmTask extends AsyncTask<Void,Void,Void>{
@@ -64,7 +64,7 @@ public class PmTask extends AsyncTask<Void,Void,Void>{
 		this.recipients = recipients;
 		this.title = subject;
 		this.pmid = pmid;
-		this.postClazz = PrivateMessageActivity.class;
+		this.postClazz = PrivateMessageInboxActivity.class;
 	}
 
 	/*

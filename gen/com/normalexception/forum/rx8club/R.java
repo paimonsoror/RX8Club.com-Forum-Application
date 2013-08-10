@@ -277,12 +277,12 @@ containing a value of this type.
         public static final int fragment_styler=0x7f0a0010;
     }
     public static final class string {
-        public static final int No=0x7f070051;
-        public static final int Yes=0x7f070050;
+        public static final int No=0x7f070052;
+        public static final int Yes=0x7f070051;
         /**  About Screen Strings 
          */
         public static final int aboutstring=0x7f07003c;
-        public static final int addToFavorites=0x7f07004d;
+        public static final int addToFavorites=0x7f07004e;
         public static final int advancedOptions=0x7f070032;
         public static final int app_description=0x7f070003;
         /**  App Specific Strings 
@@ -307,10 +307,11 @@ containing a value of this type.
         public static final int categorySub=0x7f070008;
         public static final int categoryThread=0x7f070007;
         public static final int commentText=0x7f070020;
-        public static final int delete=0x7f07004f;
+        public static final int delete=0x7f070050;
         /**  Dialog Strings 
          */
         public static final int dialogLogoffConfirm=0x7f07004a;
+        public static final int dialogPmDeleteConfirm=0x7f07004b;
         /**  Pagination Strings 
          */
         public static final int first=0x7f07003f;
@@ -357,7 +358,7 @@ containing a value of this type.
         public static final int pmRecipients=0x7f07000c;
         public static final int pmSend=0x7f07000f;
         public static final int pmSubject=0x7f07000d;
-        public static final int preferencesLabel=0x7f07004c;
+        public static final int preferencesLabel=0x7f07004d;
         public static final int previous=0x7f070040;
         public static final int quote=0x7f070049;
         /**  Control Panel Strings 
@@ -370,11 +371,11 @@ containing a value of this type.
          */
         public static final int searchString=0x7f07002c;
         public static final int searchType=0x7f07002d;
-        public static final int submit=0x7f07004e;
+        public static final int submit=0x7f07004f;
         public static final int threadContentSearch=0x7f070033;
         /**  Misc Strings 
          */
-        public static final int threadTitlePlaceholder=0x7f07004b;
+        public static final int threadTitlePlaceholder=0x7f07004c;
         public static final int threadTitleSearch=0x7f070034;
         public static final int title_activity_main=0x7f070002;
         public static final int tvLastPost=0x7f07001b;

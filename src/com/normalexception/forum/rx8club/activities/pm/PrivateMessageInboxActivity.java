@@ -45,21 +45,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
+import com.normalexception.forum.rx8club.task.DeletePmTask;
 import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.pm.PMView;
 import com.normalexception.forum.rx8club.view.pm.PMViewArrayAdapter;
 
-public class PrivateMessageActivity extends ForumBaseActivity implements OnClickListener {
+public class PrivateMessageInboxActivity extends ForumBaseActivity implements OnClickListener {
 
 	private static String TAG = "PrivateMessageActivity";
 
@@ -114,12 +115,13 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 		                    int position, long id) {
 		            	PMView pm = (PMView) parent.getItemAtPosition(position);
 		            	Intent intent = 
-								new Intent(PrivateMessageActivity.this, 
+								new Intent(PrivateMessageInboxActivity.this, 
 										PrivateMessageViewActivity.class);
 						intent.putExtra("link", pm.getLink());
 						startActivity(intent);
 		            }
 		        });
+				registerForContextMenu(lv);
             }
     	});
 	}
@@ -131,9 +133,13 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,ContextMenuInfo menuInfo) {
     	super.onCreateContextMenu(menu, v, menuInfo);
-		menu.setHeaderTitle(((TextView)v).getText());
-		menu.add(0, v.getId(), 0, "Reply");
-		menu.add(0, v.getId(), 0, "Delete");
+    	AdapterContextMenuInfo info = 
+				(AdapterContextMenuInfo) menuInfo;
+        int position = info.position;
+        PMView pmv = (PMView)lv.getItemAtPosition(position);
+		menu.setHeaderTitle(pmv.getTitle());
+		menu.add(0, position, 0, "Reply");
+		menu.add(0, position, 0, "Delete");
 	}
 
     /*
@@ -142,9 +148,10 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
      */
     @Override
 	public boolean onContextItemSelected(final MenuItem item) {
+    	final PMView pmv = 
+    			(PMView)lv.getItemAtPosition(item.getItemId());
        	if(item.getTitle()=="Reply") {
-       		View vw = findViewById(item.getItemId());
-       		replyPm(vw);
+       		replyPm(pmv);
        	}
     	else if(item.getTitle()=="Delete") {
    			// Lets make sure the user didn't accidentally click this
@@ -154,17 +161,16 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 				public void onClick(DialogInterface dialog, int which) {
 					switch (which){
 				    	case DialogInterface.BUTTON_POSITIVE:
-				    		View vw = findViewById(item.getItemId());
-				    		deletePm(vw);
+				    		deletePm(pmv);
 			   				break;
 			        }
 			    }
 			};
     		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder
-				.setMessage("Are you sure you want to delete PM?")
-				.setPositiveButton("Yes", dialogClickListener)
-			    .setNegativeButton("No", dialogClickListener)
+				.setMessage(R.string.dialogPmDeleteConfirm)
+				.setPositiveButton(R.string.Yes, dialogClickListener)
+			    .setNegativeButton(R.string.No, dialogClickListener)
 			    .show();
     	}
     	else {
@@ -178,10 +184,9 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
      * Handler for replying to a private message
      * @param arg0	The view associated with the private message
      */
-    private void replyPm(View arg0) {
-    	/**Log.v(TAG, "Reply PM Clicked");
-		TextView tv = (TextView)arg0;
-		final String link = linkMap.get(tv.getId()); //tv.getText().toString());
+    private void replyPm(PMView pmv) {
+    	Log.v(TAG, "Reply PM Clicked");
+		final String link = pmv.getLink();
 		if(link != null && !link.equals("")) {
 			Log.v(TAG, "User Clicked: " + link);
 			
@@ -189,24 +194,22 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 			new Thread("RefreshDisplayList") {
 				public void run() {
 					Intent intent = 
-							new Intent(PrivateMessageActivity.this, 
+							new Intent(PrivateMessageInboxActivity.this, 
 									PrivateMessageViewActivity.class);
 					intent.putExtra("link", link);
 					startActivity(intent);
 				}
 			}.start();	
-		}*/
+		}
     }
     
     /**
      * Handler for deleting a private message
      * @param arg0	The view associated with the private message
      */
-    private void deletePm(View arg0) {
-    	/**
+    private void deletePm(PMView pmv) {
     	Log.v(TAG, "Delete PM Clicked");
-    	PMView tv = (PMView)arg0;
-    	final String link = linkMap.get(tv.getId()); //tv.getText().toString());
+    	final String link = pmv.getLink(); //tv.getText().toString());
     	
     	if(link != null && !link.equals("")) {
     		final String id = link.substring(link.lastIndexOf("id=") + 3);
@@ -214,7 +217,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 
 			DeletePmTask dpm = new DeletePmTask(this, token, id);
 			dpm.execute();
-		}*/
+		}
     }
     
     /**
@@ -312,7 +315,7 @@ public class PrivateMessageActivity extends ForumBaseActivity implements OnClick
 		switch(arg0.getId()) {	
 		case NEW_PM:
 			Log.v(TAG, "New PM Clicked");
-			Intent intent = new Intent(PrivateMessageActivity.this, 
+			Intent intent = new Intent(PrivateMessageInboxActivity.this, 
 					NewPrivateMessageActivity.class);
 			startActivity(intent);
 			break;
