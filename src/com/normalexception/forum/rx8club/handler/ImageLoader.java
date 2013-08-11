@@ -49,7 +49,7 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.cache.FileCache;
 import com.normalexception.forum.rx8club.cache.MemoryCache;
-import com.normalexception.forum.rx8club.utils.LoginFactory;
+import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.utils.Utils;
 
 public class ImageLoader {

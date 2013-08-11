@@ -35,7 +35,7 @@ import android.os.AsyncTask;
 import com.normalexception.forum.rx8club.Log;
 
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
-import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
+import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
 /**
  * Task generated to move the submit of a new thread to an async

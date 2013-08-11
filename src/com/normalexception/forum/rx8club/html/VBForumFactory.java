@@ -1,4 +1,4 @@
-package com.normalexception.forum.rx8club.utils;
+package com.normalexception.forum.rx8club.html;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -42,6 +42,7 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
+import com.normalexception.forum.rx8club.utils.Utils;
 
 /**
  * Classes that pertain to a VB type forum

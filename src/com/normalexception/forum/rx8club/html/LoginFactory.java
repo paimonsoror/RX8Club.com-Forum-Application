@@ -1,4 +1,4 @@
-package com.normalexception.forum.rx8club.utils;
+package com.normalexception.forum.rx8club.html;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -60,6 +60,7 @@ import com.normalexception.forum.rx8club.httpclient.KeepAliveStrategy;
 import com.normalexception.forum.rx8club.httpclient.RedirectStrategy;
 import com.normalexception.forum.rx8club.httpclient.RetryHandler;
 import com.normalexception.forum.rx8club.user.UserProfile;
+import com.normalexception.forum.rx8club.utils.PasswordUtils;
 
 /**
  * Singleton class for the login information

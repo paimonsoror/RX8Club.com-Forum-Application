@@ -38,7 +38,7 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.list.ThreadTypeFactory;
-import com.normalexception.forum.rx8club.utils.LoginFactory;
+import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 

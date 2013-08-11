@@ -48,8 +48,8 @@ import com.normalexception.forum.rx8club.activities.pm.NewPrivateMessageActivity
 import com.normalexception.forum.rx8club.activities.thread.EditPostActivity;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.handler.ImageLoader;
+import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
-import com.normalexception.forum.rx8club.utils.LoginFactory;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
 /**

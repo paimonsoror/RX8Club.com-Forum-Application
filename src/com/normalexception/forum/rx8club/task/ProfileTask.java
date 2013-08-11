@@ -11,7 +11,7 @@ import android.os.AsyncTask;
 import com.normalexception.forum.rx8club.Log;
 
 import com.normalexception.forum.rx8club.activities.UserCpActivity;
-import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
+import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
 public class ProfileTask extends AsyncTask<Void,Void,Void>{
 	private ProgressDialog mProgressDialog;

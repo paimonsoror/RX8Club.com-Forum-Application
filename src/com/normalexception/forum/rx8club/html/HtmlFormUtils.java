@@ -1,4 +1,4 @@
-package com.normalexception.forum.rx8club.utils;
+package com.normalexception.forum.rx8club.html;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -54,6 +54,7 @@ import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.user.UserProfile;
+import com.normalexception.forum.rx8club.utils.Utils;
 
 public class HtmlFormUtils {	
 	private static String responseUrl = "";

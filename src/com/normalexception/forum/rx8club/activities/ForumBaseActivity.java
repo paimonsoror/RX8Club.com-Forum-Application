@@ -43,8 +43,8 @@ import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.preferences.Preferences;
-import com.normalexception.forum.rx8club.utils.LoginFactory;
 
 /**
  * Abstract activity that handles all common tasks for the activities

@@ -54,9 +54,9 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
+import com.normalexception.forum.rx8club.html.HtmlFormUtils;
+import com.normalexception.forum.rx8club.html.VBForumFactory;
 import com.normalexception.forum.rx8club.task.DeletePmTask;
-import com.normalexception.forum.rx8club.utils.HtmlFormUtils;
-import com.normalexception.forum.rx8club.utils.VBForumFactory;
 import com.normalexception.forum.rx8club.view.pm.PMView;
 import com.normalexception.forum.rx8club.view.pm.PMViewArrayAdapter;
 

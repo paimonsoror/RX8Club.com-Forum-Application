@@ -38,7 +38,7 @@ import ch.boye.httpclientandroidlib.HttpResponse;
 import ch.boye.httpclientandroidlib.client.methods.HttpGet;
 import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
 
-import com.normalexception.forum.rx8club.utils.LoginFactory;
+import com.normalexception.forum.rx8club.html.LoginFactory;
 
 /**
  * Handler designed to display the images within a textview
