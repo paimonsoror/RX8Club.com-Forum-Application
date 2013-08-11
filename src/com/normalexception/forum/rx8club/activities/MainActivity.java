@@ -106,7 +106,7 @@ public class MainActivity extends ForumBaseActivity {
      * Start the application activity
      */
     private void constructView() {
-    	loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
+    	loadingDialog = ProgressDialog.show(this, getString(R.string.loading), getString(R.string.pleaseWait), true);
         final ForumBaseActivity thisActivity = this;
         
         /**

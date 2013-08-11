@@ -123,7 +123,7 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 	    	   if(((TextView)findViewById(R.id.usernameText)).getText().length() == 0 || 
 	    			   ((TextView)findViewById(R.id.passwordText)).getText().length() == 0) {
 	    		   Toast.makeText(this, 
-	    				   "Please Fill In Your Login Information", 
+	    				   R.string.loginFillInformation, 
 	    				   Toast.LENGTH_LONG).show();
 	    	   } else {
 		    	   runOnUiThread(new Runnable() {
@@ -157,7 +157,11 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 		protected Void doInBackground(final Context... params) {
 			runOnUiThread(new Runnable() {
 				  public void run() {
-					  loadingDialog = ProgressDialog.show(params[0], "Logging In", "Please wait...", true);
+					  loadingDialog = 
+							  ProgressDialog.show(params[0], 
+									  getString(R.string.loggingIn), 
+									  getString(R.string.pleaseWait), 
+									  true);
 				  }
 			});
 			
@@ -202,7 +206,7 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 				runOnUiThread(new Runnable() {
 					public void run() {
 						Toast.makeText(MainApplication.getAppContext(), 
-								"Sorry, Your Login Authentication Failed", Toast.LENGTH_LONG).show();
+								R.string.loginAuthFailed, Toast.LENGTH_LONG).show();
 					}
 				});
 			}

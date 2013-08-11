@@ -75,7 +75,8 @@ public class Preferences extends PreferenceActivity {
             	final ProgressDialog dlg = 
             			ProgressDialog.show(
             					ctx, 
-            					"Clearing Cache", "Please wait...", 
+            					getString(R.string.dialogClearingCache), 
+            					getString(R.string.pleaseWait), 
             					true);
             	new Thread("ClearCacheThread") {
             		public void run() {
@@ -90,7 +91,7 @@ public class Preferences extends PreferenceActivity {
             				runOnUiThread(new Runnable() {
                 				public void run() {
                 					Toast.makeText(ctx, 
-                        					"Cache Cleared!", 
+                        					R.string.dialogCacheCleared, 
                         					Toast.LENGTH_SHORT).show();
                 				}
                 			});

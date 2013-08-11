@@ -114,7 +114,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
      * Construct the thread activity view
      */
     private void constructView() {
-    	loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
+    	loadingDialog = ProgressDialog.show(this, getString(R.string.loading), getString(R.string.pleaseWait), true);
     	final ThreadActivity src = this;
     	    	
         updaterThread = new Thread("CategoryThread") {

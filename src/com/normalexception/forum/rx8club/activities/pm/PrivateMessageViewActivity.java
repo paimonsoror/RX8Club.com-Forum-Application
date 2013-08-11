@@ -35,8 +35,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -106,7 +104,9 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
      * Construct the view elements
      */
     private void constructView() {
-    	loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
+    	loadingDialog = 
+    			ProgressDialog.show(
+    					this, getString(R.string.loading), getString(R.string.pleaseWait), true);
     	final ForumBaseActivity src = this;
     	
         updaterThread = new Thread("PrivateMessageThread") {

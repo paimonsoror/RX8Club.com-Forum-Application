@@ -138,8 +138,8 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
         int position = info.position;
         PMView pmv = (PMView)lv.getItemAtPosition(position);
 		menu.setHeaderTitle(pmv.getTitle());
-		menu.add(0, position, 0, "Reply");
-		menu.add(0, position, 0, "Delete");
+		menu.add(0, position, 0, R.string.reply);
+		menu.add(0, position, 0, R.string.delete);
 	}
 
     /*
@@ -150,10 +150,10 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
 	public boolean onContextItemSelected(final MenuItem item) {
     	final PMView pmv = 
     			(PMView)lv.getItemAtPosition(item.getItemId());
-       	if(item.getTitle()=="Reply") {
+       	if(item.getTitle().equals(getString(R.string.reply))) {
        		replyPm(pmv);
        	}
-    	else if(item.getTitle()=="Delete") {
+    	else if(item.getTitle().equals(getString(R.string.delete))) {
    			// Lets make sure the user didn't accidentally click this
 			DialogInterface.OnClickListener dialogClickListener = 
 					new DialogInterface.OnClickListener() {
@@ -241,7 +241,7 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
      * of the view then this is not called
      */
     private void constructView() {
-    	loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
+    	loadingDialog = ProgressDialog.show(this, getString(R.string.loading), getString(R.string.pleaseWait), true);
     	final ForumBaseActivity src = this;
     	
         updaterThread = new Thread("NewPostsThread") {

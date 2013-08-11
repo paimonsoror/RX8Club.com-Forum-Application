@@ -113,7 +113,7 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 	 * Construct the view elements
 	 */
 	private void constructView() {
-		loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
+		loadingDialog = ProgressDialog.show(this, getString(R.string.loading), getString(R.string.pleaseWait), true);
 		final NewPrivateMessageActivity src = this;
 		
 	    updaterThread = new Thread("PrivateMessageThread") {

@@ -103,7 +103,7 @@ public class EditPostActivity extends ForumBaseActivity {
      * Construct the view items
      */
     private void constructView() {
-    	loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
+    	loadingDialog = ProgressDialog.show(this, getString(R.string.loading), getString(R.string.pleaseWait), true);
     	
     	try {
     		Document editPage = 

@@ -98,7 +98,7 @@ public class ProfileActivity extends ForumBaseActivity implements OnClickListene
     private void constructView() {
     	tl = (TableLayout)findViewById(R.id.myTableLayoutProfile);
         
-        loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
+        loadingDialog = ProgressDialog.show(this, getString(R.string.loading), getString(R.string.pleaseWait), true);
         final ForumBaseActivity src = this;
         
         updaterThread = new Thread("CategoryThread") {

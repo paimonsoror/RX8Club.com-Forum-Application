@@ -35,6 +35,8 @@
     <string name="loginUsernameInput">Username: </string>
     <string name="loginLoginButton">Login</string>
     <string name="loginGuestButton">Guest</string>
+    <string name="loginAuthFailed">Sorry, Your Login Authentication Failed</string>
+    <string name="loginFillInformation">Please Fill In Your Login Information</string>
     
     <!-- Thread Screen Strings -->
     <string name="tvTitle">This is one super duper long thread name that will wrap</string>
@@ -104,6 +106,9 @@
     <!-- Dialog Strings -->
     <string name="dialogLogoffConfirm">Are you sure you want to logoff?</string>
     <string name="dialogPmDeleteConfirm">Are you sure you want to delete PM?</string>
+    <string name="dialogClearingCache">Clearing Cache</string>
+    <string name="dialogCacheCleared">Cache Cleared!</string>
+    <string name="dialogFavoriteAdded">Favorite Added</string>
     
     <!-- Misc Strings -->   
     <string name="threadTitlePlaceholder">Thread Title</string>
@@ -111,6 +116,10 @@
     <string name="addToFavorites">Add To Favorites</string>
     <string name="submit">Submit</string>
     <string name="delete">Delete</string>
+    <string name="reply">Reply</string>
+    <string name="loading">Loading</string>
+    <string name="pleaseWait">Please Wait&#8230;</string>
+    <string name="loggingIn">Logging In</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
 

@@ -32,8 +32,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.MainApplication;
+import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.view.thread.ThreadView;
 
 /**
@@ -119,6 +121,10 @@ public class FavoriteFactory {
 	public void addFavorite(ThreadView thread) {
 		_favorites.add(thread);
 		saveToMemory();
+		Toast.makeText(
+				MainApplication.getAppContext(), 
+				R.string.dialogFavoriteAdded, 
+				Toast.LENGTH_LONG).show();
 	}
 	
 	/**

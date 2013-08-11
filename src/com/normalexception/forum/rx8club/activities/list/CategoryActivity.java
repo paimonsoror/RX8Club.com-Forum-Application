@@ -167,7 +167,9 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	 * Construct the view for the activity
 	 */
 	private void constructView() {
-		loadingDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
+		loadingDialog = 
+				ProgressDialog.show(
+						this, getString(R.string.loading), getString(R.string.pleaseWait), true);
 		final ForumBaseActivity src = this;
 		
 		updaterThread = new Thread("CategoryThread") {
