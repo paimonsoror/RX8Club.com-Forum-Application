@@ -48,7 +48,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.utils.UserProfile;
+import com.normalexception.forum.rx8club.user.UserProfile;
 import com.normalexception.forum.rx8club.utils.VBForumFactory;
 
 /**

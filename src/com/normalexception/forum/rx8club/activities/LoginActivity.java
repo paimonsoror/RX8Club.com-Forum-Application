@@ -46,8 +46,8 @@ import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.user.UserProfile;
 import com.normalexception.forum.rx8club.utils.LoginFactory;
-import com.normalexception.forum.rx8club.utils.UserProfile;
 
 /**
  * Activity that is designed to handle all login related

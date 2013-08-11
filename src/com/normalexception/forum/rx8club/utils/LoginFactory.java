@@ -59,6 +59,7 @@ import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.httpclient.KeepAliveStrategy;
 import com.normalexception.forum.rx8club.httpclient.RedirectStrategy;
 import com.normalexception.forum.rx8club.httpclient.RetryHandler;
+import com.normalexception.forum.rx8club.user.UserProfile;
 
 /**
  * Singleton class for the login information
