@@ -31,6 +31,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.view.ContextThemeWrapper;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
@@ -58,7 +59,8 @@ public class FavoriteDialog {
 	 */
 	public FavoriteDialog(Context ctx) {	
 		this.ctx = ctx;
-		builder = new AlertDialog.Builder(ctx);
+		builder = new AlertDialog.Builder(
+				new ContextThemeWrapper(ctx, R.style.AlertDialogCustom));
 		
 		List<String>    ls = new ArrayList<String>();
 		for(ThreadView tv : ft)

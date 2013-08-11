@@ -403,6 +403,7 @@ containing a value of this type.
         public static final int websitelink=0x7f070040;
     }
     public static final class style {
+        public static final int AlertDialogCustom=0x7f090002;
         public static final int AppTheme=0x7f090000;
         public static final int PreferencesTheme=0x7f090001;
     }
