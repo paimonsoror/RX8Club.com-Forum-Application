@@ -7,6 +7,10 @@
 	        android:title="Version Number"
 	        android:key="version"
 	        android:summary=""/>
+	    <Preference 
+	        android:title="Build Number"
+	        android:key="build"
+	        android:summary=""/>
 	</PreferenceCategory>
 	<PreferenceCategory
 	    		android:title="Favorites">

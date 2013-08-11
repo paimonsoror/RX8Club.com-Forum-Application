@@ -141,6 +141,14 @@ public class Preferences extends PreferenceActivity {
         			getPackageManager().getPackageInfo(
         					this.getPackageName(), 0).versionName);
         } catch (Exception e) {}
+        
+        try {
+        	Preference build = (Preference)findPreference("build");
+        	build.setSummary(
+        			Integer.toString(
+        					getPackageManager().getPackageInfo(
+        							this.getPackageName(), 0).versionCode));
+        } catch (Exception e) {}
     }
 	
 	/**
