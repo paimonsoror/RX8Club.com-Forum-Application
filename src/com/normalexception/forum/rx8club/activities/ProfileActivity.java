@@ -30,26 +30,21 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.StyleSpan;
-import com.normalexception.forum.rx8club.Log;
-import com.normalexception.forum.rx8club.MainApplication;
-
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.TableLayout;
-import android.widget.TableLayout.LayoutParams;
-import android.widget.TableRow;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.handler.ImageLoader;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
 import com.normalexception.forum.rx8club.user.UserProfile;
+import com.normalexception.forum.rx8club.view.profile.ProfileView;
+import com.normalexception.forum.rx8club.view.profile.ProfileViewArrayAdapter;
 
 /**
  * Activity that sets up the users profile
@@ -57,25 +52,15 @@ import com.normalexception.forum.rx8club.user.UserProfile;
  * Required Intent Parameters:
  * none
  */
-public class ProfileActivity extends ForumBaseActivity implements OnClickListener {
+public class ProfileActivity extends ForumBaseActivity {
 
 	private static String TAG = "ProfileActivity";
-	private ArrayList<ProfileThreadStub> stubs;
-	private TableLayout tl;
 	
-	/**
-	 * A stub inner class that defines a thread that the user
-	 * has posted on recently
-	 */
-	private class ProfileThreadStub {
-		private String name, link, text;
-		
-		public void setName(String name) { this.name = name; }
-		public void setLink(String link) { this.link = link; }
-		public void setText(String txt) { this.text = txt; }
-
-		public String toString() { return name + ", " + link + ", " + text; }
-	}
+	private ArrayList<ProfileView> stubs;	
+	private ProfileViewArrayAdapter pva;
+	private ListView lv;
+	
+	private ImageLoader imageLoader;
 	
 	/*
 	 * (non-Javadoc)
@@ -85,19 +70,29 @@ public class ProfileActivity extends ForumBaseActivity implements OnClickListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_basiclist);
         
         Log.v(TAG, "Category Activity Started");
+        
+        imageLoader=new ImageLoader(this);
         
         constructView();
     }
     
+    private void updateList() {
+		final Activity a = this;
+    	runOnUiThread(new Runnable() {
+            public void run() {
+		    	pva = new ProfileViewArrayAdapter(a, 0, stubs);
+				lv.setAdapter(pva);
+            }
+    	});
+	}
+    
     /**
      * Construct the profile view
      */
-    private void constructView() {
-    	tl = (TableLayout)findViewById(R.id.myTableLayoutProfile);
-        
+    private void constructView() {        
         loadingDialog = ProgressDialog.show(this, getString(R.string.loading), getString(R.string.pleaseWait), true);
         final ForumBaseActivity src = this;
         
@@ -112,34 +107,36 @@ public class ProfileActivity extends ForumBaseActivity implements OnClickListene
 					UserProfile.setUserId(id);
 					getUserInformation(doc);
 					
+					lv = (ListView)findViewById(R.id.mainlistview);
+					
 					runOnUiThread(new Runnable() {
-	                    public void run() {
-	                    	((TextView)findViewById(R.id.userNameText)).setText(
+			            public void run() {
+			            	View v = getLayoutInflater().
+			            			inflate(R.layout.view_profile_header, null);
+			            	v.setOnClickListener(src);
+			            	lv.addHeaderView(v);
+
+	                    	// the dateline at the end of the file so that we aren't
+	                        // creating multiple images for a user.  The image still
+	                        // gets returned without a date
+	                        String nodate_avatar = 
+	                        		UserProfile.getUserImageLink().indexOf("&dateline") == -1? 
+	                        				UserProfile.getUserImageLink() : 
+	                        					UserProfile.getUserImageLink().substring(0, 
+	                        							UserProfile.getUserImageLink().indexOf("&dateline"));
+	                        ImageView avatar = ((ImageView)findViewById(R.id.pr_image));
+	                        imageLoader.DisplayImage(nodate_avatar, avatar);
+	                        
+	                    	((TextView)findViewById(R.id.pr_username)).setText(
 	                    			UserProfile.getUsername() + " (ID: " + UserProfile.getUserId() + ")");
-	                    	((TextView)findViewById(R.id.userTitleText)).setText(UserProfile.getUserTitle());
-	                    	((TextView)findViewById(R.id.userPostCountText)).setText(UserProfile.getUserPostCount());
-	                    	((TextView)findViewById(R.id.joinDateText)).setText(UserProfile.getUserJoinDate());
-	                    	
-	                    	addRow(Color.BLACK, new String[]{"Your Recent Activity"}, 40, false);
-	                    	
-	                    	boolean alternate = true;
-	                    	for(ProfileThreadStub stub : stubs) {
-	                    		addRow(alternate? Color.GRAY : Color.DKGRAY,
-	                    				new String[]{stub.name + "\n\n" + stub.text},
-	                    				100, false);
-	                    		alternate = !alternate;
-	                    	}
+	                    	((TextView)findViewById(R.id.pr_userTitle)).setText(UserProfile.getUserTitle());
+	                    	((TextView)findViewById(R.id.pr_userPosts)).setText(UserProfile.getUserPostCount());
+	                    	((TextView)findViewById(R.id.pr_userJoin)).setText(UserProfile.getUserJoinDate());	          
 	                    }
 					});
-				} else {
-					runOnUiThread(new Runnable() {
-	                    public void run() {
-						Toast.makeText(MainApplication.getAppContext(),
-								"There Was An Error Reading Your Profile...",
-								Toast.LENGTH_LONG).show();
-		                    }
-					});
-				}
+					
+					updateList();
+				} 
 				loadingDialog.dismiss();
 			}
         };
@@ -147,62 +144,11 @@ public class ProfileActivity extends ForumBaseActivity implements OnClickListene
     }
     
     /**
-     * Add a row to the view
-     * @param clr	The background color of the row
-     * @param text	The text for the row
-     * @param id	The id of the row
-     */
-    private void addRow(int clr, String texts[], int id, boolean span) {
-    	/* Create a new row to be added. */
-    	TableRow tr_head = new TableRow(this);
-    	tr_head.setId(id);
-    	tr_head.setBackgroundColor(clr);
-
-    	for(String text : texts) {
-	    	/* Create a Button to be the row-content. */
-	    	TextView b = new TextView(this);
-	    	b.setId(id);
-	    	
-	    	if(text.indexOf("\n") != -1) {
-	    	  SpannableString spanString = new SpannableString(text);
-	    	  spanString.setSpan(new StyleSpan(Typeface.BOLD), 
-	    				0, text.indexOf("\n"), 0);
-	    	  spanString.setSpan(new StyleSpan(Typeface.ITALIC), 
-	    				text.indexOf("\n") + 1, text.length(), 0);
-    		  b.setText(spanString);
-	    	} else {   	
-	    	  SpannableString spanString = new SpannableString(text);
-	    	  spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, text.length(), 0);
-	    	  b.setText(spanString);
-	    	}
-	    	b.setOnClickListener(this);
-	    	b.setTextSize((float) 10.0);
-	    	b.setTextColor(Color.WHITE);
-	        b.setPadding(5, 5, 5, 5);
-	        
-	
-	    	/* Add Button to row. */
-	        if(span) {
-		        TableRow.LayoutParams params = new TableRow.LayoutParams();
-		        params.span = 3;
-		        tr_head.addView(b,params);
-	        } else {
-	        	tr_head.addView(b);
-	        }
-    	}
-
-    	/* Add row to TableLayout. */
-        tl.addView(tr_head,new TableLayout.LayoutParams(
-    			LayoutParams.WRAP_CONTENT,
-    			LayoutParams.WRAP_CONTENT));
-    }
-    
-    /**
      * Get the user information from the users profile
      * @param doc	The page document
      */
     private void getUserInformation(Document doc) {
-    	stubs = new ArrayList<ProfileThreadStub>();
+    	stubs = new ArrayList<ProfileView>();
     	
     	// Title
     	Elements userInfo = doc.select("div[id=main_userinfo]");
@@ -212,6 +158,14 @@ public class ProfileActivity extends ForumBaseActivity implements OnClickListene
     	// Posts
     	Elements statisticInfo = doc.select("fieldset[class=statistics_group]");
     	Elements post = statisticInfo.select("li");
+    	
+    	// Profile Pic
+    	Elements profilePicInfo = doc.select("td[id=profilepic_cell] > img");
+ 
+    	// Grab image, trap
+    	try {
+    		UserProfile.setUserImageLink(profilePicInfo.attr("src"));
+    	} catch (Exception e) { }
     	
     	// Grab Post count, trap exception
     	try {
@@ -232,7 +186,7 @@ public class ProfileActivity extends ForumBaseActivity implements OnClickListene
     	doc = VBForumFactory.getInstance().get(this, link);
     	Elements threadlist = doc.select("table[id^=post]");
     	for(Element threadl : threadlist) {
-    		ProfileThreadStub stub = new ProfileThreadStub();
+    		ProfileView stub = new ProfileView();
     		Elements divs = threadl.getElementsByTag("div");
     		Elements div = divs.get(1).getElementsByTag("a");
     		stub.setLink(div.attr("href"));
@@ -243,14 +197,6 @@ public class ProfileActivity extends ForumBaseActivity implements OnClickListene
     		stubs.add(stub);
     	}
     }
-
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
-	@Override
-	public void onClick(View arg0) {		
-	}
 
 	/*
 	 * (non-Javadoc)

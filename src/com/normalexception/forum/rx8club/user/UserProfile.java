@@ -34,6 +34,7 @@ public class UserProfile {
 	private static String link = null;
 	private static String posts = null;
 	private static String join = null;
+	private static String image = null;
 	
 	/**
 	 * Set the user id number
@@ -137,5 +138,21 @@ public class UserProfile {
 	 */
 	public static String getUserJoinDate() {
 		return UserProfile.join;
+	}
+	
+	/**
+	 * Set the user's image link
+	 * @param	img	The user's image link
+	 */
+	public static void setUserImageLink(String img) {
+		UserProfile.image = img;
+	}
+	
+	/**
+	 * Report the user image link
+	 * @return 	The user image link
+	 */
+	public static String getUserImageLink() {
+		return UserProfile.image;
 	}
 }

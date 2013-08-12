@@ -1,4 +1,4 @@
-package com.normalexception.forum.rx8club.utils;
+package com.normalexception.forum.rx8club.view.profile;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -24,43 +24,56 @@ package com.normalexception.forum.rx8club.utils;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+public class ProfileView {
+	private String name, link, text;
 
-import com.normalexception.forum.rx8club.Log;
-
-public class PasswordUtils {
-
-	public static String TAG = "PasswordUtils";
+	/**
+	 * Report the name of the thread that the user posted on
+	 * @param name	The name of the thread
+	 */
+	public void setName(String name) { 
+		this.name = name; 
+	}
 	
 	/**
-	 * Convert the password to an md5 password
-	 * @param password	A plaintext password
-	 * @return			The md5 encoded password
-	 * @throws NoSuchAlgorithmException
+	 * Set the link of the thread the user posted on
+	 * @param link	The link of the thread
 	 */
-	public static String hexMd5(String password) throws NoSuchAlgorithmException {
-		Log.v(TAG, "Creating MD5 Password");
-		MessageDigest md5 = MessageDigest.getInstance("MD5");
-		md5.update(password.getBytes());
-		BigInteger hash = new BigInteger(1, md5.digest());
-		return pad(hash.toString(16), 32, '0');
+	public void setLink(String link) { 
+		this.link = link; 
 	}
-	    
+	
 	/**
-	 * Pad the md5 password
-	 * @param s			The string to pad
-	 * @param length	The total length to pad to
-	 * @param pad		The pad character
-	 * @return			The padded string
+	 * Set the last snippet of text from the thread
+	 * @param txt	The snippet of text
 	 */
-	private static String pad(String s, int length, char pad) {
-		Log.v(TAG, "Padding MD5 Password");
-		StringBuffer buffer = new StringBuffer(s);
-		while (buffer.length() < length) {
-			buffer.insert(0, pad);
-		}
-		return buffer.toString();
+	public void setText(String txt) { 
+		this.text = txt; 
 	}
+
+	/**
+	 * Report the name of the thread
+	 * @return	The name of the thread
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Report the link of the thread
+	 * @return	The link of the thread
+	 */
+	public String getLink() {
+		return link;
+	}
+
+	/**
+	 * Report the snippet of text
+	 * @return	The snippet of text
+	 */
+	public String getText() {
+		return text;
+	}
+
+	public String toString() { return name + ", " + link + ", " + text; }
 }
