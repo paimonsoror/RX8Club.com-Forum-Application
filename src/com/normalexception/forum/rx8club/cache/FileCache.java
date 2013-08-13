@@ -25,6 +25,9 @@ package com.normalexception.forum.rx8club.cache;
  ************************************************************************/
 
 import java.io.File;
+
+import com.normalexception.forum.rx8club.R;
+
 import android.content.Context;
  
 public class FileCache {
@@ -36,7 +39,8 @@ public class FileCache {
         if (android.os.Environment.getExternalStorageState().equals(
         		android.os.Environment.MEDIA_MOUNTED))
             cacheDir=new File(
-            		android.os.Environment.getExternalStorageDirectory(),"LazyList");
+            		android.os.Environment.getExternalStorageDirectory(), 
+            		context.getString(R.string.folder_rx8club));
         else
             cacheDir=context.getCacheDir();
         if(!cacheDir.exists())

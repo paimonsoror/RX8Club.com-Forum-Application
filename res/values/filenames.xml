@@ -1,4 +1,6 @@
 <resources>
     <string name="file_favorites">favorites.dat</string>
     <string name="file_homecache">homecache.dat</string>
+    
+    <string name="folder_rx8club">rx8clubCache</string>
 </resources>
