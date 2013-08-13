@@ -27,29 +27,41 @@ package com.normalexception.forum.rx8club.cache;
 import java.io.File;
 
 import android.content.Context;
- 
-public class FileCache extends Cache {
- 
+
+import com.normalexception.forum.rx8club.R;
+
+public class Cache {
+	protected File cacheDir = null;
+	
 	/**
-	 * Create a new file cache
+	 * Report the location of the external cache
 	 * @param context	The source context
+	 * @return			The location of the external cache
 	 */
-    public FileCache(Context context){
-    	this.cacheDir = getExternalCache(context);
-    }
- 
-    /**
-     * Report a file from the cache
-     * @param url	We encoded a URL when we stored the file
-     * @return		The file from the cache
-     */
-    public File getFile(String url){
-        //I identify images by hashcode. Not a perfect solution, good for the demo.
-        String filename=String.valueOf(url.hashCode());
+	protected File getExternalCache(Context context) {
+		File cacheDir = null;
+		//Find the dir to save cached images
+        if (android.os.Environment.getExternalStorageState().equals(
+        		android.os.Environment.MEDIA_MOUNTED))
+            cacheDir=new File(
+            		android.os.Environment.getExternalStorageDirectory(),
+            		context.getString(R.string.folder_rx8club));
+        else
+            cacheDir=context.getCacheDir();
+        if(!cacheDir.exists())
+            cacheDir.mkdirs();
         
-        //Another possible solution (thanks to grantland)
-        //String filename = URLEncoder.encode(url);
-        File f = new File(cacheDir, filename);
-        return f; 
+        return cacheDir;
+	}
+	 
+	/**
+	 * Clear the cache directory
+	 */
+    public void clear() {
+        File[] files = cacheDir.listFiles();
+        if(files==null)
+            return;
+        for(File f:files)
+            f.delete();
     }
 }

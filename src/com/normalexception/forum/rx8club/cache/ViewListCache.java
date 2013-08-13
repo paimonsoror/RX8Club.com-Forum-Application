@@ -35,10 +35,8 @@ import java.util.List;
 
 import android.content.Context;
 
-public class ViewListCache<T> {
+public class ViewListCache<T> extends Cache {
 	
-	private File cacheDir;
-	private Context context;
 	private String CACHEFILENAME = null;
 	private File cacheFile = null;
 	
@@ -53,18 +51,8 @@ public class ViewListCache<T> {
 	 * @param filename	The name of the cache file
 	 */
 	public ViewListCache(Context ctx, String filename) {
-		this.context = ctx;
 		this.CACHEFILENAME = filename;
-		
-		//Find the dir to save cached images
-        if (android.os.Environment.getExternalStorageState().equals(
-        		android.os.Environment.MEDIA_MOUNTED))
-            cacheDir=new File(
-            		android.os.Environment.getExternalStorageDirectory(),"LazyList");
-        else
-            cacheDir=context.getCacheDir();
-        if(!cacheDir.exists())
-            cacheDir.mkdirs();
+		this.cacheDir = getExternalCache(ctx);
 	}
 	
 	/**
