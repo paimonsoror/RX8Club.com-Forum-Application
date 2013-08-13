@@ -36,6 +36,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,6 +48,7 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
+import com.normalexception.forum.rx8club.activities.fragments.PaginationFragment;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
@@ -136,9 +138,15 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 				
 				runOnUiThread(new Runnable() {
 		            public void run() {
+		            	// Inflate the footer (pagination, styler, reply box)
 		            	View v = getLayoutInflater().
 		            			inflate(R.layout.view_newreply_footer, null);
 		            	v.setOnClickListener(src);
+		            	
+		            	// Inflate the header (pagination)
+		            	View p = getLayoutInflater().
+		            			inflate(R.layout.fragment_pagination, null);
+		            	p.setOnClickListener(src);
 		            	
 						// If the user is guest, then hide the items that
 		            	// they generally wont be able to use
@@ -146,6 +154,9 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 							ViewHolder.get(v, R.id.nr_replycontainer)
 								.setVisibility(View.GONE);
 						}
+						
+						// Add to view
+						lv.addHeaderView(p);
 		            	lv.addFooterView(v);
 		            }
 	            });

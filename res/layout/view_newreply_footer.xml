@@ -6,68 +6,19 @@
     android:baselineAligned="false"
     android:orientation="vertical" >
         
-        <RelativeLayout
-	        android:id="@+id/nt_paginationLayout"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content">
-	
-	        <Button
-	            android:id="@+id/firstButton"
-	            style="?android:attr/buttonStyleSmall"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/first"
-	            android:textSize="10dip"
-	            android:layout_alignParentLeft="true"
-	            android:onClick="onClick" />
-	
-	        <Button
-	            android:id="@+id/previousButton"
-	            style="?android:attr/buttonStyleSmall"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_marginRight="50dip"
-	            android:text="@string/previous"
-	            android:textSize="10dip"
-	            android:layout_toRightOf="@id/firstButton"
-	            android:onClick="onClick" />
-	
-	        <TextView
-	            android:id="@+id/paginationText"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:gravity="center_horizontal"
-	            android:text="@string/pageXofY"
-	            android:layout_centerInParent="true" />
-		
-	        <Button
-	            android:id="@+id/lastButton"
-	            style="?android:attr/buttonStyleSmall"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="@string/last"
-	            android:textSize="10dip"
-	            android:layout_alignParentRight="true"
-	            android:onClick="onClick" />
-	        
-	        <Button
-	            android:id="@+id/nextButton"
-	            style="?android:attr/buttonStyleSmall"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_marginLeft="50dip"
-	            android:text="@string/next"
-	            android:textSize="10dip"
-	            android:layout_toLeftOf="@id/lastButton"
-	            android:onClick="onClick" />
-	    </RelativeLayout>
+        <fragment
+            android:id="@+id/fragment_pagination"
+            android:name="com.normalexception.forum.rx8club.activities.fragments.PaginationFragment"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+			tools:layout="@layout/fragment_pagination"/>
 
         <LinearLayout
             android:id="@+id/nr_replycontainer"
             android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:orientation="vertical"
-		    android:layout_below="@id/nt_paginationLayout">          
+		    android:layout_below="@id/fragment_pagination">          
 	        <TextView
 	            android:id="@+id/textView1"
 	            android:layout_width="wrap_content"
