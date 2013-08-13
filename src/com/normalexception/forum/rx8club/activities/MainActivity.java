@@ -42,6 +42,7 @@ import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.cache.ViewListCache;
 import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
@@ -74,6 +75,8 @@ public class MainActivity extends ForumBaseActivity {
 			                 THREADS_CNT= 3,
 			                 POSTS_CNT  = 4;
 	
+	private ViewListCache<CategoryView> hcache = null;
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -91,10 +94,19 @@ public class MainActivity extends ForumBaseActivity {
 	        // Read in the favorites if they exist
 	        FavoriteFactory.getInstance();
 	        
-	        if(savedInstanceState == null || 
-	        		(cva == null || cva.getCount() == 0))
-	        	constructView();
-	        else {
+	        // Now that we introduced a cache, we are going to first
+	        // check to see if the cache is valid, if so, use it 
+	        // so that we dont waste bandwidth
+	        hcache = new ViewListCache<CategoryView>(this, getString(R.string.file_homecache));
+	        if(hcache.isCacheExpired()) {
+		        if(savedInstanceState == null || 
+		        		(cva == null || cva.getCount() == 0)) {
+		        	constructView();
+		        } else {
+		        	updateList();
+		        }
+	        } else {
+	        	mainList = (ArrayList<CategoryView>) hcache.getCachedContents();
 	        	updateList();
 	        }
     	} catch (Exception e) {
@@ -138,7 +150,7 @@ public class MainActivity extends ForumBaseActivity {
 	        		
 	        		mainList           = new ArrayList<CategoryView>();
 	                getCategories(doc);
-	                
+		        	hcache.cacheContents(mainList);
 	                updateList();
 	                Log.v(TAG, "Dismissing Wait Dialog");
         		} catch(Exception e) {

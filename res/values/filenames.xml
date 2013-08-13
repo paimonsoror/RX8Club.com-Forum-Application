@@ -1,0 +1,4 @@
+<resources>
+    <string name="file_favorites">favorites.dat</string>
+    <string name="file_homecache">homecache.dat</string>
+</resources>

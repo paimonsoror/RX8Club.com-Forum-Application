@@ -1,8 +1,5 @@
 package com.normalexception.forum.rx8club.view.category;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /************************************************************************
  * NormalException.net Software, and other contributors
  * http://www.normalexception.net
@@ -27,10 +24,16 @@ import java.util.List;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class that represents a Category item
  */
-public class CategoryView {
+public class CategoryView implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
 	private String title, link, description;
 	private String threadCount, postCount;
 	private List<SubCategoryView> subCategories;

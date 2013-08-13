@@ -1,5 +1,7 @@
 package com.normalexception.forum.rx8club.view.category;
 
+import java.io.Serializable;
+
 /************************************************************************
  * NormalException.net Software, and other contributors
  * http://www.normalexception.net
@@ -27,8 +29,9 @@ package com.normalexception.forum.rx8club.view.category;
 /**
  * Container for simple sub category data
  */
-public class SubCategoryView {
-	
+public class SubCategoryView implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private String title, link;
 
 	/**

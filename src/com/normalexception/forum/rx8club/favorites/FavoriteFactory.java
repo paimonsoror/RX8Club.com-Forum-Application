@@ -105,7 +105,9 @@ public class FavoriteFactory {
 		FileOutputStream outputStream;
 		Context ctx = MainApplication.getAppContext();
 		try {
-		  outputStream = ctx.openFileOutput("favorites.dat", Context.MODE_PRIVATE);
+		  outputStream = ctx.openFileOutput(
+				  MainApplication.getAppContext().getString(R.string.file_favorites), 
+				  Context.MODE_PRIVATE);
 		  ObjectOutputStream os = new ObjectOutputStream(outputStream);
 		  os.writeObject(_favorites);
 		  os.close();
