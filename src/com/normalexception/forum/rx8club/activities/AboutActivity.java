@@ -72,13 +72,4 @@ public class AboutActivity extends ForumBaseActivity {
 			Log.e(TAG, "Version Not Found");
 		}
     }
-
-    /*
-     * (non-Javadoc)
-     * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#enforceVariants(int, int)
-     */
-	@Override
-	protected void enforceVariants(int currentPage, int lastPage) {
-		// Nothing to do
-	}
 }

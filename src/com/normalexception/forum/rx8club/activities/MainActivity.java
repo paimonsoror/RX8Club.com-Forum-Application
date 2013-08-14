@@ -99,16 +99,15 @@ public class MainActivity extends ForumBaseActivity {
 	        // so that we dont waste bandwidth
 	        hcache = new ViewListCache<CategoryView>(this, getString(R.string.file_homecache));
 	        if(hcache.isCacheExpired()) {
+	        	Log.d(TAG, "Cache Expired, Creating Main");
 		        if(savedInstanceState == null || 
 		        		(cva == null || cva.getCount() == 0)) {
 		        	constructView();
-		        } else {
-		        	updateList();
 		        }
 	        } else {
 	        	mainList = (ArrayList<CategoryView>) hcache.getCachedContents();
-	        	updateList();
 	        }
+	        updateList();
     	} catch (Exception e) {
     		Log.e(TAG, "Fatal Error In Main Activity! " + e.getMessage());
     	}
@@ -151,7 +150,6 @@ public class MainActivity extends ForumBaseActivity {
 	        		mainList           = new ArrayList<CategoryView>();
 	                getCategories(doc);
 		        	hcache.cacheContents(mainList);
-	                updateList();
 	                Log.v(TAG, "Dismissing Wait Dialog");
         		} catch(Exception e) {
         			thisActivity.runOnUiThread(new Runnable() {
@@ -287,8 +285,4 @@ public class MainActivity extends ForumBaseActivity {
 			return Jsoup.parse(output);
 		}
     }
-
-	@Override
-	protected void enforceVariants(int currentPage, int lastPage) {	
-	}
 }

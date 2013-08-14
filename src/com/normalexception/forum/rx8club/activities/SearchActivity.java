@@ -108,12 +108,4 @@ public class SearchActivity extends ForumBaseActivity implements OnClickListener
 			break;
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#enforceVariants(int, int)
-	 */
-	@Override
-	protected void enforceVariants(int currentPage, int lastPage) {
-	}
 }

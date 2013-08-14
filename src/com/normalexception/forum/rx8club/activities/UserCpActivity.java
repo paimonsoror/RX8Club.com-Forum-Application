@@ -176,25 +176,17 @@ public class UserCpActivity extends ForumBaseActivity {
 	public void onClick(View arg0) {
 		switch(arg0.getId()) {
 		case R.id.submitUserCpButton:
-			enforceVariants(0,0);
+			customTitle = ((TextView)findViewById(R.id.customTitle)).getText().toString();
+			homepageurl = ((TextView)findViewById(R.id.homepageUrl)).getText().toString();
+			biography = ((TextView)findViewById(R.id.biography)).getText().toString();
+			location = ((TextView)findViewById(R.id.location)).getText().toString();
+			interests = ((TextView)findViewById(R.id.interests)).getText().toString();
+			occupation = ((TextView)findViewById(R.id.occupation)).getText().toString();
+			
 			ProfileTask update = new ProfileTask(this, token, customTitle, homepageurl, 
     				biography, location, interests, occupation);
 			update.execute();
 			break;
 		}
-	}
-
-    /*
-     * (non-Javadoc)
-     * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#enforceVariants(int, int)
-     */
-	@Override
-	protected void enforceVariants(int currentPage, int lastPage) {	
-		customTitle = ((TextView)findViewById(R.id.customTitle)).getText().toString();
-		homepageurl = ((TextView)findViewById(R.id.homepageUrl)).getText().toString();
-		biography = ((TextView)findViewById(R.id.biography)).getText().toString();
-		location = ((TextView)findViewById(R.id.location)).getText().toString();
-		interests = ((TextView)findViewById(R.id.interests)).getText().toString();
-		occupation = ((TextView)findViewById(R.id.occupation)).getText().toString();
 	}
 }

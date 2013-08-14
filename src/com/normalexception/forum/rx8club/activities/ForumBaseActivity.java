@@ -192,10 +192,12 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	
 	/**
      * Update the pagination text
-     * @param doc	The webpage document
+     * @param thisPage	the page we are currently on
+     * @param finalPage	the last page of the category/thread
      */
     protected void updatePagination(String thisPage, String finalPage) {
     	try {
+	    	final boolean first, prev, next, last;
 	    	this.thisPage = thisPage;
 	    	this.finalPage = finalPage;
 	
@@ -204,22 +206,29 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	    	label = label.replace("X", thisPage);
 	    	label = label.replace("Y", finalPage);
 	    	final String finalizedLabel = label;
-			runOnUiThread(new Runnable() {
-	            public void run() {	
-	            	pagination.setText(finalizedLabel);
-	            }
-	       	});
 	    	
-	    	enforceVariants(Integer.parseInt(thisPage), Integer.parseInt(finalPage));
+	    	// Set up our buttons
+	    	prev = Integer.parseInt(thisPage) == 1?
+	    			false : true;
+	    	first = Integer.parseInt(thisPage) == 1?
+	    			false : true;
+	    	next = Integer.parseInt(finalPage) > Integer.parseInt(thisPage)?
+	    			true : false;
+	    	last = Integer.parseInt(thisPage) == Integer.parseInt(finalPage)?
+	    			false : true;
+	    	
+	    	// Update GUI components
+	    	runOnUiThread(new Runnable() {
+	    		public void run() {
+	    			findViewById(R.id.previousButton).setEnabled(prev);
+					findViewById(R.id.firstButton).setEnabled(first);
+					findViewById(R.id.nextButton).setEnabled(next);
+					findViewById(R.id.lastButton).setEnabled(last);
+					pagination.setText(finalizedLabel);
+	    		}
+	    	});
     	} catch (Exception e) { 
     		Log.d(TAG, "Error Parsing Pagination");
     	}
     }
-    
-    /**
-     * Enforce GUI based variants
-     * @param myPage	The current page we are on
-     * @param lastPage	The last page of our thread
-     */
-    protected abstract void enforceVariants(int currentPage, int lastPage);
 }

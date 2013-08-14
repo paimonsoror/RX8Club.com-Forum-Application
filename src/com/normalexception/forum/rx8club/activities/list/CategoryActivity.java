@@ -337,40 +337,6 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     		} catch (Exception e) { Log.w(TAG, "Error Parsing That Thread..."); }
     	}
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#enforceVariants(int, int)
-     */
-    @Override
-    protected void enforceVariants(int myPage, int lastPage) {
-    	if(myPage == 1)
-    		runOnUiThread(new Runnable() {
-    			public void run() {
-    				findViewById(R.id.previousButton).setEnabled(false);
-    			}
-    		});
-    	else 
-    		runOnUiThread(new Runnable() {
-    			public void run() {
-    				findViewById(R.id.previousButton).setEnabled(true);
-    			}
-    		});
-    	
-    	if(lastPage > myPage) {
-    		runOnUiThread(new Runnable() {
-    			public void run() {
-    				findViewById(R.id.nextButton).setEnabled(true);
-    			}
-    		});
-    	} else {
-    		runOnUiThread(new Runnable() {
-    			public void run() {
-    				findViewById(R.id.nextButton).setEnabled(false);
-    			}
-    		});
-    	}
-    }
 
     /*
      * (non-Javadoc)

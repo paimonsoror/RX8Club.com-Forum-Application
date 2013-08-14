@@ -261,29 +261,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
         	postlist.add(pv);
     	}
     }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#enforceVariants(int, int)
-     */
-    @Override
-    protected void enforceVariants(int myPage, int lastPage) {
-    	final boolean first, prev, next, last;
-    	
-    	prev = myPage == 1? 		false : true;
-    	first = myPage == 1? 		false : true;
-    	next = lastPage > myPage? 	true : false;
-    	last = myPage == lastPage? 	false : true;
-    	
-    	runOnUiThread(new Runnable() {
-    		public void run() {
-    			findViewById(R.id.previousButton).setEnabled(prev);
-				findViewById(R.id.firstButton).setEnabled(first);
-				findViewById(R.id.nextButton).setEnabled(next);
-				findViewById(R.id.lastButton).setEnabled(last);
-    		}
-    	});
-    }
 
     /*
      * (non-Javadoc)

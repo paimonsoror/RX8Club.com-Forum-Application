@@ -157,14 +157,6 @@ public class EditPostActivity extends ForumBaseActivity {
     private String getInputElementValue(Elements pan, String name) {
     	return pan.select("input[name=" + name + "]").attr("value");
     }
-
-    /*
-     * (non-Javadoc)
-     * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#enforceVariants(int, int)
-     */
-	@Override
-	protected void enforceVariants(int currentPage, int lastPage) {
-	}
 	
 	/*
 	 * (non-Javadoc)
