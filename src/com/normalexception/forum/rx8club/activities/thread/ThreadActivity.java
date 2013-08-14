@@ -143,11 +143,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		            			inflate(R.layout.view_newreply_footer, null);
 		            	v.setOnClickListener(src);
 		            	
-		            	// Inflate the header (pagination)
-		            	View p = getLayoutInflater().
-		            			inflate(R.layout.fragment_pagination, null);
-		            	p.setOnClickListener(src);
-		            	
 						// If the user is guest, then hide the items that
 		            	// they generally wont be able to use
 						if(LoginFactory.getInstance().isGuestMode()) {
@@ -155,8 +150,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 								.setVisibility(View.GONE);
 						}
 						
-						// Add to view
-						lv.addHeaderView(p);
 		            	lv.addFooterView(v);
 		            }
 	            });
@@ -269,19 +262,18 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	@Override
 	public void onClick(View arg0) {	
 		super.onClick(arg0);
-		Log.d(TAG, "BUTTON CLICKED");
 		Intent _intent = null;
 		_intent = new Intent(ThreadActivity.this, ThreadActivity.class);
 		_intent.putExtra("title", this.currentPageTitle);
 		
 		switch(arg0.getId()) {
 			case R.id.previousButton:
-				_intent.putExtra("link", Utils.decrementPage(this.currentPageLink, this.finalPage));
+				_intent.putExtra("link", Utils.decrementPage(this.currentPageLink, this.pageNumber));
 				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) - 1));
 				this.finish();
 				break;
 			case R.id.nextButton:
-				_intent.putExtra("link", Utils.incrementPage(this.currentPageLink, this.finalPage));
+				_intent.putExtra("link", Utils.incrementPage(this.currentPageLink, this.pageNumber));
 				_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) + 1));
 				this.finish();
 				break;

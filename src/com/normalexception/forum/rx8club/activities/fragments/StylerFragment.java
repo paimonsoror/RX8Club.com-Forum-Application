@@ -67,6 +67,7 @@ public class StylerFragment extends Fragment implements OnClickListener {
     	ViewHolder.get(getView(), R.id.linkCodeButton).setOnClickListener(this);
     	ViewHolder.get(getView(), R.id.imageCodeButton).setOnClickListener(this);
     	ViewHolder.get(getView(), R.id.quoteCodeButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.attachButton).setOnClickListener(this);
     }
     
     /*
@@ -103,6 +104,8 @@ public class StylerFragment extends Fragment implements OnClickListener {
 			break;
 		case R.id.quoteCodeButton:
 			val = "[quote][/quote]";
+			break;
+		case R.id.attachButton:
 			break;
 		}
 		

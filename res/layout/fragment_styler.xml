@@ -5,52 +5,46 @@
     android:orientation="horizontal"
     android:gravity="center" >
         
-        <Button
+        <ImageButton
             android:id="@+id/boldButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/bold"
-            android:textSize="10dip" />
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/boldicon" />
         
-        <Button
+        <ImageButton
             android:id="@+id/italicButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/italic"
-            android:textSize="10dip" />
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/italicicon" />
         
-        <Button
+        <ImageButton
             android:id="@+id/underlineButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/underline"
-            android:textSize="10dip" />
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/underlineicon" />
         
-        <Button
+        <ImageButton
             android:id="@+id/linkCodeButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/url"
-            android:textSize="10dip" />
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/webicon" />
 
-        <Button
+        <ImageButton
             android:id="@+id/imageCodeButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/image"
-            android:textSize="10dip" />
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/imageicon" />
 
-        <Button
+        <ImageButton
             android:id="@+id/quoteCodeButton"
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/quote"
-            android:textSize="10dip" />
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/quoteicon" />
+
+        <ImageButton
+            android:id="@+id/attachButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/paperclip" />
 
 </LinearLayout>
