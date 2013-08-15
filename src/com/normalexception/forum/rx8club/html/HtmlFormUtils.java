@@ -36,10 +36,12 @@ import org.jsoup.nodes.Document;
 
 import ch.boye.httpclientandroidlib.HttpEntity;
 import ch.boye.httpclientandroidlib.HttpResponse;
+import ch.boye.httpclientandroidlib.HttpStatus;
 import ch.boye.httpclientandroidlib.NameValuePair;
 import ch.boye.httpclientandroidlib.StatusLine;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
+import ch.boye.httpclientandroidlib.client.methods.HttpGet;
 import ch.boye.httpclientandroidlib.client.methods.HttpPost;
 import ch.boye.httpclientandroidlib.client.methods.HttpUriRequest;
 import ch.boye.httpclientandroidlib.entity.mime.HttpMultipartMode;
@@ -256,43 +258,109 @@ public class HtmlFormUtils {
 	/**
 	 * Submit a request to upload an attachment to the server
 	 * @param securityToken
-	 * @param filePath
-	 * @param thread
+	 * @param bmapList
 	 * @param postnum
 	 * @return
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
 	//TODO Coming Soon....
-	public static boolean submitAttachment(String securityToken, String filePath, 
-			String thread, String postnum) throws ClientProtocolException, IOException {
+	public static boolean submitAttachment(String securityToken, List<String> bmapList, 
+			String postnum) throws ClientProtocolException, IOException {
 		DefaultHttpClient httpclient = 
 				LoginFactory.getInstance().getClient();
+		String posthash = "";
+		String t = "";
+		String p = "";
+		String poststarttime = "";
 		
+		// Ok, the first thing we need to do is to grab some token and hash
+		// information.  This information isn't displayed on the thread page, 
+		// but instead on the thread's full reply page.  Lets GET the page,
+		// and then grab the input params we need.
+		HttpGet httpGet = 
+				new HttpGet(WebUrls.postSubmitAddress + postnum);
+		HttpResponse respo = httpclient.execute(httpGet,
+				LoginFactory.getInstance().getHttpContext());
+		HttpEntity respoEnt = respo.getEntity();
+		if(respoEnt != null) {
+	    	// Get login results (in this case the forum frontpage0
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					respoEnt.getContent()));
+			
+			StringBuilder sb = new StringBuilder();
+			
+			String inputLine; 
+			while ((inputLine = in.readLine()) != null) 
+				sb.append(inputLine);
+			
+			String output = sb.toString();
+			
+			in.close();	
+			
+			//entity.consumeContent();
+			httpGet.releaseConnection();
+			
+			Document doc = Jsoup.parse(output);
+			posthash = HtmlFormUtils.getInputElementValue(doc, "posthash");
+			t = HtmlFormUtils.getInputElementValue(doc, "t");
+			p = HtmlFormUtils.getInputElementValue(doc, "p");
+			poststarttime = HtmlFormUtils.getInputElementValue(doc, "poststarttime");
+    	}
+		
+		// We need to make sure that we got all of the information before
+		// proceeding, or else the attachment will not work
 		MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 		entity.addPart("s", new StringBody(""));
 		entity.addPart("securitytoken", new StringBody(securityToken));
 		entity.addPart("do", new StringBody("manageattach"));
-		entity.addPart("t", new StringBody(thread));
+		entity.addPart("t", new StringBody(t));
 		entity.addPart("f", new StringBody("6"));
-		entity.addPart("p", new StringBody(""));
-		entity.addPart("poststarttime", new StringBody(""));
+		entity.addPart("p", new StringBody(p));
+		entity.addPart("poststarttime", new StringBody(poststarttime));
 		entity.addPart("editpost", new StringBody("0"));
-		entity.addPart("posthash", new StringBody(""));
+		entity.addPart("posthash", new StringBody(posthash));
 		entity.addPart("MAX_FILE_SIZE", new StringBody("2097152"));
 		entity.addPart("upload", new StringBody("Upload"));
 		entity.addPart("attachmenturl[]", new StringBody(""));
 		
-		File fileToUpload = new File(filePath);
-		FileBody fileBody = new FileBody(fileToUpload, "application/octet-stream");
-		entity.addPart("attachment[]", fileBody);
+		for(String bmap : bmapList) {
+			File fileToUpload = new File(bmap);
+			FileBody fileBody = new FileBody(fileToUpload, "image/png");
+			entity.addPart("attachment[]", fileBody);
+		}
 
-		HttpPost httpPost = new HttpPost("http://some-web-site");
+		// Now post the page parameters.  This will go ahead and attach the
+		// image to our profile.
+		HttpPost httpPost = 
+				new HttpPost(WebUrls.postAttachmentAddress);
 		httpPost.setEntity(entity);
-		HttpResponse response = httpclient.execute(httpPost);
-		HttpEntity result = response.getEntity();
+		HttpResponse response = 
+				httpclient.execute(httpPost, 
+						LoginFactory.getInstance().getHttpContext());
 		
-		return false;
+		// Read our response
+		HttpEntity ent = response.getEntity();
+		if(ent != null) {
+	    	// Get login results (in this case the forum frontpage0
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					ent.getContent()));
+			
+			StringBuilder sb = new StringBuilder();
+			
+			String inputLine; 
+			while ((inputLine = in.readLine()) != null) 
+				sb.append(inputLine);
+			
+			String output = sb.toString();
+			
+			in.close();	
+			
+			//entity.consumeContent();
+			httpPost.releaseConnection();
+    	}
+		
+		return true;
 	}
 	
 	/**

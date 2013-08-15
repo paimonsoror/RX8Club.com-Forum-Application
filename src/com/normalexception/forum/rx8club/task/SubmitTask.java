@@ -25,15 +25,16 @@ package com.normalexception.forum.rx8club.task;
  ************************************************************************/
 
 import java.io.IOException;
-
-import ch.boye.httpclientandroidlib.client.ClientProtocolException;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import com.normalexception.forum.rx8club.Log;
+import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
@@ -45,7 +46,8 @@ public class SubmitTask extends AsyncTask<Void,Void,Void>{
 	private ProgressDialog mProgressDialog;
 	private Activity sourceActivity;
 	
-	private String token, thread, post, text, pageTitle, pageNumber, doType;
+	private String token, thread, post, text, pageTitle, pageNumber, postHash, doType;
+	private List<String> bitmaps;
 	private Class<?> postClazz;
 
 	private static String TAG = "SubmitTask";
@@ -54,6 +56,7 @@ public class SubmitTask extends AsyncTask<Void,Void,Void>{
 	 * Constructor to a SubmitTask
 	 * @param sourceActivity	The source activity
 	 * @param securityToken		The users security token
+	 * @param bmapList			The list of bitmaps to attach
 	 * @param threadNumber		The source thread number
 	 * @param postNumber		The post number
 	 * @param toPost			The text to post
@@ -61,14 +64,16 @@ public class SubmitTask extends AsyncTask<Void,Void,Void>{
 	 * @param pageTitle			The current page title
 	 * @param pageNumber		The current page number
 	 */
-	public SubmitTask(Activity sourceActivity, String securityToken, 
-					  String threadNumber, String postNumber, 
-					  String toPost, String pageTitle, String pageNumber) 
+	public SubmitTask(Activity sourceActivity, List<String> bmapList, 
+					  String securityToken, String threadNumber, String postNumber, 
+					  String phash, String toPost, String pageTitle, String pageNumber) 
 	{
 		this.sourceActivity = sourceActivity;
+		this.bitmaps = bmapList;
 		this.token = securityToken;
 		this.thread = threadNumber;
 		this.post = postNumber;
+		this.postHash = phash;
 		this.text = toPost;
 		this.pageTitle = pageTitle;
 		this.pageNumber = pageNumber;
@@ -114,6 +119,10 @@ public class SubmitTask extends AsyncTask<Void,Void,Void>{
     @Override
     protected Void doInBackground(Void... params) {
     	try {
+    		if(bitmaps.size() != 0)
+    			HtmlFormUtils.submitAttachment(
+    					token, bitmaps, post);
+    		
     		HtmlFormUtils.submitPost(doType, token, thread, 
 					post, text);
 		} catch (ClientProtocolException e) {

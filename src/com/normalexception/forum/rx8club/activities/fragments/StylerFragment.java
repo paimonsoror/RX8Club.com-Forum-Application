@@ -24,6 +24,7 @@ package com.normalexception.forum.rx8club.activities.fragments;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -42,7 +43,9 @@ import com.normalexception.forum.rx8club.view.ViewHolder;
 public class StylerFragment extends Fragment implements OnClickListener {
 	
 	private static final String TAG = "Application:StylerFragment";
-	
+
+    public static int RESULT_LOAD_IMAGE = 1;
+    
 	/*
 	 * (non-Javadoc)
 	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
@@ -106,10 +109,20 @@ public class StylerFragment extends Fragment implements OnClickListener {
 			val = "[quote][/quote]";
 			break;
 		case R.id.attachButton:
+			/*Intent i = new Intent(
+					Intent.ACTION_PICK, 
+					android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);						 
+			startActivityForResult(i, RESULT_LOAD_IMAGE);*/
+			Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            getActivity().startActivityForResult(Intent.createChooser(intent,
+                    "Select Picture"), RESULT_LOAD_IMAGE);
 			break;
 		}
 		
-		tv.setText(tv.getText().toString() + val);
+		if(!val.equals(""))
+			tv.setText(tv.getText().toString() + val);
 	}
 
 }
