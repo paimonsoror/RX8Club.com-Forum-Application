@@ -33,6 +33,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -104,13 +105,18 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
      * Construct the view elements
      */
     private void constructView() {
-    	loadingDialog = 
-    			ProgressDialog.show(
-    					this, getString(R.string.loading), getString(R.string.pleaseWait), true);
     	final ForumBaseActivity src = this;
     	
-        updaterThread = new Thread("PrivateMessageThread") {
-			public void run() {
+    	updaterTask = new AsyncTask<Void,String,Void>() {
+        	@Override
+		    protected void onPreExecute() {
+		    	loadingDialog = 
+						ProgressDialog.show(src, 
+								getString(R.string.loading), 
+								getString(R.string.pleaseWait), true);
+		    }
+        	@Override
+			protected Void doInBackground(Void... params) {	
 				String link = 
 		        		(String) getIntent().getStringExtra("link");
 				Document doc = 
@@ -133,18 +139,27 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 				
 				postText = postMessage.html();
 		    	
+				publishProgress(getString(R.string.asyncDialogLoadingPM));
 				PMPostView pmi = new PMPostView();
 				pmi.setUserName(postUser);
 				pmi.setUserPost(postText);
 				pmi.setSecurityToken(securityToken);
 				pmlist.add(pmi);
-				
-				loadingDialog.dismiss();	
-				
+
 				updateList();
+				return null;
+			}
+        	@Override
+		    protected void onProgressUpdate(String...progress) {
+		        loadingDialog.setMessage(progress[0]);
+		    }
+			
+			@Override
+		    protected void onPostExecute(Void result) {
+				loadingDialog.dismiss();
 			}
         };
-        updaterThread.start();
+        updaterTask.execute();
     }
     
     /*

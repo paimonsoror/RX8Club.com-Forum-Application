@@ -32,6 +32,7 @@ import org.jsoup.select.Elements;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -93,14 +94,22 @@ public class ProfileActivity extends ForumBaseActivity {
      * Construct the profile view
      */
     private void constructView() {        
-        loadingDialog = ProgressDialog.show(this, getString(R.string.loading), getString(R.string.pleaseWait), true);
         final ForumBaseActivity src = this;
         
-        updaterThread = new Thread("CategoryThread") {
-			public void run() {				
+        updaterTask = new AsyncTask<Void,String,Void>() {
+        	@Override
+		    protected void onPreExecute() {
+		    	loadingDialog = 
+						ProgressDialog.show(src, 
+								getString(R.string.loading), 
+								getString(R.string.pleaseWait), true);
+		    }
+        	@Override
+			protected Void doInBackground(Void... params) {			
 				Document doc = 
 						VBForumFactory.getInstance().get(src, UserProfile.getUserProfileLink());
 				if(doc != null) {
+					publishProgress(getString(R.string.asyncDialogGrabProfile));
 					String id = UserProfile.getUserProfileLink().substring(
 							UserProfile.getUserProfileLink().lastIndexOf("-") + 1,
 							UserProfile.getUserProfileLink().length() - 1);
@@ -116,6 +125,8 @@ public class ProfileActivity extends ForumBaseActivity {
 			            	v.setOnClickListener(src);
 			            	lv.addHeaderView(v);
 
+			            	publishProgress(getString(R.string.asyncDialogPopulating));
+			            	
 	                    	// the dateline at the end of the file so that we aren't
 	                        // creating multiple images for a user.  The image still
 	                        // gets returned without a date
@@ -135,12 +146,21 @@ public class ProfileActivity extends ForumBaseActivity {
 	                    }
 					});
 					
-					updateList();
+					updateList();				
 				} 
+				return null;
+			}
+        	@Override
+		    protected void onProgressUpdate(String...progress) {
+		        loadingDialog.setMessage(progress[0]);
+		    }
+			
+			@Override
+		    protected void onPostExecute(Void result) {
 				loadingDialog.dismiss();
 			}
         };
-        updaterThread.start();
+        updaterTask.execute();
     }
     
     /**

@@ -37,6 +37,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -244,13 +245,23 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
     	loadingDialog = ProgressDialog.show(this, getString(R.string.loading), getString(R.string.pleaseWait), true);
     	final ForumBaseActivity src = this;
     	
-        updaterThread = new Thread("NewPostsThread") {
- 			public void run() { 		
+    	updaterTask = new AsyncTask<Void,String,Void>() {
+        	@Override
+		    protected void onPreExecute() {
+		    	loadingDialog = 
+						ProgressDialog.show(src, 
+								getString(R.string.loading), 
+								getString(R.string.pleaseWait), true);
+		    }
+        	@Override
+			protected Void doInBackground(Void... params) {		
  				Document doc = VBForumFactory.getInstance().get(src, WebUrls.pmUrl);
  				
  				token = HtmlFormUtils.getInputElementValue(doc, "securitytoken");
  				String current_month = getMonthForInt(0);
  				Elements collapse = doc.select("tbody[id^=collapseobj_pmf0]");
+ 				
+ 				publishProgress(getString(R.string.asyncDialogGrabPMs));
  				for(Element coll : collapse) {
  					Elements trs = coll.select("tr");
  					for(Element tr : trs) {
@@ -298,10 +309,19 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
  					}
  				}
  				updateList();
- 				loadingDialog.dismiss();
+ 				return null;
  			}
+        	@Override
+		    protected void onProgressUpdate(String...progress) {
+		        loadingDialog.setMessage(progress[0]);
+		    }
+			
+			@Override
+		    protected void onPostExecute(Void result) {
+				loadingDialog.dismiss();
+			}
         };
-        updaterThread.start();
+        updaterTask.execute();
     }
     
     /*

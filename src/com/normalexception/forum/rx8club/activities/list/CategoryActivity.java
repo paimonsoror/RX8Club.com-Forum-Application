@@ -33,6 +33,7 @@ import org.jsoup.select.Elements;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.ContextMenu;
@@ -167,13 +168,18 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	 * Construct the view for the activity
 	 */
 	private void constructView() {
-		loadingDialog = 
-				ProgressDialog.show(
-						this, getString(R.string.loading), getString(R.string.pleaseWait), true);
 		final ForumBaseActivity src = this;
 		
-		updaterThread = new Thread("CategoryThread") {
-			public void run() {
+		updaterTask = new AsyncTask<Void,String,Void>() {
+        	@Override
+		    protected void onPreExecute() {
+		    	loadingDialog = 
+						ProgressDialog.show(src, 
+								getString(R.string.loading), 
+								getString(R.string.pleaseWait), true);
+		    }
+        	@Override
+			protected Void doInBackground(Void... params) {	
 				link = 
 		        		(String) getIntent().getSerializableExtra("link");
 				pageNumber = 
@@ -187,7 +193,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		        // if doc came back, and link was null, we need to update
  				// the link reference to reflect the new post URL
  				if(link == null) {
- 					// <link rel="canonical" href="http://www.rx8club.com/search.php?searchid=10961740" />
+ 					// <link rel="canonical" 
+ 					// href="http://www.rx8club.com/search.php?searchid=10961740" />
  					Elements ele = doc.select("link[rel^=canonical]");
  					if(ele != null) {
  						link = ele.attr("href");
@@ -197,6 +204,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
  				// The forum id data is only required if we are within a category
  				// and not if we are in a New Posts page.  This data is used when
  				// we create new threads.
+ 				publishProgress(getString(R.string.asyncDialogGrabThreads));
 		        if(!isNewTopicActivity) {
 			        forumId = link.substring(link.lastIndexOf("-") + 1);
 			        
@@ -211,13 +219,22 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		        }
 		        				
 				findViewById(R.id.mainlisttitle).setVisibility(View.GONE);
-		    			    	
+		    	
+				publishProgress(getString(R.string.asyncDialogPopulating));
 		    	updateList();
-				
-		    	loadingDialog.dismiss();
+		    	return null;
 			}
-		};
-		updaterThread.start();
+        	@Override
+		    protected void onProgressUpdate(String...progress) {
+		        loadingDialog.setMessage(progress[0]);
+		    }
+			
+			@Override
+		    protected void onPostExecute(Void result) {
+				loadingDialog.dismiss();
+			}
+        };
+        updaterTask.execute();
 	}
     
     /*

@@ -40,6 +40,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
@@ -94,6 +95,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	private ListView lv;
 
 	private List<String> bmapList;
+	
+	private AsyncTask<Void,String,Void> updaterTask;
 
 	/*
 	 * (non-Javadoc)
@@ -124,12 +127,19 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	/**
 	 * Construct the thread activity view
 	 */
-	private void constructView() {
-		loadingDialog = ProgressDialog.show(this, getString(R.string.loading), getString(R.string.pleaseWait), true);
+	private void constructView() {		
 		final ThreadActivity src = this;
-
-		updaterThread = new Thread("CategoryThread") {
-			public void run() {
+		updaterTask = new AsyncTask<Void,String,Void>() {
+		    @Override
+		    protected void onPreExecute() {
+		    	loadingDialog = 
+						ProgressDialog.show(src, 
+								getString(R.string.loading), 
+								getString(R.string.pleaseWait), true);
+		    }
+		    
+			@Override
+			protected Void doInBackground(Void... params) {
 				currentPageLink = 
 						(String) getIntent().getStringExtra("link");
 				currentPageTitle = 
@@ -145,37 +155,48 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 
 				lv = (ListView)findViewById(R.id.mainlistview);
 
-				runOnUiThread(new Runnable() {
-					public void run() {
-						// Inflate the footer (pagination, styler, reply box)
-						View v = getLayoutInflater().
-								inflate(R.layout.view_newreply_footer, null);
-						v.setOnClickListener(src);
-
-						// If the user is guest, then hide the items that
-						// they generally wont be able to use
-						if(LoginFactory.getInstance().isGuestMode()) {
-							ViewHolder.get(v, R.id.nr_replycontainer)
-							.setVisibility(View.GONE);
-						}
-
-						lv.addFooterView(v);
-					}
-				});
-
+				publishProgress(getString(R.string.asyncDialogGrabThreadContents));
 				getThreadContents(doc);
-
+				
+				publishProgress(getString(R.string.asyncDialogPopulating));
 				updateList();
-				loadingDialog.dismiss();			
+				return null;
+			}
+			
+			@Override
+		    protected void onProgressUpdate(String...progress) {
+		        loadingDialog.setMessage(progress[0]);
+		    }
+			
+			@Override
+		    protected void onPostExecute(Void result) {
+				loadingDialog.dismiss();
 			}
 		};
-		updaterThread.start();
+		updaterTask.execute();
 	}
 
+	/**
+	 * Update our list with the contents
+	 */
 	private void updateList() {
 		final ThreadActivity a = this;
 		runOnUiThread(new Runnable() {
-			public void run() {    	
+			public void run() {
+				// Inflate the footer (pagination, styler, reply box)
+				View v = getLayoutInflater().
+						inflate(R.layout.view_newreply_footer, null);
+				v.setOnClickListener(a);
+
+				// If the user is guest, then hide the items that
+				// they generally wont be able to use
+				if(LoginFactory.getInstance().isGuestMode()) {
+					ViewHolder.get(v, R.id.nr_replycontainer)
+					.setVisibility(View.GONE);
+				}
+
+				lv.addFooterView(v);
+				
 				findViewById(R.id.mainlisttitle).setVisibility(View.VISIBLE);
 				((TextView)findViewById(R.id.mainlisttitle)).setText(currentPageTitle);
 				pva = new PostViewArrayAdapter(a, R.layout.view_thread, postlist);
@@ -344,6 +365,12 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			startActivity(_intent);
 	}
 
+	/**
+	 * Handle the result of the image attachment dialog
+	 * @param requestCode	We are expecting the code for the image result
+	 * @param resultCode	We are expecting an OK result
+	 * @param data			The image object
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);

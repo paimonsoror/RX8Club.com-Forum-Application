@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import org.jsoup.nodes.Document;
 
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -113,11 +114,18 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 	 * Construct the view elements
 	 */
 	private void constructView() {
-		loadingDialog = ProgressDialog.show(this, getString(R.string.loading), getString(R.string.pleaseWait), true);
 		final NewPrivateMessageActivity src = this;
 		
-	    updaterThread = new Thread("PrivateMessageThread") {
-			public void run() {
+		updaterTask = new AsyncTask<Void,String,Void>() {
+        	@Override
+		    protected void onPreExecute() {
+		    	loadingDialog = 
+						ProgressDialog.show(src, 
+								getString(R.string.loading), 
+								getString(R.string.pleaseWait), true);
+		    }
+        	@Override
+			protected Void doInBackground(Void... params) {
 				String link = 
 		        		(String) getIntent().getStringExtra("link");
 				Document doc = 
@@ -144,10 +152,14 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 		            }
 		    	});
 		    	
-				loadingDialog.dismiss();	
+		    	return null;
 			}
-	    };
-	    updaterThread.start();
+			@Override
+		    protected void onPostExecute(Void result) {
+				loadingDialog.dismiss();
+			}
+        };
+        updaterTask.execute();
 	}
 	
 	 /*

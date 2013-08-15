@@ -35,6 +35,7 @@ import android.os.AsyncTask;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
 import com.normalexception.forum.rx8club.Log;
+import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
@@ -42,7 +43,7 @@ import com.normalexception.forum.rx8club.html.HtmlFormUtils;
  * Task generated to move the submit of a post to an async
  * task
  */
-public class SubmitTask extends AsyncTask<Void,Void,Void>{
+public class SubmitTask extends AsyncTask<Void,String,Void>{
 	private ProgressDialog mProgressDialog;
 	private Activity sourceActivity;
 	
@@ -109,7 +110,7 @@ public class SubmitTask extends AsyncTask<Void,Void,Void>{
     @Override
     protected void onPreExecute() {
         mProgressDialog = 
-        		ProgressDialog.show(this.sourceActivity, "Submitting...", "Submitting Post...");
+        		ProgressDialog.show(this.sourceActivity, "Submitting...", "Please Wait...");
     }
 
     /*
@@ -119,12 +120,17 @@ public class SubmitTask extends AsyncTask<Void,Void,Void>{
     @Override
     protected Void doInBackground(Void... params) {
     	try {
-    		if(bitmaps.size() != 0)
-    			HtmlFormUtils.submitAttachment(
-    					token, bitmaps, post);
+    		if(bitmaps.size() != 0) {
+    			publishProgress(
+    					sourceActivity.getString(R.string.asyncDialogUploadAttachment));
+    			HtmlFormUtils.submitAttachment(token, bitmaps, post);
+    			publishProgress(
+    					sourceActivity.getString(R.string.asyncDialogUploadDone));
+    		}
     		
-    		HtmlFormUtils.submitPost(doType, token, thread, 
-					post, text);
+    		publishProgress(
+    				sourceActivity.getString(R.string.asyncDialogSubmitting));
+    		HtmlFormUtils.submitPost(doType, token, thread, post, text);
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, e.getMessage());
 		} catch (IOException e) {

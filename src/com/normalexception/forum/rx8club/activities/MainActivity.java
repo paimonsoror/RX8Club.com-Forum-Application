@@ -35,6 +35,7 @@ import org.jsoup.select.Elements;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
@@ -117,7 +118,6 @@ public class MainActivity extends ForumBaseActivity {
      * Start the application activity
      */
     private void constructView() {
-    	loadingDialog = ProgressDialog.show(this, getString(R.string.loading), getString(R.string.pleaseWait), true);
         final ForumBaseActivity thisActivity = this;
         
         /**
@@ -125,19 +125,27 @@ public class MainActivity extends ForumBaseActivity {
          * the screen.  The screen contains a table layout, and
          * each category and each forum is inserted as a row
          */
-        updaterThread = new Thread("Updater") {
-        	public void run() {
+        updaterTask = new AsyncTask<Void,String,Void>() {
+        	@Override
+		    protected void onPreExecute() {
+		    	loadingDialog = 
+						ProgressDialog.show(thisActivity, 
+								getString(R.string.loading), 
+								getString(R.string.pleaseWait), true);
+		    }
+        	@Override
+			protected Void doInBackground(Void... params) {
         		try {
 	        		Log.v(TAG, "Updater Thread Started");
 	        		
 	        		Document doc = null;
 
 	        		// User information
+	        		publishProgress(getString(R.string.asyncDialogValidateProfile));
 	        		if(!UserProfile.isInitialized() || UserProfile.getUserProfileLink().equals("")) {
 	        			if(LoginFactory.getInstance().isLoggedIn()) {
-	        				doc = 
-	        				VBForumFactory.getInstance().get(
-	        						thisActivity, VBForumFactory.getRootAddress());
+	        				doc = VBForumFactory.getInstance().get(
+	        					thisActivity, VBForumFactory.getRootAddress());
 	        				Elements userElement = 
 	        				doc.select("a[href^=http://www.rx8club.com/members/" + 
 	        						UserProfile.getUsername().replace(".", "-") + "]");
@@ -145,12 +153,15 @@ public class MainActivity extends ForumBaseActivity {
 	        			}
 	        		}
 	        		
-	        		doc = getForum();
+	        		publishProgress(getString(R.string.asyncDialogGrabForumContents));
+	        		doc 	 = getForum();	        		
+	        		mainList = new ArrayList<CategoryView>();
 	        		
-	        		mainList           = new ArrayList<CategoryView>();
+	        		publishProgress(getString(R.string.asyncDialogCategorySort));
 	                getCategories(doc);
+	                
+	                publishProgress(getString(R.string.asyncDialogUpdateCache));
 		        	hcache.cacheContents(mainList);
-	                Log.v(TAG, "Dismissing Wait Dialog");
         		} catch(Exception e) {
         			thisActivity.runOnUiThread(new Runnable() {
         				public void run() {
@@ -159,13 +170,20 @@ public class MainActivity extends ForumBaseActivity {
         				}
         			});
         			e.printStackTrace();
-        		} finally {
-        			if(loadingDialog != null)
-        				loadingDialog.dismiss();
         		}
+        		return null;
         	}
+        	@Override
+		    protected void onProgressUpdate(String...progress) {
+		        loadingDialog.setMessage(progress[0]);
+		    }
+			
+			@Override
+		    protected void onPostExecute(Void result) {
+				loadingDialog.dismiss();
+			}
         };
-        updaterThread.start();
+        updaterTask.execute();
     }
     
     /**

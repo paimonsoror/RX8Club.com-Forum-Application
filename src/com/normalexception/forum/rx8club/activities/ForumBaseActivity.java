@@ -31,6 +31,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -54,7 +55,7 @@ import com.normalexception.forum.rx8club.preferences.Preferences;
 public abstract class ForumBaseActivity extends FragmentActivity implements OnClickListener {
 
 	
-	protected Thread updaterThread;
+	protected AsyncTask<Void,?,Void> updaterTask;
 	protected ProgressDialog loadingDialog;
 	
 	protected static final int LOGOFF_MENU = 0;

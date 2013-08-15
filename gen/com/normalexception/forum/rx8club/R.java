@@ -293,6 +293,21 @@ containing a value of this type.
         /**  App Specific Strings 
          */
         public static final int app_name=0x7f070003;
+        public static final int asyncDialogCategorySort=0x7f070062;
+        public static final int asyncDialogGrabForumContents=0x7f070060;
+        public static final int asyncDialogGrabPMs=0x7f070065;
+        public static final int asyncDialogGrabProfile=0x7f070067;
+        public static final int asyncDialogGrabThreadContents=0x7f070061;
+        /**  Async Dialog Strings 
+         */
+        public static final int asyncDialogGrabThreads=0x7f07005f;
+        public static final int asyncDialogLoadingPM=0x7f070066;
+        public static final int asyncDialogPopulating=0x7f070064;
+        public static final int asyncDialogSubmitting=0x7f07006b;
+        public static final int asyncDialogUpdateCache=0x7f070063;
+        public static final int asyncDialogUploadAttachment=0x7f070069;
+        public static final int asyncDialogUploadDone=0x7f07006a;
+        public static final int asyncDialogValidateProfile=0x7f070068;
         public static final int bannerFavorites=0x7f07002a;
         public static final int bannerNewPms=0x7f070027;
         /**  Banner Fragment Strings 

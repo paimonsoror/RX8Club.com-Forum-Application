@@ -122,6 +122,21 @@
     <string name="loggingIn">Logging In</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
+    
+    <!-- Async Dialog Strings -->
+	<string name="asyncDialogGrabThreads">Grabbing Threads</string>
+	<string name="asyncDialogGrabForumContents">Grabbing Forum Contents</string>
+	<string name="asyncDialogGrabThreadContents">Grabbing Thread Contents</string>
+	<string name="asyncDialogCategorySort">Sorting Categories</string>
+	<string name="asyncDialogUpdateCache">Updating Cache</string>
+	<string name="asyncDialogPopulating">Populating List</string>
+	<string name="asyncDialogGrabPMs">Grabbing PMs</string>
+	<string name="asyncDialogLoadingPM">Loading PM</string>
+	<string name="asyncDialogGrabProfile">Grabbing Profile</string>
+	<string name="asyncDialogValidateProfile">Validating Profile</string>
+	<string name="asyncDialogUploadAttachment">Uploading Attachment</string>
+	<string name="asyncDialogUploadDone">Upload Done</string>
+	<string name="asyncDialogSubmitting">Submitting Post</string>
 
     <string-array name="searchDateArray">
         <item>Any Date</item>

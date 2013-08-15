@@ -29,6 +29,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import com.normalexception.forum.rx8club.Log;
 import android.view.View;
@@ -106,11 +107,21 @@ public class UserCpActivity extends ForumBaseActivity {
        	constructView();
     }
     
+    /**
+     * Construct the main view for our user profile
+     */
     private void constructView() {
-    	loadingDialog = ProgressDialog.show(this, getString(R.string.loading), getString(R.string.pleaseWait), true);
         final ForumBaseActivity src = this;
-        updaterThread = new Thread("Updater") {
-        	public void run() {
+        updaterTask = new AsyncTask<Void,String,Void>() {
+        	@Override
+		    protected void onPreExecute() {
+		    	loadingDialog = 
+						ProgressDialog.show(src, 
+								getString(R.string.loading), 
+								getString(R.string.pleaseWait), true);
+		    }
+        	@Override
+			protected Void doInBackground(Void... params) {
         		try {
         			Document doc = 
     						VBForumFactory.getInstance().get(src, WebUrls.editProfile);
@@ -120,6 +131,7 @@ public class UserCpActivity extends ForumBaseActivity {
         			Elements fieldSets =
         					doc.select("fieldset[class=fieldset]");
         			
+        			publishProgress(getString(R.string.asyncDialogPopulating));
         			for(Element fieldSet : fieldSets) {
         				String legend = fieldSet.select("legend").text();
         				if(legend.equals("Custom User Title")) {
@@ -146,12 +158,20 @@ public class UserCpActivity extends ForumBaseActivity {
         			updateView();
         		} catch (Exception e) {
         			Log.e(TAG, e.getMessage());
-        		} finally {
-        			loadingDialog.dismiss();
         		}
+        		return null;
         	}
+        	@Override
+		    protected void onProgressUpdate(String...progress) {
+		        loadingDialog.setMessage(progress[0]);
+		    }
+			
+			@Override
+		    protected void onPostExecute(Void result) {
+				loadingDialog.dismiss();
+			}
         };
-        updaterThread.start();
+        updaterTask.execute();
 
     }
     
