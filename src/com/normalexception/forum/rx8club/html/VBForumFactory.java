@@ -24,19 +24,16 @@ package com.normalexception.forum.rx8club.html;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
-import ch.boye.httpclientandroidlib.HttpEntity;
-import ch.boye.httpclientandroidlib.HttpResponse;
-import ch.boye.httpclientandroidlib.client.ClientProtocolException;
-import ch.boye.httpclientandroidlib.client.HttpClient;
-import ch.boye.httpclientandroidlib.client.methods.HttpGet;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import android.widget.Toast;
+import ch.boye.httpclientandroidlib.client.ClientProtocolException;
+import ch.boye.httpclientandroidlib.client.HttpClient;
+import ch.boye.httpclientandroidlib.client.methods.HttpGet;
+import ch.boye.httpclientandroidlib.util.EntityUtils;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
@@ -115,24 +112,11 @@ public class VBForumFactory {
 			
 			try {
 				httpost = new HttpGet(addr);
-		    	HttpResponse response = client.execute(httpost, lf.getHttpContext());
-		    	HttpEntity entity = response.getEntity();
+		    	output = 
+	    			EntityUtils.toString( 
+	    					client.execute( httpost, lf.getHttpContext() ).getEntity(), 
+	    					"UTF-8" );
 
-		    	// Get login results (in this case the forum frontpage0
-				BufferedReader in = new BufferedReader(new InputStreamReader(
-						entity.getContent(),"iso-8859-1"), 8);
-				
-				StringBuilder sb = new StringBuilder();
-				
-				String inputLine; 
-				while ((inputLine = in.readLine()) != null) 
-					sb.append(inputLine);
-				
-				output = sb.toString();
-				
-				in.close();	
-				
-				//entity.consumeContent();
 				httpost.releaseConnection();
 				
 				if(output == null || 

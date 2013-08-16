@@ -26,9 +26,6 @@ package com.normalexception.forum.rx8club.view.profile;
 
 import java.util.List;
 
-import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
-import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -40,6 +37,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 
 public class ProfileViewArrayAdapter extends ArrayAdapter<ProfileView> {
 	private Context activity;

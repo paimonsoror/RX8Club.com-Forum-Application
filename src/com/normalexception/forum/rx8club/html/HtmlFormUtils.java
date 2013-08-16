@@ -24,19 +24,17 @@ package com.normalexception.forum.rx8club.html;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import ch.boye.httpclientandroidlib.HttpEntity;
 import ch.boye.httpclientandroidlib.HttpResponse;
-import ch.boye.httpclientandroidlib.HttpStatus;
 import ch.boye.httpclientandroidlib.NameValuePair;
 import ch.boye.httpclientandroidlib.StatusLine;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
@@ -52,6 +50,7 @@ import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
 import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
 import ch.boye.httpclientandroidlib.protocol.ExecutionContext;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
+import ch.boye.httpclientandroidlib.util.EntityUtils;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.WebUrls;
@@ -86,7 +85,6 @@ public class HtmlFormUtils {
     	
     	Log.d(TAG, "[Submit] Status: " + statusLine.getStatusCode());
     	if (entity != null) {
-    		//entity.consumeContent();
     		httpost.releaseConnection();
     		
     		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
@@ -193,17 +191,26 @@ public class HtmlFormUtils {
 	 * @throws IOException
 	 */
 	public static boolean submitPost(String doType, String securityToken, String thread, 
-							String postNumber, String post) 
+							String postNumber, String attId, String post) 
 			throws ClientProtocolException, IOException {
-    	
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		
+		if(attId != null) {
+			post += "\n\n[ATTACH]" + attId + "[/ATTACH]";
+		}
+		
 		nvps.add(new BasicNameValuePair("message", post));
 		nvps.add(new BasicNameValuePair("t", thread));
 		nvps.add(new BasicNameValuePair("p", postNumber));
+		nvps.add(new BasicNameValuePair("specifiedpost", "0"));
 		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
 		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
-		nvps.add(new BasicNameValuePair("fromquickreply", "1"));
 		nvps.add(new BasicNameValuePair("parseurl", "1"));
+		nvps.add(new BasicNameValuePair("parseame", "1"));
+		nvps.add(new BasicNameValuePair("parseame_check", "1"));
+		nvps.add(new BasicNameValuePair("vbseo_retrtitle", "1"));
+		nvps.add(new BasicNameValuePair("vbseo_is_retrtitle", "1"));
+		nvps.add(new BasicNameValuePair("emailupdate", "9999"));
     	nvps.add(new BasicNameValuePair("do", doType));
     	
     	return formSubmit(WebUrls.quickPostAddress + thread, nvps);
@@ -264,15 +271,11 @@ public class HtmlFormUtils {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	//TODO Coming Soon....
-	public static boolean submitAttachment(String securityToken, List<String> bmapList, 
+	public static String submitAttachment(String securityToken, List<String> bmapList, 
 			String postnum) throws ClientProtocolException, IOException {
 		DefaultHttpClient httpclient = 
 				LoginFactory.getInstance().getClient();
-		String posthash = "";
-		String t = "";
-		String p = "";
-		String poststarttime = "";
+		String posthash = "", t = "", p = "", attId = "", poststarttime = "";
 		
 		// Ok, the first thing we need to do is to grab some token and hash
 		// information.  This information isn't displayed on the thread page, 
@@ -284,19 +287,8 @@ public class HtmlFormUtils {
 				LoginFactory.getInstance().getHttpContext());
 		HttpEntity respoEnt = respo.getEntity();
 		if(respoEnt != null) {
-	    	// Get login results (in this case the forum frontpage0
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					respoEnt.getContent()));
-			
-			StringBuilder sb = new StringBuilder();
-			
-			String inputLine; 
-			while ((inputLine = in.readLine()) != null) 
-				sb.append(inputLine);
-			
-			String output = sb.toString();
-			
-			in.close();	
+			String output = 
+	    		EntityUtils.toString(respoEnt, "UTF-8" );
 			
 			//entity.consumeContent();
 			httpGet.releaseConnection();
@@ -342,25 +334,23 @@ public class HtmlFormUtils {
 		// Read our response
 		HttpEntity ent = response.getEntity();
 		if(ent != null) {
-	    	// Get login results (in this case the forum frontpage0
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					ent.getContent()));
+			String output = 
+	    			EntityUtils.toString(ent, "UTF-8" );
+	    	Document doc = Jsoup.parse(output);
+	    	String attachment = 
+	    			doc.select("a[href^=attachment.php?attachmentid]").first().attr("href");
 			
-			StringBuilder sb = new StringBuilder();
+			if(attachment != null) {
+				final String attStr = "attachmentid=";
+				final String ampStr = "&";
+				attId = attachment.substring(attachment.indexOf(attStr));
+				attId        = attId.substring(attStr.length(), attId.indexOf(ampStr));
+			}
 			
-			String inputLine; 
-			while ((inputLine = in.readLine()) != null) 
-				sb.append(inputLine);
-			
-			String output = sb.toString();
-			
-			in.close();	
-			
-			//entity.consumeContent();
 			httpPost.releaseConnection();
     	}
 		
-		return true;
+		return attId;
 	}
 	
 	/**
@@ -389,22 +379,8 @@ public class HtmlFormUtils {
     	HttpEntity entity = response.getEntity();
     	
     	if(entity != null) {
-	    	// Get login results (in this case the forum frontpage0
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					entity.getContent()));
-			
-			StringBuilder sb = new StringBuilder();
-			
-			String inputLine; 
-			while ((inputLine = in.readLine()) != null) 
-				sb.append(inputLine);
-			
-			output = sb.toString();
-			
-			in.close();	
-			
-			//entity.consumeContent();
-			httpost.releaseConnection();
+    		output = 
+	    			EntityUtils.toString(entity, "UTF-8" );
     	}
 		
 		return Jsoup.parse(output);

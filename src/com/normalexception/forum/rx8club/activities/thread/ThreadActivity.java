@@ -37,8 +37,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -88,7 +86,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 
 	private String securityToken = "none";
 	private String postNumber = "none";
-	private String postHash = "none";
 
 	private ArrayList<PostView> postlist;
 	private PostViewArrayAdapter pva;
@@ -229,7 +226,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 
 		// Get Post Number and security token
 		securityToken = HtmlFormUtils.getInputElementValue(doc, "securitytoken");
-		postHash = HtmlFormUtils.getInputElementValue(doc, "posthash");
 		
 		Elements pNumber = 
 				doc.select("a[href^=http://www.rx8club.com/newreply.php?do=newreply&noquote=1&p=]");
@@ -318,7 +314,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 							((TextView)findViewById(R.id.postBox)).getText().toString(), advert);
 			SubmitTask sTask = new SubmitTask(
 					this, bmapList, this.securityToken, 
-					this.threadNumber, this.postNumber, this.postHash,
+					this.threadNumber, this.postNumber,
 					toPost, this.currentPageTitle, this.pageNumber);
 			sTask.debug();
 			sTask.execute();

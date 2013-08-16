@@ -30,7 +30,6 @@ import java.util.List;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
@@ -47,7 +46,7 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
 	private ProgressDialog mProgressDialog;
 	private Activity sourceActivity;
 	
-	private String token, thread, post, text, pageTitle, pageNumber, postHash, doType;
+	private String token, thread, post, text, pageTitle, pageNumber, doType;
 	private List<String> bitmaps;
 	private Class<?> postClazz;
 
@@ -67,14 +66,13 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
 	 */
 	public SubmitTask(Activity sourceActivity, List<String> bmapList, 
 					  String securityToken, String threadNumber, String postNumber, 
-					  String phash, String toPost, String pageTitle, String pageNumber) 
+					  String toPost, String pageTitle, String pageNumber) 
 	{
 		this.sourceActivity = sourceActivity;
 		this.bitmaps = bmapList;
 		this.token = securityToken;
 		this.thread = threadNumber;
 		this.post = postNumber;
-		this.postHash = phash;
 		this.text = toPost;
 		this.pageTitle = pageTitle;
 		this.pageNumber = pageNumber;
@@ -120,22 +118,32 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
     @Override
     protected Void doInBackground(Void... params) {
     	try {
+    		String attId = "";
     		if(bitmaps.size() != 0) {
     			publishProgress(
     					sourceActivity.getString(R.string.asyncDialogUploadAttachment));
-    			HtmlFormUtils.submitAttachment(token, bitmaps, post);
+    			attId = HtmlFormUtils.submitAttachment(token, bitmaps, post);
     			publishProgress(
     					sourceActivity.getString(R.string.asyncDialogUploadDone));
     		}
     		
     		publishProgress(
     				sourceActivity.getString(R.string.asyncDialogSubmitting));
-    		HtmlFormUtils.submitPost(doType, token, thread, post, text);
+    		HtmlFormUtils.submitPost(doType, token, thread, post, attId, text);
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, e.getMessage());
 		} catch (IOException e) {
 			Log.e(TAG, e.getMessage());
 		}
         return null;
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see android.os.AsyncTask#onProgressUpdate(Progress[])
+     */
+    @Override
+    protected void onProgressUpdate(String...progress) {
+        mProgressDialog.setMessage(progress[0]);
     }
 }
