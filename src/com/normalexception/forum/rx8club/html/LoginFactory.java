@@ -37,6 +37,7 @@ import ch.boye.httpclientandroidlib.HttpResponse;
 import ch.boye.httpclientandroidlib.HttpStatus;
 import ch.boye.httpclientandroidlib.NameValuePair;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
+import ch.boye.httpclientandroidlib.client.CookieStore;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
 import ch.boye.httpclientandroidlib.client.methods.HttpPost;
 import ch.boye.httpclientandroidlib.client.params.ClientPNames;
@@ -106,6 +107,28 @@ public class LoginFactory {
 	}
 	
 	/**
+	 * Report the cookie store
+	 * @return	The cookie store
+	 */
+	public CookieStore getCookieStore() {
+		return cookieStore;
+	}
+	
+	/**
+	 * Report the cookies as a string
+	 * @return	The cookies as a string
+	 */
+	public String getCookies() {
+		String cStr = "";
+		String del = "";
+		for(Cookie c : cookieStore.getCookies()) {
+			cStr += del + c.getName() + "=" + c.getValue();
+			del = ";";
+		}
+		return cStr;
+	}
+	
+	/**
 	 * Initialize the client, cookie store, and context
 	 */
 	private void initializeClientInformation() {
@@ -115,7 +138,7 @@ public class LoginFactory {
 	    params.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true); 
 	    HttpConnectionParams.setConnectionTimeout(params, TIMEOUT);
 	    HttpConnectionParams.setSoTimeout(params, TIMEOUT);
-	    HttpConnectionParams.setTcpNoDelay(params, true);    
+	    HttpConnectionParams.setTcpNoDelay(params, true);
 	    
 	    cookieStore = new BasicCookieStore();
 	    httpContext = new BasicHttpContext();
@@ -125,7 +148,8 @@ public class LoginFactory {
 	    httpclient = new DefaultHttpClient(
 	    		new PoolingClientConnectionManager(mgr.getSchemeRegistry()),
 	    		params);
-	    httpclient.log.enableDebug(true);
+	    httpclient.log.enableDebug(
+	    		MainApplication.isHttpClientLogEnabled());
 	    
 	    // Follow Redirects
 	    httpclient.setRedirectStrategy(new RedirectStrategy());
@@ -280,15 +304,8 @@ public class LoginFactory {
 	 * @throws IOException
 	 */
 	public boolean login() throws NoSuchAlgorithmException, ClientProtocolException, IOException {
-		if(UserProfile.getUsername() == null) {
-			Log.e(TAG, "Username has not been set");
+		if(UserProfile.getUsername() == null || password == null)
 			return false;
-		}
-		
-		if(password == null) {
-			Log.e(TAG, "Password has not been set");
-			return false;
-		}
 		
 		httpclient = getClient();
     	HttpPost httpost = new HttpPost(WebUrls.loginUrl);
@@ -297,10 +314,9 @@ public class LoginFactory {
     		initializeClientInformation();
     	
     	List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-    	String password = PasswordUtils.hexMd5(this.password);
     	nvps.add(new BasicNameValuePair("vb_login_username", UserProfile.getUsername()));
-    	nvps.add(new BasicNameValuePair("vb_login_md5password", password));
-    	nvps.add(new BasicNameValuePair("vb_login_md5password_utf", password));
+    	nvps.add(new BasicNameValuePair("vb_login_md5password", PasswordUtils.hexMd5(this.password)));
+    	nvps.add(new BasicNameValuePair("vb_login_md5password_utf", PasswordUtils.hexMd5(this.password)));
     	nvps.add(new BasicNameValuePair("cookieuser", "1"));
     	nvps.add(new BasicNameValuePair("do", "login"));
 
@@ -313,7 +329,6 @@ public class LoginFactory {
     		List<Cookie> cookies = cookieStore.getCookies();        	
         	boolean val = 
         			response.getStatusLine().getStatusCode() != HttpStatus.SC_BAD_REQUEST;
-        	//entity.consumeContent();
         	httpost.releaseConnection();
         	
         	for(Cookie cookie : cookies)

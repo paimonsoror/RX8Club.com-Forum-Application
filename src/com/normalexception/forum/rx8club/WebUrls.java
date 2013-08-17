@@ -25,6 +25,8 @@ package com.normalexception.forum.rx8club;
  ************************************************************************/
 
 public class WebUrls {
+	
+	public static final String USER_AGENT = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.95 Safari/537.36";
 
 	public static final String rootUrl = "http://www.rx8club.com";
 	public static final String marketUrl = "market://details?id=";

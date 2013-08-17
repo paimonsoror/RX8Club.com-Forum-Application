@@ -45,6 +45,7 @@
             android:id="@+id/attachButton"
             android:layout_width="38dp"
             android:layout_height="38dp"
-            android:src="@drawable/paperclip" />
+            android:src="@drawable/paperclip"
+            android:visibility="gone" />
 
 </LinearLayout>

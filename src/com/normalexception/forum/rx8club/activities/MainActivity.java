@@ -60,8 +60,6 @@ import com.normalexception.forum.rx8club.view.category.SubCategoryView;
  * none
  */
 public class MainActivity extends ForumBaseActivity {
-	
-	private static final int MAX_RETRY = 5;
     
 	private static final String TAG = "Application";
 	
@@ -107,8 +105,8 @@ public class MainActivity extends ForumBaseActivity {
 		        }
 	        } else {
 	        	mainList = (ArrayList<CategoryView>) hcache.getCachedContents();
+		        updateList();
 	        }
-	        updateList();
     	} catch (Exception e) {
     		Log.e(TAG, "Fatal Error In Main Activity! " + e.getMessage());
     	}
@@ -180,6 +178,7 @@ public class MainActivity extends ForumBaseActivity {
 			
 			@Override
 		    protected void onPostExecute(Void result) {
+				updateList();
 				loadingDialog.dismiss();
 			}
         };
@@ -282,16 +281,13 @@ public class MainActivity extends ForumBaseActivity {
 		LoginFactory lf = LoginFactory.getInstance();
 		
 		String output = null;
-		int retries = 0;
 		
-		do {
-			try {
-				VBForumFactory ff = VBForumFactory.getInstance();
-				output = ff.getForumFrontpage(this, lf);
-			} catch (IOException ioe) {
-				Log.e(TAG, "Error Grabbing Forum Frontpage: " + ioe.getMessage());
-			}
-		} while (output == null && retries++ < MAX_RETRY);		
+		try {
+			VBForumFactory ff = VBForumFactory.getInstance();
+			output = ff.getForumFrontpage(this, lf);
+		} catch (IOException ioe) {
+			Log.e(TAG, "Error Grabbing Forum Frontpage: " + ioe.getMessage());
+		}		
 				
 		if(output == null) {
 			Toast.makeText(this, 

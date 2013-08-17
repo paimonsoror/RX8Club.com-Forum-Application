@@ -39,6 +39,7 @@ public class MainApplication extends Application {
 	public static final String APP_PACKAGE = "com.normalexception.forum.rx8club";
 	
 	private static final int LOG_LEVEL = Log.DEBUG;
+	private static final boolean HTTP_CLIENT_LOG = false; 
 
 	/*
 	 * (non-Javadoc)
@@ -61,4 +62,11 @@ public class MainApplication extends Application {
         return MainApplication.context;
     }
     
+    /**
+     * Report if we are enabling HTTPClient logging
+     * @return	True if enabled, false if else
+     */
+    public static boolean isHttpClientLogEnabled() {
+    	return HTTP_CLIENT_LOG;
+    }
 }

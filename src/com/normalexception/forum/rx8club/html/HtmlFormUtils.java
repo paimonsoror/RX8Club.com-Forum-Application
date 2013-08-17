@@ -31,7 +31,6 @@ import java.util.List;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import ch.boye.httpclientandroidlib.HttpEntity;
 import ch.boye.httpclientandroidlib.HttpResponse;
@@ -71,16 +70,51 @@ public class HtmlFormUtils {
 	 */
 	private static boolean formSubmit(String url, List<NameValuePair> nvps) 
 			throws ClientProtocolException, IOException {
+		return formSubmit(url, nvps, false);
+	}
+	
+	/**
+	 * Submit a form and its contents
+	 * @param url		 The url to submit the form to
+	 * @param nvps  	 The name value pair of the contents
+	 * @param attachment If true, add attachment headers
+	 * @return           True if it worked
+	 * @throws ClientProtocolExecption
+	 * @throws IOException
+	 */
+	private static boolean formSubmit(String url, List<NameValuePair> nvps, 
+			boolean attachment)
+		throws ClientProtocolException, IOException {
 		DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
 		
 		HttpPost httpost = new HttpPost(url);	
 		Log.d(TAG, "[Submit] Submit URL: " + url);
 		
+		if(attachment) {
+			String pN = "";
+			for(NameValuePair nvp : nvps) {
+				if(nvp.getName().equals("p")) {
+					pN = nvp.getValue(); break;
+				}
+			}
+			
+			httpost.setHeader("Host", "www.rx8club.com");
+			httpost.setHeader("User-Agent", WebUrls.USER_AGENT);
+			httpost.setHeader("Accept", 
+		             "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+			httpost.setHeader("Accept-Encoding", "gzip,deflate,sdch");
+			httpost.setHeader("Accept-Language", "en-US,en;q=0.8");
+			httpost.setHeader("Cookie", LoginFactory.getInstance().getCookies());
+			httpost.setHeader("Connection", "keep-alive");
+			httpost.setHeader("Content-Type", "application/x-www-form-urlencoded");
+			httpost.setHeader("Referer", WebUrls.postSubmitAddress + pN);		
+		}
+		
 	    httpost.setEntity(new UrlEncodedFormEntity(nvps));
 
-    	HttpContext context = LoginFactory.getInstance().getHttpContext();
+    	HttpContext context   = LoginFactory.getInstance().getHttpContext();
     	HttpResponse response = httpclient.execute(httpost, context);
-    	HttpEntity entity = response.getEntity();
+    	HttpEntity entity     = response.getEntity();
     	StatusLine statusLine = response.getStatusLine();
     	
     	Log.d(TAG, "[Submit] Status: " + statusLine.getStatusCode());
@@ -213,7 +247,7 @@ public class HtmlFormUtils {
 		nvps.add(new BasicNameValuePair("emailupdate", "9999"));
     	nvps.add(new BasicNameValuePair("do", doType));
     	
-    	return formSubmit(WebUrls.quickPostAddress + thread, nvps);
+    	return formSubmit(WebUrls.quickPostAddress + thread, nvps, attId != null);
 	}
 	
 	/**
@@ -275,6 +309,7 @@ public class HtmlFormUtils {
 			String postnum) throws ClientProtocolException, IOException {
 		DefaultHttpClient httpclient = 
 				LoginFactory.getInstance().getClient();
+		
 		String posthash = "", t = "", p = "", attId = "", poststarttime = "";
 		
 		// Ok, the first thing we need to do is to grab some token and hash
@@ -344,11 +379,21 @@ public class HtmlFormUtils {
 				final String attStr = "attachmentid=";
 				final String ampStr = "&";
 				attId = attachment.substring(attachment.indexOf(attStr));
-				attId        = attId.substring(attStr.length(), attId.indexOf(ampStr));
+				attId = attId.substring(attStr.length(), attId.indexOf(ampStr));
 			}
 			
 			httpPost.releaseConnection();
     	}
+		
+		////////////////////////////////////////////////////////////////////
+		// NOTE: Now we have an issue that so far I am unable to emulate
+		//       in Java.  What this has done, is upload an attachment to
+		//       the server, but, it only exists in our profile.  The attachment
+		//       hasn't been registered to a thread.  You can confirm this
+		//       by going to the user control panel on the forum, click the
+		//       attachments section, and you will see the attachment that
+		//       says "in progress".
+		////////////////////////////////////////////////////////////////////
 		
 		return attId;
 	}
