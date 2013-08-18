@@ -42,7 +42,7 @@ public class ClientUtils {
 	 * @return			An httppost with proper headers
 	 */
 	public static HttpPost getHttpPost(String address) {
-		HttpPost hp = new HttpPost(address);
+		HttpPost hp = (HttpPost) getCommonHeaders( new HttpPost(address) );
 		return hp;
 	}
 
@@ -52,7 +52,7 @@ public class ClientUtils {
 	 * @return			An httpget with proper headers
 	 */
 	public static HttpGet getHttpGet(String address) {
-		HttpGet hg = new HttpGet(address);
+		HttpGet hg = (HttpGet) getCommonHeaders( new HttpGet(address) ); 
 		return hg;
 	}
 	

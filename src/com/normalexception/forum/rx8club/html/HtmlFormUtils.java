@@ -473,5 +473,4 @@ public class HtmlFormUtils {
     public static String getInputElementValue(Document pan, String name) {
     	return pan.select("input[name=" + name + "]").attr("value");
     }
-
 }
