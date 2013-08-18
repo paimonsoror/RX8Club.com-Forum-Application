@@ -53,6 +53,7 @@ import ch.boye.httpclientandroidlib.util.EntityUtils;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.WebUrls;
+import com.normalexception.forum.rx8club.httpclient.ClientUtils;
 import com.normalexception.forum.rx8club.user.UserProfile;
 import com.normalexception.forum.rx8club.utils.Utils;
 
@@ -87,25 +88,19 @@ public class HtmlFormUtils {
 		throws ClientProtocolException, IOException {
 		DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
 		
-		HttpPost httpost = new HttpPost(url);	
+		HttpPost httpost = ClientUtils.getHttpPost(url);	
 		Log.d(TAG, "[Submit] Submit URL: " + url);
 		
+		// If there is an attachment, we need to add some data
+		// to the post header
 		if(attachment) {
 			String pN = "";
 			for(NameValuePair nvp : nvps) {
 				if(nvp.getName().equals("p")) {
 					pN = nvp.getValue(); break;
 				}
-			}
-			
-			httpost.setHeader("Host", "www.rx8club.com");
-			httpost.setHeader("User-Agent", WebUrls.USER_AGENT);
-			httpost.setHeader("Accept", 
-		             "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-			httpost.setHeader("Accept-Encoding", "gzip,deflate,sdch");
-			httpost.setHeader("Accept-Language", "en-US,en;q=0.8");
-			httpost.setHeader("Cookie", LoginFactory.getInstance().getCookies());
-			httpost.setHeader("Connection", "keep-alive");
+			}	
+
 			httpost.setHeader("Content-Type", "application/x-www-form-urlencoded");
 			httpost.setHeader("Referer", WebUrls.postSubmitAddress + pN);		
 		}
@@ -317,7 +312,7 @@ public class HtmlFormUtils {
 		// but instead on the thread's full reply page.  Lets GET the page,
 		// and then grab the input params we need.
 		HttpGet httpGet = 
-				new HttpGet(WebUrls.postSubmitAddress + postnum);
+				ClientUtils.getHttpGet(WebUrls.postSubmitAddress + postnum);
 		HttpResponse respo = httpclient.execute(httpGet,
 				LoginFactory.getInstance().getHttpContext());
 		HttpEntity respoEnt = respo.getEntity();
@@ -360,7 +355,7 @@ public class HtmlFormUtils {
 		// Now post the page parameters.  This will go ahead and attach the
 		// image to our profile.
 		HttpPost httpPost = 
-				new HttpPost(WebUrls.postAttachmentAddress);
+				ClientUtils.getHttpPost(WebUrls.postAttachmentAddress);
 		httpPost.setEntity(entity);
 		HttpResponse response = 
 				httpclient.execute(httpPost, 
@@ -413,7 +408,7 @@ public class HtmlFormUtils {
 		DefaultHttpClient httpclient = 
 				LoginFactory.getInstance().getClient();
 		
-		HttpPost httpost = new HttpPost(WebUrls.editPostAddress + postid);
+		HttpPost httpost = ClientUtils.getHttpPost(WebUrls.editPostAddress + postid);
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
     	nvps.add(new BasicNameValuePair("securitytoken", securityToken));
     	

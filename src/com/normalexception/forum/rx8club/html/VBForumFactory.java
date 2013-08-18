@@ -39,6 +39,7 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
+import com.normalexception.forum.rx8club.httpclient.ClientUtils;
 import com.normalexception.forum.rx8club.utils.Utils;
 
 /**
@@ -107,17 +108,17 @@ public class VBForumFactory {
 		
 		// If client isn't null, continue
 		if(client != null && (addr != null && !addr.equals(""))) {
-			HttpGet httpost = null;
+			HttpGet httpget = null;
 			addr = Utils.resolveUrl(addr);
 			
 			try {
-				httpost = new HttpGet(addr);
+				httpget = ClientUtils.getHttpGet(addr);
 		    	output = 
 	    			EntityUtils.toString( 
-	    					client.execute( httpost, lf.getHttpContext() ).getEntity(), 
-	    					"UTF-8" );
+	    					client.execute( httpget, lf.getHttpContext() ).getEntity(), 
+	    					"ISO-8859-1");
 
-				httpost.releaseConnection();
+				httpget.releaseConnection();
 				
 				if(output == null || 
 						output.equals("") || 

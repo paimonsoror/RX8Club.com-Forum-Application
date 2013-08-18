@@ -57,6 +57,7 @@ import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.WebUrls;
+import com.normalexception.forum.rx8club.httpclient.ClientUtils;
 import com.normalexception.forum.rx8club.httpclient.KeepAliveStrategy;
 import com.normalexception.forum.rx8club.httpclient.RedirectStrategy;
 import com.normalexception.forum.rx8club.httpclient.RetryHandler;
@@ -308,7 +309,7 @@ public class LoginFactory {
 			return false;
 		
 		httpclient = getClient();
-    	HttpPost httpost = new HttpPost(WebUrls.loginUrl);
+    	HttpPost httpost = ClientUtils.getHttpPost(WebUrls.loginUrl);
 
     	if(!isInitialized)
     		initializeClientInformation();

@@ -39,6 +39,7 @@ import ch.boye.httpclientandroidlib.client.methods.HttpGet;
 import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
 
 import com.normalexception.forum.rx8club.html.LoginFactory;
+import com.normalexception.forum.rx8club.httpclient.ClientUtils;
 
 /**
  * Handler designed to display the images within a textview
@@ -136,7 +137,7 @@ public class ForumImageHandler implements ImageGetter {
 			HttpGet httpget = null;
 			try {
 				DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
-				httpget = new HttpGet(urlString);
+				httpget = ClientUtils.getHttpGet(urlString);
 				HttpResponse response = 
 						httpclient.execute(httpget, LoginFactory.getInstance().getHttpContext());
 				

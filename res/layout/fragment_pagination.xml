@@ -6,54 +6,39 @@
     android:background="@android:color/darker_gray"
     android:baselineAligned="false"
     android:orientation="vertical" >
+    
+    <ImageButton
+            android:id="@+id/firstButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/firsticon" />
 
-    <Button
-        android:id="@+id/firstButton"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/first"
-        android:textSize="10dip"
-        android:layout_alignParentLeft="true"
-        android:onClick="onClick" />
-
-    <Button
-        android:id="@+id/previousButton"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="50dip"
-        android:text="@string/previous"
-        android:textSize="10dip"
-        android:layout_toRightOf="@id/firstButton"
-        android:onClick="onClick" />
-
-    <TextView
+    <ImageButton
+            android:id="@+id/previousButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_toRightOf="@id/firstButton"
+            android:src="@drawable/previcon" />
+    
+     <TextView
         android:id="@+id/paginationText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/pageXofY"
         android:layout_centerInParent="true" />
-
-    <Button
-        android:id="@+id/lastButton"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/last"
-        android:textSize="10dip"
-        android:layout_alignParentRight="true"
-        android:onClick="onClick" />
+     
+	  <ImageButton
+	     android:id="@+id/lastButton"
+	     android:layout_alignParentRight="true"
+	     android:layout_width="38dp"
+	     android:layout_height="38dp"
+	     android:src="@drawable/lasticon" />
     
-    <Button
-        android:id="@+id/nextButton"
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="50dip"
-        android:text="@string/next"
-        android:textSize="10dip"
-        android:layout_toLeftOf="@id/lastButton"
-        android:onClick="onClick" />
+    <ImageButton
+            android:id="@+id/nextButton"
+            android:layout_toLeftOf="@id/lastButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:src="@drawable/nexticon" />
 </RelativeLayout>

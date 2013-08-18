@@ -50,6 +50,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.cache.FileCache;
 import com.normalexception.forum.rx8club.cache.MemoryCache;
 import com.normalexception.forum.rx8club.html.LoginFactory;
+import com.normalexception.forum.rx8club.httpclient.ClientUtils;
 import com.normalexception.forum.rx8club.utils.Utils;
 
 public class ImageLoader {
@@ -122,7 +123,7 @@ public class ImageLoader {
 			Bitmap bitmap=null;
 			HttpClient httpclient = 
 					LoginFactory.getInstance().getClient();
-			HttpGet hget = new HttpGet(url);
+			HttpGet hget = ClientUtils.getHttpGet(url);
 			HttpResponse response = 
 					httpclient.execute(hget, LoginFactory.getInstance().getHttpContext());
 
