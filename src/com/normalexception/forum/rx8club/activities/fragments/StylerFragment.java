@@ -35,6 +35,8 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.html.VBForumLocale;
+import com.normalexception.forum.rx8club.html.VBForumLocale.Style;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
 /**
@@ -91,22 +93,22 @@ public class StylerFragment extends Fragment implements OnClickListener {
 		
 		switch(arg0.getId()) {
 		case R.id.boldButton:
-			val = "[b][/b]";
+			val = VBForumLocale.getStyle(Style.BOLD);
 			break;
 		case R.id.italicButton:
-			val = "[i][/i]";
+			val = VBForumLocale.getStyle(Style.ITALIC);
 			break;
 		case R.id.underlineButton:
-			val = "[u][/u]";
+			val = VBForumLocale.getStyle(Style.UNDERLINE);
 			break;
 		case R.id.linkCodeButton:
-			val = "[url][/url]";
+			val = VBForumLocale.getStyle(Style.URL);
 			break;
 		case R.id.imageCodeButton:
-			val = "[img][/img]";
+			val = VBForumLocale.getStyle(Style.IMAGE);
 			break;
 		case R.id.quoteCodeButton:
-			val = "[quote][/quote]";
+			val = VBForumLocale.getStyle(Style.QUOTE);
 			break;
 		case R.id.attachButton:
 			/*Intent i = new Intent(

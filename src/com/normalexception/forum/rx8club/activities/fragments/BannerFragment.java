@@ -58,6 +58,10 @@ public class BannerFragment extends Fragment implements OnClickListener {
         return view;
     }
     
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+     */
     public void onViewCreated(View view, Bundle savedInstanceState) {
         int mode = View.VISIBLE;
         if(LoginFactory.getInstance().isGuestMode()) {
