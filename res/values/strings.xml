@@ -8,31 +8,31 @@
     <!-- Category Screen String -->
     <string name="categoryDescription">My Description that is really long to make sure it doesn\'t overlap because sometimes when you have a long desc it does</string>
     <string name="categoryName">Here is a cool category name</string>
-    <string name="categoryPost">Pst: </string>
-    <string name="categoryThread">Thr: </string>
-    <string name="categorySub">Sub: </string>
+    <string name="categoryPost">Pst:\u0020</string>
+    <string name="categoryThread">Thr:\u0020</string>
+    <string name="categorySub">Sub:\u0020</string>
     
     <!-- New Thread Screen -->
     <string name="ntThreadName">Thread Name:</string>
-    <string name="ntThreadPost">Post: </string>
+    <string name="ntThreadPost">Post:\u0020</string>
     
     <!-- New PM Screen -->
-    <string name="pmFrom">From: </string>
-    <string name="pmRecipients">Recipients: </string>
-    <string name="pmSubject">Subject: </string>
-    <string name="pmMessage">Message: </string>
+    <string name="pmFrom">From:\u0020</string>
+    <string name="pmRecipients">Recipients:\u0020</string>
+    <string name="pmSubject">Subject:\u0020</string>
+    <string name="pmMessage">Message:\u0020</string>
     <string name="pmSend">Send</string>
-    <string name="pmDate">Date: </string>
+    <string name="pmDate">Date:\u0020</string>
     
     <!-- New Reply Screen -->
     <string name="nrUserName">User Name Goes Here</string>
     <string name="nrUserTitle">User Title</string>
-    <string name="nrPostDate">Post Date: </string>
+    <string name="nrPostDate">Post Date:\u0020</string>
     <string name="nrPostText">This is some random text oh man this is cool</string>
     
     <!-- Login Screen Strings -->
-    <string name="loginPasswordInput">Password: </string>
-    <string name="loginUsernameInput">Username: </string>
+    <string name="loginPasswordInput">Password:\u0020</string>
+    <string name="loginUsernameInput">Username:\u0020</string>
     <string name="loginLoginButton">Login</string>
     <string name="loginGuestButton">Guest</string>
     <string name="loginAuthFailed">Sorry, Your Login Authentication Failed</string>
@@ -40,12 +40,12 @@
     
     <!-- Thread Screen Strings -->
     <string name="tvTitle">This is one super duper long thread name that will wrap</string>
-    <string name="tvStarted">Started By: </string>
-    <string name="tvLastPost">Last Post: </string>
+    <string name="tvStarted">Started By:\u0020</string>
+    <string name="tvLastPost">Last Post:\u0020</string>
     <string name="tvLastPostPerson">The Thread Last Person</string>
-    <string name="tvTotalPosts">Posts: </string>
-    <string name="tvTotalViews">Views: </string>
-    <string name="tvMyPosts">Yours: </string>
+    <string name="tvTotalPosts">Posts:\u0020</string>
+    <string name="tvTotalViews">Views:\u0020</string>
+    <string name="tvMyPosts">Yours:\u0020</string>
     <string name="commentText">Comment</string>
         
     <!-- Banner Fragment Strings -->
@@ -68,8 +68,8 @@
     <string name="searchType">Search Type</string>
     <string name="userNameSearch">User Name</string>
     <string name="searchSearchButton">Search</string>
-    <string name="searchDate">Search Date: </string>
-    <string name="searchSort">Search Sort: </string>
+    <string name="searchDate">Search Date:\u0020</string>
+    <string name="searchSort">Search Sort:\u0020</string>
     <string name="advancedOptions">Advanced Options:</string>
     <string name="threadContentSearch">Thread Content</string>
     <string name="threadTitleSearch">Thread Title Search</string>

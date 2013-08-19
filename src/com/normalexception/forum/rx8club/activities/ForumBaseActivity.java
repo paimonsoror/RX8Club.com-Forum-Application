@@ -53,7 +53,6 @@ import com.normalexception.forum.rx8club.preferences.Preferences;
  * GUI handlers
  */
 public abstract class ForumBaseActivity extends FragmentActivity implements OnClickListener {
-
 	
 	protected AsyncTask<Void,?,Void> updaterTask;
 	protected ProgressDialog loadingDialog;
@@ -163,6 +162,7 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
         	   	_intent =
         	   			new Intent(MainApplication.getAppContext(), MainActivity.class);
            		_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+           		finish();
            		break;
            case(OPTIONS_MENU):
         	   	_intent =

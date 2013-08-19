@@ -125,6 +125,7 @@ public class BannerFragment extends Fragment implements OnClickListener {
 				
 			case R.id.imageView1:
 				_intent = new Intent(arg0.getContext(), MainActivity.class);
+				getActivity().finish();
 				break;
 		}
 		

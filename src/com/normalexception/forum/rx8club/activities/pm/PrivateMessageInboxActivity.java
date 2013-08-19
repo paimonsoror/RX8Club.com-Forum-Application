@@ -242,7 +242,6 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
      * of the view then this is not called
      */
     private void constructView() {
-    	loadingDialog = ProgressDialog.show(this, getString(R.string.loading), getString(R.string.pleaseWait), true);
     	final ForumBaseActivity src = this;
     	
     	updaterTask = new AsyncTask<Void,String,Void>() {
