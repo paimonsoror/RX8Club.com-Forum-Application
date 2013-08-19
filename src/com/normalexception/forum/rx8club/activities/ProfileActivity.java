@@ -41,6 +41,7 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.handler.ImageLoader;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
 import com.normalexception.forum.rx8club.user.UserProfile;
@@ -202,7 +203,7 @@ public class ProfileActivity extends ForumBaseActivity {
     	}
     	
     	// Threads
-    	String link = "http://www.rx8club.com/search.php?do=finduser&u=" + UserProfile.getUserId();
+    	String link = WebUrls.userUrl + UserProfile.getUserId();
     	doc = VBForumFactory.getInstance().get(this, link);
     	Elements threadlist = doc.select("table[id^=post]");
     	for(Element threadl : threadlist) {
