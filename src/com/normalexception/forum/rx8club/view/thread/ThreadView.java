@@ -34,7 +34,23 @@ public class ThreadView implements Serializable {
 	private String postCount, viewCount, myPosts;
 	private String startUser, lastUser;
 	private String link;
-	private boolean isSticky, isLocked;
+	private boolean isSticky, isLocked, isFavorite = false;
+	
+	/**
+	 * Report if thread is favorite
+	 * @return	True if favorite
+	 */
+	public boolean isFavorite() {
+		return isFavorite;
+	}
+	
+	/**
+	 * Set if the thread is a favorite
+	 * @param fave	True if favorite
+	 */
+	public void setFavorite(boolean fave) {
+		isFavorite = fave;
+	}
 
 	/**
 	 * Report if the thread is sticky

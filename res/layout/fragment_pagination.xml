@@ -20,7 +20,7 @@
             android:layout_toRightOf="@id/firstButton"
             android:src="@drawable/previcon" />
     
-     <TextView
+    <TextView
         android:id="@+id/paginationText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
         android:text="@string/pageXofY"
         android:layout_centerInParent="true" />
      
-	  <ImageButton
+	<ImageButton
 	     android:id="@+id/lastButton"
 	     android:layout_alignParentRight="true"
 	     android:layout_width="38dp"

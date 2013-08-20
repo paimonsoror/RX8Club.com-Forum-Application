@@ -28,9 +28,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.view.ViewHolder;
 
 public class PaginationFragment extends Fragment {
 	
@@ -41,7 +43,18 @@ public class PaginationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	// Inflate our fragment
-        View view = inflater.inflate(R.layout.fragment_pagination, container, false);        
+        View view = inflater.inflate(R.layout.fragment_pagination, container, false); 
+        
+        // Setup the listeners for pagination clicks
+        ViewHolder.get(view, R.id.firstButton)
+        	.setOnClickListener((OnClickListener)getActivity());
+        ViewHolder.get(view, R.id.previousButton)
+    		.setOnClickListener((OnClickListener)getActivity());
+        ViewHolder.get(view, R.id.nextButton)
+    		.setOnClickListener((OnClickListener)getActivity());
+        ViewHolder.get(view, R.id.lastButton)
+    		.setOnClickListener((OnClickListener)getActivity());
+        
         return view;
     }
     

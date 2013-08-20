@@ -138,7 +138,7 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
         		});
         	}
         	else {
-        		((TextView) ViewHolder.get(vi, R.id.cv_subCount_label)).setVisibility(View.GONE);
+        		((ImageView) ViewHolder.get(vi, R.id.cv_subCount_label)).setVisibility(View.GONE);
         		((TextView) ViewHolder.get(vi, R.id.cv_subCount)).setVisibility(View.GONE);
         	}
         }
@@ -157,11 +157,11 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
 		int textColor= isTitle? Color.WHITE : Color.BLACK;
 
 		((TextView)  ViewHolder.get(vi, R.id.cv_postCount)).setVisibility(showMode);
-		((TextView)  ViewHolder.get(vi, R.id.cv_postCount_label)).setVisibility(showMode);
+		((ImageView)  ViewHolder.get(vi, R.id.cv_postCount_label)).setVisibility(showMode);
 		((TextView)  ViewHolder.get(vi, R.id.cv_threadCount)).setVisibility(showMode);
-		((TextView)  ViewHolder.get(vi, R.id.cv_threadCount_label)).setVisibility(showMode);
+		((ImageView)  ViewHolder.get(vi, R.id.cv_threadCount_label)).setVisibility(showMode);
 		((TextView)  ViewHolder.get(vi, R.id.cv_subCount)).setVisibility(showMode);
-		((TextView)  ViewHolder.get(vi, R.id.cv_subCount_label)).setVisibility(showMode);
+		((ImageView)  ViewHolder.get(vi, R.id.cv_subCount_label)).setVisibility(showMode);
 		((ImageView) ViewHolder.get(vi, R.id.cv_image)).setVisibility(showMode);
     	vi.setBackgroundColor(colorMode);
     	

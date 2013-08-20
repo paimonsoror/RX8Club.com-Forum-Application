@@ -52,11 +52,14 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
     
     private TextView vTitle 	= null;
     private TextView vPostCount = null;
+    private TextView vPostCountL= null;
     private TextView vPostUser 	= null;
     private TextView vLastUser 	= null;
+    private TextView vLastUserL = null;
     private TextView vMyCount 	= null;
     private TextView vMyCountL  = null;
     private TextView vViewCount = null;
+    private TextView vViewCountL= null;
     private ImageView vImage 	= null;
  
     public ThreadViewArrayAdapter(Context context, int textViewResourceId,
@@ -101,11 +104,14 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
          
         vTitle 	   = (TextView) ViewHolder.get(vi,R.id.tv_title);
         vPostCount = (TextView) ViewHolder.get(vi,R.id.tv_postCount);
+        vPostCountL= (TextView) ViewHolder.get(vi,R.id.tv_postCount_label);
         vPostUser  = (TextView) ViewHolder.get(vi,R.id.tv_postUser);
         vLastUser  = (TextView) ViewHolder.get(vi,R.id.tv_lastUser);
+        vLastUserL = (TextView) ViewHolder.get(vi,R.id.tv_lastUser_label);
         vMyCount   = (TextView) ViewHolder.get(vi,R.id.tv_myCount);
         vMyCountL  = (TextView) ViewHolder.get(vi,R.id.tv_myCount_label);
         vViewCount = (TextView) ViewHolder.get(vi,R.id.tv_viewCount);
+        vViewCountL= (TextView) ViewHolder.get(vi,R.id.tv_viewCount_label);
         vImage 	   = (ImageView) ViewHolder.get(vi,R.id.tv_image);
         
         vTitle.setText(       m.getTitle());
@@ -138,6 +144,9 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 		else 
 			setMode(vi, false, Color.GRAY);
 		
+		if (m.isFavorite())
+			hideThreadDetails();
+		
         return vi;
 	}
 	
@@ -156,5 +165,23 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 		vLastUser .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
 		vMyCount  .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
 		vViewCount.setTextColor(isSpecial? Color.BLACK : Color.WHITE);
+	}
+	
+	/**
+	 * Hide the thread details, which is really only used on special
+	 * occasions like the favorites list
+	 */
+	public void hideThreadDetails() {
+		vPostCount .setVisibility(View.GONE);
+		vPostCountL.setVisibility(View.GONE);
+
+		vLastUser .setVisibility(View.GONE);
+		vLastUserL.setVisibility(View.GONE);
+		
+		vMyCount  .setVisibility(View.GONE);
+		vMyCountL .setVisibility(View.GONE);
+		
+		vViewCount .setVisibility(View.GONE);
+		vViewCountL.setVisibility(View.GONE);
 	}
 }

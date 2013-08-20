@@ -40,4 +40,14 @@ public class FavoriteThreads extends ArrayList<ThreadView> implements Serializab
 	protected FavoriteThreads() {
 		super();
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see java.util.ArrayList#add(java.lang.Object)
+	 */
+	@Override
+	public boolean add(ThreadView tv) {
+		tv.setFavorite(true);
+		return super.add(tv);
+	}
 }
