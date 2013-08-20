@@ -190,17 +190,37 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
 		final String link = pmv.getLink();
 		if(link != null && !link.equals("")) {
 			Log.v(TAG, "User Clicked: " + link);
-			
-			// Open new thread
-			new Thread("RefreshDisplayList") {
-				public void run() {
+			final PrivateMessageInboxActivity src = this;
+			updaterTask = new AsyncTask<Void,String,Void>() {
+			    @Override
+			    protected void onPreExecute() {
+			    	loadingDialog = 
+							ProgressDialog.show(src, 
+									getString(R.string.loading), 
+									getString(R.string.pleaseWait), true);
+			    }
+			    
+				@Override
+				protected Void doInBackground(Void... params) {
 					Intent intent = 
 							new Intent(PrivateMessageInboxActivity.this, 
 									PrivateMessageViewActivity.class);
 					intent.putExtra("link", link);
 					startActivity(intent);
+					
+					return null;
 				}
-			}.start();	
+				@Override
+			    protected void onProgressUpdate(String...progress) {
+			        loadingDialog.setMessage(progress[0]);
+			    }
+				
+				@Override
+			    protected void onPostExecute(Void result) {
+					loadingDialog.dismiss();
+				}
+			};
+			updaterTask.execute();
 		}
     }
     

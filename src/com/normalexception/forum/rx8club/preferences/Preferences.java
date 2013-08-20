@@ -29,6 +29,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -72,32 +73,40 @@ public class Preferences extends PreferenceActivity {
         cache.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference arg0) { 
-            	final ProgressDialog dlg = 
-            			ProgressDialog.show(
-            					ctx, 
-            					getString(R.string.dialogClearingCache), 
-            					getString(R.string.pleaseWait), 
-            					true);
-            	new Thread("ClearCacheThread") {
-            		public void run() {
-            			try {
+            	new AsyncTask<Void,String,Void>() {
+            		ProgressDialog loadingDialog;
+            		
+        		    @Override
+        		    protected void onPreExecute() {
+        		    	loadingDialog = 
+        						ProgressDialog.show(ctx, 
+        								getString(R.string.dialogClearingCache), 
+        								getString(R.string.pleaseWait), true);
+        		    }
+        		    
+        			@Override
+        			protected Void doInBackground(Void... params) {
+        				try {
 			            	FileCache fc = 
 			            			new FileCache(ctx);
 			            	fc.clear();
-            			} finally {
-            				if(dlg != null)
-            					dlg.dismiss();
-            				
-            				runOnUiThread(new Runnable() {
-                				public void run() {
-                					Toast.makeText(ctx, 
-                        					R.string.dialogCacheCleared, 
-                        					Toast.LENGTH_SHORT).show();
-                				}
-                			});
-            			}
-            		}
-            	}.start();
+        				} catch (Exception e) {}
+		            	return null;
+        			}
+        				
+	            	@Override
+	    		    protected void onProgressUpdate(String...progress) {
+	    		        loadingDialog.setMessage(progress[0]);
+	    		    }
+	    			
+	    			@Override
+	    		    protected void onPostExecute(Void result) {
+	    				loadingDialog.dismiss();
+	    				Toast.makeText(ctx, 
+            					R.string.dialogCacheCleared, 
+            					Toast.LENGTH_SHORT).show();
+	    			}
+	    		}.execute();
                 return true;
             }
         });
