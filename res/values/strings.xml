@@ -61,6 +61,7 @@
     <string name="menuLogoff">Logoff</string>
     <string name="menuPreferences">Preferences</string>
     <string name="menuControlPanel">User CP</string>
+    <string name="menuUtilities">Utilities</string>
     <string name="menuAbout">About</string>
     
     <!-- Search Screen Strings -->
@@ -193,5 +194,18 @@
         <item>12</item>
         <item>14</item>
         <item>16</item>
+    </string-array>
+    
+    <string-array name="utilities">
+        <item>Compression Calculator</item>
+    </string-array>
+    
+    <string-array name="compressionAltitudeSpinnerValues">
+        <item>Feet</item>
+        <item>Meters</item>
+    </string-array>
+    <string-array name="compressionUnitSpinnerValues">
+        <item>PSI</item>
+        <item>KPA</item>
     </string-array>
 </resources>

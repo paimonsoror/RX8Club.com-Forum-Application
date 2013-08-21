@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="5dip" >
+    
+    <TextView
+	    android:id="@+id/compressionRotorFaceLabel"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:text="Rotor Face Value" />
+    
+    <TableRow
+        android:id="@+id/compressionRotorRow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/compressionRotorFaceLabel"
+        android:stretchColumns="*">
+	    <EditText
+		    android:id="@+id/compressionRotorOne"
+		    android:layout_width="0dip"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:inputType="numberDecimal" />
+		    
+	    <EditText
+		    android:id="@+id/compressionRotorTwo"
+		    android:layout_width="0dip"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:inputType="numberDecimal" />
+		    
+	   	<EditText
+		    android:id="@+id/compressionRotorThree"
+		    android:layout_width="0dip"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:inputType="numberDecimal" />
+	   	
+	   	<Spinner
+	        android:id="@+id/compressionUnitValues"
+	        android:layout_width="0dip"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:entries="@array/compressionUnitSpinnerValues" />
+   	</TableRow>
+   	
+    <LinearLayout
+        android:id="@+id/compressionCrankRow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/compressionRotorRow"
+        android:orientation="horizontal"
+        android:paddingTop="10dp">
+        
+	    <TextView
+		    android:id="@+id/compressionRotorCrankLabel"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="Cranking RPM: " />
+	    
+	    <EditText
+		    android:id="@+id/compressionRotorCrank"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:inputType="numberDecimal" />
+    </LinearLayout>
+    
+    <TableRow
+        android:id="@+id/compressionAltitudeRow"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/compressionCrankRow"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:stretchColumns="*">
+	    
+        <TextView
+		    android:id="@+id/compressionRotorAltitudeLabel"
+		    android:layout_width="0dip"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:text="Altitude: " />
+	    
+	    <EditText
+		    android:id="@+id/compressionRotorAltitude"
+		    android:layout_width="0dip"
+		    android:layout_height="wrap_content"
+		    android:layout_weight="1"
+		    android:inputType="numberDecimal" />
+	    
+	    <Spinner
+	        android:id="@+id/compressionAltitudeSpinner"
+	        android:layout_width="0dip"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:entries="@array/compressionAltitudeSpinnerValues" />
+
+	</TableRow>
+	
+    <Button
+		android:id="@+id/compressionNormalize"
+		android:layout_below="@id/compressionAltitudeRow"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:text="Normalize"  />
+    
+</RelativeLayout>

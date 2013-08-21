@@ -2,8 +2,8 @@
     android:name="com.normalexception.forum.MainApplication"
     package="com.normalexception.forum.rx8club"
     android:installLocation="auto"
-    android:versionCode="11505"
-    android:versionName="1.1.5" >
+    android:versionCode="11520"
+    android:versionName="1.1.5.2" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -74,6 +74,11 @@
         </activity>
         <activity
             android:name=".activities.AboutActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleInstance" >
+        </activity>
+        <activity
+            android:name=".activities.utils.CompressionActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleInstance" >
         </activity>

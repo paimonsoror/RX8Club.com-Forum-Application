@@ -44,6 +44,7 @@ import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.activities.utils.UtilitiesDialog;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.preferences.Preferences;
 
@@ -62,6 +63,7 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	protected static final int MAIN_MENU = 2;
 	protected static final int OPTIONS_MENU = 3;
 	protected static final int USERCP_MENU = 4;
+	protected static final int UTILS_MENU = 5;
 	
 	private static String TAG = "ForumBaseActivity";
 	
@@ -96,6 +98,7 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
         menu.add(0,OPTIONS_MENU,0,R.string.menuPreferences);
         if(LoginFactory.getInstance().isLoggedIn())
         	menu.add(0,USERCP_MENU,0,R.string.menuControlPanel);
+        menu.add(0,UTILS_MENU,0,R.string.menuUtilities);
         menu.add(0,ABOUT_MENU,0,R.string.menuAbout);
         return true; 
     } 
@@ -149,12 +152,10 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 				
    				break;
            case(USERCP_MENU):
-        	   	Log.v(TAG, "UserCP Pressed");
            	   	_intent = 
            			   new Intent(MainApplication.getAppContext(), UserCpActivity.class);
         	   break;
            case(ABOUT_MENU):
-        	   	Log.v(TAG, "About Pressed");
            		_intent =
            				new Intent(MainApplication.getAppContext(), AboutActivity.class);
            		break;
@@ -168,6 +169,10 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
         	   	_intent =
         	   			new Intent(MainApplication.getAppContext(), Preferences.class);
            		break;
+           case(UTILS_MENU):
+        	   UtilitiesDialog ud = new UtilitiesDialog(this);
+           	   ud.show();
+        	   break;
         } 
         
         if(_intent != null)
