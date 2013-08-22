@@ -23,11 +23,13 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/submit" />
+            android:text="@string/submit"
+            android:onClick="onClick"  />
         <Button
             android:id="@+id/pmitem_delete"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/delete" />
+            android:text="@string/delete"
+            android:onClick="onClick"  />
 </LinearLayout>
