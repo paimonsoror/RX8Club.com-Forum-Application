@@ -57,6 +57,10 @@ public class UtilitiesDialog {
 	    			Intent intent = new Intent(ctx, CompressionActivity.class);
 	    			ctx.startActivity(intent);
 	    			break;
+	    		case 1:					
+	    			builder = new VinDecoderDialog(ctx);
+	    			builder.show();
+	    			break;
 	    		default: break;
 	    		}
 	    	}

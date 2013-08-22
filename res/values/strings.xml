@@ -198,6 +198,7 @@
     
     <string-array name="utilities">
         <item>Compression Calculator</item>
+        <item>VIN Decoder</item>
     </string-array>
     
     <string-array name="compressionAltitudeSpinnerValues">
