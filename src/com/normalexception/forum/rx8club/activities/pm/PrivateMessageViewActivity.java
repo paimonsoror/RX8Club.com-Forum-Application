@@ -174,7 +174,7 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
    		case R.id.pmitem_submit:
    			Log.v(TAG, "PM Submit Clicked");
    			String toPost = 
-					((TextView)findViewById(R.id.postBox)).getText().toString();
+					((TextView)findViewById(R.id.pmitem_comment)).getText().toString();
 			PmTask sTask = 
 					new PmTask(this, this.securityToken, "Re: " + this.title, 
 							toPost, this.postUser, this.pmid);
