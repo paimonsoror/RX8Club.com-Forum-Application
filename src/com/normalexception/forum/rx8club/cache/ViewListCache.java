@@ -98,6 +98,7 @@ public class ViewListCache<T> extends Cache {
 	 * Get the contents of the cached file
 	 * @return	The contents of the cached file as a list
 	 */
+	@SuppressWarnings("unchecked")
 	public List<T> getCachedContents() {
 		List<T> cv = null;
 		try {
