@@ -26,6 +26,8 @@ package com.normalexception.forum.rx8club.activities.utils;
 
 import java.util.Locale;
 
+import com.normalexception.forum.rx8club.R;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,6 +35,7 @@ import android.widget.EditText;
 
 public class VinDecoderDialog extends AlertDialog.Builder {
 	private Context ctx = null;
+	private final int MAX_VIN = 17;
 
 	/**
 	 * Dialog to decode a VIN number to readible text
@@ -45,20 +48,20 @@ public class VinDecoderDialog extends AlertDialog.Builder {
 		// Set an EditText view to get user input 
 		final EditText input = new EditText(ctx);
 		
-		setTitle("VIN");
+		setTitle(R.string.util_vinTitle);
 		
-		setMessage("Please Enter Your VIN");
+		setMessage(R.string.util_vinMessage);
 		
 		// Ad text view
 		setView(input);
 		
-		setPositiveButton("Decode", new DialogInterface.OnClickListener() {
+		setPositiveButton(R.string.util_vinDecode, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				String value = input.getText().toString();
 				decode(value);
 			}
 		});
-		setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {}
 		});
 	}
@@ -70,7 +73,7 @@ public class VinDecoderDialog extends AlertDialog.Builder {
 	private void decode(String value) {
 		String decodedString = "";
 		if (value == null || value.length() == 0) return;
-		if (value.length() != 17) return;
+		if (value.length() != MAX_VIN) return;
 		
 		final String NS = "Not Sure";
 		value = value.toUpperCase(Locale.US);
@@ -78,10 +81,10 @@ public class VinDecoderDialog extends AlertDialog.Builder {
 		// 012   34     5       6      7     8     9    10  
 		// JM1 | FE   | 1     | 7    | 2   | 2   | A  | 0    | 123456
 		// Maz | Chas | Restr | Body | Eng | Chk | MY | Plnt | SerNo
-		String car = value.substring(0, 3).equals("JM1")? "Mazda" : NS;
+		String car = value.substring(0, 3).equals("JM1")?  "Mazda" : NS;
 		String model = value.substring(3, 5).equals("FE")? "RX8" : NS;
 		String restraint = value.charAt(5) == '1'? "D/P Airbag, Side Curtain AB" : NS;
-		String body = value.charAt(6) == '7'? "Coupe" : NS;
+		String body = value.charAt(6) == '7'?      "Coupe" : NS;
 		String engine = 
 				value.charAt(7) == '2'? "13B-High power, for California" :
 				value.charAt(7) == '3'? "13B-High power" :
@@ -89,8 +92,8 @@ public class VinDecoderDialog extends AlertDialog.Builder {
 				value.charAt(7) == 'M'? "13B-Standard power, for California" :
 				value.charAt(7) == 'N'? "13B-Standard power" :
 				value.charAt(7) == 'P'? "13B-Standard power, for Federal/Canada" : NS;
-		String checkDigit = "Check Digit";
-		String modelYr = Integer.toString(Character.digit(value.charAt(9), 16));
+		String modelYr = 
+				Integer.toString(Character.digit(value.charAt(9), 16));
 		String plant = 
 				value.charAt(10) == '0' ? "Hiroshima" :
 				value.charAt(10) == '1' ? "Hofu" : NS;
@@ -103,12 +106,11 @@ public class VinDecoderDialog extends AlertDialog.Builder {
 				"Restraint: %s\n" +
 				"Body: %s\n" +
 				"Engine: %s\n" +
-				"Check Digit: %s\n" +
 				"Model Year: %s\n" +
 				"Plant: %s\n" +
 				"Serial Number: %s", 
 				car, model, restraint, body, engine, 
-				checkDigit, modelYr, plant, serialNo);
+				modelYr, plant, serialNo);
 		
 		// Display the results in a dialog
 		AlertDialog.Builder ab = new AlertDialog.Builder(ctx);

@@ -135,14 +135,14 @@ public class CompressionActivity extends ForumBaseActivity {
 			double totalComp = Compression * altitude_compensation * rpm_compensation;
 	
 			new AlertDialog.Builder(this)
-			.setTitle("Compression Value")
+			.setTitle(R.string.util_compressionTitle)
 			.setMessage(String.format("#1: %.1f, #2: %.1f, #3 %.1f", 
 					rotor[0] * totalComp, rotor[1] * totalComp, rotor[2] * totalComp)).show();
 		} else {
 			runOnUiThread(new Runnable() {
 	            public void run() {
 	            	Toast.makeText(getApplicationContext(), 
-	            			"Please Fill Form", Toast.LENGTH_SHORT).show();
+	            			R.string.fillForm, Toast.LENGTH_SHORT).show();
 	            }
 			});
 		}

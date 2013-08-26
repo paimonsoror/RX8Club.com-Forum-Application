@@ -123,6 +123,14 @@
     <string name="loggingIn">Logging In</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
+    <string name="cancel">Cancel</string>
+    <string name="fillForm">Please Fill Form</string>
+    
+    <!-- Utilities Strings -->
+    <string name="util_compressionTitle">Compression Value</string>
+    <string name="util_vinTitle">VIN</string>
+    <string name="util_vinMessage">Please Enter Your VIN</string>
+    <string name="util_vinDecode">Decode</string>
     
     <!-- Async Dialog Strings -->
 	<string name="asyncDialogGrabThreads">Grabbing Threads</string>
@@ -139,6 +147,7 @@
 	<string name="asyncDialogUploadDone">Upload Done</string>
 	<string name="asyncDialogSubmitting">Submitting Post</string>
 
+	<!-- String Arrays -->
     <string-array name="searchDateArray">
         <item>Any Date</item>
         <item>Last Visit</item>
@@ -205,6 +214,7 @@
         <item>Feet</item>
         <item>Meters</item>
     </string-array>
+    
     <string-array name="compressionUnitSpinnerValues">
         <item>PSI</item>
         <item>KPA</item>
