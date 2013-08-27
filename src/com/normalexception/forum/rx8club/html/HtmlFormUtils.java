@@ -471,6 +471,10 @@ public class HtmlFormUtils {
      * @return		The string value of the input
      */
     public static String getInputElementValue(Document pan, String name) {
-    	return pan.select("input[name=" + name + "]").attr("value");
+    	try {
+    		return pan.select("input[name=" + name + "]").attr("value");
+    	} catch (NullPointerException npe) {
+    		return "";
+    	}
     }
 }
