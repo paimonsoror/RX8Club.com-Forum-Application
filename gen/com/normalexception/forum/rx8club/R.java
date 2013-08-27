@@ -13,6 +13,8 @@ public final class R {
         public static final int compressionUnitSpinnerValues=0x7f080008;
         public static final int fontsizes=0x7f080004;
         public static final int fontsizevalue=0x7f080005;
+        /**  String Arrays 
+         */
         public static final int searchDateArray=0x7f080000;
         public static final int searchDateArrayValue=0x7f080001;
         public static final int searchSortArray=0x7f080002;
@@ -318,21 +320,21 @@ containing a value of this type.
         /**  App Specific Strings 
          */
         public static final int app_name=0x7f070003;
-        public static final int asyncDialogCategorySort=0x7f070069;
-        public static final int asyncDialogGrabForumContents=0x7f070067;
-        public static final int asyncDialogGrabPMs=0x7f07006c;
-        public static final int asyncDialogGrabProfile=0x7f07006e;
-        public static final int asyncDialogGrabThreadContents=0x7f070068;
+        public static final int asyncDialogCategorySort=0x7f07006a;
+        public static final int asyncDialogGrabForumContents=0x7f070068;
+        public static final int asyncDialogGrabPMs=0x7f07006d;
+        public static final int asyncDialogGrabProfile=0x7f07006f;
+        public static final int asyncDialogGrabThreadContents=0x7f070069;
         /**  Async Dialog Strings 
          */
-        public static final int asyncDialogGrabThreads=0x7f070066;
-        public static final int asyncDialogLoadingPM=0x7f07006d;
-        public static final int asyncDialogPopulating=0x7f07006b;
-        public static final int asyncDialogSubmitting=0x7f070072;
-        public static final int asyncDialogUpdateCache=0x7f07006a;
-        public static final int asyncDialogUploadAttachment=0x7f070070;
-        public static final int asyncDialogUploadDone=0x7f070071;
-        public static final int asyncDialogValidateProfile=0x7f07006f;
+        public static final int asyncDialogGrabThreads=0x7f070067;
+        public static final int asyncDialogLoadingPM=0x7f07006e;
+        public static final int asyncDialogPopulating=0x7f07006c;
+        public static final int asyncDialogSubmitting=0x7f070073;
+        public static final int asyncDialogUpdateCache=0x7f07006b;
+        public static final int asyncDialogUploadAttachment=0x7f070071;
+        public static final int asyncDialogUploadDone=0x7f070072;
+        public static final int asyncDialogValidateProfile=0x7f070070;
         public static final int bannerFavorites=0x7f07002a;
         public static final int bannerNewPms=0x7f070027;
         /**  Banner Fragment Strings 
@@ -353,6 +355,7 @@ containing a value of this type.
         public static final int categorySub=0x7f07000b;
         public static final int categoryThread=0x7f07000a;
         public static final int commentText=0x7f070025;
+        public static final int connectionError=0x7f070062;
         public static final int delete=0x7f070059;
         public static final int dialogCacheCleared=0x7f070053;
         public static final int dialogClearingCache=0x7f070052;
@@ -453,10 +456,10 @@ containing a value of this type.
         public static final int userTitle=0x7f070041;
         /**  Utilities Strings 
          */
-        public static final int util_compressionTitle=0x7f070062;
-        public static final int util_vinDecode=0x7f070065;
-        public static final int util_vinMessage=0x7f070064;
-        public static final int util_vinTitle=0x7f070063;
+        public static final int util_compressionTitle=0x7f070063;
+        public static final int util_vinDecode=0x7f070066;
+        public static final int util_vinMessage=0x7f070065;
+        public static final int util_vinTitle=0x7f070064;
         public static final int websitelink=0x7f070044;
     }
     public static final class style {

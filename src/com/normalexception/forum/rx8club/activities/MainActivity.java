@@ -164,7 +164,8 @@ public class MainActivity extends ForumBaseActivity {
         			thisActivity.runOnUiThread(new Runnable() {
         				public void run() {
         					Toast.makeText(thisActivity, 
-                					"Sorry, there was an error connecting!", Toast.LENGTH_SHORT).show();
+                					R.string.connectionError, 
+                					Toast.LENGTH_SHORT).show();
         				}
         			});
         			e.printStackTrace();
@@ -174,8 +175,7 @@ public class MainActivity extends ForumBaseActivity {
         	@Override
 		    protected void onProgressUpdate(String...progress) {
 		        loadingDialog.setMessage(progress[0]);
-		    }
-			
+		    }			
 			@Override
 		    protected void onPostExecute(Void result) {
 				updateList();
@@ -291,7 +291,7 @@ public class MainActivity extends ForumBaseActivity {
 				
 		if(output == null) {
 			Toast.makeText(this, 
-					"Sorry, We Were Unable To Connect!", 
+					R.string.connectionError, 
 					Toast.LENGTH_LONG).show();
 			returnToLoginPage(false);
 			return null;
