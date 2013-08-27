@@ -47,6 +47,7 @@ import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
@@ -153,8 +154,14 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 				lv = (ListView)findViewById(R.id.mainlistview);
 
 				publishProgress(getString(R.string.asyncDialogGrabThreadContents));
-				getThreadContents(doc);
 				
+				try {
+					getThreadContents(doc);
+				} catch (Exception e) {
+					Toast.makeText(
+							src, R.string.timeout, Toast.LENGTH_SHORT)
+						 .show();
+				}
 				publishProgress(getString(R.string.asyncDialogPopulating));
 				updateList();
 				return null;

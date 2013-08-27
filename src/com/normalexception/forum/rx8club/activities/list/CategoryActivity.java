@@ -47,6 +47,7 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
@@ -205,18 +206,25 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
  				// and not if we are in a New Posts page.  This data is used when
  				// we create new threads.
  				publishProgress(getString(R.string.asyncDialogGrabThreads));
-		        if(!isNewTopicActivity) {
-			        forumId = link.substring(link.lastIndexOf("-") + 1);
-			        
-			        // Make sure forumid doesn't end with a "/"
-			        forumId = Utils.parseInts(forumId);
-			        
-			        getCategoryContents(doc, 
-							link.substring(link.lastIndexOf('-') + 1, link.lastIndexOf('/')),
-							link.contains("sale-wanted"));
-		        } else {
-		        	getCategoryContents(doc, null, false);
-		        }
+ 				try {
+			        if(!isNewTopicActivity) {
+				        forumId = link.substring(link.lastIndexOf("-") + 1);
+				        
+				        // Make sure forumid doesn't end with a "/"
+				        forumId = Utils.parseInts(forumId);
+				        
+				        getCategoryContents(doc, 
+								link.substring(link.lastIndexOf('-') + 1, 
+										link.lastIndexOf('/')),
+								link.contains("sale-wanted"));
+			        } else {
+			        	getCategoryContents(doc, null, false);
+			        }
+ 				} catch (Exception e) {
+ 					Toast.makeText(
+ 							src, R.string.timeout, Toast.LENGTH_SHORT)
+ 						 .show();
+ 				}
 		        				
 				findViewById(R.id.mainlisttitle).setVisibility(View.GONE);
 		    	

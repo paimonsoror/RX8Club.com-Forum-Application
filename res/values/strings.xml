@@ -126,6 +126,7 @@
     <string name="cancel">Cancel</string>
     <string name="fillForm">Please Fill Form</string>
     <string name="connectionError">Sorry, there was an error connecting!</string>
+    <string name="timeout">Connection Timed Out!</string>
     
     <!-- Utilities Strings -->
     <string name="util_compressionTitle">Compression Value</string>
