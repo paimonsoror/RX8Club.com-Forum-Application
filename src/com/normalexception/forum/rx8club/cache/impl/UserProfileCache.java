@@ -24,13 +24,12 @@ package com.normalexception.forum.rx8club.cache.impl;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import java.util.List;
-
-import com.normalexception.forum.rx8club.cache.ObjectCache;
-
 import android.content.Context;
 
-public class ViewListCache<T> extends ObjectCache< List<T> > {
+import com.normalexception.forum.rx8club.cache.ObjectCache;
+import com.normalexception.forum.rx8club.user.UserProfile;
+
+public class UserProfileCache extends ObjectCache<UserProfile> {
 	
 	/**
 	 * To help increase the speed of the app, we are going to go ahead
@@ -40,7 +39,7 @@ public class ViewListCache<T> extends ObjectCache< List<T> > {
 	 * @param ctx		The source context
 	 * @param filename	The name of the cache file
 	 */
-	public ViewListCache(Context ctx, String filename) {
+	public UserProfileCache(Context ctx, String filename) {
 		this.CACHEFILENAME = filename;
 		this.cacheDir = getExternalCache(ctx);
 	}

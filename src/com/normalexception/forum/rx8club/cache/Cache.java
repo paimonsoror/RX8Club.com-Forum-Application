@@ -31,7 +31,9 @@ import android.content.Context;
 import com.normalexception.forum.rx8club.R;
 
 public class Cache {
-	protected File cacheDir = null;
+	protected File   cacheDir      = null;
+	protected String CACHEFILENAME = null;
+	protected File   cacheFile     = null;
 	
 	/**
 	 * Report the location of the external cache
@@ -52,6 +54,17 @@ public class Cache {
             cacheDir.mkdirs();
         
         return cacheDir;
+	}
+	
+	
+	/**
+	 * Convenient method of grabbing the cache file
+	 * @return	The cache file object
+	 */
+	protected File getCacheFile() {
+		if(cacheFile == null)
+			cacheFile = new File(cacheDir, CACHEFILENAME);
+		return cacheFile;
 	}
 	 
 	/**

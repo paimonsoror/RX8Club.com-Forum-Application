@@ -1,4 +1,4 @@
-package com.normalexception.forum.rx8club.cache.impl;
+package com.normalexception.forum.rx8club.cache;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -24,24 +24,27 @@ package com.normalexception.forum.rx8club.cache.impl;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import java.util.List;
+import java.util.Date;
 
-import com.normalexception.forum.rx8club.cache.ObjectCache;
+public class ExpirableCache extends Cache {
 
-import android.content.Context;
-
-public class ViewListCache<T> extends ObjectCache< List<T> > {
-	
+	protected static final long MS_IN_DAY = 86400000;
+    
 	/**
-	 * To help increase the speed of the app, we are going to go ahead
-	 * and cache the view list.  The cache expires each day, so if
-	 * the forums update it wont take long for the app to get the
-	 * updates
-	 * @param ctx		The source context
-	 * @param filename	The name of the cache file
+	 * Check if the cache is expired
+	 * @return	True if cache is expired
 	 */
-	public ViewListCache(Context ctx, String filename) {
-		this.CACHEFILENAME = filename;
-		this.cacheDir = getExternalCache(ctx);
+	public boolean isCacheExpired() {
+		boolean result = true;
+		cacheFile = getCacheFile();
+		if(cacheFile.exists()) {
+			long today = new Date().getTime();
+			if(cacheFile.lastModified() - today > MS_IN_DAY)
+				result = true;
+			else
+				result = false;
+		}
+		return result;
 	}
+	
 }
