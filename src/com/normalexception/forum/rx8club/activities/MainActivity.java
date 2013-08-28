@@ -43,7 +43,8 @@ import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.cache.ViewListCache;
+import com.normalexception.forum.rx8club.cache.impl.UserProfileCache;
+import com.normalexception.forum.rx8club.cache.impl.ViewListCache;
 import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
@@ -75,6 +76,7 @@ public class MainActivity extends ForumBaseActivity {
 			                 POSTS_CNT  = 4;
 	
 	private ViewListCache<CategoryView> hcache = null;
+	private UserProfileCache upcache = null;
 	
 	/*
 	 * (non-Javadoc)
@@ -107,11 +109,61 @@ public class MainActivity extends ForumBaseActivity {
 	        	mainList = (ArrayList<CategoryView>) hcache.getCachedContents();
 		        updateList();
 	        }
+	        
+	        // Once we brought a cache into the mix, we now need a way to 
+	        // validate the user profile.  Unfortunately we can't place
+	        // the data in our cache, because we cache the main page
+	        // regardless of user / guest.  What we will do now, is cache
+	        // the user profile as well.
+	        if(LoginFactory.getInstance().isLoggedIn()) {
+		        String currentUser = UserProfile.getInstance().getUsername();
+		        upcache = new UserProfileCache(this, currentUser);
+		        UserProfile cachedProfile = upcache.getCachedContents();
+		        if(cachedProfile == null || 
+		        		!cachedProfile.getUsername().equals(currentUser)) {
+		        	Log.d(TAG, "User Cache Expired, Recreating");
+		        	constructUserProfile(null);
+		        } else {
+		        	UserProfile.getInstance().copy(upcache.getCachedContents());
+		        }
+	        }
     	} catch (Exception e) {
     		Log.e(TAG, "Fatal Error In Main Activity! " + e.getMessage());
     	}
     }
     
+	private void constructUserProfile(final Document doc) {
+		final ForumBaseActivity thisActivity = this;
+		new AsyncTask<Void,String,Void>() {
+			@Override
+		    protected void onPreExecute() {
+		    	loadingDialog = 
+						ProgressDialog.show(thisActivity, 
+								getString(R.string.loading), 
+								"Validating Profile", true);
+		    }
+			@Override
+			protected Void doInBackground(Void... params) {		
+    			if(LoginFactory.getInstance().isLoggedIn()) {
+    				Document localDoc = doc;
+    				if(localDoc == null)
+    					localDoc = VBForumFactory.getInstance().get(
+	    					thisActivity, VBForumFactory.getRootAddress());
+    				Elements userElement = 
+    					localDoc.select("a[href^=http://www.rx8club.com/members/" + 
+    						UserProfile.getInstance().getUsername().replace(".", "-") + "]");
+    				UserProfile.getInstance().setUserProfileLink(userElement.attr("href"));
+    			}
+				return null;
+			}	
+			@Override
+		    protected void onPostExecute(Void result) {
+				loadingDialog.dismiss();
+				upcache.cacheContents(UserProfile.getInstance());
+			}
+		}.execute();
+	}
+	
     /**
      * Start the application activity
      */
@@ -124,6 +176,8 @@ public class MainActivity extends ForumBaseActivity {
          * each category and each forum is inserted as a row
          */
         updaterTask = new AsyncTask<Void,String,Void>() {
+        	Document doc = null;
+        	
         	@Override
 		    protected void onPreExecute() {
 		    	loadingDialog = 
@@ -136,23 +190,9 @@ public class MainActivity extends ForumBaseActivity {
         		try {
 	        		Log.v(TAG, "Updater Thread Started");
 	        		
-	        		Document doc = null;
-
-	        		// User information
-	        		publishProgress(getString(R.string.asyncDialogValidateProfile));
-	        		if(!UserProfile.isInitialized() || UserProfile.getUserProfileLink().equals("")) {
-	        			if(LoginFactory.getInstance().isLoggedIn()) {
-	        				doc = VBForumFactory.getInstance().get(
-	        					thisActivity, VBForumFactory.getRootAddress());
-	        				Elements userElement = 
-	        				doc.select("a[href^=http://www.rx8club.com/members/" + 
-	        						UserProfile.getUsername().replace(".", "-") + "]");
-	        				UserProfile.setUserProfileLink(userElement.attr("href"));
-	        			}
-	        		}
-	        		
 	        		publishProgress(getString(R.string.asyncDialogGrabForumContents));
-	        		doc 	 = getForum();	        		
+	        		doc 	 = getForum();
+	        		
 	        		mainList = new ArrayList<CategoryView>();
 	        		
 	        		publishProgress(getString(R.string.asyncDialogCategorySort));
@@ -180,6 +220,9 @@ public class MainActivity extends ForumBaseActivity {
 		    protected void onPostExecute(Void result) {
 				updateList();
 				loadingDialog.dismiss();
+        		
+        		// Construct a new user profile
+        		constructUserProfile(doc);
 			}
         };
         updaterTask.execute();

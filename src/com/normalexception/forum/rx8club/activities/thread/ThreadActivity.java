@@ -228,7 +228,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 
 		// Get the user's actual ID, there is a chance they never got it
 		// before
-		UserProfile.setUserId(
+		UserProfile.getInstance().setUserId(
 				HtmlFormUtils.getInputElementValue(doc, "loggedinuser"));
 
 		// Get Post Number and security token
@@ -255,7 +255,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			pv.setUserName(userCp.select("div[id^=postmenu]").text());
 			pv.setIsLoggedInUser(
 					LoginFactory.getInstance().isLoggedIn()?
-							UserProfile.getUsername().equals(pv.getUserName()) : false);	
+							UserProfile.getInstance().getUsername().equals(
+									pv.getUserName()) : false);	
 			pv.setUserTitle(userDetail.first().text());
 			pv.setUserImageUrl(userAvatar.attr("src"));
 			pv.setPostDate(innerPost.select("td[class=thead]").first().text());

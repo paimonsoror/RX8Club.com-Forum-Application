@@ -269,7 +269,7 @@ public class LoginFactory {
 	public void savePreferences(boolean login, boolean remember) {
  	   pref
        .edit()
-       .putString(PREF_USERNAME, UserProfile.getUsername())
+       .putString(PREF_USERNAME, UserProfile.getInstance().getUsername())
        .putString(PREF_PASSWORD, this.password)
        .putBoolean(PREF_AUTOLOGIN, login)
        .putBoolean(PREF_REMEMBERME, remember)
@@ -348,7 +348,7 @@ public class LoginFactory {
 	 * @throws IOException
 	 */
 	public boolean login() throws NoSuchAlgorithmException, ClientProtocolException, IOException {
-		if(UserProfile.getUsername() == null || password == null)
+		if(UserProfile.getInstance().getUsername() == null || password == null)
 			return false;
 		
 		httpclient = getClient();
@@ -358,7 +358,7 @@ public class LoginFactory {
     		initializeClientInformation();
     	
     	List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-    	nvps.add(new BasicNameValuePair("vb_login_username", UserProfile.getUsername()));
+    	nvps.add(new BasicNameValuePair("vb_login_username", UserProfile.getInstance().getUsername()));
     	nvps.add(new BasicNameValuePair("vb_login_md5password", PasswordUtils.hexMd5(this.password)));
     	nvps.add(new BasicNameValuePair("vb_login_md5password_utf", PasswordUtils.hexMd5(this.password)));
     	nvps.add(new BasicNameValuePair("cookieuser", "1"));

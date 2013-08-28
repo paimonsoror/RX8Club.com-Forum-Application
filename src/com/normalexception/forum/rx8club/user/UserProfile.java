@@ -1,5 +1,7 @@
 package com.normalexception.forum.rx8club.user;
 
+import java.io.Serializable;
+
 /************************************************************************
  * NormalException.net Software, and other contributors
  * http://www.normalexception.net
@@ -27,84 +29,128 @@ package com.normalexception.forum.rx8club.user;
 /**
  * Container for user profile information
  */
-public class UserProfile {
-	private static String id = null;
-	private static String user = null;
-	private static String title = null;
-	private static String link = null;
-	private static String posts = null;
-	private static String join = null;
-	private static String image = null;
+public class UserProfile implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	private String id = null;
+	private String user = null;
+	private String title = null;
+	private String link = null;
+	private String posts = null;
+	private String join = null;
+	private String image = null;
+	
+	private static UserProfile _instance = null;
+	
+	/**
+	 * Report an instance of the UserProfile.  If one isn't 
+	 * available, one will be created
+	 * @return	An instance of the user profile
+	 */
+	public static UserProfile getInstance() {
+		if (_instance == null)
+			_instance = new UserProfile();
+		return _instance;
+	}
+	
+	/**
+	 * Create a new user profile
+	 */
+	protected UserProfile() {
+		id = user = title = link = posts = join = image = "";
+	}
+	
+	/**
+	 * Copy a user profile
+	 * @param source	The source to copy from
+	 */
+	protected UserProfile(UserProfile source) {
+		id    = source.id;
+		user  = source.user;
+		title = source.title;
+		link  = source.link;
+		posts = source.posts;
+		join  = source.join;
+		image = source.image;
+	}
+	
+	/**
+	 * Copy a user profile object to the stored instance 
+	 * @param source	The source profile to copy
+	 */
+	public void copy(UserProfile source) {
+		_instance = new UserProfile(source);
+	}
 	
 	/**
 	 * Set the user id number
 	 * @param id	The user id number
 	 */
-	public static void setUserId(String id) {
-		UserProfile.id = id;
+	public void setUserId(String id) {
+		this.id = id;
 	}
 	
 	/**
 	 * Report the user id number
 	 * @return	The user id number
 	 */
-	public static String getUserId() {
-		return UserProfile.id;
+	public String getUserId() {
+		return this.id;
 	}
 	
 	/**
 	 * Set the user name
 	 * @param name	The user name
 	 */
-	public static void setUsername(String name) {
-		UserProfile.user = name;
+	public void setUsername(String name) {
+		this.user = name;
 	}
 	
 	/**
 	 * Report the user name
 	 * @return	The user name
 	 */
-	public static String getUsername() {
-		return UserProfile.user;
+	public String getUsername() {
+		return this.user;
 	}
 	
 	/**
 	 * Set the user forum title
 	 * @param title The user title
 	 */
-	public static void setUserTitle(String title) {
-		UserProfile.title = title;
+	public void setUserTitle(String title) {
+		this.title = title;
 	}
 	
 	/**
 	 * Report the user title
 	 * @return The user title
 	 */
-	public static String getUserTitle() {
-		return UserProfile.title;
+	public String getUserTitle() {
+		return this.title;
 	}
 	
 	/**
 	 * Set the userp rofile link
 	 * @param lnk	The user profile link
 	 */
-	public static void setUserProfileLink(String lnk) {
-		UserProfile.link = lnk;
+	public void setUserProfileLink(String lnk) {
+		this.link = lnk;
 	}
 	
 	/**
 	 * Report the user profile link	
 	 * @return	The user profile link
 	 */
-	public static String getUserProfileLink() {
-		return UserProfile.link;
+	public String getUserProfileLink() {
+		return this.link;
 	}
 	
 	/**
 	 * Check if the user profile is initialized
 	 * @return	True if user and title has been set
 	 */
-	public static boolean isInitialized() {
+	public boolean isInitialized() {
 		return ((user != null) && (title != null));
 	}
 	
@@ -112,7 +158,7 @@ public class UserProfile {
 	 * Report the user post count
 	 * @return	The user post count
 	 */
-	public static String getUserPostCount() {
+	public String getUserPostCount() {
 		return posts;
 	}
 	
@@ -120,39 +166,39 @@ public class UserProfile {
 	 * Set the user post count
 	 * @param post	The user post count
 	 */
-	public static void setUserPostCount(String post) {
-		UserProfile.posts = post;
+	public void setUserPostCount(String post) {
+		this.posts = post;
 	}
 	
 	/**
 	 * Set the users join date
 	 * @param date	The user join date
 	 */
-	public static void setUserJoinDate(String date) {
-		UserProfile.join = date;
+	public void setUserJoinDate(String date) {
+		this.join = date;
 	}
 	
 	/**
 	 * Report the user join date
 	 * @return	The user join date
 	 */
-	public static String getUserJoinDate() {
-		return UserProfile.join;
+	public String getUserJoinDate() {
+		return this.join;
 	}
 	
 	/**
 	 * Set the user's image link
 	 * @param	img	The user's image link
 	 */
-	public static void setUserImageLink(String img) {
-		UserProfile.image = img;
+	public void setUserImageLink(String img) {
+		this.image = img;
 	}
 	
 	/**
 	 * Report the user image link
 	 * @return 	The user image link
 	 */
-	public static String getUserImageLink() {
-		return UserProfile.image;
+	public String getUserImageLink() {
+		return this.image;
 	}
 }

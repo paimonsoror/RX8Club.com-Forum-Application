@@ -106,15 +106,16 @@ public class ProfileActivity extends ForumBaseActivity {
 								getString(R.string.pleaseWait), true);
 		    }
         	@Override
-			protected Void doInBackground(Void... params) {			
+			protected Void doInBackground(Void... params) {
+        		final UserProfile upInstance = UserProfile.getInstance();
 				Document doc = 
-						VBForumFactory.getInstance().get(src, UserProfile.getUserProfileLink());
+						VBForumFactory.getInstance().get(src, upInstance.getUserProfileLink());
 				if(doc != null) {
 					publishProgress(getString(R.string.asyncDialogGrabProfile));
-					String id = UserProfile.getUserProfileLink().substring(
-							UserProfile.getUserProfileLink().lastIndexOf("-") + 1,
-							UserProfile.getUserProfileLink().length() - 1);
-					UserProfile.setUserId(id);
+					String id = upInstance.getUserProfileLink().substring(
+							upInstance.getUserProfileLink().lastIndexOf("-") + 1,
+							upInstance.getUserProfileLink().length() - 1);
+					upInstance.setUserId(id);
 					getUserInformation(doc);
 					
 					lv = (ListView)findViewById(R.id.mainlistview);
@@ -132,18 +133,18 @@ public class ProfileActivity extends ForumBaseActivity {
 	                        // creating multiple images for a user.  The image still
 	                        // gets returned without a date
 	                        String nodate_avatar = 
-	                        		UserProfile.getUserImageLink().indexOf("&dateline") == -1? 
-	                        				UserProfile.getUserImageLink() : 
-	                        					UserProfile.getUserImageLink().substring(0, 
-	                        							UserProfile.getUserImageLink().indexOf("&dateline"));
+	                        		upInstance.getUserImageLink().indexOf("&dateline") == -1? 
+	                        				upInstance.getUserImageLink() : 
+	                        					upInstance.getUserImageLink().substring(0, 
+	                        							upInstance.getUserImageLink().indexOf("&dateline"));
 	                        ImageView avatar = ((ImageView)findViewById(R.id.pr_image));
 	                        imageLoader.DisplayImage(nodate_avatar, avatar);
 	                        
 	                    	((TextView)findViewById(R.id.pr_username)).setText(
-	                    			UserProfile.getUsername() + " (ID: " + UserProfile.getUserId() + ")");
-	                    	((TextView)findViewById(R.id.pr_userTitle)).setText(UserProfile.getUserTitle());
-	                    	((TextView)findViewById(R.id.pr_userPosts)).setText(UserProfile.getUserPostCount());
-	                    	((TextView)findViewById(R.id.pr_userJoin)).setText(UserProfile.getUserJoinDate());	          
+	                    			upInstance.getUsername() + " (ID: " + upInstance.getUserId() + ")");
+	                    	((TextView)findViewById(R.id.pr_userTitle)).setText(upInstance.getUserTitle());
+	                    	((TextView)findViewById(R.id.pr_userPosts)).setText(upInstance.getUserPostCount());
+	                    	((TextView)findViewById(R.id.pr_userJoin)).setText(upInstance.getUserJoinDate());	          
 	                    }
 					});
 					
@@ -169,12 +170,13 @@ public class ProfileActivity extends ForumBaseActivity {
      * @param doc	The page document
      */
     private void getUserInformation(Document doc) {
+    	final UserProfile upInstance = UserProfile.getInstance();
     	stubs = new ArrayList<ProfileView>();
     	
     	// Title
     	Elements userInfo = doc.select("div[id=main_userinfo]");
     	Elements title = userInfo.select("h2");
-    	UserProfile.setUserTitle(title.text());
+    	upInstance.setUserTitle(title.text());
     	
     	// Posts
     	Elements statisticInfo = doc.select("fieldset[class=statistics_group]");
@@ -185,25 +187,25 @@ public class ProfileActivity extends ForumBaseActivity {
  
     	// Grab image, trap
     	try {
-    		UserProfile.setUserImageLink(profilePicInfo.attr("src"));
+    		upInstance.setUserImageLink(profilePicInfo.attr("src"));
     	} catch (Exception e) { }
     	
     	// Grab Post count, trap exception
     	try {
-    		UserProfile.setUserPostCount(post.get(0).text() + " / " + post.get(1).text().split(" ",4)[3] + " per day");
+    		upInstance.setUserPostCount(post.get(0).text() + " / " + post.get(1).text().split(" ",4)[3] + " per day");
     	} catch (Exception e) {
-    		UserProfile.setUserPostCount("Error Getting Post Count");
+    		upInstance.setUserPostCount("Error Getting Post Count");
     	}
     	
     	// Grab Join Date, trap exception
     	try {
-    		UserProfile.setUserJoinDate(post.get(13).text());
+    		upInstance.setUserJoinDate(post.get(13).text());
     	} catch (Exception e) {
-    		UserProfile.setUserJoinDate("Error Getting Join Date");
+    		upInstance.setUserJoinDate("Error Getting Join Date");
     	}
     	
     	// Threads
-    	String link = WebUrls.userUrl + UserProfile.getUserId();
+    	String link = WebUrls.userUrl + upInstance.getUserId();
     	doc = VBForumFactory.getInstance().get(this, link);
     	Elements threadlist = doc.select("table[id^=post]");
     	for(Element threadl : threadlist) {

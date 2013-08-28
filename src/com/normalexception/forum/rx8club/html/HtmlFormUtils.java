@@ -146,7 +146,7 @@ public class HtmlFormUtils {
 		throws ClientProtocolException, IOException {
 
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
+		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getInstance().getUserId()));
 		nvps.add(new BasicNameValuePair("securitytoken", token));
 		nvps.add(new BasicNameValuePair("do", "updateprofile"));
 		nvps.add(new BasicNameValuePair("customtext", title));
@@ -172,7 +172,7 @@ public class HtmlFormUtils {
 			throws ClientProtocolException, IOException {
 
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
+		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getInstance().getUserId()));
 		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
     	nvps.add(new BasicNameValuePair("do", "managepm"));
     	nvps.add(new BasicNameValuePair("dowhat", "delete"));
@@ -199,7 +199,7 @@ public class HtmlFormUtils {
 
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("message", post));
-		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
+		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getInstance().getUserId()));
 		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
     	nvps.add(new BasicNameValuePair("do", doType));
     	nvps.add(new BasicNameValuePair("recipients", recips));
@@ -224,15 +224,20 @@ public class HtmlFormUtils {
 			throws ClientProtocolException, IOException {
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		
-		if(attId != null) {
-			post += "\n\n[ATTACH]" + attId + "[/ATTACH]";
-		}
+		/**
+		 * Disabled for now since we arent supporting attachments
+		 * from the phone
+		 * 
+		 * if(attId != null) {
+		 *	post += "\n\n[ATTACH]" + attId + "[/ATTACH]";
+		 * }
+		 */
 		
 		nvps.add(new BasicNameValuePair("message", post));
 		nvps.add(new BasicNameValuePair("t", thread));
 		nvps.add(new BasicNameValuePair("p", postNumber));
 		nvps.add(new BasicNameValuePair("specifiedpost", "0"));
-		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
+		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getInstance().getUserId()));
 		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
 		nvps.add(new BasicNameValuePair("parseurl", "1"));
 		nvps.add(new BasicNameValuePair("parseame", "1"));
@@ -451,7 +456,7 @@ public class HtmlFormUtils {
 		nvps.add(new BasicNameValuePair("poststarttime", Long.toString(Utils.getTime())));
 		nvps.add(new BasicNameValuePair("subject", subject));
 		nvps.add(new BasicNameValuePair("message", post));
-		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getUserId()));
+		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getInstance().getUserId()));
 		
 		return formSubmit(WebUrls.newThreadAddress + forumId, nvps);
 	}

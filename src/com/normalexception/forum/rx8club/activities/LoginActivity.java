@@ -166,7 +166,8 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 			});
 			
 			lf = LoginFactory.getInstance();
-			UserProfile.setUsername(((TextView)findViewById(R.id.usernameText)).getText().toString());
+			UserProfile.getInstance()
+				.setUsername(((TextView)findViewById(R.id.usernameText)).getText().toString());
 			lf.setPassword(((TextView)findViewById(R.id.passwordText)).getText().toString());
 			lf.savePreferences(((CheckBox)findViewById(R.id.autoLoginBox)).isChecked(), 
 					   ((CheckBox)findViewById(R.id.rememberMeBox)).isChecked());
