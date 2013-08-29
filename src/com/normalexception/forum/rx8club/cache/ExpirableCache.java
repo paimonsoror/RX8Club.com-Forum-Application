@@ -26,9 +26,19 @@ package com.normalexception.forum.rx8club.cache;
 
 import java.util.Date;
 
+import android.content.Context;
+
 public class ExpirableCache extends Cache {
 
 	protected static final long MS_IN_DAY = 86400000;
+	
+	/**
+	 * Constructor to an expirable cache
+	 * @param ctx	The source context
+	 */
+	public ExpirableCache(Context ctx) {
+		super(ctx);
+	}
     
 	/**
 	 * Check if the cache is expired

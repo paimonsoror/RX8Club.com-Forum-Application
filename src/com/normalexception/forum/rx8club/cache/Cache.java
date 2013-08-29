@@ -34,13 +34,39 @@ public class Cache {
 	protected File   cacheDir      = null;
 	protected String CACHEFILENAME = null;
 	protected File   cacheFile     = null;
+	protected Context context      = null;
+	
+	/**
+	 * Constructor for a basic cache object
+	 * @param ctx	The source context
+	 */
+	public Cache(Context ctx) {
+		this.context = ctx;
+	}
+	
+	/**
+	 * Get the size of the external cache
+	 * @param context	The source context
+	 * @return			The size of the external cache
+	 */
+	public long getCacheSize() {
+		long length = 0;
+		if(cacheDir == null)
+			cacheDir = getExternalCache();
+		
+	    for (File file : cacheDir.listFiles()) {
+	        if (file.isFile())
+	            length += file.length();
+	    }		    
+		return length;
+	}
 	
 	/**
 	 * Report the location of the external cache
 	 * @param context	The source context
 	 * @return			The location of the external cache
 	 */
-	protected File getExternalCache(Context context) {
+	protected File getExternalCache() {
 		File cacheDir = null;
 		//Find the dir to save cached images
         if (android.os.Environment.getExternalStorageState().equals(

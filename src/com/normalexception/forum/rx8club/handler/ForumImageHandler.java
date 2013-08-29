@@ -38,7 +38,6 @@ import ch.boye.httpclientandroidlib.HttpResponse;
 import ch.boye.httpclientandroidlib.client.methods.HttpGet;
 import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
 
-import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.httpclient.ClientUtils;
 

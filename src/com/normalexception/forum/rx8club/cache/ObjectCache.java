@@ -31,6 +31,8 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import android.content.Context;
+
 /**
  * Basic object cache.  This extends the expirablecache class
  * by adding common methods for writing and reading generic
@@ -38,6 +40,14 @@ import java.io.ObjectOutputStream;
  * @param <T>	The type of object we are going to read/write
  */
 public class ObjectCache<T> extends ExpirableCache {
+	
+	/**
+	 * Constructor to an object cache
+	 * @param ctx	The context
+	 */
+	public ObjectCache(Context ctx){
+		super(ctx);
+	}
 
 	/**
 	 * Cache the contents of the list

@@ -40,7 +40,8 @@ public class UserProfileCache extends ObjectCache<UserProfile> {
 	 * @param filename	The name of the cache file
 	 */
 	public UserProfileCache(Context ctx, String filename) {
+		super(ctx);
 		this.CACHEFILENAME = filename;
-		this.cacheDir = getExternalCache(ctx);
+		this.cacheDir = getExternalCache();
 	}
 }

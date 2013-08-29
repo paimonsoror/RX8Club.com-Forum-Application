@@ -35,7 +35,8 @@ public class FileCache extends Cache {
 	 * @param context	The source context
 	 */
     public FileCache(Context context){
-    	this.cacheDir = getExternalCache(context);
+    	super(context);
+    	this.cacheDir = getExternalCache();
     }
  
     /**

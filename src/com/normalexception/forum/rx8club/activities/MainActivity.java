@@ -221,8 +221,10 @@ public class MainActivity extends ForumBaseActivity {
 				updateList();
 				loadingDialog.dismiss();
         		
-        		// Construct a new user profile
-        		constructUserProfile(doc);
+				if(LoginFactory.getInstance().isLoggedIn()) {
+	        		// Construct a new user profile
+	        		constructUserProfile(doc);
+				}
 			}
         };
         updaterTask.execute();

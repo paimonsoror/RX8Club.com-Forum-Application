@@ -1,5 +1,7 @@
 package com.normalexception.forum.rx8club.utils;
 
+import java.text.DecimalFormat;
+
 /************************************************************************
  * NormalException.net Software, and other contributors
  * http://www.normalexception.net
@@ -26,7 +28,21 @@ package com.normalexception.forum.rx8club.utils;
 
 public class SpecialNumberFormatter {
 	
-	private static char[] c = new char[]{'k', 'm', 'b', 't'};
+	private static final char[]   c      = new char[]{'k', 'm', 'b', 't'};
+	private static final String[] units  = new String[] { "B", "KB", "MB", "GB", "TB" };
+	
+	/**
+	 * Convert a file size to a better formatted size
+	 * @param size	The file size
+	 * @return		A formatted file size
+	 */
+	public static String readableFileSize(long size) {
+	    if(size <= 0) return "0";
+	    
+	    int digitGroups = (int) (Math.log10(size)/Math.log10(1024));
+	    return new DecimalFormat("#,##0.#")
+	    	.format(size/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+	}
 	
 	/**
 	 * Recursive implementation, invokes itself for each factor 

@@ -41,7 +41,8 @@ public class ViewListCache<T> extends ObjectCache< List<T> > {
 	 * @param filename	The name of the cache file
 	 */
 	public ViewListCache(Context ctx, String filename) {
+		super(ctx);
 		this.CACHEFILENAME = filename;
-		this.cacheDir = getExternalCache(ctx);
+		this.cacheDir = getExternalCache();
 	}
 }

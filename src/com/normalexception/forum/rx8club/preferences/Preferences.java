@@ -38,8 +38,10 @@ import android.widget.Toast;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
+import com.normalexception.forum.rx8club.cache.Cache;
 import com.normalexception.forum.rx8club.cache.FileCache;
 import com.normalexception.forum.rx8club.favorites.FavoriteDialog;
+import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
 
 /**
  * Class used to set and save preferences
@@ -69,7 +71,11 @@ public class Preferences extends PreferenceActivity {
 			}
 		});
         
-        Preference cache = (Preference)findPreference("appcache");
+        final Preference cache = (Preference)findPreference("appcache");
+        cache.setSummary(
+        		String.format("Cache Size: %s", 
+        		SpecialNumberFormatter.readableFileSize(
+        				(new Cache(ctx)).getCacheSize())));
         cache.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference arg0) { 
@@ -87,21 +93,18 @@ public class Preferences extends PreferenceActivity {
         			@Override
         			protected Void doInBackground(Void... params) {
         				try {
-			            	FileCache fc = 
-			            			new FileCache(ctx);
-			            	fc.clear();
+        					(new FileCache(ctx)).clear();
         				} catch (Exception e) {}
 		            	return null;
         			}
-        				
-	            	@Override
-	    		    protected void onProgressUpdate(String...progress) {
-	    		        loadingDialog.setMessage(progress[0]);
-	    		    }
-	    			
+        			
 	    			@Override
 	    		    protected void onPostExecute(Void result) {
 	    				loadingDialog.dismiss();
+	    				cache.setSummary(
+	    		        		String.format("Cache Size: %s", 
+	    		        		SpecialNumberFormatter.readableFileSize(
+	    		        				(new Cache(ctx)).getCacheSize())));
 	    				Toast.makeText(ctx, 
             					R.string.dialogCacheCleared, 
             					Toast.LENGTH_SHORT).show();
