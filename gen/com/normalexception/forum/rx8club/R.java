@@ -104,17 +104,19 @@ containing a value of this type.
         public static final int nexticon=0x7f020014;
         public static final int paper=0x7f020015;
         public static final int paperclip=0x7f020016;
-        public static final int posticon=0x7f020017;
-        public static final int previcon=0x7f020018;
-        public static final int quote_icon=0x7f020019;
-        public static final int quoteicon=0x7f02001a;
-        public static final int rotor_icon=0x7f02001b;
-        public static final int rx8club_logo=0x7f02001c;
-        public static final int sticky=0x7f02001d;
-        public static final int sticky_a=0x7f02001e;
-        public static final int subicon=0x7f02001f;
-        public static final int underlineicon=0x7f020020;
-        public static final int webicon=0x7f020021;
+        public static final int placeholder_300=0x7f020017;
+        public static final int placeholder_50=0x7f020018;
+        public static final int posticon=0x7f020019;
+        public static final int previcon=0x7f02001a;
+        public static final int quote_icon=0x7f02001b;
+        public static final int quoteicon=0x7f02001c;
+        public static final int rotor_icon=0x7f02001d;
+        public static final int rx8club_logo=0x7f02001e;
+        public static final int sticky=0x7f02001f;
+        public static final int sticky_a=0x7f020020;
+        public static final int subicon=0x7f020021;
+        public static final int underlineicon=0x7f020022;
+        public static final int webicon=0x7f020023;
     }
     public static final class id {
         public static final int Password=0x7f05000c;

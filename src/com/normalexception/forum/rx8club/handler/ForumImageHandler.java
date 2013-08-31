@@ -24,22 +24,24 @@ package com.normalexception.forum.rx8club.handler;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LevelListDrawable;
 import android.os.AsyncTask;
 import android.text.Html.ImageGetter;
 import android.widget.TextView;
-import ch.boye.httpclientandroidlib.HttpResponse;
-import ch.boye.httpclientandroidlib.client.methods.HttpGet;
-import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
 
-import com.normalexception.forum.rx8club.html.LoginFactory;
-import com.normalexception.forum.rx8club.httpclient.ClientUtils;
+import com.normalexception.forum.rx8club.Log;
+import com.normalexception.forum.rx8club.R;
 
 /**
  * Handler designed to display the images within a textview
@@ -47,6 +49,8 @@ import com.normalexception.forum.rx8club.httpclient.ClientUtils;
 public class ForumImageHandler implements ImageGetter {
 	Context c;
 	TextView container;
+	
+	private final String TAG = "ForumImageHandler";
 
 	/**
 	 * Construct the URLImageParser which will execute 
@@ -65,94 +69,60 @@ public class ForumImageHandler implements ImageGetter {
 	 * @param	source	The source of the image
 	 */
 	public Drawable getDrawable(String source) {
-		URLDrawable urlDrawable = new URLDrawable();
+		LevelListDrawable d = new LevelListDrawable();
+        Drawable empty = c.getResources().getDrawable(R.drawable.placeholder_50);
+        d.addLevel(0, 0, empty);
+        d.setBounds(0, 0, empty.getIntrinsicWidth(), empty.getIntrinsicHeight());
 
-		// get the actual source
-		ImageGetterAsyncTask asyncTask = 
-				new ImageGetterAsyncTask( urlDrawable);
+        new ImageGetterAsyncTask().execute(source, d);
 
-		asyncTask.execute(source);
-
-		return urlDrawable;
+        return d;
 	}
 
 	/**
 	 * Inner class designed to grab an image async.
 	 */
-	public class ImageGetterAsyncTask extends AsyncTask<String, Void, Drawable>  {
-		URLDrawable urlDrawable;
+	public class ImageGetterAsyncTask extends AsyncTask<Object, Void, Bitmap>  {
+		private LevelListDrawable mDrawable;
 
-		public ImageGetterAsyncTask(URLDrawable d) {
-			this.urlDrawable = d;
-		}
+        @Override
+        protected Bitmap doInBackground(Object... params) {
+            String source = (String) params[0];
+            mDrawable = (LevelListDrawable) params[1];
+            Log.d(TAG, "doInBackground " + source);
+            try {
+                InputStream is = new URL(source).openStream();
+                return BitmapFactory.decodeStream(is);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
 
-		/*
-		 * (non-Javadoc)
-		 * @see android.os.AsyncTask#doInBackground(Params[])
-		 */
-		@Override
-		protected Drawable doInBackground(String... params) {
-			String source = params[0];
-			return fetchDrawable(source);
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
-		 */
-		@Override
-		protected void onPostExecute(Drawable result) {
-			if(result != null) {
-				urlDrawable.setBounds(0, 0, 
-						0 + result.getIntrinsicWidth(), 
-						0 + result.getIntrinsicHeight());  
-	
-			    // change the reference of the current drawable to the result 
-			    // from the HTTP call 
-			    urlDrawable.drawable = result; 
-	
-			    // redraw the image by invalidating the container 
-			    container.invalidate();
-	
-			    // For ICS
-			    container.setHeight(
-			    		container.getHeight() + 
-			    		result.getIntrinsicHeight());
-	
-			    // Pre ICS
-			    container.setEllipsize(null);		    
-			}
-		}
-
-		/***
-		 * Get the Drawable from URL
-		 * @param urlString	The url to grab the image from
-		 * @return			The drawable container that holds the image
-		 */
-		public Drawable fetchDrawable(String urlString) {
-			HttpGet httpget = null;
-			try {
-				DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
-				httpget = ClientUtils.getHttpGet(urlString);
-				HttpResponse response = 
-						httpclient.execute(httpget, LoginFactory.getInstance().getHttpContext());
-				
-				final BufferedInputStream bis = 
-						new BufferedInputStream(response.getEntity().getContent()); 
-				Bitmap bm = BitmapFactory.decodeStream(bis);
-				
-				while(bm.getWidth() > 400) {
-					bm = Bitmap.createScaledBitmap(bm, bm.getWidth() / 2, bm.getHeight() / 2, true);
-				}
-				
-				Drawable drawable = new BitmapDrawable(bm);
-				drawable.setBounds(0,0,bm.getWidth(),bm.getHeight());
-				return drawable;
-			} catch (Exception e) {
-				return null;
-			} finally {
-				httpget.releaseConnection();
-			}
-		}
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            Log.d(TAG, "onPostExecute drawable " + mDrawable);
+            Log.d(TAG, "onPostExecute bitmap " + bitmap);
+            if (bitmap != null) {
+            	int newSize[] = {bitmap.getWidth(), bitmap.getHeight()};
+            	while(newSize[0] >= 400) {
+            		newSize[0] /= 2;
+            		newSize[1] /= 2;
+            	}
+            	bitmap = Bitmap.createScaledBitmap(bitmap, newSize[0], newSize[1], false);
+                BitmapDrawable d = new BitmapDrawable(bitmap);
+                mDrawable.addLevel(1, 1, d);
+                mDrawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+                mDrawable.setLevel(1);
+                // i don't know yet a better way to refresh TextView
+                // mTv.invalidate() doesn't work as expected
+                CharSequence t = container.getText();
+                container.setText(t);
+            }
+        }
 	}
 }
