@@ -47,6 +47,7 @@ public enum VBulletinKeys {
 	PostStartTime   ("poststarttime"),
 	PostId          ("postid"),
 	PostNumber      ("p"),
+	PostDelete      ("deletepost"),
 	
 	// Message Form Data
 	Message         ("message"),

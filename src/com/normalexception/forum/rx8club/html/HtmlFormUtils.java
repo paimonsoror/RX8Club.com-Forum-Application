@@ -292,7 +292,7 @@ public class HtmlFormUtils {
 		nvps.add(new BasicNameValuePair(VBulletinKeys.PostId.getValue(), postId));
 		nvps.add(new BasicNameValuePair(VBulletinKeys.SecurityToken.getValue(), securitytoken));
     	nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(),"deletepost"));
-    	nvps.add(new BasicNameValuePair("deletepost", "delete"));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.PostDelete.getValue(), "delete"));
  
     	return formSubmit(WebUrls.deletePostAddress + postId, nvps);
 	}
