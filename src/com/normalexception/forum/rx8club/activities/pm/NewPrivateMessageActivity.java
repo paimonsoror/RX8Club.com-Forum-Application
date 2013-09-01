@@ -174,7 +174,7 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
    		postText = ((TextView)findViewById(R.id.pmMessageText)).getText().toString();
    		title    = ((TextView)findViewById(R.id.pmSubjectText)).getText().toString();
    		
-   		if(validateInputs(postUser, postText, title)) {
+   		if(validateInputs(recipients, postText, title)) {
 	   		switch(arg0.getId()) {	
 	   		case R.id.newPmButton:
 	   			Log.v(TAG, "PM Submit Clicked");
