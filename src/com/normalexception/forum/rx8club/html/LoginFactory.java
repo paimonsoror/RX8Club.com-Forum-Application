@@ -64,6 +64,7 @@ import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.WebUrls;
+import com.normalexception.forum.rx8club.enums.VBulletinKeys;
 import com.normalexception.forum.rx8club.httpclient.ClientUtils;
 import com.normalexception.forum.rx8club.httpclient.KeepAliveStrategy;
 import com.normalexception.forum.rx8club.httpclient.RedirectStrategy;
@@ -358,11 +359,14 @@ public class LoginFactory {
     		initializeClientInformation();
     	
     	List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-    	nvps.add(new BasicNameValuePair("vb_login_username", UserProfile.getInstance().getUsername()));
-    	nvps.add(new BasicNameValuePair("vb_login_md5password", PasswordUtils.hexMd5(this.password)));
-    	nvps.add(new BasicNameValuePair("vb_login_md5password_utf", PasswordUtils.hexMd5(this.password)));
-    	nvps.add(new BasicNameValuePair("cookieuser", "1"));
-    	nvps.add(new BasicNameValuePair("do", "login"));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.UserName.getValue(), 
+    			UserProfile.getInstance().getUsername()));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.Password.getValue(), 
+    			PasswordUtils.hexMd5(this.password)));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.PasswordUtf.getValue(), 
+    			PasswordUtils.hexMd5(this.password)));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.CookieUser.getValue(), "1"));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(), "login"));
 
     	httpost.setEntity(new UrlEncodedFormEntity(nvps));
 
@@ -376,7 +380,7 @@ public class LoginFactory {
         	httpost.releaseConnection();
         	
         	for(Cookie cookie : cookies)
-        		if(cookie.getName().equals("bbimloggedin") && 
+        		if(cookie.getName().equals(VBulletinKeys.CheckLoginStatus.getValue()) && 
         				cookie.getValue().toLowerCase(Locale.US).equals("yes"))
         			isLoggedIn = true;
         	

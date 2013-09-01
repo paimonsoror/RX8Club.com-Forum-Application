@@ -53,6 +53,7 @@ import ch.boye.httpclientandroidlib.util.EntityUtils;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.WebUrls;
+import com.normalexception.forum.rx8club.enums.VBulletinKeys;
 import com.normalexception.forum.rx8club.httpclient.ClientUtils;
 import com.normalexception.forum.rx8club.user.UserProfile;
 import com.normalexception.forum.rx8club.utils.Utils;
@@ -96,7 +97,7 @@ public class HtmlFormUtils {
 		if(attachment) {
 			String pN = "";
 			for(NameValuePair nvp : nvps) {
-				if(nvp.getName().equals("p")) {
+				if(nvp.getName().equals(VBulletinKeys.PostNumber.getValue())) {
 					pN = nvp.getValue(); break;
 				}
 			}	
@@ -146,9 +147,9 @@ public class HtmlFormUtils {
 		throws ClientProtocolException, IOException {
 
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getInstance().getUserId()));
-		nvps.add(new BasicNameValuePair("securitytoken", token));
-		nvps.add(new BasicNameValuePair("do", "updateprofile"));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.LoggedInUser.getValue(), UserProfile.getInstance().getUserId()));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.SecurityToken.getValue(), token));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(), "updateprofile"));
 		nvps.add(new BasicNameValuePair("customtext", title));
 		nvps.add(new BasicNameValuePair("homepage", homepage));
 		nvps.add(new BasicNameValuePair("userfield[field1]", bio));
@@ -162,19 +163,19 @@ public class HtmlFormUtils {
 	
 	/**
 	 * Delete private message
-	 * @param securityToken	Users security token
+	 * @param VBulletinKeys.SecurityToken.getValue()	Users security token
 	 * @param pmid			The private message id number
 	 * @return				True if success
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public static boolean deletePM(String securityToken, String pmid) 
+	public static boolean deletePM(String securitytoken, String pmid) 
 			throws ClientProtocolException, IOException {
 
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getInstance().getUserId()));
-		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
-    	nvps.add(new BasicNameValuePair("do", "managepm"));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.LoggedInUser.getValue(), UserProfile.getInstance().getUserId()));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.SecurityToken.getValue(), securitytoken));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(), "managepm"));
     	nvps.add(new BasicNameValuePair("dowhat", "delete"));
     	nvps.add(new BasicNameValuePair("pm[" + pmid + "]","0_today"));
     	
@@ -184,7 +185,7 @@ public class HtmlFormUtils {
 	/**
 	 * Convenience method to send a private message
 	 * @param doType		Submit type
-	 * @param securityToken User's security token	
+	 * @param VBulletinKeys.SecurityToken.getValue() User's security token	
 	 * @param post			The text from the PM
 	 * @param subject		The subject of the PM
 	 * @param recips		The recipient of the PM
@@ -193,25 +194,25 @@ public class HtmlFormUtils {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public static boolean submitPM(String doType, String securityToken, 
+	public static boolean submitPM(String doType, String securitytoken, 
 			                String post, String subject, String recips, String pmid) 
 			throws ClientProtocolException, IOException {
 
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-		nvps.add(new BasicNameValuePair("message", post));
-		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getInstance().getUserId()));
-		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
-    	nvps.add(new BasicNameValuePair("do", doType));
-    	nvps.add(new BasicNameValuePair("recipients", recips));
-    	nvps.add(new BasicNameValuePair("title", subject));
-    	nvps.add(new BasicNameValuePair("pmid", pmid));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.Message.getValue(), post));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.LoggedInUser.getValue(), UserProfile.getInstance().getUserId()));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.SecurityToken.getValue(), securitytoken));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(), doType));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.Recipients.getValue(), recips));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.Title.getValue(), subject));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.PMId.getValue(), pmid));
     	
     	return formSubmit(WebUrls.pmSubmitAddress + pmid, nvps);
 	}
 	
 	/**
 	 * Submit a post to the server
-	 * @param securityToken	The posting security token
+	 * @param VBulletinKeys.SecurityToken.getValue()	The posting security token
 	 * @param thread		The thread number
 	 * @param postNumber	The post number
 	 * @param post			The actual post
@@ -219,7 +220,7 @@ public class HtmlFormUtils {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public static boolean submitPost(String doType, String securityToken, String thread, 
+	public static boolean submitPost(String doType, String securitytoken, String thread, 
 							String postNumber, String attId, String post) 
 			throws ClientProtocolException, IOException {
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
@@ -233,26 +234,26 @@ public class HtmlFormUtils {
 		 * }
 		 */
 		
-		nvps.add(new BasicNameValuePair("message", post));
-		nvps.add(new BasicNameValuePair("t", thread));
-		nvps.add(new BasicNameValuePair("p", postNumber));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.Message.getValue(), post));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.ThreadId.getValue(), thread));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.PostNumber.getValue(), postNumber));
 		nvps.add(new BasicNameValuePair("specifiedpost", "0"));
-		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getInstance().getUserId()));
-		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.LoggedInUser.getValue(), UserProfile.getInstance().getUserId()));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.SecurityToken.getValue(), securitytoken));
 		nvps.add(new BasicNameValuePair("parseurl", "1"));
 		nvps.add(new BasicNameValuePair("parseame", "1"));
 		nvps.add(new BasicNameValuePair("parseame_check", "1"));
 		nvps.add(new BasicNameValuePair("vbseo_retrtitle", "1"));
 		nvps.add(new BasicNameValuePair("vbseo_is_retrtitle", "1"));
 		nvps.add(new BasicNameValuePair("emailupdate", "9999"));
-    	nvps.add(new BasicNameValuePair("do", doType));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(), doType));
     	
     	return formSubmit(WebUrls.quickPostAddress + thread, nvps, attId != null);
 	}
 	
 	/**
 	 * Submit a post edit
-	 * @param securityToken	The security token of the posting
+	 * @param VBulletinKeys.SecurityToken.getValue()	The security token of the posting
 	 * @param postNumber	The post number being edited
 	 * @param posthash		The post hash number
 	 * @param poststart		The post start time
@@ -261,51 +262,51 @@ public class HtmlFormUtils {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public static boolean submitEdit(String securityToken, String postNumber, 
+	public static boolean submitEdit(String securitytoken, String postNumber, 
 							  String posthash, String poststart, String post) 
 			throws ClientProtocolException, IOException {
     	
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-		nvps.add(new BasicNameValuePair("message", post));
-		nvps.add(new BasicNameValuePair("p", postNumber));
-		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
-    	nvps.add(new BasicNameValuePair("do","updatepost"));
-    	nvps.add(new BasicNameValuePair("posthash", posthash));
-    	nvps.add(new BasicNameValuePair("poststarttime", poststart));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.Message.getValue(), post));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.PostNumber.getValue(), postNumber));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.SecurityToken.getValue(), securitytoken));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(),"updatepost"));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.PostHash.getValue(), posthash));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.PostStartTime.getValue(), poststart));
  
     	return formSubmit(WebUrls.updatePostAddress + postNumber, nvps);
 	}
 	
 	/**
 	 * Submit a request to the server to delete the post
-	 * @param securityToken	The session security token
+	 * @param VBulletinKeys.SecurityToken.getValue()	The session security token
 	 * @param postNum		The post number to delete
 	 * @return				True if delete successful
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public static boolean submitDelete(String securityToken, String postNum)
+	public static boolean submitDelete(String securitytoken, String postId)
 		throws ClientProtocolException, IOException {
 
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-		nvps.add(new BasicNameValuePair("postid", postNum));
-		nvps.add(new BasicNameValuePair("securitytoken", securityToken));
-    	nvps.add(new BasicNameValuePair("do","deletepost"));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.PostId.getValue(), postId));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.SecurityToken.getValue(), securitytoken));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(),"deletepost"));
     	nvps.add(new BasicNameValuePair("deletepost", "delete"));
  
-    	return formSubmit(WebUrls.deletePostAddress + postNum, nvps);
+    	return formSubmit(WebUrls.deletePostAddress + postId, nvps);
 	}
 	
 	/**
 	 * Submit a request to upload an attachment to the server
-	 * @param securityToken
+	 * @param VBulletinKeys.SecurityToken.getValue()
 	 * @param bmapList
 	 * @param postnum
 	 * @return
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public static String submitAttachment(String securityToken, List<String> bmapList, 
+	public static String submitAttachment(String securitytoken, List<String> bmapList, 
 			String postnum) throws ClientProtocolException, IOException {
 		DefaultHttpClient httpclient = 
 				LoginFactory.getInstance().getClient();
@@ -329,24 +330,24 @@ public class HtmlFormUtils {
 			httpGet.releaseConnection();
 			
 			Document doc = Jsoup.parse(output);
-			posthash = HtmlFormUtils.getInputElementValue(doc, "posthash");
-			t = HtmlFormUtils.getInputElementValue(doc, "t");
-			p = HtmlFormUtils.getInputElementValue(doc, "p");
-			poststarttime = HtmlFormUtils.getInputElementValue(doc, "poststarttime");
+			posthash = HtmlFormUtils.getInputElementValue(doc, VBulletinKeys.PostHash.getValue());
+			t = HtmlFormUtils.getInputElementValue(doc, VBulletinKeys.ThreadId.getValue());
+			p = HtmlFormUtils.getInputElementValue(doc, VBulletinKeys.PostNumber.getValue());
+			poststarttime = HtmlFormUtils.getInputElementValue(doc, VBulletinKeys.PostStartTime.getValue());
     	}
 		
 		// We need to make sure that we got all of the information before
 		// proceeding, or else the attachment will not work
 		MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
 		entity.addPart("s", new StringBody(""));
-		entity.addPart("securitytoken", new StringBody(securityToken));
-		entity.addPart("do", new StringBody("manageattach"));
-		entity.addPart("t", new StringBody(t));
-		entity.addPart("f", new StringBody("6"));
-		entity.addPart("p", new StringBody(p));
-		entity.addPart("poststarttime", new StringBody(poststarttime));
+		entity.addPart(VBulletinKeys.SecurityToken.getValue(), new StringBody(VBulletinKeys.SecurityToken.getValue()));
+		entity.addPart(VBulletinKeys.Do.getValue(), new StringBody("manageattach"));
+		entity.addPart(VBulletinKeys.ThreadId.getValue(), new StringBody(t));
+		entity.addPart(VBulletinKeys.ForumId.getValue(), new StringBody("6"));
+		entity.addPart(VBulletinKeys.PostNumber.getValue(), new StringBody(p));
+		entity.addPart(VBulletinKeys.PostStartTime.getValue(), new StringBody(poststarttime));
 		entity.addPart("editpost", new StringBody("0"));
-		entity.addPart("posthash", new StringBody(posthash));
+		entity.addPart(VBulletinKeys.PostHash.getValue(), new StringBody(posthash));
 		entity.addPart("MAX_FILE_SIZE", new StringBody("2097152"));
 		entity.addPart("upload", new StringBody("Upload"));
 		entity.addPart("attachmenturl[]", new StringBody(""));
@@ -401,12 +402,12 @@ public class HtmlFormUtils {
 	/**
 	 * Report the contents of the post that we are intending
 	 * on editing
-	 * @param securityToken	The security token of the session
+	 * @param VBulletinKeys.SecurityToken.getValue()	The security token of the session
 	 * @return				The response page 
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public static Document getEditPostPage(String securityToken, String postid) 
+	public static Document getEditPostPage(String securitytoken, String postid) 
 			throws ClientProtocolException, IOException {
 		String output = "";
 		
@@ -415,7 +416,7 @@ public class HtmlFormUtils {
 		
 		HttpPost httpost = ClientUtils.getHttpPost(WebUrls.editPostAddress + postid);
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-    	nvps.add(new BasicNameValuePair("securitytoken", securityToken));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.SecurityToken.getValue(), securitytoken));
     	
     	httpost.setEntity(new UrlEncodedFormEntity(nvps));
 
@@ -449,14 +450,14 @@ public class HtmlFormUtils {
 
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair("s", s));
-		nvps.add(new BasicNameValuePair("securitytoken", token));
-		nvps.add(new BasicNameValuePair("f", forumId));
-		nvps.add(new BasicNameValuePair("do", "postthread"));
-		nvps.add(new BasicNameValuePair("posthash", posthash));
-		nvps.add(new BasicNameValuePair("poststarttime", Long.toString(Utils.getTime())));
-		nvps.add(new BasicNameValuePair("subject", subject));
-		nvps.add(new BasicNameValuePair("message", post));
-		nvps.add(new BasicNameValuePair("loggedinuser", UserProfile.getInstance().getUserId()));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.SecurityToken.getValue(), token));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.ForumId.getValue(), forumId));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(), "postthread"));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.PostHash.getValue(), posthash));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.PostStartTime.getValue(), Long.toString(Utils.getTime())));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.Subject.getValue(), subject));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.Message.getValue(), post));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.LoggedInUser.getValue(), UserProfile.getInstance().getUserId()));
 		
 		return formSubmit(WebUrls.newThreadAddress + forumId, nvps);
 	}
