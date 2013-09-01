@@ -13,6 +13,7 @@ public final class R {
         public static final int compressionUnitSpinnerValues=0x7f080008;
         public static final int fontsizes=0x7f080004;
         public static final int fontsizevalue=0x7f080005;
+        public static final int newPostsPage=0x7f080009;
         /**  String Arrays 
          */
         public static final int searchDateArray=0x7f080000;

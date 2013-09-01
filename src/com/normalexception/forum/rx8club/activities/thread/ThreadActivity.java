@@ -202,7 +202,9 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 				lv.addFooterView(v);
 				
 				findViewById(R.id.mainlisttitle).setVisibility(View.VISIBLE);
-				((TextView)findViewById(R.id.mainlisttitle)).setText(currentPageTitle);
+				((TextView)findViewById(R.id.mainlisttitle))
+					.setText(String.format("%s [Page %s]", 
+							currentPageTitle, pageNumber.equals("last")? finalPage : pageNumber));
 				pva = new PostViewArrayAdapter(a, R.layout.view_thread, postlist);
 				lv.setAdapter(pva);
 				updatePagination(thisPage, finalPage);

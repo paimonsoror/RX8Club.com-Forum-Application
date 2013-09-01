@@ -33,7 +33,7 @@ public class ThreadView implements Serializable {
 	private String title;
 	private String postCount, viewCount, myPosts;
 	private String startUser, lastUser;
-	private String link;
+	private String link, lastLink;
 	private boolean isSticky, isLocked, isFavorite = false;
 	
 	/**
@@ -198,5 +198,21 @@ public class ThreadView implements Serializable {
 	 */
 	public void setLink(String lnk) {
 		this.link = lnk;
+	}
+	
+	/**
+	 * Report the link to the last page of thread
+	 * @return	The link to the thread
+	 */
+	public String getLastLink() {
+		return lastLink;
+	}
+	
+	/**
+	 * Set the link to the last page of thread
+	 * @param lnk	The link to the thread
+	 */
+	public void setLastLink(String lnk) {
+		this.lastLink = lnk;
 	}
 }

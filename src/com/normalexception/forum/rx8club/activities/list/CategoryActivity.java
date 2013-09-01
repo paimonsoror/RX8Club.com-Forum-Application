@@ -58,6 +58,7 @@ import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
+import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.view.thread.ThreadView;
 import com.normalexception.forum.rx8club.view.thread.ThreadViewArrayAdapter;
@@ -153,7 +154,11 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		            	Log.v(TAG, "User clicked '" + itm.getTitle() + "'");
 						Intent _intent = 
 								new Intent(CategoryActivity.this, ThreadActivity.class);
-						_intent.putExtra("link", itm.getLink());
+						if(getLastPage(itm)) {
+							_intent.putExtra("link", itm.getLastLink());
+							_intent.putExtra("page", "last");
+						} else
+							_intent.putExtra("link", itm.getLink());
 						_intent.putExtra("title", itm.getTitle());
 						startActivity(_intent);
 		            }
@@ -163,6 +168,15 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 				updatePagination(thisPage, finalPage);
             }
     	});
+	}
+	
+	private boolean getLastPage(ThreadView itm) {
+		boolean val = false;
+		if(isNewTopicActivity 
+				&& PreferenceHelper.getRecentlyUpdatedThreadPage(this).equals("Last") 
+				&& (itm.getLastLink() != null && !itm.getLastLink().equals("")))
+				val = true;
+		return val;
 	}
 	
 	/**
@@ -324,6 +338,12 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		    			preString = threadDiv.select("span > b").text();
 		    		} catch (Exception e) { }
 		    		
+		    		// Find the last page if it exists
+		    		String lastPage = "";
+		    		try {
+		    			lastPage = threadDiv.select("span").last().select("a").last().attr("href");
+		    		} catch (Exception e) { }
+		    		
 		    		String totalPostsInThreadTitle = threadicon.attr("alt");
 		    		String totalPosts = "";	
 		    		
@@ -351,6 +371,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 			    		tv.setStartUser(threaduser.text());
 			    		tv.setLastUser(repliesText.select("a[href*=members]").text());
 			    		tv.setLink(threadLink.attr("href"));
+			    		tv.setLastLink(lastPage);
 			    		tv.setPostCount(postCount);
 			    		tv.setMyPosts(totalPosts);
 			    		tv.setViewCount(views);

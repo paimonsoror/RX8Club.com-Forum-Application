@@ -221,4 +221,9 @@
         <item>PSI</item>
         <item>KPA</item>
     </string-array>
+    
+    <string-array name="newPostsPage">
+        <item>First</item>
+        <item>Last</item>
+    </string-array>
 </resources>

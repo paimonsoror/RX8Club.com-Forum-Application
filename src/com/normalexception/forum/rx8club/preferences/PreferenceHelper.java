@@ -38,6 +38,17 @@ public class PreferenceHelper {
 	public final static String PREFS_NAME = "app_prefs";
 	
 	/**
+	 * Report the option that the user has for the recently updated
+	 * thread page to open
+	 * @param context	The source context
+	 * @return			The option value
+	 */
+	public static String getRecentlyUpdatedThreadPage(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+		return prefs.getString("newthreadpage", "First");
+	}
+	
+	/**
 	 * Get the font size from the preference manager
 	 * @param context	The application context
 	 * @return			The font size

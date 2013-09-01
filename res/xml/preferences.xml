@@ -20,6 +20,16 @@
 	        android:summary="Remove favorites from your list"/>
 	</PreferenceCategory>
 	<PreferenceCategory
+	    		android:title="Recently Updated Posts">
+	    <ListPreference 
+	        android:title="Default Page"
+	        android:summary="Set the default page to open"
+	        android:key="newthreadpage"
+	        android:defaultValue="First"
+	        android:entries="@array/newPostsPage"
+	        android:entryValues="@array/newPostsPage"/>"
+	</PreferenceCategory>
+	<PreferenceCategory
                 android:title="Thread Options">
 	   	<ListPreference
 	        android:title="Font Size"
