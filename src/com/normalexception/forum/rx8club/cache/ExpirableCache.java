@@ -31,6 +31,7 @@ import android.content.Context;
 public class ExpirableCache extends Cache {
 
 	protected static final long MS_IN_DAY = 86400000;
+	protected int cacheDays;
 	
 	/**
 	 * Constructor to an expirable cache
@@ -38,6 +39,9 @@ public class ExpirableCache extends Cache {
 	 */
 	public ExpirableCache(Context ctx) {
 		super(ctx);
+		
+		// Default set to one day
+		cacheDays = 1;
 	}
     
 	/**
@@ -49,7 +53,7 @@ public class ExpirableCache extends Cache {
 		cacheFile = getCacheFile();
 		if(cacheFile.exists()) {
 			long today = new Date().getTime();
-			if(cacheFile.lastModified() - today > MS_IN_DAY)
+			if(cacheFile.lastModified() - today > (MS_IN_DAY * cacheDays))
 				result = true;
 			else
 				result = false;
@@ -57,4 +61,11 @@ public class ExpirableCache extends Cache {
 		return result;
 	}
 	
+	/**
+	 * Set the number of days that the cache is valid for
+	 * @param numberOfDays	The number of days cache is valid
+	 */
+	public void setCacheDays(int numberOfDays) {
+		cacheDays = numberOfDays;
+	}	
 }

@@ -44,5 +44,6 @@ public class ViewListCache<T> extends ObjectCache< List<T> > {
 		super(ctx);
 		this.CACHEFILENAME = filename;
 		this.cacheDir = getExternalCache();
+		this.setCacheDays(1);
 	}
 }
