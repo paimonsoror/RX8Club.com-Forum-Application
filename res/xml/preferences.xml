@@ -38,8 +38,13 @@
                 android:title="Thread Options">
 	    <CheckBoxPreference
 	        android:title="Display Avatars"
-	        android:summary="Show User Avatar In Thread, or Disable To Save Bandwidth"
+	        android:summary="Show user avatar In thread, or disable to save bandwidth"
 	        android:key="showavatars"
+	        android:defaultValue="true"/>
+	    <CheckBoxPreference
+	        android:title="Display Attachments"
+	        android:summary="Show post attachments if they exist"
+	        android:key="showattachments"
 	        android:defaultValue="true"/>
 	   	<ListPreference
 	        android:title="Font Size"
@@ -51,7 +56,7 @@
 	    <CheckBoxPreference
 	        android:title="Advertise Application"
 	        android:defaultValue="true"
-	        android:summary="Show 'Posted From' On Thread Posts"
+	        android:summary="Show 'Posted From' On thread posts"
 	        android:key="advertise" />  
 	</PreferenceCategory>
     <PreferenceCategory

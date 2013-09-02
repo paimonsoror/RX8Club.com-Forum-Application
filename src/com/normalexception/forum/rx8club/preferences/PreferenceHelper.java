@@ -107,6 +107,16 @@ public class PreferenceHelper {
     }
     
     /**
+     * Report if show attachments option is enabled
+     * @param context	The application context
+     * @return			True if option enabled
+     */
+    public static boolean isShowAttachments(Context context) {
+    	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+    	return prefs.getBoolean("showattachments", true);
+    }
+    
+    /**
      * Convenience method to set the advertise enabled option
      * @param context	The application context
      * @param newValue	The new option value

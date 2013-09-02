@@ -121,7 +121,11 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         // the text
         String trimmedPost = 
         		cv.getUserPost().replaceAll("(?i)<(/*)font(.*)>", "");
-        trimmedPost = appendAttachments(trimmedPost, cv.getAttachments());
+       
+        // Show attachments if the preference allows it
+        if(PreferenceHelper.isShowAttachments(activity)) 
+        	trimmedPost = appendAttachments(trimmedPost, cv.getAttachments());
+        
         postText.setText(Html.fromHtml(trimmedPost, fih, null));
         postText.setTextColor(Color.WHITE);
         postText.setLinkTextColor(Color.WHITE);
