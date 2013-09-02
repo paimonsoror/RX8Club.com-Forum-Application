@@ -36,6 +36,11 @@
 	</PreferenceCategory>
 	<PreferenceCategory
                 android:title="Thread Options">
+	    <CheckBoxPreference
+	        android:title="Display Avatars"
+	        android:summary="Show User Avatar In Thread, or Disable To Save Bandwidth"
+	        android:key="showavatars"
+	        android:defaultValue="true"/>
 	   	<ListPreference
 	        android:title="Font Size"
 			android:summary="Set the application's font size"

@@ -97,6 +97,16 @@ public class PreferenceHelper {
     }
     
     /**
+     * Report if show avatar option is enabled
+     * @param context	The application context
+     * @return			True if option enabled
+     */
+    public static boolean isShowAvatars(Context context) {
+    	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+    	return prefs.getBoolean("showavatars", true);
+    }
+    
+    /**
      * Convenience method to set the advertise enabled option
      * @param context	The application context
      * @param newValue	The new option value
