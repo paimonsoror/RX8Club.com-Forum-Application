@@ -154,11 +154,15 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		            	Log.v(TAG, "User clicked '" + itm.getTitle() + "'");
 						Intent _intent = 
 								new Intent(CategoryActivity.this, ThreadActivity.class);
+						
+						// If the user wants the last page when recently updated
+						// threads, grab it.
 						if(getLastPage(itm)) {
 							_intent.putExtra("link", itm.getLastLink());
 							_intent.putExtra("page", "last");
 						} else
 							_intent.putExtra("link", itm.getLink());
+						
 						_intent.putExtra("title", itm.getTitle());
 						startActivity(_intent);
 		            }
@@ -170,6 +174,12 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     	});
 	}
 	
+	/**
+	 * Report if the user selected to have their recently updated threads
+	 * display the last page
+	 * @param itm	The item that was selected
+	 * @return		True if the user wants the last page
+	 */
 	private boolean getLastPage(ThreadView itm) {
 		boolean val = false;
 		if(isNewTopicActivity 
