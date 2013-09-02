@@ -288,6 +288,15 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 					innerPost.select("td[class=alt1]")
 					.select("div[id^=post_message]").html()));
 
+			Elements postAttachments = innerPost.select("a[id^=attachment]");
+			if(postAttachments != null && !postAttachments.isEmpty()) {
+				ArrayList<String> attachments = new ArrayList<String>();
+				for(Element postAttachment : postAttachments) {
+					attachments.add(postAttachment.attr("href"));
+				}
+				pv.setAttachments(attachments);
+			}
+			
 			pv.setSecurityToken(securityToken);
 			postlist.add(pv);
 		}

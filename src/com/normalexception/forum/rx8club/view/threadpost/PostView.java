@@ -24,12 +24,15 @@ package com.normalexception.forum.rx8club.view.threadpost;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.util.List;
+
 public class PostView {
 	private String userName, userTitle, userLocation;
 	private String joinDate, postDate;
 	private String userPostCount, userPost;
 	private String postId, token;
 	private String userImageUrl;
+	private List<String> attachments;
 	private boolean isLoggedInUser = false;
 	
 	public void setUserImageUrl(String url) {
@@ -198,5 +201,21 @@ public class PostView {
 	 */
 	public void setUserPost(String userPost) {
 		this.userPost = userPost;
+	}
+	
+	/**
+	 * Set the post's attachments
+	 * @param attachments	A list of attachments
+	 */
+	public void setAttachments(List<String> attachments) {
+		this.attachments = attachments;
+	}
+	
+	/**
+	 * Report the list of attachments
+	 * @return	The list of attachments
+	 */
+	public List<String> getAttachments() {
+		return attachments;
 	}
 }

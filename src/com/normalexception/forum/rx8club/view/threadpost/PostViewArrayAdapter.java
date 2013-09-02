@@ -120,7 +120,8 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         // Lets make sure we remove any font formatting that was done within
         // the text
         String trimmedPost = 
-        		cv.getUserPost().replaceAll("(?i)<(/*)font(.*)>", "");      
+        		cv.getUserPost().replaceAll("(?i)<(/*)font(.*)>", "");
+        trimmedPost = appendAttachments(trimmedPost, cv.getAttachments());
         postText.setText(Html.fromHtml(trimmedPost, fih, null));
         postText.setTextColor(Color.WHITE);
         postText.setLinkTextColor(Color.WHITE);
@@ -223,7 +224,32 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         return vi;
 	}
 	
-	
+	/**
+	 * Append attachments to the end of this post if they exist
+	 * @param trimmedPost	The current post
+	 * @param attachments	The attachments of the post
+	 * @return				An appended html string
+	 */
+	private String appendAttachments(String trimmedPost,
+			List<String> attachments) {
+		if(attachments == null || attachments.isEmpty())
+			return trimmedPost;
+		
+		// Create an html string for the attachments
+		String attachString = "";
+		for(String attachment : attachments)
+			attachString += 
+				String.format("<a href=\"%s\"><img src=\"%s\"></a>&nbsp;", 
+						attachment, attachment);
+		
+		// Now append to the original text
+		trimmedPost = 
+				String.format("%s<br><br><b>Attachments:</b><br>%s", 
+						trimmedPost, attachString);
+		
+		return trimmedPost;
+	}
+
 	/**
 	 * If the post is by the logged in user, make sure that they can see the edit and 
 	 * delete buttons
