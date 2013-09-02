@@ -176,7 +176,7 @@ containing a value of this type.
         public static final int main_layout=0x7f050040;
         public static final int mainlisttitle=0x7f050005;
         public static final int mainlistview=0x7f050006;
-        public static final int menu_settings=0x7f050095;
+        public static final int menu_settings=0x7f050096;
         public static final int newPmButton=0x7f05005d;
         public static final int newThreadButton=0x7f050075;
         public static final int newTopicsButton=0x7f05002b;
@@ -251,6 +251,7 @@ containing a value of this type.
         public static final int thumbnail=0x7f05003d;
         public static final int titleContainer=0x7f05005e;
         public static final int titleTextContainer=0x7f050061;
+        public static final int tv_attachment=0x7f050095;
         public static final int tv_image=0x7f050086;
         public static final int tv_label_values=0x7f050091;
         public static final int tv_labels=0x7f05008d;

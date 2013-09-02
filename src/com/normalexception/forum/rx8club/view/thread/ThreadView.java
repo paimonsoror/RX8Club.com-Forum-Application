@@ -34,7 +34,23 @@ public class ThreadView implements Serializable {
 	private String postCount, viewCount, myPosts;
 	private String startUser, lastUser;
 	private String link, lastLink;
-	private boolean isSticky, isLocked, isFavorite = false;
+	private boolean isSticky, isLocked, isFavorite, hasAttachment = false;
+	
+	/**
+	 * Report if thread has an attachment
+	 * @return	True if has attachment
+	 */
+	public boolean hasAttachment() {
+		return hasAttachment;
+	}
+	
+	/**
+	 * Set if thread has an attachment
+	 * @param attach	True if has attachment
+	 */
+	public void setHasAttachment(boolean attach) {
+		hasAttachment = attach;
+	}
 	
 	/**
 	 * Report if thread is favorite

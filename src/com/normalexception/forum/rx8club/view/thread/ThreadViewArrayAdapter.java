@@ -61,6 +61,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
     private TextView vViewCount = null;
     private TextView vViewCountL= null;
     private ImageView vImage 	= null;
+    private ImageView vAttachment = null;
  
     public ThreadViewArrayAdapter(Context context, int textViewResourceId,
 			List<ThreadView> objects) {
@@ -113,6 +114,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         vViewCount = (TextView) ViewHolder.get(vi,R.id.tv_viewCount);
         vViewCountL= (TextView) ViewHolder.get(vi,R.id.tv_viewCount_label);
         vImage 	   = (ImageView) ViewHolder.get(vi,R.id.tv_image);
+        vAttachment= (ImageView) ViewHolder.get(vi,R.id.tv_attachment);
         
         vTitle.setText(       m.getTitle());
         vPostUser.setText(    m.getStartUser());
@@ -146,6 +148,11 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 		
 		if (m.isFavorite())
 			hideThreadDetails();
+		
+		if (!m.hasAttachment())
+			vAttachment.setVisibility(View.GONE);
+		else 
+			vAttachment.setVisibility(View.VISIBLE);
 		
         return vi;
 	}

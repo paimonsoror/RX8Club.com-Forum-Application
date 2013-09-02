@@ -112,7 +112,6 @@
 	        android:id="@+id/tv_viewCount_label"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_below="@id/tv_postCount_label"
 	        android:gravity="right"
 	        android:text="@string/tvTotalViews"
 	        android:layout_marginRight="5dip"
@@ -123,7 +122,6 @@
 	        android:id="@+id/tv_myCount_label"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_below="@id/tv_viewCount_label"
 	        android:gravity="right"
 	        android:text="@string/tvMyPosts"
 	        android:layout_marginRight="5dip"
@@ -170,9 +168,17 @@
 	        android:textSize="10dip"
 	        android:textColor="#ffffff"
 	        android:textStyle="bold"/>
-	    </LinearLayout>
-	    
-	 
-	    </RelativeLayout>
+    </LinearLayout>
+    
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/tv_attachment"
+        android:layout_width="15dip"
+        android:layout_height="15dip"
+        android:layout_alignBottom="@id/tv_lastUser_label"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@id/postcount_details"
+        android:src="@drawable/paperclip" />
  
 </RelativeLayout>

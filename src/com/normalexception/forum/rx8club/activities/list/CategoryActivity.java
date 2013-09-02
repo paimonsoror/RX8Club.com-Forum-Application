@@ -334,7 +334,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		    		Element threadicon  = thread.select("img[id^=thread_statusicon_]").first();
 		    		Element threadDiv   = thread.select("td[id^=td_threadtitle_] > div").first();
 		    		
-		    		boolean isSticky = false, isLocked = false;    		
+		    		boolean isSticky = false, isLocked = false, hasAttachment = false;    		
 		    		try {
 		    			isSticky = threadDiv.text().contains("Sticky:");
 		    		} catch (Exception e) { }
@@ -346,6 +346,10 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		    		String preString = "";
 		    		try {
 		    			preString = threadDiv.select("span > b").text();
+		    		} catch (Exception e) { }
+		    		
+		    		try {
+		    			hasAttachment = !threadDiv.select("a[onclick^=attachments]").isEmpty();
 		    		} catch (Exception e) { }
 		    		
 		    		// Find the last page if it exists
@@ -387,6 +391,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 			    		tv.setViewCount(views);
 			    		tv.setLocked(isLocked);
 			    		tv.setSticky(isSticky);
+			    		tv.setHasAttachment(hasAttachment);
 			    		threadlist.add(tv);
 		    		}
         		}
