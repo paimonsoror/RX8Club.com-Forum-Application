@@ -43,5 +43,6 @@ public class UserProfileCache extends ObjectCache<UserProfile> {
 		super(ctx);
 		this.CACHEFILENAME = filename;
 		this.cacheDir = getExternalCache();
+		this.setCacheDays(5);
 	}
 }

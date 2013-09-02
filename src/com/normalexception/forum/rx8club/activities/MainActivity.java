@@ -132,6 +132,12 @@ public class MainActivity extends ForumBaseActivity {
     	}
     }
     
+	/**
+	 * User profile will be read as an async task after the main
+	 * activity has started.  This doesn't always run, only when 
+	 * the cache is either non-existant, or expired
+	 * @param doc	The current page
+	 */
 	private void constructUserProfile(final Document doc) {
 		final ForumBaseActivity thisActivity = this;
 		new AsyncTask<Void,String,Void>() {

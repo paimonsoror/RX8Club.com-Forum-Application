@@ -74,6 +74,17 @@ public class PreferenceHelper {
         prefsEditor.putString("fontsize", newValue);
         prefsEditor.commit();
     }
+    
+    /**
+     * Report if the favorites dialog is going to display as a pop up
+     * menu, or an activity list.
+     * @param context	The application context
+     * @return			The favorites type value
+     */
+    public static boolean isFavoriteAsDialog(Context context) {
+    	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+    	return prefs.getBoolean("favorites_as_dialog", false);
+    }
 
     /**
      * Report if advertise option is enabled

@@ -18,6 +18,11 @@
 	        android:title="Manage Favorites"
 	        android:key="manage_favorites"
 	        android:summary="Remove favorites from your list"/>
+	    <CheckBoxPreference
+	        android:title="Show Favorites As Popup"
+	        android:key="favorites_as_dialog"
+	        android:defaultValue="false"
+	        android:summary="Show the favorites list as a pop up dialog instead of a list"/>
 	</PreferenceCategory>
 	<PreferenceCategory
 	    		android:title="Recently Updated Posts">

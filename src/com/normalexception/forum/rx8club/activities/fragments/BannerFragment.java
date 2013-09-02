@@ -39,7 +39,9 @@ import com.normalexception.forum.rx8club.activities.SearchActivity;
 import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
 import com.normalexception.forum.rx8club.activities.list.FavoritesActivity;
 import com.normalexception.forum.rx8club.activities.pm.PrivateMessageInboxActivity;
+import com.normalexception.forum.rx8club.favorites.FavoriteDialog;
 import com.normalexception.forum.rx8club.html.LoginFactory;
+import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
 /**
@@ -106,10 +108,13 @@ public class BannerFragment extends Fragment implements OnClickListener {
 				
 			case R.id.favoritesButton:
 				_intent = null;
-				//FavoriteDialog fd = new FavoriteDialog(getActivity());
-				//fd.registerToExecute();
-				//fd.show();
-				_intent = new Intent(arg0.getContext(), FavoritesActivity.class);
+				if(PreferenceHelper.isFavoriteAsDialog(getActivity())) {
+					FavoriteDialog fd = new FavoriteDialog(getActivity());
+					fd.registerToExecute();
+					fd.show();
+				} else {
+					_intent = new Intent(arg0.getContext(), FavoritesActivity.class);
+				}
 				break;
 			
 			case R.id.inboxButton:
