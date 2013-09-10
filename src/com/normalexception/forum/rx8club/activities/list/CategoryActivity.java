@@ -215,45 +215,48 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		        Document doc = VBForumFactory.getInstance().get(src, 
 		        		link == null? WebUrls.newPostUrl : link);
 		        
-		        // if doc came back, and link was null, we need to update
- 				// the link reference to reflect the new post URL
- 				if(link == null) {
- 					// <link rel="canonical" 
- 					// href="http://www.rx8club.com/search.php?searchid=10961740" />
- 					Elements ele = doc.select("link[rel^=canonical]");
- 					if(ele != null) {
- 						link = ele.attr("href");
- 					}
- 				}
 		        
- 				// The forum id data is only required if we are within a category
- 				// and not if we are in a New Posts page.  This data is used when
- 				// we create new threads.
- 				publishProgress(getString(R.string.asyncDialogGrabThreads));
- 				try {
-			        if(!isNewTopicActivity) {
-				        forumId = link.substring(link.lastIndexOf("-") + 1);
-				        
-				        // Make sure forumid doesn't end with a "/"
-				        forumId = Utils.parseInts(forumId);
-				        
-				        getCategoryContents(doc, 
-								link.substring(link.lastIndexOf('-') + 1, 
-										link.lastIndexOf('/')),
-								link.contains("sale-wanted"));
-			        } else {
-			        	getCategoryContents(doc, null, false);
-			        }
- 				} catch (Exception e) {
- 					Toast.makeText(
- 							src, R.string.timeout, Toast.LENGTH_SHORT)
- 						 .show();
- 				}
-		        				
-				findViewById(R.id.mainlisttitle).setVisibility(View.GONE);
-		    	
-				publishProgress(getString(R.string.asyncDialogPopulating));
-		    	updateList();
+		        if(doc != null) {     
+			        // if doc came back, and link was null, we need to update
+	 				// the link reference to reflect the new post URL
+	 				if(link == null) {
+	 					// <link rel="canonical" 
+	 					// href="http://www.rx8club.com/search.php?searchid=10961740" />
+	 					Elements ele = doc.select("link[rel^=canonical]");
+	 					if(ele != null) {
+	 						link = ele.attr("href");
+	 					}
+	 				}
+			        
+	 				// The forum id data is only required if we are within a category
+	 				// and not if we are in a New Posts page.  This data is used when
+	 				// we create new threads.
+	 				publishProgress(getString(R.string.asyncDialogGrabThreads));
+	 				try {
+				        if(!isNewTopicActivity) {
+					        forumId = link.substring(link.lastIndexOf("-") + 1);
+					        
+					        // Make sure forumid doesn't end with a "/"
+					        forumId = Utils.parseInts(forumId);
+					        
+					        getCategoryContents(doc, 
+									link.substring(link.lastIndexOf('-') + 1, 
+											link.lastIndexOf('/')),
+									link.contains("sale-wanted"));
+				        } else {
+				        	getCategoryContents(doc, null, false);
+				        }
+	 				} catch (Exception e) {
+	 					Toast.makeText(
+	 							src, R.string.timeout, Toast.LENGTH_SHORT)
+	 						 .show();
+	 				}
+			        				
+					findViewById(R.id.mainlisttitle).setVisibility(View.GONE);
+			    	
+					publishProgress(getString(R.string.asyncDialogPopulating));
+			    	updateList();
+		        }
 		    	return null;
 			}
         	@Override

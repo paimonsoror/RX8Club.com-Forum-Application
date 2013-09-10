@@ -118,20 +118,22 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
      */
     private void constructView() {    	
     	Document doc = VBForumFactory.getInstance().get(this, link);
-    	s 			= HtmlFormUtils.getInputElementValue(doc, "s");
-    	token 		= HtmlFormUtils.getInputElementValue(doc, "securitytoken");
-    	f 			= HtmlFormUtils.getInputElementValue(doc, "f");
-    	posthash 	= HtmlFormUtils.getInputElementValue(doc, "posthash");
-    	
-    	tlist.add(new ThreadItemView());
-    	
-    	final NewThreadActivity a = this;
-    	runOnUiThread(new Runnable() {
-            public void run() {
-		    	pva = new ThreadItemViewArrayAdapter(a, R.layout.view_newthread, tlist);
-				lv.setAdapter(pva);		        
-            }
-    	});
+    	if(doc != null) {
+	    	s 			= HtmlFormUtils.getInputElementValue(doc, "s");
+	    	token 		= HtmlFormUtils.getInputElementValue(doc, "securitytoken");
+	    	f 			= HtmlFormUtils.getInputElementValue(doc, "f");
+	    	posthash 	= HtmlFormUtils.getInputElementValue(doc, "posthash");
+	    	
+	    	tlist.add(new ThreadItemView());
+	    	
+	    	final NewThreadActivity a = this;
+	    	runOnUiThread(new Runnable() {
+	            public void run() {
+			    	pva = new ThreadItemViewArrayAdapter(a, R.layout.view_newthread, tlist);
+					lv.setAdapter(pva);		        
+	            }
+	    	});
+    	}
     }
     
     /*

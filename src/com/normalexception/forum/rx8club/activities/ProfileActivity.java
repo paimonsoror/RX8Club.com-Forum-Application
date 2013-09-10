@@ -207,17 +207,19 @@ public class ProfileActivity extends ForumBaseActivity {
     	// Threads
     	String link = WebUrls.userUrl + upInstance.getUserId();
     	doc = VBForumFactory.getInstance().get(this, link);
-    	Elements threadlist = doc.select("table[id^=post]");
-    	for(Element threadl : threadlist) {
-    		ProfileView stub = new ProfileView();
-    		Elements divs = threadl.getElementsByTag("div");
-    		Elements div = divs.get(1).getElementsByTag("a");
-    		stub.setLink(div.attr("href"));
-    		stub.setName(div.text());
-    		
-    		div = divs.get(5).getElementsByTag("a");
-    		stub.setText(div.text());
-    		stubs.add(stub);
+    	if(doc != null) {
+	    	Elements threadlist = doc.select("table[id^=post]");
+	    	for(Element threadl : threadlist) {
+	    		ProfileView stub = new ProfileView();
+	    		Elements divs = threadl.getElementsByTag("div");
+	    		Elements div = divs.get(1).getElementsByTag("a");
+	    		stub.setLink(div.attr("href"));
+	    		stub.setName(div.text());
+	    		
+	    		div = divs.get(5).getElementsByTag("a");
+	    		stub.setText(div.text());
+	    		stubs.add(stub);
+	    	}
     	}
     }
 }

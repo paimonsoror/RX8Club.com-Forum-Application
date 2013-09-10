@@ -276,58 +276,60 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
 			protected Void doInBackground(Void... params) {		
  				Document doc = VBForumFactory.getInstance().get(src, WebUrls.pmUrl);
  				
- 				token = HtmlFormUtils.getInputElementValue(doc, "securitytoken");
- 				String current_month = getMonthForInt(0);
- 				Elements collapse = doc.select("tbody[id^=collapseobj_pmf0]");
- 				
- 				publishProgress(getString(R.string.asyncDialogGrabPMs));
- 				for(Element coll : collapse) {
- 					Elements trs = coll.select("tr");
- 					for(Element tr : trs) {
- 						Elements alt1s = tr.getElementsByClass("alt1Active");
- 						for(Element alt1 : alt1s) {
- 							
- 							Elements divs = alt1.select("div");
- 							
- 							// First grab our link
- 							Elements linkElement = divs.get(0).select("a[rel=nofollow]");
- 							String pmLink = linkElement.attr("href");
- 							
- 							// There should be two divs here with text in it
- 							// the first is 'MM-DD-YYYY Subject'
- 							String dateSubject = divs.get(0).text();
- 							String[] dateSubjectSplit = dateSubject.split(" ", 2);
- 							
- 							// The second is HH:MM AMPM User
- 							String timeTimeUser = divs.get(1).text();
- 							String[] timeTimeUserSplit = timeTimeUser.split(" ", 3);
- 							
- 							// Create new pm
- 							PMView pm = new PMView();
- 							pm.setDate(dateSubjectSplit[0]);
- 							
- 							// Check the month before we go further
- 							String this_month = getMonthForInt(
-    								Integer.parseInt(pm.getDate().split("-")[0]));
- 							if(!current_month.equals(this_month)) {
- 								current_month = this_month;
- 								PMView pm_m = new PMView();
- 								pm_m.setTitle(this_month);
- 								pmlist.add(pm_m);
- 							}
- 							
- 							pm.setTime(timeTimeUserSplit[0] + timeTimeUserSplit[1]);
- 							pm.setTitle(dateSubjectSplit[1]);
- 							pm.setUser(timeTimeUserSplit[2]);
- 							pm.setLink(pmLink); 
- 							pm.setToken(token);
- 							
- 							Log.v(TAG, "Adding PM From: " + pm.getUser());
- 							pmlist.add(pm);
- 						}
- 					}
+ 				if( doc != null) {
+	 				token = HtmlFormUtils.getInputElementValue(doc, "securitytoken");
+	 				String current_month = getMonthForInt(0);
+	 				Elements collapse = doc.select("tbody[id^=collapseobj_pmf0]");
+	 				
+	 				publishProgress(getString(R.string.asyncDialogGrabPMs));
+	 				for(Element coll : collapse) {
+	 					Elements trs = coll.select("tr");
+	 					for(Element tr : trs) {
+	 						Elements alt1s = tr.getElementsByClass("alt1Active");
+	 						for(Element alt1 : alt1s) {
+	 							
+	 							Elements divs = alt1.select("div");
+	 							
+	 							// First grab our link
+	 							Elements linkElement = divs.get(0).select("a[rel=nofollow]");
+	 							String pmLink = linkElement.attr("href");
+	 							
+	 							// There should be two divs here with text in it
+	 							// the first is 'MM-DD-YYYY Subject'
+	 							String dateSubject = divs.get(0).text();
+	 							String[] dateSubjectSplit = dateSubject.split(" ", 2);
+	 							
+	 							// The second is HH:MM AMPM User
+	 							String timeTimeUser = divs.get(1).text();
+	 							String[] timeTimeUserSplit = timeTimeUser.split(" ", 3);
+	 							
+	 							// Create new pm
+	 							PMView pm = new PMView();
+	 							pm.setDate(dateSubjectSplit[0]);
+	 							
+	 							// Check the month before we go further
+	 							String this_month = getMonthForInt(
+	    								Integer.parseInt(pm.getDate().split("-")[0]));
+	 							if(!current_month.equals(this_month)) {
+	 								current_month = this_month;
+	 								PMView pm_m = new PMView();
+	 								pm_m.setTitle(this_month);
+	 								pmlist.add(pm_m);
+	 							}
+	 							
+	 							pm.setTime(timeTimeUserSplit[0] + timeTimeUserSplit[1]);
+	 							pm.setTitle(dateSubjectSplit[1]);
+	 							pm.setUser(timeTimeUserSplit[2]);
+	 							pm.setLink(pmLink); 
+	 							pm.setToken(token);
+	 							
+	 							Log.v(TAG, "Adding PM From: " + pm.getUser());
+	 							pmlist.add(pm);
+	 						}
+	 					}
+	 				}
+	 				updateList();
  				}
- 				updateList();
  				return null;
  			}
         	@Override

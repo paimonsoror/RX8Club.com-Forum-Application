@@ -151,19 +151,21 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 				Document doc = 
 						VBForumFactory.getInstance().get(src, currentPageLink);
 
-				lv = (ListView)findViewById(R.id.mainlistview);
-
-				publishProgress(getString(R.string.asyncDialogGrabThreadContents));
-				
-				try {
-					getThreadContents(doc);
-				} catch (Exception e) {
-					Toast.makeText(
-							src, R.string.timeout, Toast.LENGTH_SHORT)
-						 .show();
+				if(doc != null) {
+					lv = (ListView)findViewById(R.id.mainlistview);
+	
+					publishProgress(getString(R.string.asyncDialogGrabThreadContents));
+					
+					try {
+						getThreadContents(doc);
+					} catch (Exception e) {
+						Toast.makeText(
+								src, R.string.timeout, Toast.LENGTH_SHORT)
+							 .show();
+					}
+					publishProgress(getString(R.string.asyncDialogPopulating));
+					updateList();
 				}
-				publishProgress(getString(R.string.asyncDialogPopulating));
-				updateList();
 				return null;
 			}
 			

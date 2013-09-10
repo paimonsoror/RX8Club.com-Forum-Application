@@ -155,10 +155,12 @@ public class MainActivity extends ForumBaseActivity {
     				if(localDoc == null)
     					localDoc = VBForumFactory.getInstance().get(
 	    					thisActivity, VBForumFactory.getRootAddress());
-    				Elements userElement = 
-    					localDoc.select("a[href^=http://www.rx8club.com/members/" + 
-    						UserProfile.getInstance().getUsername().replace(".", "-") + "]");
-    				UserProfile.getInstance().setUserProfileLink(userElement.attr("href"));
+    				if(localDoc != null) {
+    					Elements userElement = 
+    							localDoc.select("a[href^=http://www.rx8club.com/members/" + 
+    									UserProfile.getInstance().getUsername().replace(".", "-") + "]");
+    					UserProfile.getInstance().setUserProfileLink(userElement.attr("href"));
+    				}
     			}
 				return null;
 			}	

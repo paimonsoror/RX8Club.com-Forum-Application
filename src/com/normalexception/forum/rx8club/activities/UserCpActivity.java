@@ -125,37 +125,40 @@ public class UserCpActivity extends ForumBaseActivity {
         		try {
         			Document doc = 
     						VBForumFactory.getInstance().get(src, WebUrls.editProfile);
-        			token = 
-        					HtmlFormUtils.getInputElementValue(doc, "securitytoken");
         			
-        			Elements fieldSets =
-        					doc.select("fieldset[class=fieldset]");
-        			
-        			publishProgress(getString(R.string.asyncDialogPopulating));
-        			for(Element fieldSet : fieldSets) {
-        				String legend = fieldSet.select("legend").text();
-        				if(legend.equals("Custom User Title")) {
-        					customTitle = fieldSet.select("strong").text();
-        					continue;
-        				} else if (legend.equals("Home Page URL")) {
-        					homepageurl = fieldSet.getElementById("tb_homepage").attr("value");
-        					continue;
-        				} else if (legend.equals("Biography")) {
-        					biography = fieldSet.getElementById("ctb_field1").attr("value");
-        					continue;
-        				} else if (legend.equals("Location")) {
-        					location = fieldSet.getElementById("ctb_field2").attr("value");
-        					continue;
-        				} else if (legend.equals("Interests")) {
-        					interests = fieldSet.getElementById("ctb_field3").attr("value");
-        					continue;
-        				} else if (legend.equals("Occupation")) {
-        					occupation = fieldSet.getElementById("ctb_field4").attr("value");
-        					continue;
-        				}
+        			if(doc != null) {
+	        			token = 
+	        					HtmlFormUtils.getInputElementValue(doc, "securitytoken");
+	        			
+	        			Elements fieldSets =
+	        					doc.select("fieldset[class=fieldset]");
+	        			
+	        			publishProgress(getString(R.string.asyncDialogPopulating));
+	        			for(Element fieldSet : fieldSets) {
+	        				String legend = fieldSet.select("legend").text();
+	        				if(legend.equals("Custom User Title")) {
+	        					customTitle = fieldSet.select("strong").text();
+	        					continue;
+	        				} else if (legend.equals("Home Page URL")) {
+	        					homepageurl = fieldSet.getElementById("tb_homepage").attr("value");
+	        					continue;
+	        				} else if (legend.equals("Biography")) {
+	        					biography = fieldSet.getElementById("ctb_field1").attr("value");
+	        					continue;
+	        				} else if (legend.equals("Location")) {
+	        					location = fieldSet.getElementById("ctb_field2").attr("value");
+	        					continue;
+	        				} else if (legend.equals("Interests")) {
+	        					interests = fieldSet.getElementById("ctb_field3").attr("value");
+	        					continue;
+	        				} else if (legend.equals("Occupation")) {
+	        					occupation = fieldSet.getElementById("ctb_field4").attr("value");
+	        					continue;
+	        				}
+	        			}
+	 			        
+	        			updateView();
         			}
- 			       
-        			updateView();
         		} catch (Exception e) {
         			Log.e(TAG, e.getMessage());
         		}

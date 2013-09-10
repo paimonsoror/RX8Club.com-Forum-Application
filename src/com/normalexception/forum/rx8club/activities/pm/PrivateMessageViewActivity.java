@@ -122,31 +122,34 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 				Document doc = 
 						VBForumFactory.getInstance().get(src, 
 								VBForumFactory.getRootAddress() + "/" + link);
-				securityToken =
-						HtmlFormUtils.getInputElementValue(doc, "securitytoken");
 				
-				pmid =
-						HtmlFormUtils.getInputElementValue(doc, "pmid");
-				
-				title =
-						HtmlFormUtils.getInputElementValue(doc, "title");
-				
-				Elements postMenu = doc.select("div[id=postmenu_]");
-				
-				postUser = postMenu.text();
-				
-				Elements postMessage = doc.select("div[id=post_message_]");
-				
-				postText = postMessage.html();
-		    	
-				publishProgress(getString(R.string.asyncDialogLoadingPM));
-				PMPostView pmi = new PMPostView();
-				pmi.setUserName(postUser);
-				pmi.setUserPost(postText);
-				pmi.setSecurityToken(securityToken);
-				pmlist.add(pmi);
-
-				updateList();
+				if(doc != null) {
+					securityToken =
+							HtmlFormUtils.getInputElementValue(doc, "securitytoken");
+					
+					pmid =
+							HtmlFormUtils.getInputElementValue(doc, "pmid");
+					
+					title =
+							HtmlFormUtils.getInputElementValue(doc, "title");
+					
+					Elements postMenu = doc.select("div[id=postmenu_]");
+					
+					postUser = postMenu.text();
+					
+					Elements postMessage = doc.select("div[id=post_message_]");
+					
+					postText = postMessage.html();
+			    	
+					publishProgress(getString(R.string.asyncDialogLoadingPM));
+					PMPostView pmi = new PMPostView();
+					pmi.setUserName(postUser);
+					pmi.setUserPost(postText);
+					pmi.setSecurityToken(securityToken);
+					pmlist.add(pmi);
+	
+					updateList();
+				}
 				return null;
 			}
         	@Override

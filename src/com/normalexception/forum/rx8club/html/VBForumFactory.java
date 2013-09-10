@@ -100,39 +100,49 @@ public class VBForumFactory {
 	 */
 	public String getForumPage(ForumBaseActivity src, LoginFactory lf, String addr) 
 			throws ClientProtocolException, IOException {
-		HttpClient client = null;
 		String output = null;
-		
-		// Grab the login client
-		client = lf.getClient();
-		
-		// If client isn't null, continue
-		if(client != null && (addr != null && !addr.equals(""))) {
-			HttpGet httpget = null;
-			addr = Utils.resolveUrl(addr);
+		try {
+			HttpClient client = null;		
 			
-			try {
-				httpget = ClientUtils.getHttpGet(addr);
-		    	output = 
-	    			EntityUtils.toString( 
-	    					client.execute( httpget, lf.getHttpContext() ).getEntity(), 
-	    					"ISO-8859-1");
-
-				httpget.releaseConnection();
+			// Grab the login client
+			client = lf.getClient();
+			
+			// If client isn't null, continue
+			if(client != null && (addr != null && !addr.equals(""))) {
+				HttpGet httpget = null;
+				addr = Utils.resolveUrl(addr);
 				
-				if(output == null || 
-						output.equals("") || 
-						output.contains("You are not logged in"))
-					src.returnToLoginPage(false);
-			} catch (NullPointerException e) {		
+				try {
+					httpget = ClientUtils.getHttpGet(addr);
+			    	output = 
+		    			EntityUtils.toString( 
+		    					client.execute( httpget, lf.getHttpContext() ).getEntity(), 
+		    					"ISO-8859-1");
+	
+					httpget.releaseConnection();
+					
+					if(output == null || 
+							output.equals("") || 
+							output.contains("You are not logged in"))
+						src.returnToLoginPage(false);
+				} catch (NullPointerException e) {		
+					notifyError(src, 
+							"Error Opening Page. This Has Been Logged", e);
+				} catch (IllegalStateException e) {
+					Log.e(TAG, e.getMessage());
+				}	
+			} else {
 				notifyError(src, 
-						"Error Opening Page. This Has Been Logged", e);
-			} catch (IllegalStateException e) {
-				Log.e(TAG, e.getMessage());
-			}	
-		} else {
-			notifyError(src, 
-					"Error With Credentials", null);
+						"Error With Credentials", null);
+			}
+		} catch (Exception e) {
+			notifyError(src, "No Internet Connection...", null);
+			src.returnToLoginPage(false);
+		}
+		
+		if(output == null || output.length() == 0) {
+			notifyError(src, "No Internet Connection...", null);
+			src.returnToLoginPage(false);		
 		}
 		
 		return output;

@@ -95,7 +95,8 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
         mProgressDialog.dismiss();
 		Intent _intent = new Intent(sourceActivity, postClazz);
 		_intent.putExtra("link", HtmlFormUtils.getResponseUrl());
-		_intent.putExtra("page", String.valueOf(Integer.parseInt(pageNumber)));
+		_intent.putExtra("page", pageNumber.equals("last")? pageNumber :
+			String.valueOf(Integer.parseInt(pageNumber)));
 		_intent.putExtra("title", pageTitle);
 		sourceActivity.finish();
 		sourceActivity.startActivity(_intent);

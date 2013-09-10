@@ -131,26 +131,29 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 				Document doc = 
 						VBForumFactory.getInstance().get(src, 
 								VBForumFactory.getRootAddress() + "/" + link);
-				securityToken =
-						HtmlFormUtils.getInputElementValue(doc, "securitytoken");
 				
-				pmid =
-						HtmlFormUtils.getInputElementValue(doc, "pmid");
-				
-				postUser = 
-						getIntent().getStringExtra("user");    	
-				
-				PMItemView pm = new PMItemView();
-				if(validateInputs(postUser))
-					pm.setName(postUser);
-				tlist.add(pm);
-		    	
-		    	runOnUiThread(new Runnable() {
-		            public void run() {
-				    	pva = new PMItemViewArrayAdapter(src, R.layout.view_newpm, tlist);
-						lv.setAdapter(pva);	
-		            }
-		    	});
+				if(doc != null) {
+					securityToken =
+							HtmlFormUtils.getInputElementValue(doc, "securitytoken");
+					
+					pmid =
+							HtmlFormUtils.getInputElementValue(doc, "pmid");
+					
+					postUser = 
+							getIntent().getStringExtra("user");    	
+					
+					PMItemView pm = new PMItemView();
+					if(validateInputs(postUser))
+						pm.setName(postUser);
+					tlist.add(pm);
+			    	
+			    	runOnUiThread(new Runnable() {
+			            public void run() {
+					    	pva = new PMItemViewArrayAdapter(src, R.layout.view_newpm, tlist);
+							lv.setAdapter(pva);	
+			            }
+			    	});
+				}
 		    	
 		    	return null;
 			}
