@@ -192,7 +192,7 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 				public void onClick(DialogInterface dialog, int which) {
 					switch (which){
 				    	case DialogInterface.BUTTON_POSITIVE:
-				    		DeletePmTask dpm = new DeletePmTask(ctx, securityToken, pmid);
+				    		DeletePmTask dpm = new DeletePmTask(ctx, securityToken, pmid, false);
 							dpm.execute();
 			   				break;
 			        }

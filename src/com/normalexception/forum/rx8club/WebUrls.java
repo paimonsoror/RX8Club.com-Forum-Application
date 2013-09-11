@@ -33,7 +33,10 @@ public class WebUrls {
 	
 	public static final String loginUrl = rootUrl + "/login.php";
 	public static final String newPostUrl = rootUrl + "/search.php?do=getnew";
-	public static final String pmUrl = rootUrl + "/private.php";
+	
+	public static final String pmInboxUrl = rootUrl + "/private.php";
+	public static final String pmSentUrl  = rootUrl + "/private.php?s=&pp=50&folderid=-1";
+	
 	public static final String profileUrl = rootUrl + "/profile.php";
 	public static final String searchUrl = rootUrl + "/search.php?do=process&query=";
 	public static final String userUrl = rootUrl + "/search.php?do=finduser&u=";

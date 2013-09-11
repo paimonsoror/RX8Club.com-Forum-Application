@@ -16,6 +16,11 @@
     <string name="ntThreadName">Thread Name:</string>
     <string name="ntThreadPost">Post:\u0020</string>
     
+    <!-- Inbox Buttons -->
+    <string name="inboxNewPm">New PM</string>
+    <string name="inboxInbox">Inbox Items</string>
+    <string name="inboxSent">Sent Items</string>
+    
     <!-- New PM Screen -->
     <string name="pmFrom">From:\u0020</string>
     <string name="pmRecipients">Recipients:\u0020</string>

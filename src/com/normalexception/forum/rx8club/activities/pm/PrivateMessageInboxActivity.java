@@ -39,16 +39,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.normalexception.forum.rx8club.Log;
@@ -72,7 +71,8 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
 	
 	private ListView lv;
 	
-	private static final int NEW_PM = 1;
+	public static final String showOutboundExtra = "showOutbound";
+	private boolean showOutbound = false;
 	
 	/*
 	 * (non-Javadoc)
@@ -87,12 +87,10 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
         pmlist = new ArrayList<PMView>();
         lv = (ListView)findViewById(R.id.mainlistview);
         
-        Button bv = new Button(this);
-        bv.setId(NEW_PM);
-        bv.setOnClickListener(this);
-        bv.setText("New PM");
-        bv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
-        lv.addHeaderView(bv);
+        ViewGroup header = 
+        		(ViewGroup)getLayoutInflater().inflate(R.layout.view_inbox_header, lv, false);
+        header.setOnClickListener(this);
+        lv.addHeaderView(header);
         
         Log.v(TAG, "PM Activity Started");
         
@@ -139,7 +137,8 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
         int position = info.position;
         PMView pmv = (PMView)lv.getItemAtPosition(position);
 		menu.setHeaderTitle(pmv.getTitle());
-		menu.add(0, position, 0, R.string.reply);
+		if(!this.showOutbound)
+			menu.add(0, position, 0, R.string.reply);
 		menu.add(0, position, 0, R.string.delete);
 	}
 
@@ -236,7 +235,7 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
     		final String id = link.substring(link.lastIndexOf("id=") + 3);
 			Log.v(TAG, "User Clicked: " + id);
 
-			DeletePmTask dpm = new DeletePmTask(this, token, id);
+			DeletePmTask dpm = new DeletePmTask(this, token, id, showOutbound);
 			dpm.execute();
 		}
     }
@@ -263,6 +262,8 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
      */
     private void constructView() {
     	final ForumBaseActivity src = this;
+    	this.showOutbound = 
+    			this.getIntent().getBooleanExtra(showOutboundExtra, false);
     	
     	updaterTask = new AsyncTask<Void,String,Void>() {
         	@Override
@@ -274,12 +275,16 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
 		    }
         	@Override
 			protected Void doInBackground(Void... params) {		
- 				Document doc = VBForumFactory.getInstance().get(src, WebUrls.pmUrl);
+ 				Document doc = 
+ 						VBForumFactory.getInstance().get(src, 
+ 								showOutbound? WebUrls.pmSentUrl : WebUrls.pmInboxUrl);
  				
  				if( doc != null) {
 	 				token = HtmlFormUtils.getInputElementValue(doc, "securitytoken");
 	 				String current_month = getMonthForInt(0);
-	 				Elements collapse = doc.select("tbody[id^=collapseobj_pmf0]");
+	 				Elements collapse = doc.select(
+	 						showOutbound? "tbody[id^=collapseobj_pmf-1]" : 
+	 							"tbody[id^=collapseobj_pmf0]");
 	 				
 	 				publishProgress(getString(R.string.asyncDialogGrabPMs));
 	 				for(Element coll : collapse) {
@@ -313,7 +318,8 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
 	 							if(!current_month.equals(this_month)) {
 	 								current_month = this_month;
 	 								PMView pm_m = new PMView();
-	 								pm_m.setTitle(this_month);
+	 								pm_m.setTitle(String.format("%s - %s", 
+	 										this_month, showOutbound? "Sent Items" : "Inbox"));
 	 								pmlist.add(pm_m);
 	 							}
 	 							
@@ -353,13 +359,31 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
 	public void onClick(View arg0) {
 		super.onClick(arg0);
 		
+		Intent intent = null;
 		switch(arg0.getId()) {	
-		case NEW_PM:
+		case R.id.inboxButtonNewPm:
 			Log.v(TAG, "New PM Clicked");
-			Intent intent = new Intent(PrivateMessageInboxActivity.this, 
-					NewPrivateMessageActivity.class);
-			startActivity(intent);
+			intent = new Intent(PrivateMessageInboxActivity.this, 
+					NewPrivateMessageActivity.class);	
+			break;
+			
+		case R.id.inboxButtonInbox:
+			Log.v(TAG, "New PM Clicked");
+			intent = new Intent(PrivateMessageInboxActivity.this, 
+					PrivateMessageInboxActivity.class);
+			intent.putExtra(showOutboundExtra, false);
+			finish();
+			break;
+			
+		case R.id.inboxButtonSent:
+			Log.v(TAG, "New PM Clicked");
+			intent = new Intent(PrivateMessageInboxActivity.this, 
+					PrivateMessageInboxActivity.class);
+			intent.putExtra(showOutboundExtra, true);
+			finish();
 			break;
 		}
+		
+		if(intent != null) startActivity(intent);
 	}
 }

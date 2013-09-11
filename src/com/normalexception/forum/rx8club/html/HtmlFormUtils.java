@@ -179,7 +179,7 @@ public class HtmlFormUtils {
     	nvps.add(new BasicNameValuePair("dowhat", "delete"));
     	nvps.add(new BasicNameValuePair("pm[" + pmid + "]","0_today"));
     	
-    	return formSubmit(WebUrls.pmUrl, nvps);
+    	return formSubmit(WebUrls.pmInboxUrl, nvps);
 	}
 	
 	/**

@@ -42,21 +42,25 @@ public class DeletePmTask extends AsyncTask<Void,Void,Void>{
 	private Activity sourceActivity;
 	
 	private String token, pmid;
+	private boolean outbound = false;
 	private Class<?> postClazz;
 
 	private static String TAG = "DeletePmTask";
 
 	/**
 	 * Async Task handler for deleting a Private messages
-	 * @param sourceActivity
-	 * @param securityToken
-	 * @param pmid
+	 * @param sourceActivity	The source activity	
+	 * @param securityToken		The security token of the session
+	 * @param pmid				The id of the PM to delete
+	 * @param outbound			True if showing sent items
 	 */
-	public DeletePmTask(Activity sourceActivity, String securityToken, String pmid) {
+	public DeletePmTask(Activity sourceActivity, String securityToken, 
+			String pmid, boolean outbound) {
 		this.sourceActivity = sourceActivity;
 		this.token = securityToken;
 		this.pmid = pmid;
 		this.postClazz = PrivateMessageInboxActivity.class;
+		this.outbound = outbound;
 	}
 
 	/*
@@ -68,6 +72,7 @@ public class DeletePmTask extends AsyncTask<Void,Void,Void>{
         mProgressDialog.dismiss();
 		Intent _intent = new Intent(sourceActivity, postClazz);
 		_intent.putExtra("link", HtmlFormUtils.getResponseUrl());
+		_intent.putExtra(PrivateMessageInboxActivity.showOutboundExtra, outbound);
 		sourceActivity.finish();
 		sourceActivity.startActivity(_intent);
     }
