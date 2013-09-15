@@ -76,7 +76,8 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	@Override
 	public void onClick(View arg0) {
 		// Before anything, make sure we are still logged in
-		if(!LoginFactory.getInstance().isLoggedIn()) {
+		if(!LoginFactory.getInstance().isLoggedIn() && 
+				!LoginFactory.getInstance().isGuestMode()) {
 			try {
 				LoginFactory.getInstance().login();
 			} catch (NoSuchAlgorithmException e1) {
