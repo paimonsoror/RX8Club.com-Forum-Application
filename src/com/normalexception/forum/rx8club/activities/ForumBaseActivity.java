@@ -41,6 +41,7 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
@@ -68,6 +69,24 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	private static String TAG = "ForumBaseActivity";
 	
 	protected String thisPage = "1", finalPage = "1";
+	
+	/**
+	 * Start our analytics tracking
+	 */
+	@Override
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this); // Add this method.
+	}
+	
+	/**
+	 * End our analytics tracking
+	 */
+	@Override
+	public void onStop() {
+		super.onStop();
+	    EasyTracker.getInstance(this).activityStop(this); // Add this method.
+	}
 	
 	/*
 	 * (non-Javadoc)
