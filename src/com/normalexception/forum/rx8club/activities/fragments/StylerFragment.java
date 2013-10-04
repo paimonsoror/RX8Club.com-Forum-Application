@@ -73,6 +73,7 @@ public class StylerFragment extends Fragment implements OnClickListener {
     	ViewHolder.get(getView(), R.id.imageCodeButton).setOnClickListener(this);
     	ViewHolder.get(getView(), R.id.quoteCodeButton).setOnClickListener(this);
     	ViewHolder.get(getView(), R.id.attachButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.emoticonButton).setOnClickListener(this);
     }
     
     /*
@@ -109,6 +110,8 @@ public class StylerFragment extends Fragment implements OnClickListener {
 			break;
 		case R.id.quoteCodeButton:
 			val = VBForumLocale.getStyle(Style.QUOTE);
+			break;
+		case R.id.emoticonButton:
 			break;
 		case R.id.attachButton:
 			/*Intent i = new Intent(

@@ -42,6 +42,17 @@
             android:src="@drawable/quoteicon" />
 
         <ImageButton
+            android:id="@+id/emoticonButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="20px"
+            android:maxWidth="20px"
+            android:scaleType="centerCrop"
+            android:src="@drawable/emoticon" />
+        
+        <ImageButton
             android:id="@+id/attachButton"
             android:layout_width="38dp"
             android:layout_height="38dp"
