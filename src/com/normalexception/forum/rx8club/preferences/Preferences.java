@@ -40,7 +40,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.cache.Cache;
 import com.normalexception.forum.rx8club.cache.FileCache;
-import com.normalexception.forum.rx8club.favorites.FavoriteDialog;
+import com.normalexception.forum.rx8club.dialog.FavoriteDialog;
 import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
 
 /**

@@ -1,4 +1,4 @@
-package com.normalexception.forum.rx8club.activities.thread;
+package com.normalexception.forum.rx8club.dialog;
 
 /************************************************************************
  * NormalException.net Software, and other contributors

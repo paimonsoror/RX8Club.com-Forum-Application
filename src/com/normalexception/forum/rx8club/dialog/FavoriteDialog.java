@@ -1,4 +1,4 @@
-package com.normalexception.forum.rx8club.favorites;
+package com.normalexception.forum.rx8club.dialog;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -35,6 +35,8 @@ import android.view.ContextThemeWrapper;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
+import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
+import com.normalexception.forum.rx8club.favorites.FavoriteThreads;
 import com.normalexception.forum.rx8club.view.thread.ThreadView;
 
 /**

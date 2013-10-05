@@ -39,7 +39,7 @@ import com.normalexception.forum.rx8club.activities.SearchActivity;
 import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
 import com.normalexception.forum.rx8club.activities.list.FavoritesActivity;
 import com.normalexception.forum.rx8club.activities.pm.PrivateMessageInboxActivity;
-import com.normalexception.forum.rx8club.favorites.FavoriteDialog;
+import com.normalexception.forum.rx8club.dialog.FavoriteDialog;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.view.ViewHolder;
