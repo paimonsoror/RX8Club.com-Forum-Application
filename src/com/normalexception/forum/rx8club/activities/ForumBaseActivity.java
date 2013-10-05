@@ -46,6 +46,7 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.utils.UtilitiesDialog;
+import com.normalexception.forum.rx8club.dialog.LogoffDialog;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.preferences.Preferences;
 
@@ -146,30 +147,8 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
         switch(item.getItemId())
         {
            case(LOGOFF_MENU):
-   				Log.v(TAG, "Logoff Pressed");
-           
-           		// Lets make sure the user didn't accidentally click this
-				DialogInterface.OnClickListener dialogClickListener = 
-						new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						switch (which){
-					    	case DialogInterface.BUTTON_POSITIVE:
-					    		returnToLoginPage(true);
-				   				break;
-				        }
-				    }
-				};
-	    		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder
-					.setMessage(R.string.dialogLogoffConfirm)
-					.setPositiveButton(R.string.Yes, dialogClickListener)
-				    .setNegativeButton(R.string.No, dialogClickListener);
-				if(LoginFactory.getInstance().isGuestMode())
-					returnToLoginPage(true);
-				else
-					builder.show();
-				
+   				LogoffDialog ld = new LogoffDialog(this);
+           		ld.show();
    				break;
            case(USERCP_MENU):
            	   	_intent = 
