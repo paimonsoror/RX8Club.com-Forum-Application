@@ -35,6 +35,7 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.activities.thread.EmoticonDialog;
 import com.normalexception.forum.rx8club.html.VBForumLocale;
 import com.normalexception.forum.rx8club.html.VBForumLocale.Style;
 import com.normalexception.forum.rx8club.view.ViewHolder;
@@ -112,6 +113,8 @@ public class StylerFragment extends Fragment implements OnClickListener {
 			val = VBForumLocale.getStyle(Style.QUOTE);
 			break;
 		case R.id.emoticonButton:
+			EmoticonDialog ed = new EmoticonDialog(getActivity(), tv);
+			ed.show();
 			break;
 		case R.id.attachButton:
 			/*Intent i = new Intent(
