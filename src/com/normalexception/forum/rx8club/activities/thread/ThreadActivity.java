@@ -228,7 +228,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 					pageNumbers.first().select("td[class^=vbmenu_control]");
 			thisPage = pageLinks.text().split(" ")[1];
 			finalPage = pageLinks.text().split(" ")[3];
-		} catch (Exception e) { }
+		} catch (Exception e) {}
 
 		// Get the user's actual ID, there is a chance they never got it
 		// before

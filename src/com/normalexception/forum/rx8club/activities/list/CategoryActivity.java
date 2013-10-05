@@ -157,7 +157,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 						
 						// If the user wants the last page when recently updated
 						// threads, grab it.
-						if(getLastPage(itm)) {
+						if(getLastPage(itm) && !itm.getLastLink().equals("#")) {
 							_intent.putExtra("link", itm.getLastLink());
 							_intent.putExtra("page", "last");
 						} else
