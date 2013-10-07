@@ -64,6 +64,16 @@ public class PreferenceHelper {
     }
 	
 	/**
+	 * Get the users language from the preferences
+	 * @param context	The application context
+	 * @return			The selected language
+	 */
+	public static String getUserLanguage(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+		return prefs.getString("language", "English");
+	}
+	
+	/**
 	 * Set the font size
 	 * @param context	The application context
 	 * @param newValue	The new font value

@@ -11,6 +11,13 @@
 	        android:title="Build Number"
 	        android:key="build"
 	        android:summary=""/>
+	    <ListPreference
+	        android:title="Language"
+	        android:key="language"
+	        android:summary="User preferred language"
+	        android:defaultValue="English/US"
+	        android:entries="@array/languageValues"
+	        android:entryValues="@array/languageValues"/>
 	</PreferenceCategory>
 	<PreferenceCategory
 	    		android:title="Favorites">
