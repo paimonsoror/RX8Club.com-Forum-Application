@@ -30,6 +30,7 @@ import java.security.NoSuchAlgorithmException;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -68,6 +69,41 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	private static String TAG = "ForumBaseActivity";
 	
 	protected String thisPage = "1", finalPage = "1";
+	
+	protected static long pingTime = 0;
+	protected static long pongTime = 0;
+	protected static long diffTime = 0;
+	
+	protected static final long PING_EXPIRE = 2 /*hours*/ * 3600;
+	
+	/**
+	 * When we create our activities, we want to update the ping time
+	 * this will help us re-login when our cache expires
+	 */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		// Only update pong when the login activity was called
+		if(!(this instanceof LoginActivity)) {
+			pingTime = System.currentTimeMillis() / 1000l;
+			diffTime = pingTime - pongTime;
+			Log.d(TAG, String.format("Ping Time: %d", pingTime));
+			Log.d(TAG, String.format("Difference Time: %d", diffTime));
+			
+			if(diffTime > PING_EXPIRE) {
+				this.returnToLoginPage(false);
+			}
+		}
+	}
+	
+	/**
+	 * Update our pong time
+	 */
+	protected void updatePongTime() {
+		pongTime = System.currentTimeMillis() / 1000l;
+		Log.d(TAG, String.format("Pong Time: %d", pongTime));
+	}
 	
 	/**
 	 * Start our analytics tracking

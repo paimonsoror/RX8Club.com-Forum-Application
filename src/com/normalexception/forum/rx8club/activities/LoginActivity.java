@@ -195,11 +195,7 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 		 */
 		@Override
 		protected void onPostExecute(Void param) {
-			runOnUiThread(new Runnable() {
-				  public void run() {
-					  loadingDialog.dismiss();
-				  }
-			});
+			loadingDialog.dismiss();
 			
 			if(loggedIn) {
 				loadMainPage();
@@ -217,7 +213,8 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 	/**
 	 * Lets load the main page, generally if we are logged in
 	 */
-	private void loadMainPage() {
+	private void loadMainPage() {        
+        super.updatePongTime();
 		Intent in = new Intent(LoginActivity.this, MainActivity.class);
 		in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(in);

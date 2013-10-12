@@ -78,6 +78,8 @@ public class MainActivity extends ForumBaseActivity {
 	private ViewListCache<CategoryView> hcache = null;
 	private UserProfileCache upcache = null;
 	
+	private ProgressDialog profileDialog = null;
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -143,7 +145,7 @@ public class MainActivity extends ForumBaseActivity {
 		new AsyncTask<Void,String,Void>() {
 			@Override
 		    protected void onPreExecute() {
-		    	loadingDialog = 
+				profileDialog = 
 						ProgressDialog.show(thisActivity, 
 								getString(R.string.loading), 
 								"Validating Profile", true);
@@ -166,7 +168,7 @@ public class MainActivity extends ForumBaseActivity {
 			}	
 			@Override
 		    protected void onPostExecute(Void result) {
-				loadingDialog.dismiss();
+				profileDialog.dismiss();
 				upcache.cacheContents(UserProfile.getInstance());
 			}
 		}.execute();
