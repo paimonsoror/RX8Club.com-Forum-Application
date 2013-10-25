@@ -314,6 +314,10 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		Intent _intent = null;
 		_intent = new Intent(ThreadActivity.this, ThreadActivity.class);
 		_intent.putExtra("title", this.currentPageTitle);
+		
+		// Make sure we aren't manipulating on 'last' as a page
+		if(this.pageNumber.contains("last"))
+			this.pageNumber = finalPage;
 
 		switch(arg0.getId()) {
 		case R.id.previousButton:
