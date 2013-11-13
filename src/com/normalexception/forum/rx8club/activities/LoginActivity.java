@@ -195,7 +195,12 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 		 */
 		@Override
 		protected void onPostExecute(Void param) {
-			loadingDialog.dismiss();
+			
+			// Dismiss the loading dialog, but make sure we trap if
+			// the dialog went away before we got here.
+			try {
+				loadingDialog.dismiss();
+			} catch (Exception e) { }
 			
 			if(loggedIn) {
 				loadMainPage();
