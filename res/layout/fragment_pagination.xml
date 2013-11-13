@@ -11,12 +11,22 @@
             android:id="@+id/firstButton"
             android:layout_width="38dp"
             android:layout_height="38dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="20px"
+            android:maxWidth="20px"
+            android:scaleType="centerCrop"
             android:src="@drawable/firsticon" />
 
     <ImageButton
             android:id="@+id/previousButton"
             android:layout_width="38dp"
             android:layout_height="38dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="20px"
+            android:maxWidth="20px"
+            android:scaleType="centerCrop"
             android:layout_toRightOf="@id/firstButton"
             android:src="@drawable/previcon" />
     
@@ -33,6 +43,11 @@
 	     android:layout_alignParentRight="true"
 	     android:layout_width="38dp"
 	     android:layout_height="38dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="20px"
+            android:maxWidth="20px"
+            android:scaleType="centerCrop"
 	     android:src="@drawable/lasticon" />
     
     <ImageButton
@@ -40,5 +55,10 @@
             android:layout_toLeftOf="@id/lastButton"
             android:layout_width="38dp"
             android:layout_height="38dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="20px"
+            android:maxWidth="20px"
+            android:scaleType="centerCrop"
             android:src="@drawable/nexticon" />
 </RelativeLayout>

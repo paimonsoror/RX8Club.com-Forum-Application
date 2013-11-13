@@ -9,36 +9,66 @@
             android:id="@+id/boldButton"
             android:layout_width="38dp"
             android:layout_height="38dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="20px"
+            android:maxWidth="20px"
+            android:scaleType="centerCrop"
             android:src="@drawable/boldicon" />
         
         <ImageButton
             android:id="@+id/italicButton"
             android:layout_width="38dp"
             android:layout_height="38dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="20px"
+            android:maxWidth="20px"
+            android:scaleType="centerCrop"
             android:src="@drawable/italicicon" />
         
         <ImageButton
             android:id="@+id/underlineButton"
             android:layout_width="38dp"
             android:layout_height="38dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="20px"
+            android:maxWidth="20px"
+            android:scaleType="centerCrop"
             android:src="@drawable/underlineicon" />
         
         <ImageButton
             android:id="@+id/linkCodeButton"
             android:layout_width="38dp"
             android:layout_height="38dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="20px"
+            android:maxWidth="20px"
+            android:scaleType="centerCrop"
             android:src="@drawable/webicon" />
 
         <ImageButton
             android:id="@+id/imageCodeButton"
             android:layout_width="38dp"
             android:layout_height="38dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="20px"
+            android:maxWidth="20px"
+            android:scaleType="centerCrop"
             android:src="@drawable/imageicon" />
 
         <ImageButton
             android:id="@+id/quoteCodeButton"
             android:layout_width="38dp"
             android:layout_height="38dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="20px"
+            android:maxWidth="20px"
+            android:scaleType="centerCrop"
             android:src="@drawable/quoteicon" />
 
         <ImageButton
