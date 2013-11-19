@@ -120,7 +120,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         // Lets make sure we remove any font formatting that was done within
         // the text
         String trimmedPost = 
-        		cv.getUserPost().replaceAll("(?i)<(/*)font(.*)>", "");
+        		cv.getUserPost().replaceAll("(?i)<(/*)font(.*?)>", "");
        
         // Show attachments if the preference allows it
         if(PreferenceHelper.isShowAttachments(activity)) 
