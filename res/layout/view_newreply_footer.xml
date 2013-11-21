@@ -37,10 +37,10 @@
 	        <EditText
 	            android:id="@+id/postBox"
 	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
+	            android:layout_height="102dp"
+	            android:layout_below="@id/fragment_content_styler"
 	            android:ems="10"
-	            android:inputType="textMultiLine"
-	            android:layout_below="@id/fragment_content_styler" />
+	            android:inputType="textMultiLine" />
 	
 	        <Button
 	            android:id="@+id/submitButton"
