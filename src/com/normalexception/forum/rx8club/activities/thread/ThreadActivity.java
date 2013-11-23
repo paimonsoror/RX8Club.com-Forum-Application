@@ -286,9 +286,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			}
 
 			// User Post Content
-			pv.setUserPost(Utils.reformatQuotes(
-					innerPost.select("td[class=alt1]")
-					.select("div[id^=post_message]").html()));
+			pv.setUserPost(formatUserPost(innerPost));
 
 			Elements postAttachments = innerPost.select("a[id^=attachment]");
 			if(postAttachments != null && !postAttachments.isEmpty()) {
@@ -302,6 +300,27 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			pv.setSecurityToken(securityToken);
 			postlist.add(pv);
 		}
+	}
+	
+	/**
+	 * Format the user post by removing the vb style quotes and the 
+	 * duplicate youtube links
+	 * @param innerPost	The element that contains the inner post
+	 * @return			The formatted string
+	 */
+	private String formatUserPost(Elements innerPost) {
+		Element ipost = 
+				innerPost.select("td[class=alt1]").select("div[id^=post_message]").first();
+	
+		// Remove the duplicate youtube links (this is caused by a plugin on 
+		// the forum that embeds youtube videos automatically)
+		for(Element embedded : ipost.select("div[id^=ame_doshow_post_]"))
+			embedded.remove();
+		
+		// Remove the vbulletin quotes
+		String upost = Utils.reformatQuotes(ipost.html());
+		
+		return upost;
 	}
 
 	/*
