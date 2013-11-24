@@ -137,4 +137,14 @@ public class PreferenceHelper {
         prefsEditor.putBoolean("advertise", newValue);
         prefsEditor.commit();
     }
+	
+    /**
+     * Report if user wants linear threads
+     * @param context	The application context
+     * @return			True if option enabled
+     */
+	public static boolean isLinearThread(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+    	return prefs.getBoolean("linearthread", true);
+	}
 }

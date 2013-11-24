@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#444444"
+    android:background="@drawable/container_thread_dropshadow"
     android:orientation="horizontal">
 
     <!-- ListRow Left sied Thumbnail image -->
 	<RelativeLayout
         android:id="@+id/titleContainer"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#FF888888"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:background="#888888" 
         android:padding="3dip">
         
 	    <TextView
@@ -22,14 +23,23 @@
 	        android:textSize="12dip"
 	        android:textStyle="bold"
 	        android:typeface="sans" />
+	    
+	    <TextView
+	        android:id="@+id/nr_userTitle"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="1dip"
+	        android:layout_below="@id/nr_username"
+	        android:text="@string/nrUserTitle"
+	        android:textColor="#ffffff"
+	        android:textSize="8dip" />
 	    		
 	    <LinearLayout
 	        android:id="@+id/thumbnail"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentLeft="true"
-	        android:layout_marginRight="5dip"
-	        android:layout_below="@id/nr_username"
+	        android:layout_below="@id/nr_userTitle"
 	        android:padding="3dip"
 	        android:orientation="horizontal"
 	        android:background="@drawable/container_avatar_square" >
@@ -40,41 +50,21 @@
 	            android:layout_height="50dip"
 	            android:src="@drawable/rotor_icon" />
 
-	    </LinearLayout> 	    
-	    		
-		<View
-            android:id="@+id/nr_sep"
-            android:layout_width="2dip"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="10dp"
-            android:layout_toRightOf="@id/thumbnail"
-            android:layout_alignBottom="@id/thumbnail"
-            android:background="#FF808080" />
+	    </LinearLayout>
 	    	        	
 	    <!-- Title Of Thread -->
+
 		<RelativeLayout
-	        android:id="@+id/titleTextContainer"
-	        android:layout_below="@id/nr_sep"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:padding="3dip">	    
-		
-		    <TextView
-		        android:id="@+id/nr_userTitle"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="1dip"
-		        android:text="@string/nrUserTitle"
-		        android:textColor="#ffffff"
-		        android:textSize="8dip" />
+		    android:id="@+id/titleTextContainer"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_below="@id/thumbnail"
+		    android:padding="3dip" >
 		    
 		    <TextView
 		        android:id="@+id/nr_userPosts"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_below="@id/nr_userTitle"
 		        android:layout_marginTop="1dip"
 		        android:text="1000"
 		        android:textColor="#ffffff"
@@ -121,7 +111,8 @@
 			<ImageView
 			    android:id="@+id/nr_quoteButton"
 			    android:layout_width="15dip"
-		        android:layout_height="15dip"	    
+		        android:layout_height="15dip"	
+		        android:layout_marginRight="10dp"    
 			    android:src="@drawable/quote_icon"
 			    android:focusable="false"/>
 			
@@ -129,7 +120,6 @@
 			    android:id="@+id/nr_pmButton"
 			    android:layout_width="15dip"
 			    android:layout_height="15dip"
-			    android:layout_marginRight="10dp"
 			    android:layout_toRightOf="@id/nr_quoteButton"
 			    android:src="@drawable/black_mail"
 			    android:focusable="false" />
@@ -139,7 +129,7 @@
 			    android:layout_width="15dip"
 			    android:layout_height="15dip"
 			    android:layout_marginRight="10dp"
-			    android:layout_toRightOf="@id/nr_pmButton"
+			    android:layout_below="@id/nr_quoteButton"
 			    android:src="@drawable/black_pencil_icon"
 			    android:focusable="false" />
 			
@@ -147,34 +137,32 @@
 			    android:id="@+id/nr_deleteButton"
 			    android:layout_width="15dip"
 		        android:layout_height="15dip"
+		        android:layout_below="@id/nr_pmButton"
 			    android:layout_toRightOf="@id/nr_editButton"
 			    android:src="@drawable/black_x"
-			    android:layout_marginRight="10dp"
 			    android:focusable="false"/>
-		</RelativeLayout>
-		
+		</RelativeLayout>		
 	</RelativeLayout>
-	<RelativeLayout
+	<LinearLayout
 	    android:id="@+id/postContainer"
 	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
+	    android:layout_height="fill_parent"
 	    android:layout_toRightOf="@id/titleContainer"
-	    android:background="#444444"
-	    android:paddingBottom="30dip" >
+	    android:layout_alignParentTop="true"
+	    android:background="#444444">
 
 	    <TextView
 	        android:id="@+id/nr_postText"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="5dip"
-	        android:paddingTop="5dip"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:cacheColorHint="#00000000"
 	        android:paddingLeft="5dip"
 	        android:paddingRight="5dip"
-	        android:paddingBottom="5dip"
+	        android:paddingTop="5dip"
+	        android:scrollbars="none"
 	        android:text="@string/nrPostText"
 	        android:textColor="#ffffff"
 	        android:textSize="8dip"
-	        android:cacheColorHint="#00000000"
-	        android:scrollbars="none" />
-	</RelativeLayout>
-</RelativeLayout>
+	        android:layout_weight="1" />
+	</LinearLayout>
+</LinearLayout>

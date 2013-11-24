@@ -43,6 +43,11 @@
 	</PreferenceCategory>
 	<PreferenceCategory
                 android:title="Thread Options">
+	    <CheckBoxPreference 
+	        android:title="Linear View"
+	        android:summary="Display thread contents in linear view"
+	        android:key="linearthread"
+	        android:defaultValue="true"/>
 	    <CheckBoxPreference
 	        android:title="Display Avatars"
 	        android:summary="Show user avatar In thread, or disable to save bandwidth"

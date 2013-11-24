@@ -102,7 +102,10 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         if(vi == null) {
         	LayoutInflater vinf =
                     (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            vi = vinf.inflate(R.layout.view_newreply, null);
+        	if(PreferenceHelper.isLinearThread(activity))
+        		vi = vinf.inflate(R.layout.view_newreply, null);
+        	else
+        		vi = vinf.inflate(R.layout.view_newreply_alt, null);
         }
         
         final PostView cv = data.get(position);
