@@ -34,7 +34,23 @@ public class ThreadView implements Serializable {
 	private String postCount, viewCount, myPosts;
 	private String startUser, lastUser;
 	private String link, lastLink;
-	private boolean isSticky, isLocked, isFavorite, hasAttachment = false;
+	private boolean isSticky, isLocked, isFavorite, isPoll, hasAttachment = false;
+	
+	/**
+	 * Report if thread is a poll thread
+	 * @return	True if the thread has a poll
+	 */
+	public boolean isPoll() {
+		return isPoll;
+	}
+	
+	/**
+	 * Set if the thread is / has a poll
+	 * @param ip	True if the thread has a poll
+	 */
+	public void setPoll(boolean ip) {
+		this.isPoll = ip;
+	}
 	
 	/**
 	 * Report if thread has an attachment

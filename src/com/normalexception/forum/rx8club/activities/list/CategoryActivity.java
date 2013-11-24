@@ -337,9 +337,13 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		    		Element threadicon  = thread.select("img[id^=thread_statusicon_]").first();
 		    		Element threadDiv   = thread.select("td[id^=td_threadtitle_] > div").first();
 		    		
-		    		boolean isSticky = false, isLocked = false, hasAttachment = false;    		
+		    		boolean isSticky = false, isLocked = false, hasAttachment = false, isPoll = false;    		
 		    		try {
 		    			isSticky = threadDiv.text().contains("Sticky:");
+		    		} catch (Exception e) { }
+		    		
+		    		try {
+		    			isPoll = threadDiv.text().contains("Poll:");
 		    		} catch (Exception e) { }
 		    		
 		    		try {
@@ -379,7 +383,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		
 			    		String formattedTitle = 
 			    				String.format("%s%s%s", 
-			    						isSticky? "Sticky: " : "",
+			    						isSticky? "Sticky: " : 
+			    							isPoll? "Poll: " : "",
 			    								preString.length() == 0? "" : preString + " ",
 			    								threadLink.text()); 
 			    		
@@ -394,6 +399,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 			    		tv.setViewCount(views);
 			    		tv.setLocked(isLocked);
 			    		tv.setSticky(isSticky);
+			    		tv.setPoll(isPoll);
 			    		tv.setHasAttachment(hasAttachment);
 			    		threadlist.add(tv);
 		    		}
