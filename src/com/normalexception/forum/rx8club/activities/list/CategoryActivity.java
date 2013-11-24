@@ -163,6 +163,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 						} else
 							_intent.putExtra("link", itm.getLink());
 						
+						_intent.putExtra("poll", itm.isPoll());
+						_intent.putExtra("locked", itm.isLocked());
 						_intent.putExtra("title", itm.getTitle());
 						startActivity(_intent);
 		            }

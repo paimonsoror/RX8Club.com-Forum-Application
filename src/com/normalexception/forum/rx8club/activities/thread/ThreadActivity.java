@@ -95,6 +95,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	private List<String> bmapList;
 	
 	private AsyncTask<Void,String,Void> updaterTask;
+	
+	private boolean isPoll = false, isLocked = false;
 
 	/*
 	 * (non-Javadoc)
@@ -121,6 +123,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			Log.e(TAG, "Fatal Error In Thread Activity! " + e.getMessage());
 		}
 	}
+	
+	
 
 	/**
 	 * Construct the thread activity view
@@ -144,6 +148,11 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 						(String) getIntent().getStringExtra("title");			
 				pageNumber = 
 						(String) getIntent().getStringExtra("page");
+				isPoll = 
+						(boolean)getIntent().getBooleanExtra("poll", false);
+				isLocked =
+						(boolean)getIntent().getBooleanExtra("locked", false);
+				
 				if(pageNumber == null) pageNumber = "1";
 
 				Log.v(TAG, "Grabbing link: " + currentPageLink);
@@ -194,9 +203,9 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 						inflate(R.layout.view_newreply_footer, null);
 				v.setOnClickListener(a);
 
-				// If the user is guest, then hide the items that
-				// they generally wont be able to use
-				if(LoginFactory.getInstance().isGuestMode()) {
+				// If the user is guest or if the thread is locked, 
+				// then hide the items that they generally wont be able to use
+				if(LoginFactory.getInstance().isGuestMode() || isLocked) {
 					ViewHolder.get(v, R.id.nr_replycontainer)
 					.setVisibility(View.GONE);
 				}

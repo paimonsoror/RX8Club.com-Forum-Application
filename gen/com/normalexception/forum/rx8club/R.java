@@ -313,12 +313,13 @@ containing a value of this type.
         public static final int view_inbox_header=0x7f03000b;
         public static final int view_newpm=0x7f03000c;
         public static final int view_newreply=0x7f03000d;
-        public static final int view_newreply_footer=0x7f03000e;
-        public static final int view_newthread=0x7f03000f;
-        public static final int view_pm=0x7f030010;
-        public static final int view_pmitem_footer=0x7f030011;
-        public static final int view_profile_header=0x7f030012;
-        public static final int view_thread=0x7f030013;
+        public static final int view_newreply_alt=0x7f03000e;
+        public static final int view_newreply_footer=0x7f03000f;
+        public static final int view_newthread=0x7f030010;
+        public static final int view_pm=0x7f030011;
+        public static final int view_pmitem_footer=0x7f030012;
+        public static final int view_profile_header=0x7f030013;
+        public static final int view_thread=0x7f030014;
     }
     public static final class menu {
         public static final int activity_about=0x7f0b0000;
