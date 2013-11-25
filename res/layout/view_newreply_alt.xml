@@ -97,9 +97,11 @@
 		        android:layout_below="@id/nr_userJoin"
 		        android:layout_marginTop="10dip"
 		        android:layout_toRightOf="@id/nr_postDate_label"
-		        android:text="07-16-2013"
+		        android:maxWidth="50dp"
+		        android:text="07-16-2013, 09:29 PM"
 		        android:textColor="#ffffff"
 		        android:textSize="8dip" />
+
 		</RelativeLayout>	
 		 
 		<RelativeLayout
