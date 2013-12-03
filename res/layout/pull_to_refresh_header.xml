@@ -32,7 +32,6 @@
         android:layout_marginTop="10dip"
         android:visibility="gone"
         android:layout_centerVertical="true"
-        android:background="@android:color/darker_gray"
         style="?android:attr/progressBarStyleSmall"
         />
     <ImageView
@@ -44,7 +43,6 @@
         android:visibility="gone"
         android:layout_gravity="center"
         android:gravity="center"
-        android:background="@android:color/darker_gray"
         android:src="@drawable/ic_pulltorefresh_arrow"
         />
     <TextView
@@ -57,7 +55,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:background="@android:color/darker_gray"
         />
     <TextView
         android:id="@+id/pull_to_refresh_updated_at"
@@ -68,6 +65,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:background="@android:color/darker_gray"
         />
 </RelativeLayout>

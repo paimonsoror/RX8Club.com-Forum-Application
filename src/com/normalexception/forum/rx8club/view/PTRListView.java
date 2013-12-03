@@ -24,6 +24,10 @@ package com.normalexception.forum.rx8club.view;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+/**
+ * Implementation based on: https://github.com/erikwt/PullToRefresh-ListView
+ */
+
 import com.normalexception.forum.rx8club.R;
 
 import android.content.Context;
@@ -56,7 +60,7 @@ public class PTRListView extends ListView implements OnScrollListener {
     	RELEASE_TO_REFRESH, 
     	REFRESHING };
 
-    private static final String TAG = "PullToRefreshListView";
+    private static final String TAG = "PTRListView";
 
     private OnRefreshListener mOnRefreshListener;
 
