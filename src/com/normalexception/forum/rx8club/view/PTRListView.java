@@ -121,16 +121,14 @@ public class PTRListView extends ListView implements OnScrollListener {
         mInflater = (LayoutInflater) context.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
 
-                mRefreshView = (RelativeLayout) mInflater.inflate(
-                                R.layout.pull_to_refresh_header, this, false);
-        mRefreshViewText =
-            (TextView) mRefreshView.findViewById(R.id.pull_to_refresh_text);
-        mRefreshViewImage =
-            (ImageView) mRefreshView.findViewById(R.id.pull_to_refresh_image);
-        mRefreshViewProgress =
-            (ProgressBar) mRefreshView.findViewById(R.id.pull_to_refresh_progress);
-        mRefreshViewLastUpdated =
-            (TextView) mRefreshView.findViewById(R.id.pull_to_refresh_updated_at);
+        mRefreshView = (RelativeLayout) mInflater.inflate(
+             R.layout.view_ptr_header, this, false);
+        
+        // Use our ViewHolder pattern to reduce resource consumption
+        mRefreshViewText     = (TextView) ViewHolder.get(mRefreshView, R.id.ptr_text);
+        mRefreshViewImage    = (ImageView) ViewHolder.get(mRefreshView, R.id.ptr_image);
+        mRefreshViewProgress = (ProgressBar) ViewHolder.get(mRefreshView, R.id.ptr_progress);
+        mRefreshViewLastUpdated = (TextView) ViewHolder.get(mRefreshView, R.id.ptr_updated_at);
 
         mRefreshViewImage.setMinimumHeight(50);
         mRefreshView.setOnClickListener(new OnClickRefreshListener());

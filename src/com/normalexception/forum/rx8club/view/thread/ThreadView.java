@@ -37,10 +37,18 @@ public class ThreadView implements Serializable {
 	private String forum;
 	private boolean isSticky, isLocked, isFavorite, isPoll, hasAttachment = false;
 	
+	/**
+	 * Report the forum of the thread
+	 * @return	Report the forum of the thread
+	 */
 	public String getForum() {
 		return forum;
 	}
 	
+	/**
+	 * Set the source forum
+	 * @param frm The source forum of the thread
+	 */
 	public void setForum(String frm) {
 		this.forum = frm;
 	}

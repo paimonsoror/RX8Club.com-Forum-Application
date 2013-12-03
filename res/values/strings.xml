@@ -161,7 +161,7 @@
 	<string name="ptrPull">Keep Pulling to Refresh&#8230;</string>
     <string name="ptrRelease">Release to Refresh&#8230;</string>
     <string name="ptrLoading">Loading&#8230;</string>
-    <string name="ptrTap">Tap to Refresh&#8230;</string>
+    <string name="ptrTap">Tap Here to Refresh&#8230;</string>
 
 	<!-- String Arrays -->
     <string-array name="searchDateArray">

@@ -64,7 +64,6 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
     private TextView vViewCountL= null;
     private ImageView vImage 	= null;
     private ImageView vAttachment = null;
-    private TextView vForumL    = null;
     private TextView vForum     = null;
     private LinearLayout vForumC= null;
  
@@ -75,10 +74,18 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 		data = objects;
 	}
     
+    /**
+     * Set if the view is an instance of New Posts
+     * @param isNewThread	If true, view is New Posts view
+     */
     public void setIsNewThread(boolean isNewThread) {
     	this.isNewThread = isNewThread;
     }
     
+    /**
+     * If true, this view is the New Posts view
+     * @return	New Posts view if true
+     */
     public boolean isNewThread() {
     	return this.isNewThread;
     }
@@ -125,8 +132,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         vMyCount   = (TextView) ViewHolder.get(vi,R.id.tv_myCount);
         vMyCountL  = (TextView) ViewHolder.get(vi,R.id.tv_myCount_label);
         vViewCount = (TextView) ViewHolder.get(vi,R.id.tv_viewCount);
-        vViewCountL= (TextView) ViewHolder.get(vi,R.id.tv_viewCount_label);        
-        vForumL    = (TextView) ViewHolder.get(vi, R.id.tv_forum_label);
+        vViewCountL= (TextView) ViewHolder.get(vi,R.id.tv_viewCount_label);
         vForum     = (TextView) ViewHolder.get(vi, R.id.tv_forum);
         vImage 	   = (ImageView) ViewHolder.get(vi,R.id.tv_image);
         vAttachment= (ImageView) ViewHolder.get(vi,R.id.tv_attachment);
