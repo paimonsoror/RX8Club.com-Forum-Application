@@ -60,6 +60,8 @@ import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.Utils;
+import com.normalexception.forum.rx8club.view.PTRListView;
+import com.normalexception.forum.rx8club.view.PTRListView.OnRefreshListener;
 import com.normalexception.forum.rx8club.view.thread.ThreadView;
 import com.normalexception.forum.rx8club.view.thread.ThreadViewArrayAdapter;
 
@@ -85,7 +87,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	private ArrayList<ThreadView> threadlist;
 	private ThreadViewArrayAdapter tva;
 	
-	private ListView lv;
+	private PTRListView lv;
 	
 	private final int NEW_THREAD = 5000;
 
@@ -103,7 +105,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        Log.v(TAG, "Category Activity Started");
 	        
 	        threadlist = new ArrayList<ThreadView>();
-	        lv = (ListView)findViewById(R.id.mainlistview);
+	        lv = (PTRListView)findViewById(R.id.mainlistview);
 	        
 	        // If the user clicked "New Posts" then we need to
 	        // handle things a little bit differently
@@ -145,6 +147,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     	runOnUiThread(new Runnable() {
             public void run() {
 		    	tva = new ThreadViewArrayAdapter(a, R.layout.view_thread, threadlist);
+		    	tva.setIsNewThread(isNewTopicActivity);
 				lv.setAdapter(tva);
 				lv.setOnItemClickListener(new OnItemClickListener() {
 		            @Override
@@ -167,6 +170,14 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 						_intent.putExtra("locked", itm.isLocked());
 						_intent.putExtra("title", itm.getTitle());
 						startActivity(_intent);
+		            }
+		        });
+				lv.setOnRefreshListener(new OnRefreshListener() {
+		            @Override
+		            public void onRefresh() {		            
+		                lv.onRefreshComplete();
+		                a.finish();
+		                a.startActivity(a.getIntent());
 		            }
 		        });
 				if(LoginFactory.getInstance().isLoggedIn())
@@ -382,6 +393,12 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 			    		String splitter[] = txt.split(" ", 4);
 			    		String postCount = splitter[1].substring(0, splitter[1].length() - 1);
 			    		String views = splitter[3];
+			    		String forum = "";
+			    		
+			    		try {
+			    			if(this.isNewTopicActivity)
+			    			 	forum = thread.select("td[class=alt1]").last().text();
+			    		} catch (Exception e) { }
 		
 			    		String formattedTitle = 
 			    				String.format("%s%s%s", 
@@ -403,6 +420,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 			    		tv.setSticky(isSticky);
 			    		tv.setPoll(isPoll);
 			    		tv.setHasAttachment(hasAttachment);
+			    		tv.setForum(forum);
 			    		threadlist.add(tv);
 		    		}
         		}

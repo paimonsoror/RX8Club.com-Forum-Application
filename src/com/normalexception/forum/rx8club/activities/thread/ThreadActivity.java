@@ -61,7 +61,9 @@ import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.task.SubmitTask;
 import com.normalexception.forum.rx8club.user.UserProfile;
 import com.normalexception.forum.rx8club.utils.Utils;
+import com.normalexception.forum.rx8club.view.PTRListView;
 import com.normalexception.forum.rx8club.view.ViewHolder;
+import com.normalexception.forum.rx8club.view.PTRListView.OnRefreshListener;
 import com.normalexception.forum.rx8club.view.threadpost.PostView;
 import com.normalexception.forum.rx8club.view.threadpost.PostViewArrayAdapter;
 
@@ -90,7 +92,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 
 	private ArrayList<PostView> postlist;
 	private PostViewArrayAdapter pva;
-	private ListView lv;
+	private PTRListView lv;
 
 	private List<String> bmapList;
 	
@@ -161,7 +163,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 						VBForumFactory.getInstance().get(src, currentPageLink);
 
 				if(doc != null) {
-					lv = (ListView)findViewById(R.id.mainlistview);
+					lv = (PTRListView)findViewById(R.id.mainlistview);
 	
 					publishProgress(getString(R.string.asyncDialogGrabThreadContents));
 					
@@ -218,6 +220,14 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 							currentPageTitle, pageNumber.equals("last")? finalPage : pageNumber));
 				pva = new PostViewArrayAdapter(a, R.layout.view_thread, postlist);
 				lv.setAdapter(pva);
+				lv.setOnRefreshListener(new OnRefreshListener() {
+		            @Override
+		            public void onRefresh() {		            
+		                lv.onRefreshComplete();
+		                a.finish();
+		                a.startActivity(a.getIntent());
+		            }
+		        });
 				updatePagination(thisPage, finalPage);
 			}
 		});

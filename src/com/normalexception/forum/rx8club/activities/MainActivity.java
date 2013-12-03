@@ -49,6 +49,8 @@ import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
 import com.normalexception.forum.rx8club.user.UserProfile;
+import com.normalexception.forum.rx8club.view.PTRListView;
+import com.normalexception.forum.rx8club.view.PTRListView.OnRefreshListener;
 import com.normalexception.forum.rx8club.view.category.CategoryView;
 import com.normalexception.forum.rx8club.view.category.CategoryViewArrayAdapter;
 import com.normalexception.forum.rx8club.view.category.SubCategoryView;
@@ -129,8 +131,10 @@ public class MainActivity extends ForumBaseActivity {
 		        	UserProfile.getInstance().copy(upcache.getCachedContents());
 		        }
 	        }
+	        
     	} catch (Exception e) {
     		Log.e(TAG, "Fatal Error In Main Activity! " + e.getMessage());
+    		e.printStackTrace();
     	}
     }
     
@@ -248,8 +252,15 @@ public class MainActivity extends ForumBaseActivity {
     	final Activity a = this;
     	runOnUiThread(new Runnable() {
             public void run() {	        
-		    	ListView lv = (ListView)findViewById(R.id.mainlistview);
+		    	final PTRListView lv = (PTRListView)findViewById(R.id.mainlistview);
 		    	cva = new CategoryViewArrayAdapter(a, R.layout.view_category, mainList);
+		    	lv.setOnRefreshListener(new OnRefreshListener() {
+		            @Override
+		            public void onRefresh() {
+		            	// Call onRefreshComplete when the list has been refreshed.
+		                lv.onRefreshComplete();
+		            }
+		        });
 				lv.setAdapter(cva);
 		        lv.setLongClickable(true);
             }

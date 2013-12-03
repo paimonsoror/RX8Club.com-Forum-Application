@@ -34,7 +34,16 @@ public class ThreadView implements Serializable {
 	private String postCount, viewCount, myPosts;
 	private String startUser, lastUser;
 	private String link, lastLink;
+	private String forum;
 	private boolean isSticky, isLocked, isFavorite, isPoll, hasAttachment = false;
+	
+	public String getForum() {
+		return forum;
+	}
+	
+	public void setForum(String frm) {
+		this.forum = frm;
+	}
 	
 	/**
 	 * Report if thread is a poll thread

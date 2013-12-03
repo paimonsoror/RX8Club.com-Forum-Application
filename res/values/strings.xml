@@ -51,6 +51,7 @@
     <string name="tvTotalPosts">Posts:\u0020</string>
     <string name="tvTotalViews">Views:\u0020</string>
     <string name="tvMyPosts">Yours:\u0020</string>
+    <string name="tvForum">Forum:\u0020</string>
     <string name="commentText">Comment</string>
         
     <!-- Banner Fragment Strings -->
@@ -61,6 +62,7 @@
     <string name="bannerFavorites">Favorites</string>
     
     <!-- Menu Strings -->
+    <string name="menuRefresh">Refresh Page</string>
     <string name="menuGoMain">Goto Main</string>
     <string name="menuLogon">Logon</string>
     <string name="menuLogoff">Logoff</string>
@@ -154,6 +156,12 @@
 	<string name="asyncDialogUploadAttachment">Uploading Attachment</string>
 	<string name="asyncDialogUploadDone">Upload Done</string>
 	<string name="asyncDialogSubmitting">Submitting Post</string>
+	
+	<!-- PTRView Strings -->
+	<string name="ptrPull">Keep Pulling to Refresh&#8230;</string>
+    <string name="ptrRelease">Release to Refresh&#8230;</string>
+    <string name="ptrLoading">Loading&#8230;</string>
+    <string name="ptrTap">Tap to Refresh&#8230;</string>
 
 	<!-- String Arrays -->
     <string-array name="searchDateArray">

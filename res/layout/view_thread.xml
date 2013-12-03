@@ -181,4 +181,31 @@
         android:layout_toLeftOf="@id/postcount_details"
         android:src="@drawable/paperclip" />
  
+    <LinearLayout 
+        android:id="@+id/tv_forum_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/postcount_details"
+        android:orientation="horizontal"
+        android:layout_alignLeft="@id/tv_lastUser_label"
+        android:visibility="gone">
+	    <TextView
+	        android:id="@+id/tv_forum_label"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"	        
+	        android:textColor="#000000"
+	        android:textSize="10dip"
+	        android:layout_marginTop="1dip"
+	        android:text="@string/tvForum"/>
+	    
+	    <TextView
+	        android:id="@+id/tv_forum"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="1dip"
+	        android:ellipsize="end"
+	        android:text=""
+	        android:textColor="#000000"
+	        android:textSize="10dip" />
+	</LinearLayout>
 </RelativeLayout>

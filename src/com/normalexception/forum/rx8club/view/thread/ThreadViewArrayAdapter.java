@@ -34,6 +34,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
@@ -49,6 +50,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 	
 	private Context activity;
     private List<ThreadView> data; 
+    private boolean isNewThread = false;
     
     private TextView vTitle 	= null;
     private TextView vPostCount = null;
@@ -62,6 +64,9 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
     private TextView vViewCountL= null;
     private ImageView vImage 	= null;
     private ImageView vAttachment = null;
+    private TextView vForumL    = null;
+    private TextView vForum     = null;
+    private LinearLayout vForumC= null;
  
     public ThreadViewArrayAdapter(Context context, int textViewResourceId,
 			List<ThreadView> objects) {
@@ -69,6 +74,14 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 		activity = context;
 		data = objects;
 	}
+    
+    public void setIsNewThread(boolean isNewThread) {
+    	this.isNewThread = isNewThread;
+    }
+    
+    public boolean isNewThread() {
+    	return this.isNewThread;
+    }
     
     /*
 	 * (non-Javadoc)
@@ -112,9 +125,12 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         vMyCount   = (TextView) ViewHolder.get(vi,R.id.tv_myCount);
         vMyCountL  = (TextView) ViewHolder.get(vi,R.id.tv_myCount_label);
         vViewCount = (TextView) ViewHolder.get(vi,R.id.tv_viewCount);
-        vViewCountL= (TextView) ViewHolder.get(vi,R.id.tv_viewCount_label);
+        vViewCountL= (TextView) ViewHolder.get(vi,R.id.tv_viewCount_label);        
+        vForumL    = (TextView) ViewHolder.get(vi, R.id.tv_forum_label);
+        vForum     = (TextView) ViewHolder.get(vi, R.id.tv_forum);
         vImage 	   = (ImageView) ViewHolder.get(vi,R.id.tv_image);
         vAttachment= (ImageView) ViewHolder.get(vi,R.id.tv_attachment);
+        vForumC    = (LinearLayout) ViewHolder.get(vi, R.id.tv_forum_details);
         
         vTitle.setText(       m.getTitle());
         vPostUser.setText(    m.getStartUser());
@@ -138,6 +154,12 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         	vMyCountL.setVisibility(View.GONE);
         	vMyCount.setVisibility(View.GONE);
         }
+        
+        vForumC.setVisibility(this.isNewThread? View.VISIBLE : View.GONE);
+        vForum.setText(m.getForum());
+        
+	    //vForumL.setVisibility(this.isNewThread? View.VISIBLE : View.GONE);
+	    //vForum.setVisibility(this.isNewThread? View.VISIBLE : View.GONE);
 		
 		if (m.isSticky()) {
 			setMode(vi, true, Color.CYAN);
@@ -172,6 +194,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 		vLastUser .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
 		vMyCount  .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
 		vViewCount.setTextColor(isSpecial? Color.BLACK : Color.WHITE);
+		vForum    .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
 	}
 	
 	/**
@@ -190,5 +213,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 		
 		vViewCount .setVisibility(View.GONE);
 		vViewCountL.setVisibility(View.GONE);
+		
+		vForumC.setVisibility(View.GONE);
 	}
 }
