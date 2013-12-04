@@ -39,6 +39,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
+import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.task.ProfileTask;
 
 public class UserCpActivity extends ForumBaseActivity {
@@ -98,7 +99,8 @@ public class UserCpActivity extends ForumBaseActivity {
 	 */
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState); 
+        super.onCreate(savedInstanceState);
+        super.setState(AppState.State.USER_CP, this.getIntent());
         
         setContentView(R.layout.activity_user_cp);
 

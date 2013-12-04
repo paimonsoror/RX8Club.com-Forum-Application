@@ -47,6 +47,7 @@ import android.widget.Toast;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.html.LoginFactory;
+import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.user.UserProfile;
 
 /**
@@ -68,6 +69,7 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
     public void onCreate(Bundle savedInstanceState) {
     	try {
 	        super.onCreate(savedInstanceState);
+	        super.setState(AppState.State.LOGIN, this.getIntent());
 	        super.setTitle("Please Enter Credentials");
 	        setContentView(R.layout.activity_login);
 	        

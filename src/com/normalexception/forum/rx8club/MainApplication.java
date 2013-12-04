@@ -24,6 +24,8 @@ package com.normalexception.forum.rx8club;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import com.normalexception.forum.rx8club.state.AppState;
+
 import android.app.Application;
 import android.content.Context;
 
@@ -60,6 +62,14 @@ public class MainApplication extends Application {
      */
     public static Context getAppContext() {
         return MainApplication.context;
+    }
+    
+    /**
+     * Report the current application state
+     * @return	The current application state
+     */
+    public static AppState.State getApplicationState() {
+    	return AppState.getInstance().getCurrentState();
     }
     
     /**

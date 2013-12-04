@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.state.AppState;
 
 /**
  * Activity used to display information about the application.
@@ -51,6 +52,7 @@ public class AboutActivity extends ForumBaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.setState(AppState.State.ABOUT, this.getIntent());
         setContentView(R.layout.activity_basiclist);
                 
         View rowView = 

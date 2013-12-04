@@ -47,6 +47,7 @@ import com.normalexception.forum.rx8club.cache.impl.ViewListCache;
 import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
+import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.user.UserProfile;
 import com.normalexception.forum.rx8club.view.PTRListView;
 import com.normalexception.forum.rx8club.view.PTRListView.OnRefreshListener;
@@ -91,6 +92,7 @@ public class MainActivity extends ForumBaseActivity {
 	    	Log.v(TAG, "Application Started");
 	    	
 	        super.onCreate(savedInstanceState);
+	        super.setState(AppState.State.MAIN_PAGE, this.getIntent());
 	        	        
 	        setContentView(R.layout.activity_basiclist);
 	        findViewById(R.id.mainlisttitle).setVisibility(View.GONE);

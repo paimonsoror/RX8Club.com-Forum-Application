@@ -58,6 +58,7 @@ import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
+import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.view.PTRListView;
 import com.normalexception.forum.rx8club.view.PTRListView.OnRefreshListener;
@@ -98,7 +99,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     public void onCreate(Bundle savedInstanceState) {
         try {
         	super.onCreate(savedInstanceState);
-	        
+        	super.setState(AppState.State.CATEGORY, this.getIntent());
+        	
 	        setContentView(R.layout.activity_basiclist);        
 	        
 	        Log.v(TAG, "Category Activity Started");
@@ -110,6 +112,11 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        // handle things a little bit differently
 	        isNewTopicActivity =
 					getIntent().getBooleanExtra("isNewTopics", false);
+	        
+	        if(isNewTopicActivity)
+	        	super.setState(AppState.State.NEW_POSTS, this.getIntent());
+	        else
+	        	super.setState(AppState.State.CATEGORY, this.getIntent());
 	        
 	        // We do not need to have a "New Thread" button if the
 	        // user clicked New Posts.

@@ -48,6 +48,8 @@ import com.normalexception.forum.rx8club.activities.utils.UtilitiesDialog;
 import com.normalexception.forum.rx8club.dialog.LogoffDialog;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.preferences.Preferences;
+import com.normalexception.forum.rx8club.state.AppState;
+import com.normalexception.forum.rx8club.state.AppState.State;
 
 /**
  * Abstract activity that handles all common tasks for the activities
@@ -121,6 +123,17 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	public void onStop() {
 		super.onStop();
 	    EasyTracker.getInstance(this).activityStop(this); // Add this method.
+	}
+	
+	/**
+	 * Set the current state of our application as well as the respective
+	 * intent
+	 * @param state		The state
+	 * @param intent	The intent
+	 */
+	public void setState(State state, Intent intent) {
+		Log.d(TAG, "## Current State " + state.toString());
+		AppState.getInstance().setCurrentState(state, intent);
 	}
 	
 	/*

@@ -39,6 +39,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
+import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.task.NewThreadTask;
 import com.normalexception.forum.rx8club.view.threaditem.ThreadItemView;
 import com.normalexception.forum.rx8club.view.threaditem.ThreadItemViewArrayAdapter;
@@ -93,6 +94,7 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
     public void onCreate(Bundle savedInstanceState) {
     	try {
 	        super.onCreate(savedInstanceState);
+	        super.setState(AppState.State.NEW_THREAD, this.getIntent());
 	        
 	        setContentView(R.layout.activity_basiclist);
 	        

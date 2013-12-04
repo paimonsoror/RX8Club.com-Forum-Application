@@ -36,6 +36,7 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
+import com.normalexception.forum.rx8club.state.AppState;
 
 /**
  * Activity used to create a search in the forum.
@@ -54,6 +55,8 @@ public class SearchActivity extends ForumBaseActivity implements OnClickListener
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.setState(AppState.State.SEARCH, this.getIntent());
+        
         setContentView(R.layout.activity_search);
         
         findViewById(R.id.searchSubmitButton).setOnClickListener(this);

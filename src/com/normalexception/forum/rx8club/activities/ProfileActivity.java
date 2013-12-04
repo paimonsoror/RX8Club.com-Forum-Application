@@ -44,6 +44,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.handler.ImageLoader;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
+import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.user.UserProfile;
 import com.normalexception.forum.rx8club.view.profile.ProfileView;
 import com.normalexception.forum.rx8club.view.profile.ProfileViewArrayAdapter;
@@ -71,6 +72,7 @@ public class ProfileActivity extends ForumBaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.setState(AppState.State.PROFILE, this.getIntent());
         
         setContentView(R.layout.activity_basiclist);
         
