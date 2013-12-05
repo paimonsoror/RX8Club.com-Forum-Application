@@ -63,6 +63,7 @@ import ch.boye.httpclientandroidlib.protocol.HttpContext;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
+import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.enums.VBulletinKeys;
 import com.normalexception.forum.rx8club.httpclient.ClientUtils;
@@ -94,6 +95,7 @@ public class LoginFactory {
 	private static final String PREF_PASSWORD = "password";
 	private static final String PREF_AUTOLOGIN = "autologin";
 	private static final String PREF_REMEMBERME = "rememberme";
+	private static final String PREF_SIGNATURE = "signature";
 	
 	private static BasicCookieStore cookieStore;
 	private static HttpContext httpContext;
@@ -275,6 +277,23 @@ public class LoginFactory {
        .putBoolean(PREF_AUTOLOGIN, login)
        .putBoolean(PREF_REMEMBERME, remember)
        .commit();
+	}
+	
+	/**
+	 * Save the user's signature to the preferences
+	 * @param signature	The user's signature
+	 */
+	public void saveSignature(String signature) {
+		pref.edit().putString(PREF_SIGNATURE, signature).commit();
+	}
+	
+	/**
+	 * Report the user's signature.  If it doesn't exist, then post default
+	 * @return	User's signature, or default
+	 */
+	public String getSignature() {
+		return pref.getString(PREF_SIGNATURE, 
+				MainApplication.getAppContext().getString(R.string.app_signature));
 	}
 
 	/**

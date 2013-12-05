@@ -352,176 +352,179 @@ containing a value of this type.
         public static final int fragment_styler=0x7f0b0010;
     }
     public static final class string {
-        public static final int No=0x7f050066;
-        public static final int Yes=0x7f050065;
+        public static final int Default=0x7f050069;
+        public static final int No=0x7f050068;
+        public static final int Yes=0x7f050067;
         /**  About Screen Strings 
          */
-        public static final int aboutstring=0x7f050048;
-        public static final int addToFavorites=0x7f05005e;
-        public static final int advancedOptions=0x7f05003e;
+        public static final int aboutstring=0x7f050049;
+        public static final int addToFavorites=0x7f050060;
+        public static final int advancedOptions=0x7f05003f;
         public static final int app_description=0x7f050007;
         /**  App Specific Strings 
          */
         public static final int app_name=0x7f050004;
-        public static final int asyncDialogCategorySort=0x7f050072;
-        public static final int asyncDialogGrabForumContents=0x7f050070;
-        public static final int asyncDialogGrabPMs=0x7f050075;
-        public static final int asyncDialogGrabProfile=0x7f050077;
-        public static final int asyncDialogGrabThreadContents=0x7f050071;
+        public static final int app_signature=0x7f050008;
+        public static final int asyncDialogCategorySort=0x7f050075;
+        public static final int asyncDialogGrabForumContents=0x7f050073;
+        public static final int asyncDialogGrabPMs=0x7f050078;
+        public static final int asyncDialogGrabProfile=0x7f05007a;
+        public static final int asyncDialogGrabThreadContents=0x7f050074;
         /**  Async Dialog Strings 
          */
-        public static final int asyncDialogGrabThreads=0x7f05006f;
-        public static final int asyncDialogLoadingPM=0x7f050076;
-        public static final int asyncDialogPopulating=0x7f050074;
-        public static final int asyncDialogSubmitting=0x7f05007b;
-        public static final int asyncDialogUpdateCache=0x7f050073;
-        public static final int asyncDialogUploadAttachment=0x7f050079;
-        public static final int asyncDialogUploadDone=0x7f05007a;
-        public static final int asyncDialogValidateProfile=0x7f050078;
+        public static final int asyncDialogGrabThreads=0x7f050072;
+        public static final int asyncDialogLoadingPM=0x7f050079;
+        public static final int asyncDialogPopulating=0x7f050077;
+        public static final int asyncDialogSubmitting=0x7f05007e;
+        public static final int asyncDialogUpdateCache=0x7f050076;
+        public static final int asyncDialogUploadAttachment=0x7f05007c;
+        public static final int asyncDialogUploadDone=0x7f05007d;
+        public static final int asyncDialogValidateProfile=0x7f05007b;
         /**  Misc Strings 
          */
-        public static final int bannerEmote=0x7f05005b;
-        public static final int bannerFavorites=0x7f05002f;
-        public static final int bannerNewPms=0x7f05002c;
+        public static final int bannerEmote=0x7f05005d;
+        public static final int bannerFavorites=0x7f050030;
+        public static final int bannerNewPms=0x7f05002d;
         /**  Banner Fragment Strings 
          */
-        public static final int bannerNewTopics=0x7f05002b;
-        public static final int bannerProfileButton=0x7f05002d;
-        public static final int bannerSearchButton=0x7f05002e;
-        public static final int biography=0x7f050045;
+        public static final int bannerNewTopics=0x7f05002c;
+        public static final int bannerProfileButton=0x7f05002e;
+        public static final int bannerSearchButton=0x7f05002f;
+        public static final int biography=0x7f050046;
         /**  Styler Strings 
          */
-        public static final int bold=0x7f050050;
-        public static final int cancel=0x7f050067;
+        public static final int bold=0x7f050051;
+        public static final int cancel=0x7f05006a;
         /**  Category Screen String 
          */
-        public static final int categoryDescription=0x7f050008;
-        public static final int categoryName=0x7f050009;
-        public static final int categoryPost=0x7f05000a;
-        public static final int categorySub=0x7f05000c;
-        public static final int categoryThread=0x7f05000b;
-        public static final int commentText=0x7f05002a;
-        public static final int connectionError=0x7f050069;
-        public static final int delete=0x7f050060;
-        public static final int dialogCacheCleared=0x7f050059;
-        public static final int dialogClearingCache=0x7f050058;
-        public static final int dialogFavoriteAdded=0x7f05005a;
+        public static final int categoryDescription=0x7f050009;
+        public static final int categoryName=0x7f05000a;
+        public static final int categoryPost=0x7f05000b;
+        public static final int categorySub=0x7f05000d;
+        public static final int categoryThread=0x7f05000c;
+        public static final int commentText=0x7f05002b;
+        public static final int connectionError=0x7f05006c;
+        public static final int delete=0x7f050062;
+        public static final int dialogCacheCleared=0x7f05005a;
+        public static final int dialogClearingCache=0x7f050059;
+        public static final int dialogFavoriteAdded=0x7f05005b;
         /**  Dialog Strings 
          */
-        public static final int dialogLogoffConfirm=0x7f050056;
-        public static final int dialogPmDeleteConfirm=0x7f050057;
+        public static final int dialogLogoffConfirm=0x7f050057;
+        public static final int dialogPmDeleteConfirm=0x7f050058;
+        public static final int dialogSignature=0x7f05005c;
         public static final int file_favorites=0x7f050001;
         public static final int file_homecache=0x7f050002;
-        public static final int fillForm=0x7f050068;
+        public static final int fillForm=0x7f05006b;
         /**  Pagination Strings 
          */
-        public static final int first=0x7f05004b;
+        public static final int first=0x7f05004c;
         public static final int folder_rx8club=0x7f050003;
         /** Replace placeholder ID with your tracking ID
          */
         public static final int ga_trackingId=0x7f050000;
-        public static final int githublink=0x7f050049;
-        public static final int homepage=0x7f050046;
-        public static final int image=0x7f050054;
-        public static final int inboxInbox=0x7f050010;
+        public static final int githublink=0x7f05004a;
+        public static final int homepage=0x7f050047;
+        public static final int image=0x7f050055;
+        public static final int inboxInbox=0x7f050011;
         /**  Inbox Buttons 
          */
-        public static final int inboxNewPm=0x7f05000f;
-        public static final int inboxSent=0x7f050011;
-        public static final int interests=0x7f050043;
-        public static final int italic=0x7f050051;
-        public static final int last=0x7f05004d;
-        public static final int loading=0x7f050062;
-        public static final int location=0x7f050044;
-        public static final int loggingIn=0x7f050064;
-        public static final int loginAuthFailed=0x7f050020;
-        public static final int loginFillInformation=0x7f050021;
-        public static final int loginGuestButton=0x7f05001f;
-        public static final int loginLoginButton=0x7f05001e;
+        public static final int inboxNewPm=0x7f050010;
+        public static final int inboxSent=0x7f050012;
+        public static final int interests=0x7f050044;
+        public static final int italic=0x7f050052;
+        public static final int last=0x7f05004e;
+        public static final int loading=0x7f050064;
+        public static final int location=0x7f050045;
+        public static final int loggingIn=0x7f050066;
+        public static final int loginAuthFailed=0x7f050021;
+        public static final int loginFillInformation=0x7f050022;
+        public static final int loginGuestButton=0x7f050020;
+        public static final int loginLoginButton=0x7f05001f;
         /**  Login Screen Strings 
          */
-        public static final int loginPasswordInput=0x7f05001c;
-        public static final int loginUsernameInput=0x7f05001d;
-        public static final int menuAbout=0x7f050037;
-        public static final int menuControlPanel=0x7f050035;
-        public static final int menuGoMain=0x7f050031;
-        public static final int menuLogoff=0x7f050033;
-        public static final int menuLogon=0x7f050032;
-        public static final int menuPreferences=0x7f050034;
+        public static final int loginPasswordInput=0x7f05001d;
+        public static final int loginUsernameInput=0x7f05001e;
+        public static final int menuAbout=0x7f050038;
+        public static final int menuControlPanel=0x7f050036;
+        public static final int menuGoMain=0x7f050032;
+        public static final int menuLogoff=0x7f050034;
+        public static final int menuLogon=0x7f050033;
+        public static final int menuPreferences=0x7f050035;
         /**  Menu Strings 
          */
-        public static final int menuRefresh=0x7f050030;
-        public static final int menuUtilities=0x7f050036;
+        public static final int menuRefresh=0x7f050031;
+        public static final int menuUtilities=0x7f050037;
         public static final int menu_settings=0x7f050005;
-        public static final int next=0x7f05004e;
-        public static final int nrPostDate=0x7f05001a;
-        public static final int nrPostText=0x7f05001b;
+        public static final int next=0x7f05004f;
+        public static final int nrPostDate=0x7f05001b;
+        public static final int nrPostText=0x7f05001c;
         /**  New Reply Screen 
          */
-        public static final int nrUserName=0x7f050018;
-        public static final int nrUserTitle=0x7f050019;
+        public static final int nrUserName=0x7f050019;
+        public static final int nrUserTitle=0x7f05001a;
         /**  New Thread Screen 
          */
-        public static final int ntThreadName=0x7f05000d;
-        public static final int ntThreadPost=0x7f05000e;
-        public static final int occupation=0x7f050042;
-        public static final int pageXofY=0x7f05004f;
-        public static final int pleaseWait=0x7f050063;
-        public static final int pmDate=0x7f050017;
+        public static final int ntThreadName=0x7f05000e;
+        public static final int ntThreadPost=0x7f05000f;
+        public static final int occupation=0x7f050043;
+        public static final int pageXofY=0x7f050050;
+        public static final int pleaseWait=0x7f050065;
+        public static final int pmDate=0x7f050018;
         /**  New PM Screen 
          */
-        public static final int pmFrom=0x7f050012;
-        public static final int pmMessage=0x7f050015;
-        public static final int pmRecipients=0x7f050013;
-        public static final int pmSend=0x7f050016;
-        public static final int pmSubject=0x7f050014;
-        public static final int preferencesLabel=0x7f05005d;
-        public static final int previous=0x7f05004c;
-        public static final int ptrLoading=0x7f05007e;
+        public static final int pmFrom=0x7f050013;
+        public static final int pmMessage=0x7f050016;
+        public static final int pmRecipients=0x7f050014;
+        public static final int pmSend=0x7f050017;
+        public static final int pmSubject=0x7f050015;
+        public static final int preferencesLabel=0x7f05005f;
+        public static final int previous=0x7f05004d;
+        public static final int ptrLoading=0x7f050081;
         /**  PTRView Strings 
          */
-        public static final int ptrPull=0x7f05007c;
-        public static final int ptrRelease=0x7f05007d;
-        public static final int ptrTap=0x7f05007f;
-        public static final int quote=0x7f050055;
-        public static final int reply=0x7f050061;
+        public static final int ptrPull=0x7f05007f;
+        public static final int ptrRelease=0x7f050080;
+        public static final int ptrTap=0x7f050082;
+        public static final int quote=0x7f050056;
+        public static final int reply=0x7f050063;
         /**  Control Panel Strings 
          */
-        public static final int saveChanges=0x7f050041;
-        public static final int searchDate=0x7f05003c;
-        public static final int searchSearchButton=0x7f05003b;
-        public static final int searchSort=0x7f05003d;
+        public static final int saveChanges=0x7f050042;
+        public static final int searchDate=0x7f05003d;
+        public static final int searchSearchButton=0x7f05003c;
+        public static final int searchSort=0x7f05003e;
         /**  Search Screen Strings 
          */
-        public static final int searchString=0x7f050038;
-        public static final int searchType=0x7f050039;
-        public static final int submit=0x7f05005f;
-        public static final int threadContentSearch=0x7f05003f;
-        public static final int threadTitlePlaceholder=0x7f05005c;
-        public static final int threadTitleSearch=0x7f050040;
-        public static final int timeout=0x7f05006a;
+        public static final int searchString=0x7f050039;
+        public static final int searchType=0x7f05003a;
+        public static final int submit=0x7f050061;
+        public static final int threadContentSearch=0x7f050040;
+        public static final int threadTitlePlaceholder=0x7f05005e;
+        public static final int threadTitleSearch=0x7f050041;
+        public static final int timeout=0x7f05006d;
         public static final int title_activity_main=0x7f050006;
-        public static final int tvForum=0x7f050029;
-        public static final int tvLastPost=0x7f050024;
-        public static final int tvLastPostPerson=0x7f050025;
-        public static final int tvMyPosts=0x7f050028;
-        public static final int tvStarted=0x7f050023;
+        public static final int tvForum=0x7f05002a;
+        public static final int tvLastPost=0x7f050025;
+        public static final int tvLastPostPerson=0x7f050026;
+        public static final int tvMyPosts=0x7f050029;
+        public static final int tvStarted=0x7f050024;
         /**  Thread Screen Strings 
          */
-        public static final int tvTitle=0x7f050022;
-        public static final int tvTotalPosts=0x7f050026;
-        public static final int tvTotalViews=0x7f050027;
-        public static final int underline=0x7f050052;
-        public static final int url=0x7f050053;
-        public static final int userNameSearch=0x7f05003a;
-        public static final int userTitle=0x7f050047;
+        public static final int tvTitle=0x7f050023;
+        public static final int tvTotalPosts=0x7f050027;
+        public static final int tvTotalViews=0x7f050028;
+        public static final int underline=0x7f050053;
+        public static final int url=0x7f050054;
+        public static final int userNameSearch=0x7f05003b;
+        public static final int userTitle=0x7f050048;
         /**  Utilities Strings 
          */
-        public static final int util_compressionTitle=0x7f05006b;
-        public static final int util_vinDecode=0x7f05006e;
-        public static final int util_vinMessage=0x7f05006d;
-        public static final int util_vinTitle=0x7f05006c;
-        public static final int websitelink=0x7f05004a;
+        public static final int util_compressionTitle=0x7f05006e;
+        public static final int util_vinDecode=0x7f050071;
+        public static final int util_vinMessage=0x7f050070;
+        public static final int util_vinTitle=0x7f05006f;
+        public static final int websitelink=0x7f05004b;
     }
     public static final class style {
         public static final int AlertDialogCustom=0x7f0a0002;

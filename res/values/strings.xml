@@ -4,6 +4,7 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">RX8Club.com</string>
     <string name="app_description">This is an application designed to provide the user with a faster, and easier to use forum experience for current RX8Club.com members</string>    
+    <string name="app_signature">Posted From RX8Club.com Android App</string>
     
     <!-- Category Screen String -->
     <string name="categoryDescription">My Description that is really long to make sure it doesn\'t overlap because sometimes when you have a long desc it does</string>
@@ -117,6 +118,7 @@
     <string name="dialogClearingCache">Clearing Cache</string>
     <string name="dialogCacheCleared">Cache Cleared!</string>
     <string name="dialogFavoriteAdded">Favorite Added</string>
+    <string name="dialogSignature">Signature:\u0020</string>
     
     <!-- Misc Strings -->   
     <string name="bannerEmote">Emoticons</string>
@@ -131,6 +133,7 @@
     <string name="loggingIn">Logging In</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
+    <string name="Default">Default</string>
     <string name="cancel">Cancel</string>
     <string name="fillForm">Please Fill Form</string>
     <string name="connectionError">Sorry, there was an error connecting!</string>

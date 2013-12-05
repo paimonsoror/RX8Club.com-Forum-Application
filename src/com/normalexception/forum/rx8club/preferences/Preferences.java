@@ -41,6 +41,7 @@ import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.cache.Cache;
 import com.normalexception.forum.rx8club.cache.FileCache;
 import com.normalexception.forum.rx8club.dialog.FavoriteDialog;
+import com.normalexception.forum.rx8club.dialog.SignatureDialog;
 import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
 
 /**
@@ -60,6 +61,17 @@ public class Preferences extends PreferenceActivity {
         addPreferencesFromResource(R.xml.preferences);
         
         final Context ctx = this;
+        
+        Preference customAdv = (Preference)findPreference("customAdvertise");
+        customAdv.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        	@Override
+        	public boolean onPreferenceClick(Preference arg0) {
+        		SignatureDialog sd = new SignatureDialog(ctx);
+        		sd.show();
+        		return true;
+        	}
+        });
+        
         Preference man_fave = (Preference)findPreference("manage_favorites");
         man_fave.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {			
 			@Override

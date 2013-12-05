@@ -201,8 +201,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	 */
 	private boolean getLastPage(ThreadView itm) {
 		boolean val = false;
-		if(isNewTopicActivity 
-				&& PreferenceHelper.getRecentlyUpdatedThreadPage(this).equals("Last") 
+		if(PreferenceHelper.getRecentlyUpdatedThreadPage(this).equals("Last") 
 				&& (itm.getLastLink() != null && !itm.getLastLink().equals("")))
 				val = true;
 		return val;

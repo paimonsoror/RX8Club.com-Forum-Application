@@ -40,7 +40,7 @@ public class MainApplication extends Application {
 	
 	public static final String APP_PACKAGE = "com.normalexception.forum.rx8club";
 	
-	private static final int LOG_LEVEL           = Log.DEBUG;
+	private static final int LOG_LEVEL           = Log.INFO;
 	private static final boolean HTTP_CLIENT_LOG = false; 
 
 	/*

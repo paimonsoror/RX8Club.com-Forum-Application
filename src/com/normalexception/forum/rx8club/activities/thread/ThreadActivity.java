@@ -169,9 +169,13 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 					try {
 						getThreadContents(doc);
 					} catch (Exception e) {
-						Toast.makeText(
-								src, R.string.timeout, Toast.LENGTH_SHORT)
-							 .show();
+						runOnUiThread(new Runnable() {
+							public void run() {
+								Toast.makeText(
+									src, R.string.timeout, Toast.LENGTH_SHORT)
+									.show();
+							}
+						});
 					}
 					publishProgress(getString(R.string.asyncDialogPopulating));
 					updateList();
@@ -370,7 +374,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		case R.id.submitButton:
 			_intent = null;
 			String advert = PreferenceHelper.isAdvertiseEnabled(MainApplication.getAppContext())?
-					"Posted From RX8Club.com Android App" : "";
+					LoginFactory.getInstance().getSignature() : "";
 			String toPost = 
 					String.format("%s\n\n%s", 
 							((TextView)findViewById(R.id.postBox)).getText().toString(), advert);

@@ -70,6 +70,10 @@
 	        android:defaultValue="true"
 	        android:summary="Show 'Posted From' On thread posts"
 	        android:key="advertise" />  
+	    <Preference 
+	        android:title="Custom Mobile Signature"
+	        android:summary="Display your own custom mobile signature" 
+	        android:key="customAdvertise"/>
 	</PreferenceCategory>
     <PreferenceCategory
                 android:title="Misc Options">
