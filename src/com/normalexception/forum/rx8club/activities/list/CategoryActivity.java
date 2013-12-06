@@ -78,6 +78,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	
 	private static final String TAG = "Application:Category";
 	private static String link;
+	private ProgressDialog loadingDialog;
 
 	private String pageNumber = "1";
 	private String forumId = "";
@@ -105,40 +106,42 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        
 	        Log.v(TAG, "Category Activity Started");
 	        
-	        threadlist = new ArrayList<ThreadView>();
-	        lv = (PTRListView)findViewById(R.id.mainlistview);
-	        
-	        // If the user clicked "New Posts" then we need to
-	        // handle things a little bit differently
-	        isNewTopicActivity =
-					getIntent().getBooleanExtra("isNewTopics", false);
-	        
-	        if(isNewTopicActivity)
-	        	super.setState(AppState.State.NEW_POSTS, this.getIntent());
-	        else
-	        	super.setState(AppState.State.CATEGORY, this.getIntent());
-	        
-	        // We do not need to have a "New Thread" button if the
-	        // user clicked New Posts.
-	        if(!isNewTopicActivity && LoginFactory.getInstance().isLoggedIn()) {
-		        Button bv = new Button(this);
-		        bv.setId(NEW_THREAD);
-		        bv.setOnClickListener(this);
-		        bv.setText("New Thread");
-		        bv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
-		        lv.addHeaderView(bv);
+	        if(checkTimeout()) {
+		        threadlist = new ArrayList<ThreadView>();
+		        lv = (PTRListView)findViewById(R.id.mainlistview);
+		        
+		        // If the user clicked "New Posts" then we need to
+		        // handle things a little bit differently
+		        isNewTopicActivity =
+						getIntent().getBooleanExtra("isNewTopics", false);
+		        
+		        if(isNewTopicActivity)
+		        	super.setState(AppState.State.NEW_POSTS, this.getIntent());
+		        else
+		        	super.setState(AppState.State.CATEGORY, this.getIntent());
+		        
+		        // We do not need to have a "New Thread" button if the
+		        // user clicked New Posts.
+		        if(!isNewTopicActivity && LoginFactory.getInstance().isLoggedIn()) {
+			        Button bv = new Button(this);
+			        bv.setId(NEW_THREAD);
+			        bv.setOnClickListener(this);
+			        bv.setText("New Thread");
+			        bv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
+			        lv.addHeaderView(bv);
+		        }
+		        
+		        // Footer has pagination information
+		        View v = getLayoutInflater().inflate(R.layout.view_category_footer, null);
+		    	v.setOnClickListener(this);
+		    	lv.addFooterView(v);
+		        
+		        if(savedInstanceState == null || 
+		        		(tva == null || tva.getCount() == 0))
+		        	constructView();
+		        else
+		        	updateList();
 	        }
-	        
-	        // Footer has pagination information
-	        View v = getLayoutInflater().inflate(R.layout.view_category_footer, null);
-	    	v.setOnClickListener(this);
-	    	lv.addFooterView(v);
-	        
-	        if(savedInstanceState == null || 
-	        		(tva == null || tva.getCount() == 0))
-	        	constructView();
-	        else
-	        	updateList();
 	        
 		} catch (Exception e) {
 			Log.e(TAG, "Fatal Error In Category Activity! " + e.getMessage());

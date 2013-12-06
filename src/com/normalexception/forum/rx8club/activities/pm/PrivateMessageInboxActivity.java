@@ -56,6 +56,7 @@ import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
+import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.task.DeletePmTask;
 import com.normalexception.forum.rx8club.view.pm.PMView;
 import com.normalexception.forum.rx8club.view.pm.PMViewArrayAdapter;
@@ -74,6 +75,8 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
 	public static final String showOutboundExtra = "showOutbound";
 	private boolean showOutbound = false;
 	
+	private ProgressDialog loadingDialog;
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
@@ -81,24 +84,27 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
+    	super.setState(AppState.State.PMINBOX, this.getIntent());
         
         setContentView(R.layout.activity_basiclist);
         
-        pmlist = new ArrayList<PMView>();
-        lv = (ListView)findViewById(R.id.mainlistview);
-        
-        ViewGroup header = 
-        		(ViewGroup)getLayoutInflater().inflate(R.layout.view_inbox_header, lv, false);
-        header.setOnClickListener(this);
-        lv.addHeaderView(header);
-        
-        Log.v(TAG, "PM Activity Started");
-        
-        if(savedInstanceState == null || 
-        		(pmva == null || pmva.getCount() == 0))
-        	constructView();
-        else {
-        	updateList();
+        if(checkTimeout()) {
+	        pmlist = new ArrayList<PMView>();
+	        lv = (ListView)findViewById(R.id.mainlistview);
+	        
+	        ViewGroup header = 
+	        		(ViewGroup)getLayoutInflater().inflate(R.layout.view_inbox_header, lv, false);
+	        header.setOnClickListener(this);
+	        lv.addHeaderView(header);
+	        
+	        Log.v(TAG, "PM Activity Started");
+	        
+	        if(savedInstanceState == null || 
+	        		(pmva == null || pmva.getCount() == 0))
+	        	constructView();
+	        else {
+	        	updateList();
+	        }
         }
     }
     

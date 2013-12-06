@@ -48,6 +48,8 @@ public class UserCpActivity extends ForumBaseActivity {
 	
 	public static String TAG = "UserCpActivity";
 	
+	private ProgressDialog loadingDialog;
+	
 	/*
 	 * (non-Javadoc)
 	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onSaveInstanceState(android.os.Bundle)
@@ -106,7 +108,9 @@ public class UserCpActivity extends ForumBaseActivity {
 
         findViewById(R.id.submitUserCpButton).setOnClickListener(this);
         
-       	constructView();
+        if(checkTimeout()) {
+        	constructView();
+        }
     }
     
     /**

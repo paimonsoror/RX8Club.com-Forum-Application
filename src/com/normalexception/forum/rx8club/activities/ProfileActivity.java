@@ -59,6 +59,8 @@ public class ProfileActivity extends ForumBaseActivity {
 
 	private static String TAG = "ProfileActivity";
 	
+	private ProgressDialog loadingDialog;
+	
 	private ArrayList<ProfileView> stubs;	
 	private ProfileViewArrayAdapter pva;
 	private ListView lv;
@@ -76,11 +78,13 @@ public class ProfileActivity extends ForumBaseActivity {
         
         setContentView(R.layout.activity_basiclist);
         
-        Log.v(TAG, "Category Activity Started");
-        
-        imageLoader=new ImageLoader(this);
-        
-        constructView();
+        if(checkTimeout()) {
+	        Log.v(TAG, "Category Activity Started");
+	        
+	        imageLoader=new ImageLoader(this);
+	        
+	        constructView();
+        }
     }
     
     private void updateList() {

@@ -27,10 +27,9 @@ package com.normalexception.forum.rx8club.activities;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -38,6 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+import android.widget.Toast;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -59,7 +59,6 @@ import com.normalexception.forum.rx8club.state.AppState.State;
 public abstract class ForumBaseActivity extends FragmentActivity implements OnClickListener {
 	
 	protected AsyncTask<Void,?,Void> updaterTask;
-	protected ProgressDialog loadingDialog;
 	
 	protected static final int LOGOFF_MENU = 0;
 	protected static final int ABOUT_MENU = 1;
@@ -77,15 +76,13 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	protected static long diffTime = 0;
 	
 	protected static final long PING_EXPIRE = 2 /*hours*/ * 3600;
+	//protected static final long PING_DEBUG  = 10;
 	
 	/**
 	 * When we create our activities, we want to update the ping time
 	 * this will help us re-login when our cache expires
 	 */
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
+	public boolean checkTimeout() {		
 		// Only update pong when the login activity was called
 		if(!(this instanceof LoginActivity)) {
 			pingTime = System.currentTimeMillis() / 1000l;
@@ -93,10 +90,20 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 			Log.d(TAG, String.format("Ping Time: %d", pingTime));
 			Log.d(TAG, String.format("Difference Time: %d", diffTime));
 			
+			final Context _ctx = this;
 			if(diffTime > PING_EXPIRE) {
-				this.returnToLoginPage(false);
+				runOnUiThread(new Runnable() {
+		    		public void run() {
+		    			Toast.makeText(_ctx, "Connection Timedout", Toast.LENGTH_SHORT).show();
+		    		}
+				});
+				finish();
+				Log.d(TAG, "## PING TIME EXPIRED ##");
+				returnToLoginPage(false, false);
+				return false;
 			}
 		}
+		return true;
 	}
 	
 	/**
@@ -123,6 +130,12 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	public void onStop() {
 		super.onStop();
 	    EasyTracker.getInstance(this).activityStop(this); // Add this method.
+	}
+	
+	@Override
+	public void finish() {
+		Log.d(TAG, "Finishing Activity");
+		super.finish();
 	}
 	
 	/**
@@ -174,13 +187,13 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	/**
 	 * Close all activities and return to login
 	 */
-	public void returnToLoginPage(boolean clearPrefs) {
+	public void returnToLoginPage(boolean clearPrefs, boolean timeout) {
 		Intent _intent = null;
 		LoginFactory.getInstance().logoff(clearPrefs);
 		_intent = new Intent(this, LoginActivity.class);
 		_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(_intent);
 		finish();
+		startActivity(_intent);		
 	}
 	
 	/*

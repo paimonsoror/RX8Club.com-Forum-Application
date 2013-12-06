@@ -27,14 +27,11 @@ package com.normalexception.forum.rx8club.activities;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-import ch.boye.httpclientandroidlib.client.ClientProtocolException;
-
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import com.normalexception.forum.rx8club.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -43,7 +40,9 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.html.LoginFactory;
@@ -60,6 +59,7 @@ import com.normalexception.forum.rx8club.user.UserProfile;
 public class LoginActivity extends ForumBaseActivity implements OnClickListener, OnCheckedChangeListener {
 
 	private static String TAG = "LoginActivity";
+	private ProgressDialog loadingDialog;
 	
 	/*
 	 * (non-Javadoc)
@@ -69,8 +69,8 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
     public void onCreate(Bundle savedInstanceState) {
     	try {
 	        super.onCreate(savedInstanceState);
-	        super.setState(AppState.State.LOGIN, this.getIntent());
 	        super.setTitle("Please Enter Credentials");
+	        super.setState(AppState.State.LOGIN, getIntent());
 	        setContentView(R.layout.activity_login);
 	        
 	        // First, check to see if we are already logged in,
@@ -205,7 +205,7 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 			} catch (Exception e) { }
 			
 			if(loggedIn) {
-				loadMainPage();
+					loadMainPage();
 			} else {
 				runOnUiThread(new Runnable() {
 					public void run() {
@@ -224,8 +224,8 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
         super.updatePongTime();
 		Intent in = new Intent(LoginActivity.this, MainActivity.class);
 		in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		startActivity(in);
 		finish();
+		startActivity(in);		
 	}
 
 	/*

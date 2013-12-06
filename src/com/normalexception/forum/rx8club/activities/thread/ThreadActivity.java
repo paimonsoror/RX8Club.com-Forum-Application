@@ -57,6 +57,7 @@ import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
+import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.task.SubmitTask;
 import com.normalexception.forum.rx8club.user.UserProfile;
 import com.normalexception.forum.rx8club.utils.Utils;
@@ -98,6 +99,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	private AsyncTask<Void,String,Void> updaterTask;
 	
 	private boolean isPoll = false, isLocked = false;
+	
+	private ProgressDialog loadingDialog;
 
 	/*
 	 * (non-Javadoc)
@@ -107,19 +110,21 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	public void onCreate(Bundle savedInstanceState) {
 		try{
 			super.onCreate(savedInstanceState);
-
+			super.setState(AppState.State.THREAD, this.getIntent());
+			
 			setContentView(R.layout.activity_basiclist);
 
 			Log.v(TAG, "Category Activity Started");
-
-			postlist = new ArrayList<PostView>();
-			bmapList = new ArrayList<String>();
-			if(savedInstanceState == null || 
-					(pva == null || pva.getCount() == 0))
-				constructView();
-			else
-				updateList();
-
+			
+			if(checkTimeout()) {
+				postlist = new ArrayList<PostView>();
+				bmapList = new ArrayList<String>();
+				if(savedInstanceState == null || 
+						(pva == null || pva.getCount() == 0))
+					constructView();
+				else
+					updateList();
+			}
 		} catch (Exception e) {
 			Log.e(TAG, "Fatal Error In Thread Activity! " + e.getMessage());
 		}

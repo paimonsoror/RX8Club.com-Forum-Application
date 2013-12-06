@@ -41,7 +41,9 @@ public class AppState {
 		                CATEGORY, 
 		                NEW_POSTS, 
 		                THREAD, 
-		                NEW_THREAD };
+		                NEW_THREAD,
+		                PMINBOX,
+		                PMVIEW};
 	
 	public static AppState getInstance() {
 		if(_instance == null)

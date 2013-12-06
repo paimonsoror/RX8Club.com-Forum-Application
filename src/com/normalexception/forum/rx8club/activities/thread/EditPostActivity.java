@@ -66,6 +66,8 @@ public class EditPostActivity extends ForumBaseActivity {
 	private ArrayList<ThreadItemView> tlist;
 	private ThreadItemViewArrayAdapter pva;
 	
+	private ProgressDialog loadingDialog;
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -78,25 +80,27 @@ public class EditPostActivity extends ForumBaseActivity {
         
         Log.v(TAG, "Edit Thread Activity Started");
         
-        postId = 
-        		(String) getIntent().getStringExtra("postid");
-        securityToken = 
-        		(String) getIntent().getStringExtra("securitytoken");
-        pageNumber =
-        		(String) getIntent().getStringExtra("pagenumber");
-        pageTitle =
-        		(String) getIntent().getStringExtra("pagetitle");
-        delete = 
-        		(Boolean) getIntent().getBooleanExtra("delete", false);
-        deleteThread = 
-        		(Boolean) getIntent().getBooleanExtra("deleteThread", false);
-        
-        lv      = (ListView)findViewById(R.id.mainlistview);
-        lv.setDescendantFocusability(ListView.FOCUS_AFTER_DESCENDANTS);
-        lv.setScrollContainer(false);
-        tlist   = new ArrayList<ThreadItemView>();
-        
-        constructView();
+        if(checkTimeout()) {
+	        postId = 
+	        		(String) getIntent().getStringExtra("postid");
+	        securityToken = 
+	        		(String) getIntent().getStringExtra("securitytoken");
+	        pageNumber =
+	        		(String) getIntent().getStringExtra("pagenumber");
+	        pageTitle =
+	        		(String) getIntent().getStringExtra("pagetitle");
+	        delete = 
+	        		(Boolean) getIntent().getBooleanExtra("delete", false);
+	        deleteThread = 
+	        		(Boolean) getIntent().getBooleanExtra("deleteThread", false);
+	        
+	        lv      = (ListView)findViewById(R.id.mainlistview);
+	        lv.setDescendantFocusability(ListView.FOCUS_AFTER_DESCENDANTS);
+	        lv.setScrollContainer(false);
+	        tlist   = new ArrayList<ThreadItemView>();
+	        
+	        constructView();
+        }
     }
     
     /**

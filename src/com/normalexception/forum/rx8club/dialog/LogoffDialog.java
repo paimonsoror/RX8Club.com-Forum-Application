@@ -51,7 +51,7 @@ public class LogoffDialog {
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which){
 			    	case DialogInterface.BUTTON_POSITIVE:
-			    		ctx.returnToLoginPage(true);
+			    		ctx.returnToLoginPage(true, false);
 		   				break;
 		        }
 		    }
@@ -68,7 +68,7 @@ public class LogoffDialog {
 	 */
 	public void show() {
 		if(LoginFactory.getInstance().isGuestMode())
-			_ctx.returnToLoginPage(true);
+			_ctx.returnToLoginPage(true, false);
 		else
 			builder.show();
 	}

@@ -80,6 +80,7 @@ public class MainActivity extends ForumBaseActivity {
 	private ViewListCache<CategoryView> hcache = null;
 	private UserProfileCache upcache = null;
 	
+	private ProgressDialog loadingDialog;
 	private ProgressDialog profileDialog = null;
 	
 	/*
@@ -97,42 +98,43 @@ public class MainActivity extends ForumBaseActivity {
 	        setContentView(R.layout.activity_basiclist);
 	        findViewById(R.id.mainlisttitle).setVisibility(View.GONE);
 
-	        // Read in the favorites if they exist
-	        FavoriteFactory.getInstance();
-	        
-	        // Now that we introduced a cache, we are going to first
-	        // check to see if the cache is valid, if so, use it 
-	        // so that we dont waste bandwidth
-	        hcache = new ViewListCache<CategoryView>(this, getString(R.string.file_homecache));
-	        if(hcache.isCacheExpired()) {
-	        	Log.d(TAG, "Cache Expired, Creating Main");
-		        if(savedInstanceState == null || 
-		        		(cva == null || cva.getCount() == 0)) {
-		        	constructView();
-		        }
-	        } else {
-	        	mainList = (ArrayList<CategoryView>) hcache.getCachedContents();
-		        updateList();
-	        }
-	        
-	        // Once we brought a cache into the mix, we now need a way to 
-	        // validate the user profile.  Unfortunately we can't place
-	        // the data in our cache, because we cache the main page
-	        // regardless of user / guest.  What we will do now, is cache
-	        // the user profile as well.
-	        if(LoginFactory.getInstance().isLoggedIn()) {
-		        String currentUser = UserProfile.getInstance().getUsername();
-		        upcache = new UserProfileCache(this, currentUser);
-		        UserProfile cachedProfile = upcache.getCachedContents();
-		        if(cachedProfile == null || 
-		        		!cachedProfile.getUsername().equals(currentUser)) {
-		        	Log.d(TAG, "User Cache Expired, Recreating");
-		        	constructUserProfile(null);
+	        if(checkTimeout()) {
+		        // Read in the favorites if they exist
+		        FavoriteFactory.getInstance();
+		        
+		        // Now that we introduced a cache, we are going to first
+		        // check to see if the cache is valid, if so, use it 
+		        // so that we dont waste bandwidth
+		        hcache = new ViewListCache<CategoryView>(this, getString(R.string.file_homecache));
+		        if(hcache.isCacheExpired()) {
+		        	Log.d(TAG, "Cache Expired, Creating Main");
+			        if(savedInstanceState == null || 
+			        		(cva == null || cva.getCount() == 0)) {
+			        	constructView();
+			        }
 		        } else {
-		        	UserProfile.getInstance().copy(upcache.getCachedContents());
+		        	mainList = (ArrayList<CategoryView>) hcache.getCachedContents();
+			        updateList();
+		        }
+		        
+		        // Once we brought a cache into the mix, we now need a way to 
+		        // validate the user profile.  Unfortunately we can't place
+		        // the data in our cache, because we cache the main page
+		        // regardless of user / guest.  What we will do now, is cache
+		        // the user profile as well.
+		        if(LoginFactory.getInstance().isLoggedIn()) {
+			        String currentUser = UserProfile.getInstance().getUsername();
+			        upcache = new UserProfileCache(this, currentUser);
+			        UserProfile cachedProfile = upcache.getCachedContents();
+			        if(cachedProfile == null || 
+			        		!cachedProfile.getUsername().equals(currentUser)) {
+			        	Log.d(TAG, "User Cache Expired, Recreating");
+			        	constructUserProfile(null);
+			        } else {
+			        	UserProfile.getInstance().copy(upcache.getCachedContents());
+			        }
 		        }
 	        }
-	        
     	} catch (Exception e) {
     		Log.e(TAG, "Fatal Error In Main Activity! " + e.getMessage());
     		e.printStackTrace();
@@ -360,7 +362,7 @@ public class MainActivity extends ForumBaseActivity {
 			Toast.makeText(this, 
 					R.string.connectionError, 
 					Toast.LENGTH_LONG).show();
-			returnToLoginPage(false);
+			returnToLoginPage(false, false);
 			return null;
 		} else {
 			return Jsoup.parse(output);

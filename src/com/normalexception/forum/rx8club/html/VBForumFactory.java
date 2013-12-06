@@ -124,7 +124,7 @@ public class VBForumFactory {
 					if(output == null || 
 							output.equals("") || 
 							output.contains("You are not logged in"))
-						src.returnToLoginPage(false);
+						src.returnToLoginPage(false, false);
 				} catch (NullPointerException e) {		
 					notifyError(src, 
 							"Error Opening Page. This Has Been Logged", e);
@@ -137,12 +137,12 @@ public class VBForumFactory {
 			}
 		} catch (Exception e) {
 			notifyError(src, "No Internet Connection...", null);
-			src.returnToLoginPage(false);
+			src.returnToLoginPage(false, false);
 		}
 		
 		if(output == null || output.length() == 0) {
 			notifyError(src, "No Internet Connection...", null);
-			src.returnToLoginPage(false);		
+			src.returnToLoginPage(false, false);		
 		}
 		
 		return output;
@@ -180,10 +180,13 @@ public class VBForumFactory {
 			return Jsoup.parse(output);
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, "Error grabbing category page: " + e.getMessage());
+			e.printStackTrace();
 		} catch (IOException e) {
 			Log.e(TAG, "Error grabbing category page: " + e.getMessage());
+			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
 			Log.e(TAG, "Error grabbing category page: " + e.getMessage());
+			e.printStackTrace();
 		}
 		
 	   	return null;

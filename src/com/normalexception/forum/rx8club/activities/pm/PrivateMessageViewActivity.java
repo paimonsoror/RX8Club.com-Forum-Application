@@ -44,6 +44,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
+import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.task.DeletePmTask;
 import com.normalexception.forum.rx8club.task.PmTask;
 import com.normalexception.forum.rx8club.view.pmpost.PMPostView;
@@ -64,6 +65,8 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 	
 	private ListView lv;
 	
+	private ProgressDialog loadingDialog;
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
@@ -71,23 +74,26 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.setState(AppState.State.PMVIEW, this.getIntent());
         
         setContentView(R.layout.activity_basiclist);
         
         Log.v(TAG, "PM View Activity Started");
         
-        pmlist = new ArrayList<PMPostView>();
-        lv = (ListView)findViewById(R.id.mainlistview);
-        
-        View v = getLayoutInflater().inflate(R.layout.view_pmitem_footer, null);
-    	v.setOnClickListener(this);
-    	lv.addFooterView(v);
-        
-        if(savedInstanceState == null || 
-        		(pmva == null || pmva.getCount() == 0))
-        	constructView();
-        else {
-        	updateList();
+        if(checkTimeout()) {
+	        pmlist = new ArrayList<PMPostView>();
+	        lv = (ListView)findViewById(R.id.mainlistview);
+	        
+	        View v = getLayoutInflater().inflate(R.layout.view_pmitem_footer, null);
+	    	v.setOnClickListener(this);
+	    	lv.addFooterView(v);
+	        
+	        if(savedInstanceState == null || 
+	        		(pmva == null || pmva.getCount() == 0))
+	        	constructView();
+	        else {
+	        	updateList();
+	        }
         }
     }
     

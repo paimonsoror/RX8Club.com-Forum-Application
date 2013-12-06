@@ -60,6 +60,8 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 	
 	private ArrayList<PMItemView> tlist;
 	private PMItemViewArrayAdapter pva;
+	
+	private ProgressDialog loadingDialog;
 
 	/*
 	 * (non-Javadoc)
@@ -101,13 +103,15 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
         
         setContentView(R.layout.activity_basiclist);
         
-        lv      = (ListView)findViewById(R.id.mainlistview);
-        lv.setDescendantFocusability(ListView.FOCUS_AFTER_DESCENDANTS);
-        lv.setScrollContainer(false);
-        tlist   = new ArrayList<PMItemView>();
-    
-	    if(savedInstanceState == null)
-	    	constructView();
+        if(checkTimeout()) {
+	        lv      = (ListView)findViewById(R.id.mainlistview);
+	        lv.setDescendantFocusability(ListView.FOCUS_AFTER_DESCENDANTS);
+	        lv.setScrollContainer(false);
+	        tlist   = new ArrayList<PMItemView>();
+	    
+		    if(savedInstanceState == null)
+		    	constructView();
+        }
 	}
 	
 	/**
