@@ -132,12 +132,6 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	    EasyTracker.getInstance(this).activityStop(this); // Add this method.
 	}
 	
-	@Override
-	public void finish() {
-		Log.d(TAG, "Finishing Activity");
-		super.finish();
-	}
-	
 	/**
 	 * Set the current state of our application as well as the respective
 	 * intent
