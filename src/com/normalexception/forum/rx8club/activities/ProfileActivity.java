@@ -79,7 +79,7 @@ public class ProfileActivity extends ForumBaseActivity {
         setContentView(R.layout.activity_basiclist);
         
         if(checkTimeout()) {
-	        Log.v(TAG, "Category Activity Started");
+	        Log.v(TAG, "Profile Activity Started");
 	        
 	        imageLoader=new ImageLoader(this);
 	        
