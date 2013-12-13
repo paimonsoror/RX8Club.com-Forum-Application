@@ -155,6 +155,15 @@ public class PTRListView extends ListView implements OnScrollListener {
         super.setAdapter(adapter);
         setSelection(1);
     }
+    
+    public void disableRefresh(boolean disable) {
+    	mRefreshView.setVisibility(disable? View.GONE : View.VISIBLE);
+    	if(disable){
+    		mRefreshView.setPadding(0, 0, 0, 0);
+    	} else {
+    		this.resetHeaderPadding();
+    	}
+    }
 
     /**
      * Set the listener that will receive notifications every time the list

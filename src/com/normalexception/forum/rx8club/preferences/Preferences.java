@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
+import com.normalexception.forum.rx8club.activities.thread.ThreadFilterActivity;
 import com.normalexception.forum.rx8club.cache.Cache;
 import com.normalexception.forum.rx8club.cache.FileCache;
 import com.normalexception.forum.rx8club.dialog.FavoriteDialog;
@@ -61,6 +62,16 @@ public class Preferences extends PreferenceActivity {
         addPreferencesFromResource(R.xml.preferences);
         
         final Context ctx = this;
+        
+        Preference threadFilter = (Preference)findPreference("threadFilter");
+        threadFilter.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        	@Override
+        	public boolean onPreferenceClick(Preference arg0) {
+        		startActivity(
+            			new Intent(MainApplication.getAppContext(), ThreadFilterActivity.class));
+        		return true;
+        	}
+        });
         
         Preference customAdv = (Preference)findPreference("customAdvertise");
         customAdv.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

@@ -30,6 +30,9 @@
     <string name="pmSend">Send</string>
     <string name="pmDate">Date:\u0020</string>
     
+    <!-- Rules Screen -->
+    <string name="ruleSubject">Rule</string>
+    
     <!-- New Reply Screen -->
     <string name="nrUserName">User Name Goes Here</string>
     <string name="nrUserTitle">User Title</string>
@@ -119,6 +122,7 @@
     <string name="dialogCacheCleared">Cache Cleared!</string>
     <string name="dialogFavoriteAdded">Favorite Added</string>
     <string name="dialogSignature">Signature:\u0020</string>
+    <string name="dialogFilter">New Filter:\u0020</string>
     
     <!-- Misc Strings -->   
     <string name="bannerEmote">Emoticons</string>
@@ -246,5 +250,9 @@
     
     <string-array name="languageValues">
         <item>English</item>
+    </string-array>
+    
+    <string-array name="filterValues">
+        <item>By Owner</item>
     </string-array>
 </resources>

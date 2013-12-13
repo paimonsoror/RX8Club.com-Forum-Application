@@ -48,6 +48,10 @@
 	        android:summary="Display thread contents in linear view"
 	        android:key="linearthread"
 	        android:defaultValue="true"/>
+	    <Preference
+	        android:title="Thread Filter"
+	        android:summary="Manage filters for threads"
+	        android:key="threadFilter"/>
 	    <CheckBoxPreference
 	        android:title="Display Avatars"
 	        android:summary="Show user avatar In thread, or disable to save bandwidth"
