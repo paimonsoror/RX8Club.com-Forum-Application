@@ -70,7 +70,15 @@ public class ThreadFilterFactory {
 	}
 	
 	/**
-	 * Report the favorites
+	 * True if there are filters available
+	 * @return	True if filters exist
+	 */
+	public boolean hasFilters() {
+		return _filters.size() > 0;
+	}
+	
+	/**
+	 * Report the filters
 	 * @return	A list of the favorites
 	 */
 	public List<ThreadFilter> getThreadFilters() {
@@ -78,9 +86,10 @@ public class ThreadFilterFactory {
 	}
 
 	/**
-	 * Load the favorites from memory
+	 * Load the filters from memory
 	 * @return	True if data loaded
 	 */
+	@SuppressWarnings("unchecked")
 	private boolean loadFromMemory() {
 		boolean rtn = false;
 		try {
@@ -99,7 +108,7 @@ public class ThreadFilterFactory {
 	}
 	
 	/**
-	 * Save the favorites to memory
+	 * Save the filters to memory
 	 */
 	private void saveToMemory() {
 		FileOutputStream outputStream;
@@ -117,7 +126,7 @@ public class ThreadFilterFactory {
 	}
 	
 	/**
-	 * Add a favorite to the list
+	 * Add a filters to the list
 	 * @param thread	The thread to add
 	 */
 	public void addFilter(ThreadFilter thread) {
@@ -126,7 +135,7 @@ public class ThreadFilterFactory {
 	}
 	
 	/**
-	 * Remove a favorite from our list and then
+	 * Remove a filters from our list and then
 	 * save the data
 	 * @param thread	The thread to remove
 	 */
@@ -143,7 +152,7 @@ public class ThreadFilterFactory {
 	
 	/**
 	 * Get the storage directory for the application
-	 * @return	The favorites file on the internal memory
+	 * @return	The filters file on the internal memory
 	 */
 	private File getFilterStorageDir() {
 		Context ctx = MainApplication.getAppContext(); 

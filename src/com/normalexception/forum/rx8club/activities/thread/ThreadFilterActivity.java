@@ -41,7 +41,6 @@ import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.dialog.FilterDialog;
 import com.normalexception.forum.rx8club.filter.ThreadFilter;
 import com.normalexception.forum.rx8club.filter.ThreadFilterFactory;
-import com.normalexception.forum.rx8club.filter.ThreadFilter.RuleType;
 import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.view.PTRListView;
 import com.normalexception.forum.rx8club.view.thread.ThreadRuleViewArrayAdapter;
@@ -69,7 +68,7 @@ public class ThreadFilterActivity  extends ForumBaseActivity implements OnClickL
 			Log.v(TAG, "Thread Filter Activity Started");
 			
 			lv = (PTRListView)findViewById(R.id.mainlistview);
-			lv.disableRefresh(true);
+			//lv.disableRefresh(true);
 			
 			Button bv = new Button(this);
 	        bv.setId(NEW_FILTER);

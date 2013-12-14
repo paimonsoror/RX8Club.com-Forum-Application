@@ -370,6 +370,7 @@ containing a value of this type.
          */
         public static final int app_name=0x7f050005;
         public static final int app_signature=0x7f050009;
+        public static final int asyncDialogApplyFilters=0x7f050082;
         public static final int asyncDialogCategorySort=0x7f050078;
         public static final int asyncDialogGrabForumContents=0x7f050076;
         public static final int asyncDialogGrabPMs=0x7f05007b;
@@ -487,12 +488,12 @@ containing a value of this type.
         public static final int pmSubject=0x7f050016;
         public static final int preferencesLabel=0x7f050062;
         public static final int previous=0x7f05004f;
-        public static final int ptrLoading=0x7f050084;
+        public static final int ptrLoading=0x7f050085;
         /**  PTRView Strings 
          */
-        public static final int ptrPull=0x7f050082;
-        public static final int ptrRelease=0x7f050083;
-        public static final int ptrTap=0x7f050085;
+        public static final int ptrPull=0x7f050083;
+        public static final int ptrRelease=0x7f050084;
+        public static final int ptrTap=0x7f050086;
         public static final int quote=0x7f050058;
         public static final int reply=0x7f050066;
         /**  Rules Screen 

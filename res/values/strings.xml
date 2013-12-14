@@ -163,6 +163,7 @@
 	<string name="asyncDialogUploadAttachment">Uploading Attachment</string>
 	<string name="asyncDialogUploadDone">Upload Done</string>
 	<string name="asyncDialogSubmitting">Submitting Post</string>
+	<string name="asyncDialogApplyFilters">Applying Filters</string>
 	
 	<!-- PTRView Strings -->
 	<string name="ptrPull">Keep Pulling to Refresh&#8230;</string>

@@ -94,7 +94,6 @@ public class FilterDialog {
 		builder.setView(llay);
 		
 		builder
-			.setTitle(R.string.dialogSignature)
 			.setPositiveButton(R.string.submit, dialogClickListener)
 		    .setNegativeButton(R.string.cancel, dialogClickListener);
 	}

@@ -25,6 +25,7 @@ package com.normalexception.forum.rx8club.activities.list;
  ************************************************************************/
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -55,6 +56,9 @@ import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
+import com.normalexception.forum.rx8club.filter.ThreadFilter;
+import com.normalexception.forum.rx8club.filter.ThreadFilterFactory;
+import com.normalexception.forum.rx8club.filter.ThreadFilter.RuleType;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
@@ -267,6 +271,9 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 				        } else {
 				        	getCategoryContents(doc, null, false);
 				        }
+				        
+				        publishProgress(getString(R.string.asyncDialogApplyFilters));
+				        applyFilters();
 	 				} catch (Exception e) {
 	 					Toast.makeText(
 	 							src, R.string.timeout, Toast.LENGTH_SHORT)
@@ -433,6 +440,34 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		    		}
         		}
     		} catch (Exception e) { Log.w(TAG, "Error Parsing That Thread..."); }
+    	}
+    }
+    
+    /**
+     * Apply filters if they exist
+     */
+    private void applyFilters() {
+    	// Do we have any filters?  If so, lets filter out threads
+    	if(ThreadFilterFactory.getInstance().hasFilters()) {
+    		List<ThreadFilter> filters = 
+    				ThreadFilterFactory.getInstance().getThreadFilters();
+    		ArrayList<ThreadView> filtered = new ArrayList<ThreadView>();
+    		for(ThreadView tv : threadlist) {
+    			boolean filterOut = false;
+    			for(ThreadFilter tf : filters) {
+    				if(tf.getRule() == RuleType.OWNER) {
+    					if(tv.getStartUser().equalsIgnoreCase(tf.getSubject()))
+    						filterOut = true;
+    				}
+    			}
+    			if(!filterOut) {
+    				filtered.add(tv);
+    			} else 
+    				Log.d(TAG, "Filtering Out " + tv.getTitle());
+    		}
+    		
+    		// Now copy our filtered back to the main list
+    		threadlist = new ArrayList<ThreadView>(filtered);
     	}
     }
 
