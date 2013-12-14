@@ -100,7 +100,7 @@ public class ThreadFilterActivity  extends ForumBaseActivity implements OnClickL
 		                    int position, long id) {
 		            	final ThreadFilter item = cva.getItem(position);
 		            	new AlertDialog.Builder(a)
-		            	.setMessage("Remove Filter?")
+		            	.setMessage(String.format("Remove Filter: %s?", item.getSubject()))
 		            	.setIcon(android.R.drawable.ic_dialog_alert)
 		            	.setPositiveButton(android.R.string.yes, 
 		            			new DialogInterface.OnClickListener() {

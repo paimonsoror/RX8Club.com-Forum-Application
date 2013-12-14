@@ -123,6 +123,7 @@
     <string name="dialogFavoriteAdded">Favorite Added</string>
     <string name="dialogSignature">Signature:\u0020</string>
     <string name="dialogFilter">New Filter:\u0020</string>
+    <string name="dialogFilterInvalid">Invalid Filter!</string>
     
     <!-- Misc Strings -->   
     <string name="bannerEmote">Emoticons</string>

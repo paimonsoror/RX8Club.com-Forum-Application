@@ -33,6 +33,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.filter.ThreadFilter;
@@ -59,12 +60,17 @@ public class FilterDialog {
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which){
 			    	case DialogInterface.BUTTON_POSITIVE:
-			    		ThreadFilterFactory.getInstance().addFilter(new ThreadFilter(
-			    				RuleType.values()[spinner.getSelectedItemPosition()], 
-			    				input.getText().toString()));
-			    		Activity a = (Activity)ctx;
-			    		a.finish();
-			    		a.startActivity(a.getIntent());
+			    		if(input.getText().toString().length() > 0) {
+				    		ThreadFilterFactory.getInstance().addFilter(new ThreadFilter(
+				    				RuleType.values()[spinner.getSelectedItemPosition()], 
+				    				input.getText().toString()));
+				    		Activity a = (Activity)ctx;
+				    		a.finish();
+				    		a.startActivity(a.getIntent());
+			    		} else {
+			    			Toast.makeText(ctx, R.string.dialogFilterInvalid, 
+			    					Toast.LENGTH_LONG).show();
+			    		}
 		   				break;
 			    	case DialogInterface.BUTTON_NEGATIVE:
 			    		break;
@@ -72,6 +78,7 @@ public class FilterDialog {
 		    }
 		};
 		builder = new AlertDialog.Builder(ctx);
+		builder.setTitle(R.string.dialogFilter);
 		
 		// Specify the type of input expected 
 		input.setInputType(InputType.TYPE_CLASS_TEXT);
