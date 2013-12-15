@@ -83,6 +83,9 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	private static final String TAG = "Application:Category";
 	private static String link;
 	private ProgressDialog loadingDialog;
+	
+	private final int MENU_FAVE = 0;
+	private final int MENU_FILTER = 1;
 
 	private String pageNumber = "1";
 	private String forumId = "";
@@ -307,10 +310,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
-		AdapterContextMenuInfo info = 
-				(AdapterContextMenuInfo) menuInfo;
-        int position = info.position;
-	    menu.add(Menu.NONE, position, Menu.NONE, "Add As Favorite");   
+	    menu.add(Menu.NONE, MENU_FAVE, Menu.NONE, "Add As Favorite");
+	    menu.add(Menu.NONE, MENU_FILTER, Menu.NONE, "Add As User Filter");
 	}
 	
 	/*
@@ -319,14 +320,20 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-	    if(item.getItemId() > -1) {
-	    	int menuItemIndex = item.getItemId();
-	    	ThreadView tv = (ThreadView) lv.getAdapter().getItem(menuItemIndex);
+		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+		ThreadView tv = (ThreadView) lv.getAdapter().getItem(info.position);
+		
+		switch(item.getItemId()) {
+		case MENU_FAVE:
 	    	FavoriteFactory.getInstance().addFavorite(tv);
 	        return true;
-	    } else {
-	        return super.onContextItemSelected(item);
-	    }
+		case MENU_FILTER:
+			ThreadFilterFactory.getInstance().addFilter(
+					new ThreadFilter(ThreadFilter.RuleType.OWNER, tv.getStartUser()));
+			return true;
+		default:
+			return super.onContextItemSelected(item);
+		}
 	}
     
     /**
