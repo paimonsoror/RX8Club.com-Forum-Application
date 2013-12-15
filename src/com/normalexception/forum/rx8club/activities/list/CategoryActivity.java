@@ -85,7 +85,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	private ProgressDialog loadingDialog;
 	
 	private final int MENU_FAVE = 0;
-	private final int MENU_FILTER = 1;
+	private final int MENU_FILTER_USER = 1;
+	private final int MENU_FILTER_TITLE = 2;
 
 	private String pageNumber = "1";
 	private String forumId = "";
@@ -311,7 +312,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 	    menu.add(Menu.NONE, MENU_FAVE, Menu.NONE, "Add As Favorite");
-	    menu.add(Menu.NONE, MENU_FILTER, Menu.NONE, "Add As User Filter");
+	    menu.add(Menu.NONE, MENU_FILTER_USER, Menu.NONE, "Add As User Filter");
+	    menu.add(Menu.NONE, MENU_FILTER_TITLE, Menu.NONE, "Add As Title Filter");
 	}
 	
 	/*
@@ -327,9 +329,13 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		case MENU_FAVE:
 	    	FavoriteFactory.getInstance().addFavorite(tv);
 	        return true;
-		case MENU_FILTER:
+		case MENU_FILTER_USER:
 			ThreadFilterFactory.getInstance().addFilter(
 					new ThreadFilter(ThreadFilter.RuleType.OWNER, tv.getStartUser()));
+			return true;
+		case MENU_FILTER_TITLE:
+			ThreadFilterFactory.getInstance().addFilter(
+					new ThreadFilter(ThreadFilter.RuleType.TITLE, tv.getTitle()));
 			return true;
 		default:
 			return super.onContextItemSelected(item);
@@ -462,8 +468,14 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     		for(ThreadView tv : threadlist) {
     			boolean filterOut = false;
     			for(ThreadFilter tf : filters) {
+    				// Filter by thread owner
     				if(tf.getRule() == RuleType.OWNER) {
     					if(tv.getStartUser().equalsIgnoreCase(tf.getSubject()))
+    						filterOut = true;
+    					
+    				// Filter by thread title
+    				} else if(tf.getRule() == RuleType.TITLE) {
+    					if(tv.getTitle().equalsIgnoreCase(tf.getSubject()))
     						filterOut = true;
     				}
     			}

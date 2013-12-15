@@ -256,5 +256,6 @@
     
     <string-array name="filterValues">
         <item>By Owner</item>
+        <item>By Title</item>
     </string-array>
 </resources>
