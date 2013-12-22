@@ -60,17 +60,18 @@ public class FilterDialog {
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which){
 			    	case DialogInterface.BUTTON_POSITIVE:
-			    		if(input.getText().toString().length() > 0) {
+			    		RuleType rule = RuleType.values()[spinner.getSelectedItemPosition()];
+			    		String theInput = input.getText().toString();			    		
+		    			if(validate(theInput, rule)) {
 				    		ThreadFilterFactory.getInstance().addFilter(new ThreadFilter(
-				    				RuleType.values()[spinner.getSelectedItemPosition()], 
-				    				input.getText().toString()));
+				    				rule, theInput));
 				    		Activity a = (Activity)ctx;
 				    		a.finish();
 				    		a.startActivity(a.getIntent());
-			    		} else {
-			    			Toast.makeText(ctx, R.string.dialogFilterInvalid, 
-			    					Toast.LENGTH_LONG).show();
-			    		}
+		    			} else {
+		    				Toast.makeText(ctx, R.string.dialogFilterInvalid, 
+		    					Toast.LENGTH_LONG).show();
+		    			}
 		   				break;
 			    	case DialogInterface.BUTTON_NEGATIVE:
 			    		break;
@@ -103,6 +104,22 @@ public class FilterDialog {
 		builder
 			.setPositiveButton(R.string.submit, dialogClickListener)
 		    .setNegativeButton(R.string.cancel, dialogClickListener);
+	}
+	
+	/**
+	 * Validate the input and ensure that the data is acceptable
+	 * @param input	The input text
+	 * @param rule	The selected rule
+	 * @return		True if the input is valid
+	 */
+	private boolean validate(String input, RuleType rule) {
+		boolean value = true;
+		
+		// Make sure the user entered a value
+		if(input.length() == 0)
+			value = false;
+		
+		return value;
 	}
 	
 	/**

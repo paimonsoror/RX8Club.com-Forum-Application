@@ -33,7 +33,7 @@ public class ThreadFilter implements Serializable {
 	private String subject = null;
 	private RuleType rule = null;
 	
-	public enum RuleType { OWNER, TITLE }
+	public enum RuleType { OWNER, TITLE, LASTUSER }
 	
 	public ThreadFilter() {
 		subject = new String();

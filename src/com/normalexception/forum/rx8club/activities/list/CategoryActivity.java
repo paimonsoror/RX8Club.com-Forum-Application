@@ -25,7 +25,6 @@ package com.normalexception.forum.rx8club.activities.list;
  ************************************************************************/
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -58,7 +57,6 @@ import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
 import com.normalexception.forum.rx8club.filter.ThreadFilter;
 import com.normalexception.forum.rx8club.filter.ThreadFilterFactory;
-import com.normalexception.forum.rx8club.filter.ThreadFilter.RuleType;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
@@ -87,6 +85,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	private final int MENU_FAVE = 0;
 	private final int MENU_FILTER_USER = 1;
 	private final int MENU_FILTER_TITLE = 2;
+	private final int MENU_FILTER_LASTUSER = 3;
 
 	private String pageNumber = "1";
 	private String forumId = "";
@@ -277,7 +276,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 				        }
 				        
 				        publishProgress(getString(R.string.asyncDialogApplyFilters));
-				        applyFilters();
+				        threadlist = CategoryFilterizer.applyFilter(threadlist);
 	 				} catch (Exception e) {
 	 					Toast.makeText(
 	 							src, R.string.timeout, Toast.LENGTH_SHORT)
@@ -337,6 +336,9 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 			ThreadFilterFactory.getInstance().addFilter(
 					new ThreadFilter(ThreadFilter.RuleType.TITLE, tv.getTitle()));
 			return true;
+		case MENU_FILTER_LASTUSER:
+			ThreadFilterFactory.getInstance().addFilter(
+					new ThreadFilter(ThreadFilter.RuleType.LASTUSER, tv.getLastUser()));
 		default:
 			return super.onContextItemSelected(item);
 		}
@@ -377,6 +379,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		    		Element threaduser  = thread.select("td[id^=td_threadtitle_] div.smallfont").first();
 		    		Element threadicon  = thread.select("img[id^=thread_statusicon_]").first();
 		    		Element threadDiv   = thread.select("td[id^=td_threadtitle_] > div").first();
+		    		Element threadDateFull  = thread.select("td[title^=Replies:] > div").first();
 		    		
 		    		boolean isSticky = false, isLocked = false, hasAttachment = false, isPoll = false;    		
 		    		try {
@@ -405,6 +408,10 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		    		try {
 		    			lastPage = threadDiv.select("span").last().select("a").last().attr("href");
 		    		} catch (Exception e) { }
+		    		
+		    		String threadDate = threadDateFull.text();
+		    		int findAMPM = threadDate.indexOf("M") + 1;
+		    		threadDate = threadDate.substring(0, findAMPM);
 		    		
 		    		String totalPostsInThreadTitle = threadicon.attr("alt");
 		    		String totalPosts = "";	
@@ -449,6 +456,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 			    		tv.setPoll(isPoll);
 			    		tv.setHasAttachment(hasAttachment);
 			    		tv.setForum(forum);
+			    		tv.setLastPostTime(threadDate);
 			    		threadlist.add(tv);
 		    		}
         		}
@@ -456,39 +464,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     	}
     }
     
-    /**
-     * Apply filters if they exist
-     */
-    private void applyFilters() {
-    	// Do we have any filters?  If so, lets filter out threads
-    	if(ThreadFilterFactory.getInstance().hasFilters()) {
-    		List<ThreadFilter> filters = 
-    				ThreadFilterFactory.getInstance().getThreadFilters();
-    		ArrayList<ThreadView> filtered = new ArrayList<ThreadView>();
-    		for(ThreadView tv : threadlist) {
-    			boolean filterOut = false;
-    			for(ThreadFilter tf : filters) {
-    				// Filter by thread owner
-    				if(tf.getRule() == RuleType.OWNER) {
-    					if(tv.getStartUser().equalsIgnoreCase(tf.getSubject()))
-    						filterOut = true;
-    					
-    				// Filter by thread title
-    				} else if(tf.getRule() == RuleType.TITLE) {
-    					if(tv.getTitle().equalsIgnoreCase(tf.getSubject()))
-    						filterOut = true;
-    				}
-    			}
-    			if(!filterOut) {
-    				filtered.add(tv);
-    			} else 
-    				Log.d(TAG, "Filtering Out " + tv.getTitle());
-    		}
-    		
-    		// Now copy our filtered back to the main list
-    		threadlist = new ArrayList<ThreadView>(filtered);
-    	}
-    }
+    
 
     /*
      * (non-Javadoc)

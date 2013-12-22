@@ -30,17 +30,20 @@
 	            android:name="com.normalexception.forum.rx8club.activities.fragments.StylerFragment"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:layout_below="@id/textView1"
 				tools:layout="@layout/fragment_styler">
 	        </fragment>
 	
 	        <EditText
 	            android:id="@+id/postBox"
-	            android:layout_width="fill_parent"
-	            android:layout_height="102dp"
-	            android:layout_below="@id/fragment_content_styler"
-	            android:ems="10"
-	            android:inputType="textMultiLine" />
+	            android:inputType="textMultiLine" 
+			    android:lines="8"
+			    android:minLines="6" 
+			    android:gravity="top|left" 
+			    android:maxLines="10"
+			    android:layout_height="wrap_content"
+			    android:layout_width="fill_parent" 
+			    android:scrollbars="vertical" 
+			/>
 	
 	        <Button
 	            android:id="@+id/submitButton"
@@ -48,7 +51,6 @@
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:text="@string/submit"
-	            android:layout_below="@id/postBox"
 	            android:onClick="onClick" />
         </LinearLayout>
     </RelativeLayout>

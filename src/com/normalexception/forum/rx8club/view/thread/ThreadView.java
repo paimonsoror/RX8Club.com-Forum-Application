@@ -33,9 +33,25 @@ public class ThreadView implements Serializable {
 	private String title;
 	private String postCount, viewCount, myPosts;
 	private String startUser, lastUser;
-	private String link, lastLink;
+	private String link, lastLink, lastPostTime;
 	private String forum;
 	private boolean isSticky, isLocked, isFavorite, isPoll, hasAttachment = false;
+	
+	/**
+	 * Set the last post time
+	 * @param time	Set the last post time
+	 */
+	public void setLastPostTime(String time) {
+		this.lastPostTime = time;
+	}
+	
+	/**
+	 * Report the last post time
+	 * @return	The last post time
+	 */
+	public String getLastPostTime() {
+		return this.lastPostTime;
+	}
 	
 	/**
 	 * Report the forum of the thread

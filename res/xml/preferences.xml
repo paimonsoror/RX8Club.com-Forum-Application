@@ -32,7 +32,12 @@
 	        android:summary="Show the favorites list as a pop up dialog instead of a list"/>
 	</PreferenceCategory>
 	<PreferenceCategory
-	    		android:title="Recently Updated Posts">
+                android:title="Thread Options">
+	    <CheckBoxPreference 
+	        android:title="Linear View"
+	        android:summary="Display thread contents in linear view"
+	        android:key="linearthread"
+	        android:defaultValue="true"/>
 	    <ListPreference 
 	        android:title="Default Page"
 	        android:summary="Set the default page to open"
@@ -40,14 +45,6 @@
 	        android:defaultValue="First"
 	        android:entries="@array/newPostsPage"
 	        android:entryValues="@array/newPostsPage"/>"
-	</PreferenceCategory>
-	<PreferenceCategory
-                android:title="Thread Options">
-	    <CheckBoxPreference 
-	        android:title="Linear View"
-	        android:summary="Display thread contents in linear view"
-	        android:key="linearthread"
-	        android:defaultValue="true"/>
 	    <Preference
 	        android:title="Thread Filter"
 	        android:summary="Manage filters for threads"
