@@ -313,6 +313,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	    menu.add(Menu.NONE, MENU_FAVE, Menu.NONE, "Add As Favorite");
 	    menu.add(Menu.NONE, MENU_FILTER_USER, Menu.NONE, "Add As User Filter");
 	    menu.add(Menu.NONE, MENU_FILTER_TITLE, Menu.NONE, "Add As Title Filter");
+	    menu.add(Menu.NONE, MENU_FILTER_LASTUSER, Menu.NONE, "Add As Last User Filter");
 	}
 	
 	/*
