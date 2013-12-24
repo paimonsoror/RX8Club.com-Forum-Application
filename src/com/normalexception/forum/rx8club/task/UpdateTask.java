@@ -81,9 +81,9 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 					posthash, poststarttime, msg);
 			}
 		} catch (ClientProtocolException e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, e.getMessage(), e);
 		} catch (IOException e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, e.getMessage(), e);
 		}
 		return null;
 	}

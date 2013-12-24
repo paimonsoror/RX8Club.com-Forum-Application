@@ -65,8 +65,7 @@ public class FavoritesActivity extends ForumBaseActivity implements OnClickListe
 	        lv = (ListView)findViewById(R.id.mainlistview);
 	        updateList();	        
 		} catch (Exception e) {
-			Log.e(TAG, "Fatal Error In Favorites Activity! " + e.getMessage());
-			e.printStackTrace();
+			Log.e(TAG, "Fatal Error In Favorites Activity! " + e.getMessage(), e);
 		}	
     }
 	

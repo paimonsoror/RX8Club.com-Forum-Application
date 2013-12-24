@@ -33,6 +33,8 @@ import java.io.ObjectOutputStream;
 
 import android.content.Context;
 
+import com.normalexception.forum.rx8club.Log;
+
 /**
  * Basic object cache.  This extends the expirablecache class
  * by adding common methods for writing and reading generic
@@ -40,6 +42,8 @@ import android.content.Context;
  * @param <T>	The type of object we are going to read/write
  */
 public class ObjectCache<T> extends ExpirableCache {
+	
+	private static final String TAG = "ObjectCache";
 	
 	/**
 	 * Constructor to an object cache
@@ -64,7 +68,7 @@ public class ObjectCache<T> extends ExpirableCache {
 		  os.close();
 		  f.close();
 		} catch (Exception e) {
-		  e.printStackTrace();
+		  Log.e(TAG, e.getMessage(), e);
 		} finally {
 			if (f != null) try { f.close(); } catch (Exception e) {}
 			if (os != null) try { os.close(); } catch (Exception e) {}
@@ -87,7 +91,7 @@ public class ObjectCache<T> extends ExpirableCache {
 		} catch (FileNotFoundException e) {
 			// Its ok, first time there wont be a file
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e(TAG, e.getMessage(), e);
 		}
 		return cv;
 	}

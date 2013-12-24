@@ -20,7 +20,7 @@
 		    android:paddingRight="5dip" >
 		    
 		<TextView
-		    android:id="@+id/textView1"
+		    android:id="@+id/postSubjectTitle"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:text="@string/ntThreadName" />
@@ -35,7 +35,7 @@
 		</EditText>
 		
 		<TextView
-		    android:id="@+id/textView2"
+		    android:id="@+id/postPostTitle"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:paddingTop="20dip"

@@ -53,7 +53,7 @@ public class RedirectStrategy extends DefaultRedirectStrategy {
         try {
             isRedirect = super.isRedirected(request, response, context);
         } catch (ProtocolException e) {
-            e.printStackTrace();
+        	Log.e(TAG, e.getMessage(), e);
         }
         if (!isRedirect) {
             int responseCode = response.getStatusLine().getStatusCode();

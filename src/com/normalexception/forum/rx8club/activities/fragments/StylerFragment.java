@@ -87,7 +87,7 @@ public class StylerFragment extends Fragment implements OnClickListener {
 				(TextView)ViewHolder.get(arg0.getRootView(), R.id.postBox);
 		
 		if(tv == null) {
-			Log.e(TAG, "TextView is null...");
+			Log.e(TAG, "TextView is null...", null);
 			return;
 		}
 		

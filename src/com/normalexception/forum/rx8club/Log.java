@@ -91,9 +91,12 @@ public class Log {
 	 * Log an 'error' level message
 	 * @param tag		The log tag
 	 * @param message	The log message
+	 * @param ex		The exception thrown
 	 */
-    public final static void e(String tag, String message){
+    public final static void e(String tag, String message, Exception ex){
         if( mLevel > ERROR ) return;
         android.util.Log.e(tag, message);
+        if(ex != null)
+        	ex.printStackTrace();
     }
 }

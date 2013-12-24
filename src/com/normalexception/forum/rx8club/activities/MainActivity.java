@@ -136,8 +136,7 @@ public class MainActivity extends ForumBaseActivity {
 		        }
 	        }
     	} catch (Exception e) {
-    		Log.e(TAG, "Fatal Error In Main Activity! " + e.getMessage());
-    		e.printStackTrace();
+    		Log.e(TAG, "Fatal Error In Main Activity! " + e.getMessage(), e);
     	}
     }
     
@@ -225,7 +224,7 @@ public class MainActivity extends ForumBaseActivity {
                 					Toast.LENGTH_SHORT).show();
         				}
         			});
-        			e.printStackTrace();
+        			Log.e(TAG, e.getMessage(), e);
         		}
         		return null;
         	}
@@ -355,7 +354,7 @@ public class MainActivity extends ForumBaseActivity {
 			VBForumFactory ff = VBForumFactory.getInstance();
 			output = ff.getForumFrontpage(this, lf);
 		} catch (IOException ioe) {
-			Log.e(TAG, "Error Grabbing Forum Frontpage: " + ioe.getMessage());
+			Log.e(TAG, "Error Grabbing Forum Frontpage: " + ioe.getMessage(), ioe);
 		}		
 				
 		if(output == null) {

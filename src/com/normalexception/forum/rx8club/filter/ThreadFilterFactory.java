@@ -35,6 +35,7 @@ import java.util.List;
 
 import android.content.Context;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 
@@ -46,6 +47,8 @@ public class ThreadFilterFactory {
 	
 	private static ThreadFilterFactory _instance;
 	private        List<ThreadFilter>  _filters;
+	
+	private static final String TAG = "ThreadFilterFactory";
 	
 	/**
 	 * Singleton constructor.  Will load the 
@@ -102,7 +105,7 @@ public class ThreadFilterFactory {
 		} catch (FileNotFoundException e) {
 			// Its ok, first time there wont be a file
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e(TAG, e.getMessage(), e);
 		}
 		return rtn;
 	}
@@ -121,7 +124,7 @@ public class ThreadFilterFactory {
 		  os.writeObject(_filters);
 		  os.close();
 		} catch (Exception e) {
-		  e.printStackTrace();
+			Log.e(TAG, e.getMessage(), e);
 		}
 	}
 	

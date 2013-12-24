@@ -64,7 +64,7 @@ public class UserCpActivity extends ForumBaseActivity {
 			outState.putSerializable("interests", interests);
 			outState.putSerializable("occupation", occupation);
 		} catch (Exception e) {
-			Log.e(TAG, "Error Serializing: " + e.getMessage());
+			Log.e(TAG, "Error Serializing: " + e.getMessage(), e);
 		}
 	}
 	
@@ -91,7 +91,7 @@ public class UserCpActivity extends ForumBaseActivity {
 						(String)savedInstanceState.getSerializable("occupation");
 			}
 		} catch (Exception e) {
-			Log.e(TAG, "Error UnSerializing: " + e.getMessage());
+			Log.e(TAG, "Error UnSerializing: " + e.getMessage(), e);
 		}
 	}
 	
@@ -166,7 +166,7 @@ public class UserCpActivity extends ForumBaseActivity {
 	        			updateView();
         			}
         		} catch (Exception e) {
-        			Log.e(TAG, e.getMessage());
+        			Log.e(TAG, e.getMessage(), e);
         		}
         		return null;
         	}

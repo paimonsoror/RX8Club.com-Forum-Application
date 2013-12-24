@@ -71,7 +71,7 @@ public class AboutActivity extends ForumBaseActivity {
 					getPackageManager().getPackageInfo(
 							this.getPackageName(), 0).versionName);
 		} catch (NameNotFoundException e) {
-			Log.e(TAG, "Version Not Found");
+			Log.e(TAG, "Version Not Found", e);
 		}
     }
 }

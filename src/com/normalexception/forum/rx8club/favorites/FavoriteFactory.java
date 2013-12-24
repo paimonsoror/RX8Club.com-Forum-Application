@@ -34,6 +34,7 @@ import java.io.ObjectOutputStream;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.view.thread.ThreadView;
@@ -46,6 +47,8 @@ public class FavoriteFactory {
 	
 	private static FavoriteFactory _instance;
 	private        FavoriteThreads _favorites;
+	
+	private static final String TAG = "FavoriteFactory";
 	
 	/**
 	 * Singleton constructor.  Will load the 
@@ -93,7 +96,7 @@ public class FavoriteFactory {
 		} catch (FileNotFoundException e) {
 			// Its ok, first time there wont be a file
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e(TAG, e.getMessage(), e);
 		}
 		return rtn;
 	}
@@ -112,7 +115,7 @@ public class FavoriteFactory {
 		  os.writeObject(_favorites);
 		  os.close();
 		} catch (Exception e) {
-		  e.printStackTrace();
+			Log.e(TAG, e.getMessage(), e);
 		}
 	}
 	

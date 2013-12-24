@@ -95,9 +95,9 @@ public class NewThreadTask extends AsyncTask<Void,Void,Void> {
 		try {
 			HtmlFormUtils.newThread(forumId, s, token, posthash, subject, post);
 		} catch (ClientProtocolException e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, e.getMessage(), e);
 		} catch (IOException e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, e.getMessage(), e);
 		}
         return null;
 	}

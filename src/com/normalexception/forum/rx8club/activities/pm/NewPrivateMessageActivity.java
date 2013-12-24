@@ -89,7 +89,7 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 				title = savedInstanceState.getString("title");
 			}				
 		} catch (Exception e) {
-			Log.e(TAG, "Error Restoring Contents: " + e.getMessage());
+			Log.e(TAG, "Error Restoring Contents: " + e.getMessage(), e);
 		}
 	}
 	

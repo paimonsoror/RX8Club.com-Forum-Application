@@ -137,8 +137,7 @@ public class ImageLoader {
 			// No big deal, the image doesn't exist
 			return null;
 		} catch (Exception ex){
-			Log.e(TAG, ex.getMessage());
-			ex.printStackTrace();
+			Log.e(TAG, ex.getMessage(), ex);
 			return null;
 		}
 	}

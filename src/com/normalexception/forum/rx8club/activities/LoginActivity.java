@@ -110,7 +110,7 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 	        	loadMainPage();
 	        }
     	} catch (Exception e) {
-    		Log.e(TAG, "Unexpected Error!: " + e.getMessage());
+    		Log.e(TAG, "Unexpected Error!: " + e.getMessage(), e);
     	}
     }
    
@@ -176,11 +176,11 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 			try {
 				loggedIn = lf.login();
 			} catch (NoSuchAlgorithmException e) {
-				Log.e(TAG, "Error Logging In " + e.getMessage());
+				Log.e(TAG, "Error Logging In " + e.getMessage(), e);
 			} catch (ClientProtocolException e) {
-				Log.e(TAG, "Error Logging In " + e.getMessage());
+				Log.e(TAG, "Error Logging In " + e.getMessage(), e);
 			} catch (IOException e) {
-				Log.e(TAG, "Error Logging In " + e.getMessage());
+				Log.e(TAG, "Error Logging In " + e.getMessage(), e);
 			} finally {
 				runOnUiThread(new Runnable() {
 					public void run() {

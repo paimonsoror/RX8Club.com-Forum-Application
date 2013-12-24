@@ -110,8 +110,7 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
 	        	constructView();
 	        
     	} catch (Exception e) {
-    		Log.e(TAG, "Error In New Thread Activity");
-    		e.printStackTrace();
+    		Log.e(TAG, "Error In New Thread Activity " + e.getMessage(), e);
     	}
     }
     

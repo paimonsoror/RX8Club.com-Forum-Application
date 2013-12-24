@@ -132,9 +132,9 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
     				sourceActivity.getString(R.string.asyncDialogSubmitting));
     		HtmlFormUtils.submitPost(doType, token, thread, post, attId, text);
 		} catch (ClientProtocolException e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, e.getMessage(), e);
 		} catch (IOException e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, e.getMessage(), e);
 		}
         return null;
     }

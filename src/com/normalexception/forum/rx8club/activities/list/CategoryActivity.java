@@ -151,7 +151,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        }
 	        
 		} catch (Exception e) {
-			Log.e(TAG, "Fatal Error In Category Activity! " + e.getMessage());
+			Log.e(TAG, "Fatal Error In Category Activity! " + e.getMessage(), e);
 		}	
     }
 	

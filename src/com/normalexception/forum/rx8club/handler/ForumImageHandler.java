@@ -94,11 +94,11 @@ public class ForumImageHandler implements ImageGetter {
                 InputStream is = new URL(source).openStream();
                 return BitmapFactory.decodeStream(is);
             } catch (FileNotFoundException e) {
-                e.printStackTrace();
+            	Log.e(TAG, e.getMessage(), e);
             } catch (MalformedURLException e) {
-                e.printStackTrace();
+            	Log.e(TAG, e.getMessage(), e);
             } catch (IOException e) {
-                e.printStackTrace();
+            	Log.e(TAG, e.getMessage(), e);
             }
             return null;
         }

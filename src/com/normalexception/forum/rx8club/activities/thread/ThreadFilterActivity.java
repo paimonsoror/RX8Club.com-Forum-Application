@@ -79,7 +79,7 @@ public class ThreadFilterActivity  extends ForumBaseActivity implements OnClickL
 	        
 	        updateList();
 		} catch (Exception e) {
-			Log.e(TAG, "Fatal Error In Thread Activity! " + e.getMessage());
+			Log.e(TAG, "Fatal Error In Thread Activity! " + e.getMessage(), e);
 		}
 	}
 	

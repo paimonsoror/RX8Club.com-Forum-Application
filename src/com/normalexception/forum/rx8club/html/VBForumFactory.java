@@ -129,7 +129,7 @@ public class VBForumFactory {
 					notifyError(src, 
 							"Error Opening Page. This Has Been Logged", e);
 				} catch (IllegalStateException e) {
-					Log.e(TAG, e.getMessage());
+					Log.e(TAG, e.getMessage(), e);
 				}	
 			} else {
 				notifyError(src, 
@@ -179,14 +179,11 @@ public class VBForumFactory {
 			output = ff.getForumPage(src, lf, addr);
 			return Jsoup.parse(output);
 		} catch (ClientProtocolException e) {
-			Log.e(TAG, "Error grabbing category page: " + e.getMessage());
-			e.printStackTrace();
+			Log.e(TAG, "Error grabbing category page: " + e.getMessage(), e);
 		} catch (IOException e) {
-			Log.e(TAG, "Error grabbing category page: " + e.getMessage());
-			e.printStackTrace();
+			Log.e(TAG, "Error grabbing category page: " + e.getMessage(), e);
 		} catch (IllegalArgumentException e) {
-			Log.e(TAG, "Error grabbing category page: " + e.getMessage());
-			e.printStackTrace();
+			Log.e(TAG, "Error grabbing category page: " + e.getMessage(), e);
 		}
 		
 	   	return null;

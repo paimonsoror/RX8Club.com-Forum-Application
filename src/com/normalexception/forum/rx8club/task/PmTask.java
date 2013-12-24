@@ -100,9 +100,9 @@ public class PmTask extends AsyncTask<Void,Void,Void>{
     		HtmlFormUtils.submitPM(doType, token, 
 	                   text, title, recipients, pmid);
 		} catch (ClientProtocolException e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, e.getMessage(), e);
 		} catch (IOException e) {
-			Log.e(TAG, e.getMessage());
+			Log.e(TAG, e.getMessage(), e);
 		}
         return null;
     }	
