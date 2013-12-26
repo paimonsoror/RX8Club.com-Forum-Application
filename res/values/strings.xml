@@ -5,6 +5,8 @@
     <string name="title_activity_main">RX8Club.com</string>
     <string name="app_description">This is an application designed to provide the user with a faster, and easier to use forum experience for current RX8Club.com members</string>    
     <string name="app_signature">Posted From RX8Club.com Android App</string>
+    <string name="networkNotAvailable">No Internet Connection Available!</string>
+    <string name="networkTimedOut">Network Timed Out</string>
     
     <!-- Category Screen String -->
     <string name="categoryDescription">My Description that is really long to make sure it doesn\'t overlap because sometimes when you have a long desc it does</string>

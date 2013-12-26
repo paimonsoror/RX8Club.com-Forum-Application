@@ -25,6 +25,7 @@ package com.normalexception.forum.rx8club.activities;
  ************************************************************************/
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.security.NoSuchAlgorithmException;
 
 import android.app.ProgressDialog;
@@ -150,6 +151,7 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 	class AsyncLogin extends AsyncTask<Context, Void, Void> {
 		private LoginFactory lf = null;
 		private boolean loggedIn = false;
+		private boolean timeout = false;
 
 		/*
 		 * (non-Javadoc)
@@ -174,7 +176,17 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 			lf.savePreferences(((CheckBox)findViewById(R.id.autoLoginBox)).isChecked(), 
 					   ((CheckBox)findViewById(R.id.rememberMeBox)).isChecked());
 			try {
-				loggedIn = lf.login();
+				if(LoginFactory.haveNetworkConnection())
+					loggedIn = lf.login();
+				else
+					runOnUiThread(new Runnable() {
+						public void run() {
+							Toast.makeText(params[0], R.string.networkNotAvailable, Toast.LENGTH_LONG).show();
+						}
+					});
+			} catch (SocketTimeoutException e) {
+				Log.e(TAG, "Error Logging In " + e.getMessage(), e);
+				timeout = true;
 			} catch (NoSuchAlgorithmException e) {
 				Log.e(TAG, "Error Logging In " + e.getMessage(), e);
 			} catch (ClientProtocolException e) {
@@ -197,6 +209,7 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 		 */
 		@Override
 		protected void onPostExecute(Void param) {
+			int message = 0;
 			
 			// Dismiss the loading dialog, but make sure we trap if
 			// the dialog went away before we got here.
@@ -205,8 +218,15 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 			} catch (Exception e) { }
 			
 			if(loggedIn) {
-					loadMainPage();
+				loadMainPage();
+			} else if (timeout) {
+				message = R.string.networkTimedOut;
 			} else {
+				message = R.string.loginAuthFailed;
+			}
+			
+			// Display message to user if exists
+			if(message != 0) {
 				runOnUiThread(new Runnable() {
 					public void run() {
 						Toast.makeText(MainApplication.getAppContext(), 

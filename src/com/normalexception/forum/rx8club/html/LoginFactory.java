@@ -31,7 +31,10 @@ import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import ch.boye.httpclientandroidlib.Header;
 import ch.boye.httpclientandroidlib.HeaderElement;
 import ch.boye.httpclientandroidlib.HttpEntity;
@@ -90,12 +93,22 @@ public class LoginFactory {
 	
 	private SharedPreferences pref = null;
 	
+	/**
+	 * Preference specific variables
+	 */
 	private static final String PREFS_NAME = "MyPrefsFile";
 	private static final String PREF_USERNAME = "username";
 	private static final String PREF_PASSWORD = "password";
 	private static final String PREF_AUTOLOGIN = "autologin";
 	private static final String PREF_REMEMBERME = "rememberme";
 	private static final String PREF_SIGNATURE = "signature";
+	
+	/**
+	 * Network specific variables
+	 */
+	private static final String NETWORK_WIFI = "WIFI";
+	private static final String NETWORK_MOBILE = "MOBILE";
+	private static final String NETWORK_ETH = "ETH";
 	
 	private static BasicCookieStore cookieStore;
 	private static HttpContext httpContext;
@@ -115,6 +128,36 @@ public class LoginFactory {
 				.getSharedPreferences(PREFS_NAME, Activity.MODE_PRIVATE);
 		
 		initializeClientInformation();
+	}
+	
+	/**
+	 * Check to see if a network connection exists
+	 * @return	True if network connection exists
+	 */
+	public static boolean haveNetworkConnection() {
+	    boolean haveConnectedWifi = false;
+	    boolean haveConnectedMobile = false;
+	    boolean haveConnectedEth = false;
+
+	    ConnectivityManager cm = 
+	    		(ConnectivityManager) 
+	    			MainApplication.getAppContext()
+	    				.getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo[] netInfo = cm.getAllNetworkInfo();
+	    for (NetworkInfo ni : netInfo) {
+	        if (ni.getTypeName().equalsIgnoreCase(LoginFactory.NETWORK_WIFI))
+	            if (ni.isConnected())
+	                haveConnectedWifi = true;
+	        if (ni.getTypeName().equalsIgnoreCase(LoginFactory.NETWORK_MOBILE))
+	            if (ni.isConnected())
+	                haveConnectedMobile = true;
+	        if(ni.getTypeName().equalsIgnoreCase(LoginFactory.NETWORK_ETH))
+	        	if (ni.isConnected())
+	        		haveConnectedEth = true;
+	    }
+	    return haveConnectedWifi || 
+	    		haveConnectedMobile || 
+	    			haveConnectedEth;
 	}
 	
 	/**
