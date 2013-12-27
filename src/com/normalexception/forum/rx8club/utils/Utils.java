@@ -217,12 +217,12 @@ public class Utils {
     	StringTokenizer st = new StringTokenizer(source, "\r\n\t");
     	while (st.hasMoreTokens()) {
         	String nextTok = st.nextToken();      	
-        	if(nextTok.contains("<table ")) {
-        		nextTok = "<blockquote>";
-        	}
-        	if(nextTok.contains("</table>")) {
-        		nextTok = nextTok.replace("</table>","</blockquote><br>");
-        	}
+        	if(nextTok.contains("<table "))
+        		nextTok = "<blockquote><i>";
+        	if(nextTok.contains("</table>"))
+        		nextTok = nextTok.replace("</table>","</i></blockquote><br>");
+        	if(nextTok.contains("Quote:"))
+        		nextTok = "";
 
         	finalText.append(nextTok + " ");
         }
