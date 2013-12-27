@@ -35,7 +35,13 @@ import com.normalexception.forum.rx8club.html.LoginFactory;
 
 public class Utils {
 	
-	public static void CopyStream(InputStream is, OutputStream os)
+	/**
+	 * Safely copy one stream into another.  This is useful when copying
+	 * files
+	 * @param is	The source stream
+	 * @param os	The destination stream
+	 */
+	public static void copyStream(InputStream is, OutputStream os)
 	{
 		final int buffer_size=1024;
 		try

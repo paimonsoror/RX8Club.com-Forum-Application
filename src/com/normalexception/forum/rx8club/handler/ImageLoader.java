@@ -129,7 +129,7 @@ public class ImageLoader {
 
 			InputStream is = response.getEntity().getContent();
 			OutputStream os = new FileOutputStream(f);
-			Utils.CopyStream(is, os);
+			Utils.copyStream(is, os);
 			os.close();
 			bitmap = decodeFile(f);
 			return bitmap;
