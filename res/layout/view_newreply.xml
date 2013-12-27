@@ -11,7 +11,10 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/container_thread_dropshadow"
-        android:padding="3dip">
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="8dp">
         
 	    <LinearLayout
 	        android:id="@+id/thumbnail"
@@ -27,7 +30,7 @@
 	            android:id="@+id/nr_image"
 	            android:layout_width="50dip"
 	            android:layout_height="50dip"
-	            android:src="@drawable/rotor_icon" />
+	            android:src="@drawable/rotor_icon"/>
 
 	    </LinearLayout> 	    
 	    		
@@ -139,9 +142,9 @@
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:orientation="horizontal"
-		    android:layout_alignBottom="@id/titleTextContainer"
+		    android:layout_alignBottom="@id/thumbnail"
 		    android:layout_alignRight="@id/nr_buttonContainer"
-		    android:padding="3dip">
+		    android:paddingRight="3dip">
 		    <TextView
 		        android:id="@+id/nr_postDate_label"
 		        android:layout_width="wrap_content"
