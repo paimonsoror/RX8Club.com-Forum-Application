@@ -31,11 +31,12 @@ import org.jsoup.select.Elements;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import com.normalexception.forum.rx8club.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
@@ -108,7 +109,7 @@ public class UserCpActivity extends ForumBaseActivity {
 
         findViewById(R.id.submitUserCpButton).setOnClickListener(this);
         
-        if(checkTimeout()) {
+        if(TimeoutFactory.getInstance().checkTimeout(this)) {
         	constructView();
         }
     }

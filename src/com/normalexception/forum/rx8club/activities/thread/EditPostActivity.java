@@ -38,6 +38,7 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.task.UpdateTask;
@@ -81,7 +82,7 @@ public class EditPostActivity extends ForumBaseActivity {
 
 		Log.v(TAG, "Edit Thread Activity Started");
 
-		if(checkTimeout()) {
+		if(TimeoutFactory.getInstance().checkTimeout(this)) {
 			postId = 
 					(String) getIntent().getStringExtra("postid");
 			securityToken = 

@@ -50,6 +50,7 @@ import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
@@ -113,7 +114,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	        
 	        Log.v(TAG, "Category Activity Started");
 	        
-	        if(checkTimeout()) {
+	        if(TimeoutFactory.getInstance().checkTimeout(this)) {
 		        threadlist = new ArrayList<ThreadView>();
 		        lv = (PTRListView)findViewById(R.id.mainlistview);
 		        

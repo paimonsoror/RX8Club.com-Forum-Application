@@ -27,7 +27,6 @@ package com.normalexception.forum.rx8club.activities;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
@@ -37,7 +36,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
-import android.widget.Toast;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
 import com.google.analytics.tracking.android.EasyTracker;
@@ -70,49 +68,6 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	private static String TAG = "ForumBaseActivity";
 	
 	protected String thisPage = "1", finalPage = "1";
-	
-	protected static long pingTime = 0;
-	protected static long pongTime = 0;
-	protected static long diffTime = 0;
-	
-	protected static final long PING_EXPIRE = 2 /*hours*/ * 3600;
-	//protected static final long PING_DEBUG  = 10;
-	
-	/**
-	 * When we create our activities, we want to update the ping time
-	 * this will help us re-login when our cache expires
-	 */
-	public boolean checkTimeout() {		
-		// Only update pong when the login activity was called
-		if(!(this instanceof LoginActivity)) {
-			pingTime = System.currentTimeMillis() / 1000l;
-			diffTime = pingTime - pongTime;
-			Log.d(TAG, String.format("Ping Time: %d", pingTime));
-			Log.d(TAG, String.format("Difference Time: %d", diffTime));
-			
-			final Context _ctx = this;
-			if(diffTime > PING_EXPIRE) {
-				runOnUiThread(new Runnable() {
-		    		public void run() {
-		    			Toast.makeText(_ctx, "Connection Timedout", Toast.LENGTH_SHORT).show();
-		    		}
-				});
-				finish();
-				Log.d(TAG, "## PING TIME EXPIRED ##");
-				returnToLoginPage(false, false);
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * Update our pong time
-	 */
-	protected void updatePongTime() {
-		pongTime = System.currentTimeMillis() / 1000l;
-		Log.d(TAG, String.format("Pong Time: %d", pongTime));
-	}
 	
 	/**
 	 * Start our analytics tracking

@@ -52,6 +52,7 @@ import android.widget.ListView;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
@@ -88,7 +89,7 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
         
         setContentView(R.layout.activity_basiclist);
         
-        if(checkTimeout()) {
+        if(TimeoutFactory.getInstance().checkTimeout(this)) {
 	        pmlist = new ArrayList<PMView>();
 	        lv = (ListView)findViewById(R.id.mainlistview);
 	        

@@ -46,6 +46,7 @@ import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.user.UserProfile;
@@ -241,7 +242,7 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 	 * Lets load the main page, generally if we are logged in
 	 */
 	private void loadMainPage() {        
-        super.updatePongTime();
+        TimeoutFactory.getInstance().updatePongTime();
 		Intent in = new Intent(LoginActivity.this, MainActivity.class);
 		in.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		finish();

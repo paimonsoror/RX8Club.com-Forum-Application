@@ -38,6 +38,7 @@ import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
@@ -103,7 +104,7 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
         
         setContentView(R.layout.activity_basiclist);
         
-        if(checkTimeout()) {
+        if(TimeoutFactory.getInstance().checkTimeout(this)) {
 	        lv      = (ListView)findViewById(R.id.mainlistview);
 	        lv.setDescendantFocusability(ListView.FOCUS_AFTER_DESCENDANTS);
 	        lv.setScrollContainer(false);

@@ -41,6 +41,7 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.handler.ImageLoader;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
@@ -78,7 +79,7 @@ public class ProfileActivity extends ForumBaseActivity {
         
         setContentView(R.layout.activity_basiclist);
         
-        if(checkTimeout()) {
+        if(TimeoutFactory.getInstance().checkTimeout(this)) {
 	        Log.v(TAG, "Profile Activity Started");
 	        
 	        imageLoader=new ImageLoader(this);

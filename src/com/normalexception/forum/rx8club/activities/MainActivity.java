@@ -42,6 +42,7 @@ import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.cache.impl.UserProfileCache;
 import com.normalexception.forum.rx8club.cache.impl.ViewListCache;
 import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
@@ -98,7 +99,7 @@ public class MainActivity extends ForumBaseActivity {
 	        setContentView(R.layout.activity_basiclist);
 	        findViewById(R.id.mainlisttitle).setVisibility(View.GONE);
 
-	        if(checkTimeout()) {
+	        if(TimeoutFactory.getInstance().checkTimeout(this)) {
 		        // Read in the favorites if they exist
 		        FavoriteFactory.getInstance();
 		        
