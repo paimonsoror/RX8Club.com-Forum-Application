@@ -66,8 +66,6 @@ public class CategoryFilterizer {
     				} else if(tf.getRule() == RuleType.LASTUSER) {
     					if(tv.getLastUser().equalsIgnoreCase(tf.getSubject()))
     						filterOut = true;
-    					
-    				// Filter by the elapsed hours
     				}
     			}
     			if(!filterOut) {

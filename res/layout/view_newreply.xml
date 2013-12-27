@@ -140,7 +140,8 @@
 		    android:layout_height="wrap_content"
 		    android:orientation="horizontal"
 		    android:layout_alignBottom="@id/titleTextContainer"
-		    android:layout_alignRight="@id/nr_buttonContainer">
+		    android:layout_alignRight="@id/nr_buttonContainer"
+		    android:padding="3dip">
 		    <TextView
 		        android:id="@+id/nr_postDate_label"
 		        android:layout_width="wrap_content"
