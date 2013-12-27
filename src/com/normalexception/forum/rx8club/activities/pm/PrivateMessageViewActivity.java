@@ -25,8 +25,10 @@ package com.normalexception.forum.rx8club.activities.pm;
  ************************************************************************/
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.Activity;
@@ -44,10 +46,13 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
+import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
 import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.task.DeletePmTask;
 import com.normalexception.forum.rx8club.task.PmTask;
+import com.normalexception.forum.rx8club.user.UserProfile;
+import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.view.pmpost.PMPostView;
 import com.normalexception.forum.rx8club.view.pmpost.PMPostViewArrayAdapter;
 
@@ -57,6 +62,7 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 	
 	private String postUser = null;
 	private String postText = null;
+	private String postDate = null;
 	private String securityToken = null;
 	private String pmid = null;
 	private String title = null;
@@ -140,20 +146,50 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 					title =
 							HtmlFormUtils.getInputElementValue(doc, "title");
 					
-					Elements postMenu = doc.select("div[id=postmenu_]");
-					
-					postUser = postMenu.text();
-					
-					Elements postMessage = doc.select("div[id=post_message_]");
-					
-					postText = postMessage.html();
-			    	
+					Elements userPm = doc.select("table[id^=post]");
 					publishProgress(getString(R.string.asyncDialogLoadingPM));
-					PMPostView pmi = new PMPostView();
-					pmi.setUserName(postUser);
-					pmi.setUserPost(postText);
-					pmi.setSecurityToken(securityToken);
-					pmlist.add(pmi);
+					
+					// User Control Panel
+					Elements userCp = userPm.select("td[class=alt2]");
+					Elements userDetail = userCp.select("div[class=smallfont]");
+					Elements userSubDetail = userDetail.last().select("div"); 
+					Elements userAvatar = userDetail.select("img[alt$=Avatar]");
+					Elements postMessage = doc.select("div[id=post_message_]");
+
+					
+					PMPostView pv = new PMPostView();
+					pv.setUserName(userCp.select("div[id^=postmenu]").text());
+					pv.setIsLoggedInUser(
+							LoginFactory.getInstance().isLoggedIn()?
+									UserProfile.getInstance().getUsername().equals(
+											pv.getUserName()) : false);	
+					pv.setUserTitle(userDetail.first().text());
+					pv.setUserImageUrl(userAvatar.attr("src"));
+					pv.setPostDate(userPm.select("td[class=thead]").first().text());
+
+					// userSubDetail
+					// 0 - full container , full container
+					// 1 - Trader Score   , Trader Score
+					// 2 - Join Date      , Join Date
+					// 3 - Post Count     , Location
+					// 4 - Blank          , Post Count
+					// 5 -                , Blank || Social
+					//
+					Iterator<Element> itr = userSubDetail.listIterator();
+					while(itr.hasNext()) {
+						String txt = itr.next().text();
+						if(txt.contains("Location:"))
+							pv.setUserLocation(txt);
+						else if (txt.contains("Posts:"))
+							pv.setUserPostCount(txt);
+						else if (txt.contains("Join Date:"))
+							pv.setJoinDate(txt);
+					}
+
+					// User Post Content
+					pv.setUserPost(postMessage.html());
+					
+					pmlist.add(pv);
 	
 					updateList();
 				}
