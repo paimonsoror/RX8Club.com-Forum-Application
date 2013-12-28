@@ -71,11 +71,21 @@ public class SearchActivity extends ForumBaseActivity implements OnClickListener
 				((TextView)findViewById(R.id.searchText)).getText().toString().replace(" ", "%20");
 		String searchUrl = 
 				searchText;
+
+		int selectedType =
+				(int)((Spinner)findViewById(R.id.searchTypeSpinner)).getSelectedItemPosition();
 		
-		if(((RadioButton)findViewById(R.id.threadTitleButton)).isChecked())
+		// Append selected type to the search params
+		switch(selectedType) {
+		case 0:
+			break;
+		case 1:
 			searchUrl += "&titleonly=1";
-		if(((RadioButton)findViewById(R.id.userNameButton)).isChecked())
+			break;
+		case 2:
 			searchUrl += "&starteronly=" + searchText;
+			break;
+		}
 		
 		int selectedDate = 
 				(int)((Spinner)findViewById(R.id.searchDateSpinner)).getSelectedItemPosition();

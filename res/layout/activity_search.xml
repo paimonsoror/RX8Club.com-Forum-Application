@@ -1,13 +1,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:scrollbars="vertical" >
     
 	<LinearLayout
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-		android:background="@android:color/darker_gray"
-		android:orientation="vertical">
+	    android:layout_height="wrap_content"
+	    android:background="@android:color/darker_gray"
+	    android:orientation="vertical"
+	    android:padding="5dp" >
 		
 	    <fragment
 	        android:id="@+id/fragment_content"
@@ -55,34 +56,12 @@
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="5dip"
 	        android:text="@string/searchType" />
-	
-	    <RadioGroup
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content" >
-	
-		    <RadioButton
-		        android:id="@+id/threadContentButton"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:checked="true"
-		        android:text="@string/threadContentSearch"
-		        android:textSize="10dip" />
-		
-		    <RadioButton
-		        android:id="@+id/threadTitleButton"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="@string/threadTitleSearch"
-		        android:textSize="10dip" />
-		
-		    <RadioButton
-		        android:id="@+id/userNameButton"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="@string/userNameSearch"
-		        android:textSize="10dip" />
-	
-		</RadioGroup>
+
+		<Spinner 
+		    android:id="@+id/searchTypeSpinner"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:entries="@array/searchTypeArray" />
 	
 	    <TextView
 	        android:id="@+id/textView3"

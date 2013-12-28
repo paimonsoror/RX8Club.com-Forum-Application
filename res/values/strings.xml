@@ -79,7 +79,7 @@
     
     <!-- Search Screen Strings -->
     <string name="searchString">Please Enter Search String:</string>
-    <string name="searchType">Search Type</string>
+    <string name="searchType">Search Type:\u0020</string>
     <string name="userNameSearch">User Name</string>
     <string name="searchSearchButton">Search</string>
     <string name="searchDate">Search Date:\u0020</string>
@@ -175,6 +175,11 @@
     <string name="ptrTap">Tap Here to Refresh&#8230;</string>
 
 	<!-- String Arrays -->
+	<string-array name="searchTypeArray">
+	    <item>Thread Content</item>
+	    <item>Thread Title</item>
+	    <item>User Name</item>
+	</string-array>
     <string-array name="searchDateArray">
         <item>Any Date</item>
         <item>Last Visit</item>
