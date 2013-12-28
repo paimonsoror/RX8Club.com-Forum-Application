@@ -61,8 +61,6 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 	private final String TAG = "PrivateMessageViewActivity";
 	
 	private String postUser = null;
-	private String postText = null;
-	private String postDate = null;
 	private String securityToken = null;
 	private String pmid = null;
 	private String title = null;
@@ -164,7 +162,7 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 									UserProfile.getInstance().getUsername().equals(
 											pv.getUserName()) : false);	
 					pv.setUserTitle(userDetail.first().text());
-					pv.setUserImageUrl(userAvatar.attr("src"));
+					pv.setUserImageUrl(Utils.resolveUrl(userAvatar.attr("src")));
 					pv.setPostDate(userPm.select("td[class=thead]").first().text());
 
 					// userSubDetail

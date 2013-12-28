@@ -37,12 +37,15 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
+import com.normalexception.forum.rx8club.handler.ImageLoader;
+import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 import com.normalexception.forum.rx8club.view.threadpost.PostView;
 
 public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
 	private Context activity;
 	private List<PMPostView> data;
+	private ImageLoader imageLoader;
 
 	/**
 	 * Custom adapter to handle PMItemView's
@@ -55,6 +58,7 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
 		super(context, textViewResourceId, objects);
 		activity = context;
 		data = objects;
+		imageLoader = new ImageLoader(activity.getApplicationContext());
 	}
 	
 	/*
@@ -98,6 +102,19 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
         TextView postText = ((TextView) ViewHolder.get(vi,R.id.nr_postText));
         ForumImageHandler fih = new ForumImageHandler(postText, activity);        
         postText.setText(Html.fromHtml(cv.getUserPost(), fih, null));
+        
+        // Load up the avatar of hte user, but remember to remove
+        // the dateline at the end of the file so that we aren't
+        // creating multiple images for a user.  The image still
+        // gets returned without a date
+        if(PreferenceHelper.isShowAvatars(activity)) {
+	        String nodate_avatar = 
+	        		cv.getUserImageUrl().indexOf('?') == -1? 
+	        				cv.getUserImageUrl() : 
+	        					cv.getUserImageUrl().substring(0, cv.getUserImageUrl().indexOf('?'));
+	        ImageView avatar = ((ImageView)ViewHolder.get(vi,R.id.nr_image));
+	        imageLoader.DisplayImage(nodate_avatar, avatar);
+        }
         
         // Set click listeners
         ((ImageView) ViewHolder.get(vi,R.id.nr_quoteButton)).setVisibility(View.GONE);
