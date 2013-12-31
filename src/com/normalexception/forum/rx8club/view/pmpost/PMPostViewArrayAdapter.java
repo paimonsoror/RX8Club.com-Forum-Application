@@ -27,6 +27,7 @@ package com.normalexception.forum.rx8club.view.pmpost;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,6 +104,23 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
         ForumImageHandler fih = new ForumImageHandler(postText, activity);        
         postText.setText(Html.fromHtml(cv.getUserPost(), fih, null));
         
+        // Lets make sure we remove any font formatting that was done within
+        // the text
+        String trimmedPost = 
+        		cv.getUserPost().replaceAll("(?i)<(/*)font(.*?)>", "");
+       
+        // Show attachments if the preference allows it
+        if(PreferenceHelper.isShowAttachments(activity)) 
+        	trimmedPost = appendAttachments(trimmedPost, cv.getAttachments());
+        
+        postText.setText(Html.fromHtml(trimmedPost, fih, null));
+        postText.setTextColor(Color.WHITE);
+        postText.setLinkTextColor(Color.WHITE);
+        
+        // Set the text size based on our preferences
+        int font_size = PreferenceHelper.getFontSize(activity);
+        postText.setTextSize(font_size);
+        
         // Load up the avatar of hte user, but remember to remove
         // the dateline at the end of the file so that we aren't
         // creating multiple images for a user.  The image still
@@ -123,6 +141,32 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
         ((ImageView) ViewHolder.get(vi,R.id.nr_deleteButton)).setVisibility(View.GONE);
         
         return vi;
+	}
+	
+	/**
+	 * Append attachments to the end of this post if they exist
+	 * @param trimmedPost	The current post
+	 * @param attachments	The attachments of the post
+	 * @return				An appended html string
+	 */
+	private String appendAttachments(String trimmedPost,
+			List<String> attachments) {
+		if(attachments == null || attachments.isEmpty())
+			return trimmedPost;
+		
+		// Create an html string for the attachments
+		String attachString = "";
+		for(String attachment : attachments)
+			attachString += 
+				String.format("<a href=\"%s\"><img src=\"%s\"></a>&nbsp;", 
+						attachment, attachment);
+		
+		// Now append to the original text
+		trimmedPost = 
+				String.format("%s<br><br><b>Attachments:</b><br>%s", 
+						trimmedPost, attachString);
+		
+		return trimmedPost;
 	}
 	
 	/*

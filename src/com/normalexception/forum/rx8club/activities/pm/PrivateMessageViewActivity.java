@@ -185,7 +185,7 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 					}
 
 					// User Post Content
-					pv.setUserPost(postMessage.html());
+					pv.setUserPost(formatUserPost(postMessage));
 					
 					pmlist.add(pv);
 	
@@ -205,6 +205,25 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
         };
         updaterTask.execute();
     }
+    
+	/**
+	 * Format the user post by removing the vb style quotes and the 
+	 * duplicate youtube links
+	 * @param innerPost	The element that contains the inner post
+	 * @return			The formatted string
+	 */
+	private String formatUserPost(Elements innerPost) {
+	
+		// Remove the duplicate youtube links (this is caused by a plugin on 
+		// the forum that embeds youtube videos automatically)
+		for(Element embedded : innerPost.select("div[id^=ame_doshow_post_]"))
+			embedded.remove();
+		
+		// Remove the vbulletin quotes
+		String upost = Utils.reformatQuotes(innerPost.html());
+		
+		return upost;
+	}
     
     /*
    	 * (non-Javadoc)

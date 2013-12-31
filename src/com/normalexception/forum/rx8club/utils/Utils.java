@@ -224,9 +224,9 @@ public class Utils {
     	while (st.hasMoreTokens()) {
         	String nextTok = st.nextToken();      	
         	if(nextTok.contains("<table "))
-        		nextTok = "<blockquote><i>";
+        		nextTok = "<i><blockquote>";
         	if(nextTok.contains("</table>"))
-        		nextTok = nextTok.replace("</table>","</i></blockquote><br>");
+        		nextTok = nextTok.replace("</table>","</blockquote><br>\n</i>");
         	if(nextTok.contains("Quote:"))
         		nextTok = "";
 
