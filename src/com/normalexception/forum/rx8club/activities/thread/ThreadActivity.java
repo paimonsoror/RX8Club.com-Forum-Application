@@ -261,10 +261,10 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		// Get the user's actual ID, there is a chance they never got it
 		// before
 		UserProfile.getInstance().setUserId(
-				HtmlFormUtils.getInputElementValue(doc, "loggedinuser"));
+				HtmlFormUtils.getInputElementValueByName(doc, "loggedinuser"));
 
 		// Get Post Number and security token
-		securityToken = HtmlFormUtils.getInputElementValue(doc, "securitytoken");
+		securityToken = HtmlFormUtils.getInputElementValueByName(doc, "securitytoken");
 		
 		Elements pNumber = 
 				doc.select("a[href^=http://www.rx8club.com/newreply.php?do=newreply&noquote=1&p=]");

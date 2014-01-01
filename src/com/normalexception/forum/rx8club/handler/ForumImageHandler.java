@@ -42,6 +42,7 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.utils.Utils;
 
 /**
  * Handler designed to display the images within a textview
@@ -88,6 +89,7 @@ public class ForumImageHandler implements ImageGetter {
         @Override
         protected Bitmap doInBackground(Object... params) {
             String source = (String) params[0];
+            source = Utils.resolveUrl(source);
             mDrawable = (LevelListDrawable) params[1];
             Log.d(TAG, "doInBackground " + source);
             try {

@@ -139,10 +139,10 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 				
 				if(doc != null) {
 					securityToken =
-							HtmlFormUtils.getInputElementValue(doc, "securitytoken");
+							HtmlFormUtils.getInputElementValueByName(doc, "securitytoken");
 					
 					pmid =
-							HtmlFormUtils.getInputElementValue(doc, "pmid");
+							HtmlFormUtils.getInputElementValueByName(doc, "pmid");
 					
 					postUser = 
 							getIntent().getStringExtra("user");    	

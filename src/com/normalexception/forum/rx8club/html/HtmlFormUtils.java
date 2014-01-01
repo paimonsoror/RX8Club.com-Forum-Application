@@ -330,10 +330,10 @@ public class HtmlFormUtils {
 			httpGet.releaseConnection();
 			
 			Document doc = Jsoup.parse(output);
-			posthash = HtmlFormUtils.getInputElementValue(doc, VBulletinKeys.PostHash.getValue());
-			t = HtmlFormUtils.getInputElementValue(doc, VBulletinKeys.ThreadId.getValue());
-			p = HtmlFormUtils.getInputElementValue(doc, VBulletinKeys.PostNumber.getValue());
-			poststarttime = HtmlFormUtils.getInputElementValue(doc, VBulletinKeys.PostStartTime.getValue());
+			posthash = HtmlFormUtils.getInputElementValueByName(doc, VBulletinKeys.PostHash.getValue());
+			t = HtmlFormUtils.getInputElementValueByName(doc, VBulletinKeys.ThreadId.getValue());
+			p = HtmlFormUtils.getInputElementValueByName(doc, VBulletinKeys.PostNumber.getValue());
+			poststarttime = HtmlFormUtils.getInputElementValueByName(doc, VBulletinKeys.PostStartTime.getValue());
     	}
 		
 		// We need to make sure that we got all of the information before
@@ -476,9 +476,23 @@ public class HtmlFormUtils {
      * @param name	The name of the input to get the value for
      * @return		The string value of the input
      */
-    public static String getInputElementValue(Document pan, String name) {
+    public static String getInputElementValueByName(Document pan, String name) {
     	try {
     		return pan.select("input[name=" + name + "]").attr("value");
+    	} catch (NullPointerException npe) {
+    		return "";
+    	}
+    }
+    
+    /**
+     * Report the value inside of an input element
+     * @param pan	The panel where all of the input elements reside
+     * @param name	The name of the input to get the value for
+     * @return		The string value of the input
+     */
+    public static String getInputElementValueById(Document pan, String name) {
+    	try {
+    		return pan.select("input[id=" + name + "]").attr("value");
     	} catch (NullPointerException npe) {
     		return "";
     	}

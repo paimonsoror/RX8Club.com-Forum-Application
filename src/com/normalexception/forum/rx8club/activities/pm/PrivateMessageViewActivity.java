@@ -136,13 +136,13 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 				
 				if(doc != null) {
 					securityToken =
-							HtmlFormUtils.getInputElementValue(doc, "securitytoken");
+							HtmlFormUtils.getInputElementValueByName(doc, "securitytoken");
 					
 					pmid =
-							HtmlFormUtils.getInputElementValue(doc, "pmid");
+							HtmlFormUtils.getInputElementValueByName(doc, "pmid");
 					
 					title =
-							HtmlFormUtils.getInputElementValue(doc, "title");
+							HtmlFormUtils.getInputElementValueByName(doc, "title");
 					
 					Elements userPm = doc.select("table[id^=post]");
 					publishProgress(getString(R.string.asyncDialogLoadingPM));
@@ -188,6 +188,12 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 					pv.setUserPost(formatUserPost(postMessage));
 					
 					pmlist.add(pv);
+					
+					TextView comment = (TextView)findViewById(R.id.pmitem_comment);
+					Elements textarea = doc.select("textarea[id=vB_Editor_QR_textarea]");
+					if(textarea != null) {				
+						comment.setText(textarea.first().text());
+					}
 	
 					updateList();
 				}

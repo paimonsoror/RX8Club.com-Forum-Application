@@ -120,10 +120,10 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
     private void constructView() {    	
     	Document doc = VBForumFactory.getInstance().get(this, link);
     	if(doc != null) {
-	    	s 			= HtmlFormUtils.getInputElementValue(doc, "s");
-	    	token 		= HtmlFormUtils.getInputElementValue(doc, "securitytoken");
-	    	f 			= HtmlFormUtils.getInputElementValue(doc, "f");
-	    	posthash 	= HtmlFormUtils.getInputElementValue(doc, "posthash");
+	    	s 			= HtmlFormUtils.getInputElementValueByName(doc, "s");
+	    	token 		= HtmlFormUtils.getInputElementValueByName(doc, "securitytoken");
+	    	f 			= HtmlFormUtils.getInputElementValueByName(doc, "f");
+	    	posthash 	= HtmlFormUtils.getInputElementValueByName(doc, "posthash");
 	    	
 	    	tlist.add(new ThreadItemView());
 	    	

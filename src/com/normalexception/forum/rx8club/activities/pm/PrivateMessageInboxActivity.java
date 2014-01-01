@@ -287,7 +287,7 @@ public class PrivateMessageInboxActivity extends ForumBaseActivity implements On
  								showOutbound? WebUrls.pmSentUrl : WebUrls.pmInboxUrl);
  				
  				if( doc != null) {
-	 				token = HtmlFormUtils.getInputElementValue(doc, "securitytoken");
+	 				token = HtmlFormUtils.getInputElementValueByName(doc, "securitytoken");
 	 				String current_month = getMonthForInt(0);
 	 				Elements collapse = doc.select(
 	 						showOutbound? "tbody[id^=collapseobj_pmf-1]" : 

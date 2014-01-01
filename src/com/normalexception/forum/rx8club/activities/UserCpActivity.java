@@ -135,7 +135,7 @@ public class UserCpActivity extends ForumBaseActivity {
         			
         			if(doc != null) {
 	        			token = 
-	        					HtmlFormUtils.getInputElementValue(doc, "securitytoken");
+	        					HtmlFormUtils.getInputElementValueByName(doc, "securitytoken");
 	        			
 	        			Elements fieldSets =
 	        					doc.select("fieldset[class=fieldset]");
