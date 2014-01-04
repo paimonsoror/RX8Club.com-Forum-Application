@@ -3,21 +3,29 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="5dip" >
+    android:padding="5dip"
+    android:background="#dddddd">
  
     <!--  ListRow Left sied Thumbnail image -->
-    <LinearLayout android:id="@+id/thumbnail"
+
+    <LinearLayout
+        android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="3dip"
         android:layout_alignParentLeft="true"
-        android:layout_marginRight="5dip">
+        android:layout_marginRight="5dip"
+        android:baselineAligned="false"
+        android:padding="0dip" >
  
         <ImageView
             android:id="@+id/tv_image"
-            android:layout_width="15dip"
-            android:layout_height="15dip"
-            android:src="@drawable/black_mail"/>
+            android:layout_width="16dip"
+            android:layout_height="16dip"
+            android:adjustViewBounds="false"
+            android:baselineAlignBottom="false"
+            android:cropToPadding="false"
+            android:scaleType="fitXY"
+            android:src="@drawable/push_pin" />
  
     </LinearLayout>
  

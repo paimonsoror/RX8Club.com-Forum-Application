@@ -69,7 +69,7 @@ public class ThreadTypeFactory {
 				MainApplication.getAppContext().getResources() : src.getResources();
 		
 		Type theType = Type.NORMAL;
-		int  res     = R.drawable.black_mail;
+		int  res     = R.drawable.envelope;
 		
 		if(isLocked) {
 			if(hasPosts) {
@@ -83,18 +83,18 @@ public class ThreadTypeFactory {
 		} else if (isSticky) {
 			if(hasPosts) {
 				theType = Type.POSTED_STICKY;
-				res     = R.drawable.sticky_a;
+				res     = R.drawable.push_pin_a;
 			} else {
 				theType = Type.STICKY;
-				res     = R.drawable.sticky;
+				res     = R.drawable.push_pin;
 			}
 		} else {
 			if (hasPosts) {
 				theType = Type.POSTED;
-				res     = R.drawable.black_mail_a;
+				res     = R.drawable.open_envelope;
 			} else {
 				theType = Type.NORMAL;
-				res     = R.drawable.black_mail;
+				res     = R.drawable.envelope;
 			}
 		}
 		
