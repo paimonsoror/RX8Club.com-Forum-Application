@@ -38,15 +38,16 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
-import com.normalexception.forum.rx8club.handler.ImageLoader;
+import com.normalexception.forum.rx8club.handler.AvatarLoader;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
+import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 import com.normalexception.forum.rx8club.view.threadpost.PostView;
 
 public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
 	private Context activity;
 	private List<PMPostView> data;
-	private ImageLoader imageLoader;
+	private AvatarLoader imageLoader;
 
 	/**
 	 * Custom adapter to handle PMItemView's
@@ -59,7 +60,7 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
 		super(context, textViewResourceId, objects);
 		activity = context;
 		data = objects;
-		imageLoader = new ImageLoader(activity.getApplicationContext());
+		imageLoader = new AvatarLoader(activity.getApplicationContext());
 	}
 	
 	/*
@@ -101,7 +102,7 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
         ((TextView) ViewHolder.get(vi,R.id.nr_postDate)).setText(cv.getPostDate());
         
         TextView postText = ((TextView) ViewHolder.get(vi,R.id.nr_postText));
-        ForumImageHandler fih = new ForumImageHandler(postText, activity);        
+        ForumImageHandler fih = new ForumImageHandler(postText, Utils.randomInt(0, 9999), activity);        
         postText.setText(Html.fromHtml(cv.getUserPost(), fih, null));
         
         // Lets make sure we remove any font formatting that was done within

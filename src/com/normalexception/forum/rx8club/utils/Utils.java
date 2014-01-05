@@ -26,10 +26,15 @@ package com.normalexception.forum.rx8club.utils;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.util.Calendar;
+import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 
+import android.os.Debug;
+
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 
@@ -246,5 +251,55 @@ public class Utils {
     	calendar.clear();
     	calendar.set(2011, Calendar.OCTOBER, 1);
     	return calendar.getTimeInMillis() / 1000L;
+	}
+	
+	/**
+	 * Returns a pseudo-random number between min and max, inclusive.
+	 * The difference between min and max can be at most
+	 * <code>Integer.MAX_VALUE - 1</code>.
+	 *
+	 * @param min Minimum value
+	 * @param max Maximum value.  Must be greater than min.
+	 * @return Integer between min and max, inclusive.
+	 * @see java.util.Random#nextInt(int)
+	 */
+	public static int randomInt(final int min, final int max) {
+	    // Usually this can be a field rather than a method variable
+	    Random rand = new Random();
+
+	    // nextInt is normally exclusive of the top value,
+	    // so add 1 to make it inclusive
+	    int randomNum = rand.nextInt((max - min) + 1) + min;
+
+	    return randomNum;
+	}
+	
+	/**
+	 * Report the current available RAM in our device
+	 * @return The current available RAM
+	 */
+	public static void getCurrentRAM() {
+		Double allocated = 
+				Double.valueOf(Debug.getNativeHeapAllocatedSize())/Double.valueOf((1048576));
+        Double available = 
+        		Double.valueOf(Debug.getNativeHeapSize())/1048576.0;
+        Double free = 
+        		Double.valueOf(Debug.getNativeHeapFreeSize())/1048576.0;
+        
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        df.setMinimumFractionDigits(2);
+
+        Log.d("Utils", "Heap Native: Allocated " + df.format(allocated) + 
+        		"MB of " + 
+        		df.format(available) + "MB (" + df.format(free) + "MB free)");
+        
+        Log.d("Utils", "Memory: Allocated: " + df.format(
+        		Double.valueOf(Runtime.getRuntime().totalMemory()/1048576)) + 
+        		"MB of " + 
+        		df.format(Double.valueOf(Runtime.getRuntime().maxMemory()/1048576)) + 
+        		"MB (" + 
+        		df.format(Double.valueOf(Runtime.getRuntime().freeMemory()/1048576)) +
+        		"MB Free)");
 	}
 }

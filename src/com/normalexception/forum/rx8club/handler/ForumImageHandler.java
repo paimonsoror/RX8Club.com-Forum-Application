@@ -26,13 +26,10 @@ package com.normalexception.forum.rx8club.handler;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LevelListDrawable;
@@ -42,6 +39,7 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.bitmap.RegisteredBitmap;
 import com.normalexception.forum.rx8club.utils.Utils;
 
 /**
@@ -50,6 +48,7 @@ import com.normalexception.forum.rx8club.utils.Utils;
 public class ForumImageHandler implements ImageGetter {
 	Context c;
 	TextView container;
+	int id;
 	
 	private final String TAG = "ForumImageHandler";
 
@@ -57,11 +56,13 @@ public class ForumImageHandler implements ImageGetter {
 	 * Construct the URLImageParser which will execute 
 	 * AsyncTask and refresh the container
 	 * @param t	The source view
+	 * @param d 
 	 * @param c	The source context
 	 */
-	public ForumImageHandler(TextView t, Context c) {
+	public ForumImageHandler(TextView t, int d, Context c) {
 		this.c = c;
 		this.container = t;
+		this.id = d;
 	}
 
 	/**
@@ -93,8 +94,7 @@ public class ForumImageHandler implements ImageGetter {
             mDrawable = (LevelListDrawable) params[1];
             Log.d(TAG, "doInBackground " + source);
             try {
-                InputStream is = new URL(source).openStream();
-                return BitmapFactory.decodeStream(is);
+                return (new RegisteredBitmap(id, source)).getBitmap();
             } catch (FileNotFoundException e) {
             	Log.e(TAG, e.getMessage(), e);
             } catch (MalformedURLException e) {

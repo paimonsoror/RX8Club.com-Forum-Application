@@ -47,7 +47,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.pm.NewPrivateMessageActivity;
 import com.normalexception.forum.rx8club.activities.thread.EditPostActivity;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
-import com.normalexception.forum.rx8club.handler.ImageLoader;
+import com.normalexception.forum.rx8club.handler.AvatarLoader;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.view.ViewHolder;
@@ -58,7 +58,8 @@ import com.normalexception.forum.rx8club.view.ViewHolder;
 public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	private Context activity;
 	private List<PostView> data;
-	private ImageLoader imageLoader; 
+	private AvatarLoader imageLoader; 
+	private int threadId;
 	private final String TAG = "PostViewArrayAdapter";
 
 	/**
@@ -72,7 +73,12 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 		super(context, textViewResourceId, objects);
 		activity = context;
 		data = objects;
-		imageLoader=new ImageLoader(activity.getApplicationContext());
+		imageLoader=new AvatarLoader(activity.getApplicationContext());
+		threadId = 0;
+	}
+	
+	public void setThreadId(int id) {
+		this.threadId = id;
 	}
 	
 	/*
@@ -117,7 +123,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         ((TextView)ViewHolder.get(vi,R.id.nr_postDate)).setText(cv.getPostDate());
         
         TextView postText = ((TextView)ViewHolder.get(vi,R.id.nr_postText));
-        ForumImageHandler fih = new ForumImageHandler(postText, activity);  
+        ForumImageHandler fih = new ForumImageHandler(postText, threadId, activity);  
         postText.setMovementMethod(LinkMovementMethod.getInstance());
         
         // Lets make sure we remove any font formatting that was done within

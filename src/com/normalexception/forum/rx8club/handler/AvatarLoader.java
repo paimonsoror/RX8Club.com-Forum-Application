@@ -53,12 +53,13 @@ import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.httpclient.ClientUtils;
 import com.normalexception.forum.rx8club.utils.Utils;
 
-public class ImageLoader {
+public class AvatarLoader {
 
 	private MemoryCache memoryCache = new MemoryCache();
 	private FileCache fileCache;
 	private Map<ImageView, String> imageViews = 
 			Collections.synchronizedMap(new WeakHashMap<ImageView, String>());
+	
 	private ExecutorService executorService; 
 	private final String TAG = "ImageLoader";
 
@@ -69,7 +70,7 @@ public class ImageLoader {
 	 * Constructor
 	 * @param context	Source context
 	 */
-	public ImageLoader(Context context){
+	public AvatarLoader(Context context){
 		fileCache=new FileCache(context);
 		executorService=Executors.newFixedThreadPool(5);
 	}

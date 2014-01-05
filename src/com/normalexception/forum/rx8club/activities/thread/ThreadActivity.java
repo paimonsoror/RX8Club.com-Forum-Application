@@ -54,6 +54,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.activities.fragments.StylerFragment;
+import com.normalexception.forum.rx8club.bitmap.RegisteredBitmap;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
@@ -102,6 +103,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	private boolean isPoll = false, isLocked = false;
 	
 	private ProgressDialog loadingDialog;
+	
+	private int threadId = 0;
 
 	/*
 	 * (non-Javadoc)
@@ -115,6 +118,8 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			
 			setContentView(R.layout.activity_basiclist);
 
+			threadId = Utils.randomInt(0, 9999);
+			
 			Log.v(TAG, "Category Activity Started");
 			
 			if(TimeoutFactory.getInstance().checkTimeout(this)) {
@@ -131,7 +136,12 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		}
 	}
 	
-	
+	@Override
+	public void onDestroy() {
+		Log.v(TAG, "Recycling Thread Bitmaps");
+		RegisteredBitmap.recycleById(threadId);
+		super.onDestroy();
+	}
 
 	/**
 	 * Construct the thread activity view
@@ -228,6 +238,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 					.setText(String.format("%s [Page %s]", 
 							currentPageTitle, pageNumber.equals("last")? finalPage : pageNumber));
 				pva = new PostViewArrayAdapter(a, R.layout.view_thread, postlist);
+				pva.setThreadId(threadId);
 				lv.setAdapter(pva);
 				lv.setOnRefreshListener(new OnRefreshListener() {
 		            @Override

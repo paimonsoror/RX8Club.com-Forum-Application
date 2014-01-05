@@ -43,7 +43,7 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.WebUrls;
-import com.normalexception.forum.rx8club.handler.ImageLoader;
+import com.normalexception.forum.rx8club.handler.AvatarLoader;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
 import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.user.UserProfile;
@@ -66,7 +66,7 @@ public class ProfileActivity extends ForumBaseActivity {
 	private ProfileViewArrayAdapter pva;
 	private ListView lv;
 	
-	private ImageLoader imageLoader;
+	private AvatarLoader imageLoader;
 	
 	/*
 	 * (non-Javadoc)
@@ -82,7 +82,7 @@ public class ProfileActivity extends ForumBaseActivity {
         if(TimeoutFactory.getInstance().checkTimeout(this)) {
 	        Log.v(TAG, "Profile Activity Started");
 	        
-	        imageLoader=new ImageLoader(this);
+	        imageLoader=new AvatarLoader(this);
 	        
 	        constructView();
         }
