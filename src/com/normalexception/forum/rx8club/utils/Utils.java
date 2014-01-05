@@ -69,7 +69,7 @@ public class Utils {
 	 * @return		The resolved URL
 	 */
 	public static String resolveUrl(String url) {
-		if(!url.startsWith(WebUrls.rootUrl)) {
+		if(!url.startsWith(WebUrls.rootUrl) && !url.startsWith("http://")) {
 			url = url.startsWith("/")? url : "/" + url;
 			url = WebUrls.rootUrl + url;
 		}

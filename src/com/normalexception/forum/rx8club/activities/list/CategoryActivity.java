@@ -177,7 +177,9 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 						
 						// If the user wants the last page when recently updated
 						// threads, grab it.
-						if(getLastPage(itm) && !itm.getLastLink().equals("#")) {
+						if(getLastPage(itm) && 
+								!itm.getLastLink().equals("#") &&
+								!itm.getLastLink().endsWith("/#")) {
 							_intent.putExtra("link", itm.getLastLink());
 							_intent.putExtra("page", "last");
 						} else
@@ -462,7 +464,10 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 			    		threadlist.add(tv);
 		    		}
         		}
-    		} catch (Exception e) { Log.w(TAG, "Error Parsing That Thread..."); }
+    		} catch (Exception e) { 
+    			Log.e(TAG, "Error Parsing That Thread...", e);
+    			Log.d(TAG, "Thread may have moved");
+    		}
     	}
     }
     

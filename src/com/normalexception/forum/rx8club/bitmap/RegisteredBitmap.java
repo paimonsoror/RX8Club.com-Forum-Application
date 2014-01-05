@@ -106,7 +106,10 @@ public class RegisteredBitmap {
 		ArrayList<String> toRemove = new ArrayList<String>();
 		
 		for(Map.Entry<String,RegisteredBitmap> ent : archive.entrySet()) {
-			if(!ent.getValue().getBitmap().isRecycled()) {
+			Bitmap bmp = ent.getValue().getBitmap();
+			if(bmp == null) 
+				toRemove.add(ent.getKey());
+			else if(!bmp.isRecycled()) {
 				if(ent.getValue().id == id) {
 					ent.getValue().getBitmap().recycle();
 					toRemove.add(ent.getKey());
