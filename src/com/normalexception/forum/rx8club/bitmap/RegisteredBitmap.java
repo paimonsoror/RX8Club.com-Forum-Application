@@ -33,7 +33,7 @@ import java.util.Map;
 import android.graphics.Bitmap;
 
 import com.normalexception.forum.rx8club.Log;
-import com.normalexception.forum.rx8club.utils.Utils;
+import com.normalexception.forum.rx8club.utils.MemoryManagement;
 
 public class RegisteredBitmap {
 	
@@ -42,7 +42,9 @@ public class RegisteredBitmap {
 	private static String TAG = "RegisteredBitmap";
 	
 	private static Map<String,RegisteredBitmap> archive = 
-			new HashMap<String,RegisteredBitmap>();
+			new HashMap<String,RegisteredBitmap>(); 
+	
+	private static final double HEAP_THRESHOLD = 0.1;
 	
 	/**
 	 * Create a registered bitmap.  This is a container for a bitmap that 
@@ -58,9 +60,15 @@ public class RegisteredBitmap {
 		this.id = id;
 		
 		RegisteredBitmap temp = archive.get(source);
+		double currentHeap = MemoryManagement.getFreeHeapSize();
 		
 		if(temp == null) {
 			Log.d(TAG, String.format("Creating New Bitmap (%d)", id));
+			Log.d(TAG, String.format("Current Free Heap (%f)", currentHeap));
+			
+			if(currentHeap < HEAP_THRESHOLD)
+				recycleAll();
+			
             bmp = BitmapDecoder.decodeSource(source);
 			archive.put(source, this);
 		} else {
@@ -78,12 +86,22 @@ public class RegisteredBitmap {
 	}
 	
 	/**
+	 * Recycle all bitmaps in the archive
+	 */
+	public static void recycleAll() {
+		Log.d(TAG, "Recycling All Bitmaps");
+		for(RegisteredBitmap rBmp : archive.values())
+			rBmp.getBitmap().recycle();
+		archive.clear();
+	}
+	
+	/**
 	 * Recycle bitmaps based on their id
 	 * @param id	The thread id that the bitmaps are going to be recycled from
 	 */
 	public static void recycleById(int id) {
 		Log.d(TAG, String.format("Cleaning Out Bitmaps (%d)", id));
-		Utils.getCurrentRAM();
+		MemoryManagement.printCurrentMemoryInformation();
 		
 		ArrayList<String> toRemove = new ArrayList<String>();
 		
@@ -100,6 +118,6 @@ public class RegisteredBitmap {
 		for(String key : toRemove)
 			archive.remove(key);
 		
-		Utils.getCurrentRAM();
+		MemoryManagement.printCurrentMemoryInformation();
 	}
 }

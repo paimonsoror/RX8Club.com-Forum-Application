@@ -101,6 +101,8 @@ public class ForumImageHandler implements ImageGetter {
             	Log.e(TAG, e.getMessage(), e);
             } catch (IOException e) {
             	Log.e(TAG, e.getMessage(), e);
+            } catch (OutOfMemoryError e) {
+            	Log.e(TAG, e.getMessage(), e);
             }
             return null;
         }

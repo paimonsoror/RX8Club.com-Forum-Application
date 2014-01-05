@@ -273,33 +273,4 @@ public class Utils {
 
 	    return randomNum;
 	}
-	
-	/**
-	 * Report the current available RAM in our device
-	 * @return The current available RAM
-	 */
-	public static void getCurrentRAM() {
-		Double allocated = 
-				Double.valueOf(Debug.getNativeHeapAllocatedSize())/Double.valueOf((1048576));
-        Double available = 
-        		Double.valueOf(Debug.getNativeHeapSize())/1048576.0;
-        Double free = 
-        		Double.valueOf(Debug.getNativeHeapFreeSize())/1048576.0;
-        
-        DecimalFormat df = new DecimalFormat();
-        df.setMaximumFractionDigits(2);
-        df.setMinimumFractionDigits(2);
-
-        Log.d("Utils", "Heap Native: Allocated " + df.format(allocated) + 
-        		"MB of " + 
-        		df.format(available) + "MB (" + df.format(free) + "MB free)");
-        
-        Log.d("Utils", "Memory: Allocated: " + df.format(
-        		Double.valueOf(Runtime.getRuntime().totalMemory()/1048576)) + 
-        		"MB of " + 
-        		df.format(Double.valueOf(Runtime.getRuntime().maxMemory()/1048576)) + 
-        		"MB (" + 
-        		df.format(Double.valueOf(Runtime.getRuntime().freeMemory()/1048576)) +
-        		"MB Free)");
-	}
 }

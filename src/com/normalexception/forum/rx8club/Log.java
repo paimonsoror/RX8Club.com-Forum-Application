@@ -93,7 +93,7 @@ public class Log {
 	 * @param message	The log message
 	 * @param ex		The exception thrown
 	 */
-    public final static void e(String tag, String message, Exception ex){
+    public final static void e(String tag, String message, Throwable ex){
         if( mLevel > ERROR ) return;
         android.util.Log.e(tag, message);
         if(ex != null)
