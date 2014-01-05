@@ -1,0 +1,106 @@
+<resources>
+	<!-- String Arrays -->
+	<string-array name="searchTypeArray">
+	    <item>Thread Content</item>
+	    <item>Thread Title</item>
+	    <item>User Name</item>
+	</string-array>
+    <string-array name="searchDateArray">
+        <item>Any Date</item>
+        <item>Last Visit</item>
+        <item>Yesterday</item>
+        <item>1 Week Ago</item>
+        <item>2 Weeks Ago</item>
+        <item>1 Month Ago</item>
+        <item>3 Months Ago</item>
+        <item>6 Months Ago</item>
+        <item>1 Year Ago</item>
+    </string-array>
+    <string-array name="searchDateArrayValue">
+        <item>0</item>
+        <item>lastvisit</item>
+        <item>1</item>
+        <item>7</item>
+        <item>14</item>
+        <item>30</item>
+        <item>90</item>
+        <item>180</item>
+        <item>365</item>
+    </string-array>
+    <string-array name="searchSortArray">
+        <item>Relevancy</item>
+        <item>Title</item>
+        <item>Reply Count</item>
+        <item>View Count</item>
+        <item>Thread Start Date</item>
+        <item>Last Post Date</item>
+        <item>User Name</item>
+        <item>Forum</item>
+    </string-array>
+    <string-array name="searchSortArrayValue">
+        <item>rank</item>
+        <item>title</item>
+        <item>replycount</item>
+        <item>views</item>
+        <item>threadstart</item>
+        <item>lastpost</item>
+        <item>postusername</item>
+        <item>forum</item>
+    </string-array>
+    <string-array name="fontsizes">
+        <item>Smaller</item>
+        <item>Small</item>
+        <item>Normal</item>
+        <item>Big</item>
+        <item>Bigger</item>
+    </string-array>
+    <string-array name="fontsizevalue">
+        <item>8</item>
+        <item>10</item>
+        <item>12</item>
+        <item>14</item>
+        <item>16</item>
+    </string-array>
+    
+    <string-array name="utilities">
+        <item>Compression Calculator</item>
+        <item>VIN Decoder</item>
+    </string-array>
+    
+    <string-array name="compressionAltitudeSpinnerValues">
+        <item>Feet</item>
+        <item>Meters</item>
+    </string-array>
+    
+    <string-array name="compressionUnitSpinnerValues">
+        <item>PSI</item>
+        <item>KPA</item>
+    </string-array>
+    
+    <string-array name="newPostsPage">
+        <item>First</item>
+        <item>Last</item>
+    </string-array>
+    
+    <string-array name="threadImageSize">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+    </string-array>
+    
+    <string-array name="threadImageSizeValues">
+        <item>50</item>
+        <item>100</item>
+        <item>150</item>
+    </string-array>
+    
+    <string-array name="languageValues">
+        <item>English</item>
+    </string-array>
+    
+    <string-array name="filterValues">
+        <item>By Owner</item>
+        <item>By Title</item>
+        <item>By Last Responded</item>
+    </string-array>
+</resources>

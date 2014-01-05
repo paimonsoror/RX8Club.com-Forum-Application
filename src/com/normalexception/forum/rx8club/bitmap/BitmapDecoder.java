@@ -29,15 +29,15 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.normalexception.forum.rx8club.MainApplication;
+import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 public class BitmapDecoder {
 	
 	private static String TAG = "BitmapDecoderHandler";
-	
-	private static final int SAMPLE_HEIGHT = 50;
-	private static final int SAMPLE_WIDTH  = 50;
 	
 	/**
 	 * Decode our bitmap while taking memory into consideraiton.  Here we
@@ -51,8 +51,10 @@ public class BitmapDecoder {
 	public static Bitmap decodeSource(final String source) 
 			throws MalformedURLException, IOException {
 		InputStream is = new URL(source).openStream();
-        Bitmap mBitmap = decodeSampledBitmapFromResourceMemOpt(is, SAMPLE_WIDTH,
-                SAMPLE_HEIGHT);
+		final int sample_size = 
+				PreferenceHelper.getThreadImageSize(MainApplication.getAppContext());
+        Bitmap mBitmap = decodeSampledBitmapFromResourceMemOpt(is, sample_size,
+        		sample_size);
         return mBitmap;
 	}
 	

@@ -59,6 +59,13 @@
 	        android:summary="Show post attachments if they exist"
 	        android:key="showattachments"
 	        android:defaultValue="true"/>
+	    <ListPreference 
+	        android:title="Embedded Image Display Size"
+	        android:summary="Size of the images displayed in a thread"
+	        android:key="threadimagesize"
+	        android:defaultValue="Small"
+	        android:entries="@array/threadImageSize" 
+	        android:entryValues="@array/threadImageSizeValues" />
 	   	<ListPreference
 	        android:title="Font Size"
 			android:summary="Set the application's font size"

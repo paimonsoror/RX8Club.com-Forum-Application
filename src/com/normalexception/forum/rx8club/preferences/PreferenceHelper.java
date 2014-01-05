@@ -29,6 +29,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
 import com.normalexception.forum.rx8club.MainApplication;
+import com.normalexception.forum.rx8club.R;
 
 /**
  * Helper class for the preference manager
@@ -36,6 +37,17 @@ import com.normalexception.forum.rx8club.MainApplication;
 public class PreferenceHelper {
 	
 	public final static String PREFS_NAME = "app_prefs";
+	
+	/**
+	 * Get the thread image size from the preferences
+	 * @param context	The source context
+	 * @return			The option value
+	 */
+	public static int getThreadImageSize(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+		return Integer.parseInt(prefs.getString("threadimagesize", 
+				context.getResources().getStringArray(R.array.threadImageSizeValues)[0]));
+	}
 	
 	/**
 	 * Report the option that the user has for the recently updated

@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import android.graphics.Bitmap;
@@ -105,7 +106,9 @@ public class RegisteredBitmap {
 		
 		ArrayList<String> toRemove = new ArrayList<String>();
 		
-		for(Map.Entry<String,RegisteredBitmap> ent : archive.entrySet()) {
+		Iterator<Map.Entry<String, RegisteredBitmap>> it = archive.entrySet().iterator();
+		while(it.hasNext()){
+			Map.Entry<String, RegisteredBitmap> ent = it.next();
 			Bitmap bmp = ent.getValue().getBitmap();
 			if(bmp == null) 
 				toRemove.add(ent.getKey());
