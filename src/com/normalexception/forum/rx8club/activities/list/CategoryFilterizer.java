@@ -37,6 +37,8 @@ public class CategoryFilterizer {
 	
 	private static String TAG = "CategoryFilterizer";
 	
+	private static int TOTAL_FILTERED = 0;
+	
 	/**
 	 * Filter our category if any actually exist
 	 * @param threadlist	The source list
@@ -44,6 +46,8 @@ public class CategoryFilterizer {
 	 *                      filters exist)
 	 */
 	public static ArrayList<ThreadView> applyFilter(ArrayList<ThreadView> threadlist) {
+		CategoryFilterizer.resetFilter();
+				
     	// Do we have any filters?  If so, lets filter out threads
     	if(ThreadFilterFactory.getInstance().hasFilters()) {
     		List<ThreadFilter> filters = 
@@ -70,8 +74,10 @@ public class CategoryFilterizer {
     			}
     			if(!filterOut) {
     				filtered.add(tv);
-    			} else 
+    			} else {
     				Log.d(TAG, "Filtering Out " + tv.getTitle());
+    				CategoryFilterizer.TOTAL_FILTERED++;
+    			}
     		}
     		
     		// Now copy our filtered back to the main list
@@ -79,5 +85,13 @@ public class CategoryFilterizer {
     	} else {
     		return threadlist;
     	}
+	}
+	
+	private static void resetFilter() {
+		CategoryFilterizer.TOTAL_FILTERED = 0;
+	}
+	
+	public static int getTotalFiltered() {
+		return CategoryFilterizer.TOTAL_FILTERED;
 	}
 }

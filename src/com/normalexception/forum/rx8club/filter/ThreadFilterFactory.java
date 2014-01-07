@@ -77,7 +77,16 @@ public class ThreadFilterFactory {
 	 * @return	True if filters exist
 	 */
 	public boolean hasFilters() {
-		return _filters.size() > 0;
+		return getFilterCount() > 0;
+	}
+	
+	
+	/**
+	 * Get total number of filters that have been defined
+	 * @return	The total filters defined
+	 */
+	public int getFilterCount() {
+		return _filters.size();
 	}
 	
 	/**

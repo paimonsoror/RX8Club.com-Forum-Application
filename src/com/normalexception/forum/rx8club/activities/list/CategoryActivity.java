@@ -46,6 +46,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.Log;
@@ -202,6 +203,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 				if(LoginFactory.getInstance().isLoggedIn())
 					registerForContextMenu(lv);
 				updatePagination(thisPage, finalPage);
+		        updateFilterizedInformation();
             }
     	});
 	}
@@ -512,6 +514,16 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 				startActivityForResult(_intent, 1);
 			else
 				startActivity(_intent);
+	}
+	
+	private void updateFilterizedInformation() {
+		int totalF = CategoryFilterizer.getTotalFiltered();
+		
+		findViewById(R.id.mainlisttitle).setVisibility(totalF > 0? 
+				View.VISIBLE : View.GONE);	
+		((TextView)findViewById(R.id.mainlisttitle))
+			.setText(String.format("Filtered Threads: %d (%d Active Filters)", 
+				totalF, ThreadFilterFactory.getInstance().getFilterCount()	));
 	}
 	
 	/*
