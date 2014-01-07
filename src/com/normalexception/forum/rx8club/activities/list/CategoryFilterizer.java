@@ -70,13 +70,18 @@ public class CategoryFilterizer {
     				} else if(tf.getRule() == RuleType.LASTUSER) {
     					if(tv.getLastUser().equalsIgnoreCase(tf.getSubject()))
     						filterOut = true;
+    					
+    				// Filter by the title contains
+    				} else if(tf.getRule() == RuleType.TITLE_CONTAINS) {
+    					if(tv.getTitle().contains(tf.getSubject()))
+    						filterOut = true;
     				}
     			}
     			if(!filterOut) {
     				filtered.add(tv);
     			} else {
-    				Log.d(TAG, "Filtering Out " + tv.getTitle());
-    				CategoryFilterizer.TOTAL_FILTERED++;
+    				Log.d(TAG, String.format("Filtering Out %s (%d)", 
+    						tv.getTitle(), ++CategoryFilterizer.TOTAL_FILTERED));
     			}
     		}
     		

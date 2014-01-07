@@ -101,6 +101,7 @@
     <string-array name="filterValues">
         <item>By Owner</item>
         <item>By Title</item>
+        <item>By Title Contains</item>
         <item>By Last Responded</item>
     </string-array>
 </resources>
