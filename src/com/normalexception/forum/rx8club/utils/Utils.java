@@ -40,6 +40,8 @@ import com.normalexception.forum.rx8club.html.LoginFactory;
 
 public class Utils {
 	
+	private static String TAG = "Utils";
+	
 	/**
 	 * Safely copy one stream into another.  This is useful when copying
 	 * files
@@ -69,10 +71,12 @@ public class Utils {
 	 * @return		The resolved URL
 	 */
 	public static String resolveUrl(String url) {
-		if(!url.startsWith(WebUrls.rootUrl) && !url.startsWith("http://")) {
+		if(!url.startsWith(WebUrls.rootUrl) || url.matches("^(?!http(s*)://).*")) {	
+			Log.d(TAG, "Resolving " + url);
 			url = url.startsWith("/")? url : "/" + url;
 			url = WebUrls.rootUrl + url;
-		}
+		} else
+			Log.d(TAG, "Not Resolving " + url);
 		return url;
 	}
 	

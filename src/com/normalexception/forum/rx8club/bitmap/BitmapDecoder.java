@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 
@@ -50,6 +51,7 @@ public class BitmapDecoder {
 	 */
 	public static Bitmap decodeSource(final String source) 
 			throws MalformedURLException, IOException {
+		Log.d(TAG, "Decoding " + source);
 		InputStream is = new URL(source).openStream();
 		final int sample_size = 
 				PreferenceHelper.getThreadImageSize(MainApplication.getAppContext());

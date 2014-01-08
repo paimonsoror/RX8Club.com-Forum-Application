@@ -63,7 +63,7 @@ public class RegisteredBitmap {
 		RegisteredBitmap temp = archive.get(source);
 		double currentHeap = MemoryManagement.getFreeHeapSize();
 		
-		if(temp == null) {
+		if(temp == null || temp.getBitmap() == null || temp.getBitmap().isRecycled()) {
 			Log.d(TAG, String.format("Creating New Bitmap (%d)", id));
 			Log.d(TAG, String.format("Current Free Heap (%f)", currentHeap));
 			
@@ -91,8 +91,11 @@ public class RegisteredBitmap {
 	 */
 	public static void recycleAll() {
 		Log.d(TAG, "Recycling All Bitmaps");
-		for(RegisteredBitmap rBmp : archive.values())
-			rBmp.getBitmap().recycle();
+		for(RegisteredBitmap rBmp : archive.values()) {
+			// We need to play it safe here just incase
+			if(rBmp.getBitmap() != null && !rBmp.getBitmap().isRecycled())
+				rBmp.getBitmap().recycle();
+		}
 		archive.clear();
 	}
 	
