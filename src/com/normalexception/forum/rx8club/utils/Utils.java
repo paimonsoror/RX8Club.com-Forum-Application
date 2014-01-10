@@ -26,13 +26,12 @@ package com.normalexception.forum.rx8club.utils;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.text.DecimalFormat;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
-
-import android.os.Debug;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.WebUrls;
@@ -71,13 +70,17 @@ public class Utils {
 	 * @return		The resolved URL
 	 */
 	public static String resolveUrl(String url) {
-		if(!url.startsWith(WebUrls.rootUrl) || url.matches("^(?!http(s*)://).*")) {	
+		URL uurl = null;
+		String surl = url;
+		try {
 			Log.d(TAG, "Resolving " + url);
-			url = url.startsWith("/")? url : "/" + url;
-			url = WebUrls.rootUrl + url;
-		} else
-			Log.d(TAG, "Not Resolving " + url);
-		return url;
+			uurl = new URL(new URL(WebUrls.rootUrl), url);
+			surl = uurl.toString();
+			Log.d(TAG, "    to " + surl);
+		} catch (MalformedURLException e) {
+			Log.e(TAG, "Error Resolving " + url, e);
+		}
+		return surl;
 	}
 	
 	/**	
