@@ -118,42 +118,46 @@ public class ProfileActivity extends ForumBaseActivity {
 				Document doc = 
 						VBForumFactory.getInstance().get(src, upInstance.getUserProfileLink());
 				if(doc != null) {
-					publishProgress(getString(R.string.asyncDialogGrabProfile));
-					String id = upInstance.getUserProfileLink().substring(
-							upInstance.getUserProfileLink().lastIndexOf("-") + 1,
-							upInstance.getUserProfileLink().length() - 1);
-					upInstance.setUserId(id);
-					getUserInformation(doc);
-					
-					lv = (ListView)findViewById(R.id.mainlistview);
-					
-					runOnUiThread(new Runnable() {
-			            public void run() {
-			            	View v = getLayoutInflater().
-			            			inflate(R.layout.view_profile_header, null);
-			            	v.setOnClickListener(src);
-			            	lv.addHeaderView(v);
-
-			            	publishProgress(getString(R.string.asyncDialogPopulating));
-			            	
-	                    	// the dateline at the end of the file so that we aren't
-	                        // creating multiple images for a user.  The image still
-	                        // gets returned without a date
-	                        String nodate_avatar = 
-	                        		upInstance.getUserImageLink().indexOf("&dateline") == -1? 
-	                        				upInstance.getUserImageLink() : 
-	                        					upInstance.getUserImageLink().substring(0, 
-	                        							upInstance.getUserImageLink().indexOf("&dateline"));
-	                        ImageView avatar = ((ImageView)findViewById(R.id.pr_image));
-	                        imageLoader.DisplayImage(nodate_avatar, avatar);
-	                        
-	                    	((TextView)findViewById(R.id.pr_username)).setText(
-	                    			upInstance.getUsername() + " (ID: " + upInstance.getUserId() + ")");
-	                    	((TextView)findViewById(R.id.pr_userTitle)).setText(upInstance.getUserTitle());
-	                    	((TextView)findViewById(R.id.pr_userPosts)).setText(upInstance.getUserPostCount());
-	                    	((TextView)findViewById(R.id.pr_userJoin)).setText(upInstance.getUserJoinDate());	          
-	                    }
-					});
+					try {
+						publishProgress(getString(R.string.asyncDialogGrabProfile));
+						String id = upInstance.getUserProfileLink().substring(
+								upInstance.getUserProfileLink().lastIndexOf("-") + 1,
+								upInstance.getUserProfileLink().length() - 1);
+						upInstance.setUserId(id);
+						getUserInformation(doc);
+						
+						lv = (ListView)findViewById(R.id.mainlistview);
+						
+						runOnUiThread(new Runnable() {
+				            public void run() {
+				            	View v = getLayoutInflater().
+				            			inflate(R.layout.view_profile_header, null);
+				            	v.setOnClickListener(src);
+				            	lv.addHeaderView(v);
+	
+				            	publishProgress(getString(R.string.asyncDialogPopulating));
+				            	
+		                    	// the dateline at the end of the file so that we aren't
+		                        // creating multiple images for a user.  The image still
+		                        // gets returned without a date
+		                        String nodate_avatar = 
+		                        		upInstance.getUserImageLink().indexOf("&dateline") == -1? 
+		                        				upInstance.getUserImageLink() : 
+		                        					upInstance.getUserImageLink().substring(0, 
+		                        							upInstance.getUserImageLink().indexOf("&dateline"));
+		                        ImageView avatar = ((ImageView)findViewById(R.id.pr_image));
+		                        imageLoader.DisplayImage(nodate_avatar, avatar);
+		                        
+		                    	((TextView)findViewById(R.id.pr_username)).setText(
+		                    			upInstance.getUsername() + " (ID: " + upInstance.getUserId() + ")");
+		                    	((TextView)findViewById(R.id.pr_userTitle)).setText(upInstance.getUserTitle());
+		                    	((TextView)findViewById(R.id.pr_userPosts)).setText(upInstance.getUserPostCount());
+		                    	((TextView)findViewById(R.id.pr_userJoin)).setText(upInstance.getUserJoinDate());	          
+		                    }
+						});
+					} catch (Exception e) {
+						Log.e(TAG, "Error Grabbing Profile Data", e);
+					}
 					
 					updateList();				
 				} 

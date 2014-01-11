@@ -88,11 +88,11 @@
         <item>Large</item>
     </string-array>
     
-    <string-array name="threadImageSizeValues">
+    <integer-array name="threadImageSizeValues">
         <item>50</item>
         <item>150</item>
         <item>250</item>
-    </string-array>
+    </integer-array>
     
     <string-array name="languageValues">
         <item>English</item>

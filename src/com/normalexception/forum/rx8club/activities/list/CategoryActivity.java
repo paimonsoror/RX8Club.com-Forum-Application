@@ -56,6 +56,7 @@ import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
+import com.normalexception.forum.rx8club.bitmap.RegisteredBitmap;
 import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
 import com.normalexception.forum.rx8club.filter.ThreadFilter;
 import com.normalexception.forum.rx8club.filter.ThreadFilterFactory;

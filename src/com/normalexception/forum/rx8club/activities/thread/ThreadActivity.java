@@ -305,14 +305,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			pv.setPostDate(innerPost.select("td[class=thead]").first().text());
 			pv.setPostId(Utils.parseInts(post.attr("id")));
 
-			// userSubDetail
-			// 0 - full container , full container
-			// 1 - Trader Score   , Trader Score
-			// 2 - Join Date      , Join Date
-			// 3 - Post Count     , Location
-			// 4 - Blank          , Post Count
-			// 5 -                , Blank || Social
-			//
 			Iterator<Element> itr = userSubDetail.listIterator();
 			while(itr.hasNext()) {
 				String txt = itr.next().text();

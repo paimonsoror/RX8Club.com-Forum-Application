@@ -1,5 +1,9 @@
 package com.normalexception.forum.rx8club;
 
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.StandardExceptionParser;
+
 /************************************************************************
  * NormalException.net Software, and other contributors
  * http://www.normalexception.net
@@ -31,14 +35,14 @@ package com.normalexception.forum.rx8club;
 public class Log {
 	// The log int definitions
 	public static int VERBOSE = 0,
-					  DEBUG = 1,
-					  INFO = 2,
-					  WARN = 3,
-					  ERROR = 4;
+			DEBUG = 1,
+			INFO = 2,
+			WARN = 3,
+			ERROR = 4;
 
 	// The log level
 	private static int mLevel = VERBOSE;
-	
+
 	/**
 	 * Set the level of the logger
 	 * @param level	The level to set for the logger
@@ -52,51 +56,64 @@ public class Log {
 	 * @param tag		The log tag
 	 * @param message	The log message
 	 */
-    public final static void v(String tag, String message){
-        if( mLevel > VERBOSE ) return;
-        android.util.Log.v(tag, message);
-    }
-    
-    /**
+	public final static void v(String tag, String message){
+		if( mLevel > VERBOSE ) return;
+		android.util.Log.v(tag, message);
+	}
+
+	/**
 	 * Log a 'debug' level message
 	 * @param tag		The log tag
 	 * @param message	The log message
 	 */
-    public final static void d(String tag, String message){
-        if( mLevel > DEBUG ) return;
-        android.util.Log.d(tag, message);
-    }
-    
-    /**
+	public final static void d(String tag, String message){
+		if( mLevel > DEBUG ) return;
+		android.util.Log.d(tag, message);
+	}
+
+	/**
 	 * Log an 'info' level message
 	 * @param tag		The log tag
 	 * @param message	The log message
 	 */
-    public final static void i(String tag, String message){
-        if( mLevel > INFO ) return;
-        android.util.Log.d(tag, message);
-    }
-    
-    /**
+	public final static void i(String tag, String message){
+		if( mLevel > INFO ) return;
+		android.util.Log.d(tag, message);
+	}
+
+	/**
 	 * Log a 'warn' level message
 	 * @param tag		The log tag
 	 * @param message	The log message
 	 */
-    public final static void w(String tag, String message){
-        if( mLevel > WARN ) return;
-        android.util.Log.w(tag, message);
-    }
-    
-    /**
+	public final static void w(String tag, String message){
+		if( mLevel > WARN ) return;
+		android.util.Log.w(tag, message);
+	}
+
+	/**
 	 * Log an 'error' level message
 	 * @param tag		The log tag
 	 * @param message	The log message
 	 * @param ex		The exception thrown
 	 */
-    public final static void e(String tag, String message, Throwable ex){
-        if( mLevel > ERROR ) return;
-        android.util.Log.e(tag, message);
-        if(ex != null)
-        	ex.printStackTrace();
-    }
+	public final static void e(String tag, String message, Throwable ex){
+		if( mLevel > ERROR ) return;
+		android.util.Log.e(tag, message);
+		if(ex != null) {
+			ex.printStackTrace();
+			
+			// Report the exception to GA so that we can take note
+			// of what kinds of fatal exceptions users are getting
+			EasyTracker easyTracker = 
+					EasyTracker.getInstance(MainApplication.getAppContext());
+			easyTracker.send(MapBuilder
+					.createException(
+							new StandardExceptionParser(MainApplication.getAppContext(), null)                                                 
+							.getDescription(Thread.currentThread().getName(), ex),                                 
+							false)                                               
+							.build()
+					);
+		}
+	}
 }

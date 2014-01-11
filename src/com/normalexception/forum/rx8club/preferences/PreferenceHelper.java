@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 
@@ -45,8 +46,17 @@ public class PreferenceHelper {
 	 */
 	public static int getThreadImageSize(Context context) {
 		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-		return Integer.parseInt(prefs.getString("threadimagesize", 
-				context.getResources().getStringArray(R.array.threadImageSizeValues)[0]));
+		int defaultSize = 
+				context.getResources().getIntArray(R.array.threadImageSizeValues)[0];
+		try {
+			return prefs.getInt("threadimagesize", defaultSize);
+		} catch (Exception e) {
+			Log.w("Preferences", "Exception w/ Image Size, Resetting");
+			Editor prefsEditor = prefs.edit();
+	        prefsEditor.putInt("threadimagesize", defaultSize);
+	        prefsEditor.commit();
+	        return defaultSize;
+		}
 	}
 	
 	/**
