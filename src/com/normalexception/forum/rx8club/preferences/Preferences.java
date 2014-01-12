@@ -24,10 +24,14 @@ package com.normalexception.forum.rx8club.preferences;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.util.Map;
+
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,6 +39,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.widget.Toast;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
@@ -49,6 +54,8 @@ import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
  * Class used to set and save preferences
  */
 public class Preferences extends PreferenceActivity {
+	
+	private final String TAG = "Preferences";
 	
 	/*
 	 * (non-Javadoc)
@@ -186,6 +193,28 @@ public class Preferences extends PreferenceActivity {
         							this.getPackageName(), 0).versionCode));
         } catch (Exception e) {}
     }
+	
+	/**
+	 * On older APIs android allowed you to save an integer based value
+	 * in a ListPreference, but when you would try to access it, it caused
+	 * some big issues.  This is a hack to fix that.
+	 */
+	@Override
+	public void addPreferencesFromResource(int resId) {
+		SharedPreferences sharedPrefs = 
+				this.getSharedPreferences(PreferenceHelper.PREFS_NAME, 0);
+		Editor edit = sharedPrefs.edit();
+		Map<String, ?> savedPrefs = sharedPrefs.getAll();
+		for(Map.Entry<String, ?> entry : savedPrefs.entrySet()) {
+			if(entry.getValue() instanceof Integer) {
+				Log.w(TAG, 
+					String.format("Removing Integer Based Pref: %s", entry.getKey()));
+				edit.remove(entry.getKey());
+				edit.commit();
+			}
+		}
+		super.addPreferencesFromResource(resId);
+	}
 	
 	/**
 	 * Convenience method of displaying error to user and logging

@@ -1,8 +1,6 @@
 package com.normalexception.forum.rx8club;
 
-import com.google.analytics.tracking.android.EasyTracker;
-import com.google.analytics.tracking.android.MapBuilder;
-import com.google.analytics.tracking.android.StandardExceptionParser;
+import com.bugsense.trace.BugSenseHandler;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -103,17 +101,10 @@ public class Log {
 		if(ex != null) {
 			ex.printStackTrace();
 			
-			// Report the exception to GA so that we can take note
-			// of what kinds of fatal exceptions users are getting
-			EasyTracker easyTracker = 
-					EasyTracker.getInstance(MainApplication.getAppContext());
-			easyTracker.send(MapBuilder
-					.createException(
-							new StandardExceptionParser(MainApplication.getAppContext(), null)                                                 
-							.getDescription(Thread.currentThread().getName(), ex),                                 
-							false)                                               
-							.build()
-					);
+			// We can only report Exceptions to BugSense and not
+			// Throwables, so cast if possible
+			if(ex instanceof Exception)
+				BugSenseHandler.sendException((Exception)ex);
 		}
 	}
 }

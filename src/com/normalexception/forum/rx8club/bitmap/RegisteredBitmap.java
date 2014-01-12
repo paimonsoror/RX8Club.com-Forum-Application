@@ -25,16 +25,14 @@ package com.normalexception.forum.rx8club.bitmap;
  ************************************************************************/
 
 import java.io.IOException;
+import java.lang.ref.SoftReference;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import android.graphics.Bitmap;
 
 import com.normalexception.forum.rx8club.Log;
-import com.normalexception.forum.rx8club.utils.MemoryManagement;
 
 public class RegisteredBitmap {
 	
@@ -42,39 +40,33 @@ public class RegisteredBitmap {
 	private Bitmap bmp = null;
 	private static String TAG = "RegisteredBitmap";
 	
-	private static Map<String,RegisteredBitmap> archive = 
-			new HashMap<String,RegisteredBitmap>(); 
-	
-	private static final double HEAP_THRESHOLD = 0.1;
+	private static Map<String, SoftReference<RegisteredBitmap>> archive = 
+			new HashMap<String, SoftReference<RegisteredBitmap>>(); 
 	
 	/**
 	 * Create a registered bitmap.  This is a container for a bitmap that 
 	 * links a bitmap to an ID.  The id is a random number that is associated
 	 * to a thread.  This creates a bond between a thread and its bitmaps.
-	 * @param id		The id that represents a thread
-	 * @param source	The source where the image exists
+	 * @param id		 The id that represents a thread
+	 * @param source	 The source where the image exists
+	 * @param onlyOpaque True if image will only be opaque
 	 * @throws MalformedURLException
 	 * @throws IOException
 	 */
-	public RegisteredBitmap(int id, String source) 
+	public RegisteredBitmap(int id, String source, boolean onlyOpaque) 
 			throws MalformedURLException, IOException {
 		this.id = id;
 		
-		RegisteredBitmap temp = archive.get(source);
-		double currentHeap = MemoryManagement.getFreeHeapSize();
+		SoftReference<RegisteredBitmap> temp = archive.get(source);
 		
-		if(temp == null || temp.getBitmap() == null || temp.getBitmap().isRecycled()) {
+		if(temp == null || temp.get() == null || temp.get().getBitmap() == null) {
 			Log.d(TAG, String.format("Creating New Bitmap (%d)", id));
-			Log.d(TAG, String.format("Current Free Heap (%f)", currentHeap));
 			
-			if(currentHeap < HEAP_THRESHOLD)
-				recycleAll();
-			
-            bmp = BitmapDecoder.decodeSource(source);
-			archive.put(source, this);
+            bmp = BitmapDecoder.decodeSource(source, onlyOpaque);
+			archive.put(source, new SoftReference<RegisteredBitmap>(this));
 		} else {
 			Log.d(TAG, "Reporting Cached Bitmap");
-			bmp = temp.getBitmap();
+			bmp = temp.get().getBitmap();
 		}
 	}
 	
@@ -84,49 +76,5 @@ public class RegisteredBitmap {
 	 */
 	public Bitmap getBitmap() {
 		return this.bmp;
-	}
-	
-	/**
-	 * Recycle all bitmaps in the archive
-	 */
-	public static void recycleAll() {
-		Log.d(TAG, "Recycling All Bitmaps");
-		for(RegisteredBitmap rBmp : archive.values()) {
-			// We need to play it safe here just incase
-			if(rBmp.getBitmap() != null && !rBmp.getBitmap().isRecycled())
-				rBmp.getBitmap().recycle();
-		}
-		archive.clear();
-	}
-	
-	/**
-	 * Recycle bitmaps based on their id
-	 * @param id	The thread id that the bitmaps are going to be recycled from
-	 */
-	public static void recycleById(int id) {
-		Log.d(TAG, String.format("Cleaning Out Bitmaps (%d)", id));
-		MemoryManagement.printCurrentMemoryInformation();
-		
-		ArrayList<String> toRemove = new ArrayList<String>();
-		
-		Iterator<Map.Entry<String, RegisteredBitmap>> it = archive.entrySet().iterator();
-		while(it.hasNext()){
-			Map.Entry<String, RegisteredBitmap> ent = it.next();
-			Bitmap bmp = ent.getValue().getBitmap();
-			if(bmp == null) 
-				toRemove.add(ent.getKey());
-			else if(!bmp.isRecycled()) {
-				if(ent.getValue().id == id) {
-					ent.getValue().getBitmap().recycle();
-					toRemove.add(ent.getKey());
-				}
-			}
-		}
-		
-		// Remove all keys
-		for(String key : toRemove)
-			archive.remove(key);
-		
-		MemoryManagement.printCurrentMemoryInformation();
 	}
 }

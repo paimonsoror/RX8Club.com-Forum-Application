@@ -24,10 +24,11 @@ package com.normalexception.forum.rx8club;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import com.normalexception.forum.rx8club.state.AppState;
-
 import android.app.Application;
 import android.content.Context;
+
+import com.bugsense.trace.BugSenseHandler;
+import com.normalexception.forum.rx8club.state.AppState;
 
 /**
  * Main Application
@@ -39,6 +40,7 @@ public class MainApplication extends Application {
 	private static String TAG = "Application";
 	
 	public static final String APP_PACKAGE = "com.normalexception.forum.rx8club";
+	public static final String BUG_APIKEY  = "fd9ce344";
 	
 	private static final int LOG_LEVEL           = Log.DEBUG;
 	private static final boolean HTTP_CLIENT_LOG = false; 
@@ -53,6 +55,9 @@ public class MainApplication extends Application {
     	
     	Log.v(TAG, "Starting Application");
         super.onCreate();
+        
+        BugSenseHandler.initAndStartSession(getApplicationContext(), BUG_APIKEY);
+        
         MainApplication.context = getApplicationContext();
     }
 

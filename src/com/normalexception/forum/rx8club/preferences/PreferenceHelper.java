@@ -46,16 +46,17 @@ public class PreferenceHelper {
 	 */
 	public static int getThreadImageSize(Context context) {
 		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-		int defaultSize = 
-				context.getResources().getIntArray(R.array.threadImageSizeValues)[0];
+		String defaultSize = 
+				context.getResources().getStringArray(R.array.threadImageSizeValues)[0];
 		try {
-			return prefs.getInt("threadimagesize", defaultSize);
-		} catch (Exception e) {
+			String prefsVal = prefs.getString("threadimagesize", defaultSize);
+			return Integer.parseInt(prefsVal);
+		} catch (Throwable e) {
 			Log.w("Preferences", "Exception w/ Image Size, Resetting");
 			Editor prefsEditor = prefs.edit();
-	        prefsEditor.putInt("threadimagesize", defaultSize);
+	        prefsEditor.putString("threadimagesize", defaultSize);
 	        prefsEditor.commit();
-	        return defaultSize;
+	        return Integer.parseInt(defaultSize);
 		}
 	}
 	

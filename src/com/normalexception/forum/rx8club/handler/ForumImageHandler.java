@@ -46,9 +46,9 @@ import com.normalexception.forum.rx8club.utils.Utils;
  * Handler designed to display the images within a textview
  */
 public class ForumImageHandler implements ImageGetter {
-	Context c;
-	TextView container;
-	int id;
+	private Context c;
+	private TextView container;
+	private int id;
 	
 	private final String TAG = "ForumImageHandler";
 
@@ -68,7 +68,8 @@ public class ForumImageHandler implements ImageGetter {
 	/**
 	 * Grab the reference to a URLDrawable which will
 	 * be updated with images.
-	 * @param	source	The source of the image
+	 * @param	source	   The source of the image
+	 * @param   onlyOpaque True if the image will only be opaque
 	 */
 	public Drawable getDrawable(String source) {
 		LevelListDrawable d = new LevelListDrawable();
@@ -92,9 +93,8 @@ public class ForumImageHandler implements ImageGetter {
             String source = (String) params[0];
             source = Utils.resolveUrl(source);
             mDrawable = (LevelListDrawable) params[1];
-            Log.d(TAG, "doInBackground " + source);
             try {
-                return (new RegisteredBitmap(id, source)).getBitmap();
+                return (new RegisteredBitmap(id, source, false)).getBitmap();
             } catch (FileNotFoundException e) {
             	Log.e(TAG, e.getMessage(), e);
             } catch (MalformedURLException e) {

@@ -40,6 +40,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.TimeoutFactory;
@@ -125,6 +126,11 @@ public class MainActivity extends ForumBaseActivity {
 		        // the user profile as well.
 		        if(LoginFactory.getInstance().isLoggedIn()) {
 			        String currentUser = UserProfile.getInstance().getUsername();
+			        
+			        // Register user to bugsense so that we can search for them
+			        // if they report an error
+			        BugSenseHandler.setUserIdentifier(currentUser);
+			        
 			        upcache = new UserProfileCache(this, currentUser);
 			        UserProfile cachedProfile = upcache.getCachedContents();
 			        if(cachedProfile == null || 

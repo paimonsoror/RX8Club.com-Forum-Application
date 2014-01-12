@@ -135,13 +135,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			Log.e(TAG, "Fatal Error In Thread Activity! " + e.getMessage(), e);
 		}
 	}
-	
-	@Override
-	public void onDestroy() {
-		Log.v(TAG, "Recycling Thread Bitmaps");
-		RegisteredBitmap.recycleById(threadId);
-		super.onDestroy();
-	}
 
 	/**
 	 * Construct the thread activity view

@@ -24,17 +24,18 @@ package com.normalexception.forum.rx8club.bitmap;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 public class BitmapDecoder {
 	
@@ -44,19 +45,25 @@ public class BitmapDecoder {
 	 * Decode our bitmap while taking memory into consideraiton.  Here we
 	 * want to decode the bitmap with a small sample size so taht we conserve
 	 * as much memory as possible
-	 * @param stream	The input stream from the url
+	 * @param source	The input stream from the url
+	 * @param useMin	Use min pixels to decode.  This will remove transparencies
 	 * @return
 	 * @throws IOException 
 	 * @throws MalformedURLException 
 	 */
-	public static Bitmap decodeSource(final String source) 
+	public static Bitmap decodeSource(final String source, final boolean useMin) 
 			throws MalformedURLException, IOException {
 		Log.d(TAG, "Decoding " + source);
-		InputStream is = new URL(source).openStream();
-		final int sample_size = 
-				PreferenceHelper.getThreadImageSize(MainApplication.getAppContext());
-        Bitmap mBitmap = decodeSampledBitmapFromResourceMemOpt(is, sample_size,
-        		sample_size);
+		Bitmap mBitmap = null;
+		try {
+			InputStream is = new URL(source).openStream();
+			final int sample_size = 
+					PreferenceHelper.getThreadImageSize(MainApplication.getAppContext());
+	        mBitmap = decodeSampledBitmapFromResourceMemOpt(is, sample_size,
+	        		sample_size, useMin);
+		} catch (FileNotFoundException ex) {
+			Log.d(TAG, "-- File Not Found: " + source);
+		}
         return mBitmap;
 	}
 	
@@ -65,10 +72,12 @@ public class BitmapDecoder {
 	 * @param inputStream	The input stream containing the image
 	 * @param reqWidth		The required sample width
 	 * @param reqHeight		The required sample height
+	 * @param useMin		The control to use min pixels
 	 * @return				Return a bitmap image
 	 */
 	private static Bitmap decodeSampledBitmapFromResourceMemOpt(
-            InputStream inputStream, int reqWidth, int reqHeight) {
+            InputStream inputStream, int reqWidth, int reqHeight, 
+            boolean useMin) {
 
         byte[] byteArr = new byte[0];
         byte[] buffer = new byte[1024];
@@ -98,7 +107,8 @@ public class BitmapDecoder {
             options.inPurgeable = true;
             options.inInputShareable = true;
             options.inJustDecodeBounds = false;
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            options.inPreferredConfig = useMin? 
+            		Bitmap.Config.RGB_565 : Bitmap.Config.ARGB_8888;
 
             return BitmapFactory.decodeByteArray(byteArr, 0, count, options);
 
