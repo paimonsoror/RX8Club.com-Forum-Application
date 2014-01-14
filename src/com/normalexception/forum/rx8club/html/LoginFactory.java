@@ -96,7 +96,7 @@ public class LoginFactory {
 	/**
 	 * Preference specific variables
 	 */
-	private static final String PREFS_NAME = "LoginPreferences";
+	private static final String PREFS_NAME = "login_preferences";
 	private static final String PREF_USERNAME = "username";
 	private static final String PREF_PASSWORD = "password";
 	private static final String PREF_AUTOLOGIN = "autologin";
