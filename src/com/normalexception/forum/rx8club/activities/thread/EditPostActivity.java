@@ -158,8 +158,13 @@ public class EditPostActivity extends ForumBaseActivity {
 			}
 
 			@Override
-			protected void onPostExecute(Void result) {
-				loadingDialog.dismiss();
+		    protected void onPostExecute(Void result) {
+				try {
+					loadingDialog.dismiss();
+					loadingDialog = null;
+				} catch (Exception e) {
+					Log.w(TAG, e.getMessage());
+				}
 			}
 		};
 		updaterTask.execute();

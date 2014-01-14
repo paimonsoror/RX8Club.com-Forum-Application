@@ -216,6 +216,7 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 			// the dialog went away before we got here.
 			try {
 				loadingDialog.dismiss();
+				loadingDialog = null;
 			} catch (Exception e) { }
 			
 			if(loggedIn) {

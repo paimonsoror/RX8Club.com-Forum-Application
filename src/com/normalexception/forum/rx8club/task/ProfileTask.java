@@ -40,7 +40,13 @@ public class ProfileTask extends AsyncTask<Void,Void,Void>{
 	 */
 	@Override
     protected void onPostExecute(Void result) {
-        mProgressDialog.dismiss();
+		try {
+			mProgressDialog.dismiss();
+			mProgressDialog = null;
+		} catch (Exception e) {
+			Log.w(TAG, e.getMessage());
+		}
+		
 		Intent _intent = new Intent(sourceActivity, UserCpActivity.class);
 		_intent.putExtra("link", HtmlFormUtils.getResponseUrl());
 		sourceActivity.finish();

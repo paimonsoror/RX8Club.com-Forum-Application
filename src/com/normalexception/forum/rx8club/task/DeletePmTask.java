@@ -69,7 +69,13 @@ public class DeletePmTask extends AsyncTask<Void,Void,Void>{
 	 */
 	@Override
     protected void onPostExecute(Void result) {
-        mProgressDialog.dismiss();
+		try {
+			mProgressDialog.dismiss();
+			mProgressDialog = null;
+		} catch (Exception e) {
+			Log.w(TAG, e.getMessage());
+		}
+		
 		Intent _intent = new Intent(sourceActivity, postClazz);
 		_intent.putExtra("link", HtmlFormUtils.getResponseUrl());
 		_intent.putExtra(PrivateMessageInboxActivity.showOutboundExtra, outbound);

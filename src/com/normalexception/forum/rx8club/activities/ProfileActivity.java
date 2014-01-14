@@ -168,9 +168,14 @@ public class ProfileActivity extends ForumBaseActivity {
 		        loadingDialog.setMessage(progress[0]);
 		    }
 			
-			@Override
+        	@Override
 		    protected void onPostExecute(Void result) {
-				loadingDialog.dismiss();
+				try {
+					loadingDialog.dismiss();
+					loadingDialog = null;
+				} catch (Exception e) {
+					Log.w(TAG, e.getMessage());
+				}
 			}
         };
         updaterTask.execute();

@@ -181,7 +181,12 @@ public class MainActivity extends ForumBaseActivity {
 			}	
 			@Override
 		    protected void onPostExecute(Void result) {
-				profileDialog.dismiss();
+				try {
+					profileDialog.dismiss();
+					profileDialog = null;
+				} catch (Exception e) {
+					Log.w(TAG, e.getMessage());
+				}
 				upcache.cacheContents(UserProfile.getInstance());
 			}
 		}.execute();
@@ -242,7 +247,13 @@ public class MainActivity extends ForumBaseActivity {
 			@Override
 		    protected void onPostExecute(Void result) {
 				updateList();
-				loadingDialog.dismiss();
+				
+				try {
+					loadingDialog.dismiss();
+					loadingDialog = null;
+				} catch (Exception e) {
+					Log.w(TAG, e.getMessage());
+				}
         		
 				if(LoginFactory.getInstance().isLoggedIn()) {
 	        		// Construct a new user profile

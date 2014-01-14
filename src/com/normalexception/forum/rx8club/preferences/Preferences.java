@@ -130,7 +130,13 @@ public class Preferences extends PreferenceActivity {
         			
 	    			@Override
 	    		    protected void onPostExecute(Void result) {
-	    				loadingDialog.dismiss();
+	    				try {
+	    					loadingDialog.dismiss();
+	    					loadingDialog = null;
+	    				} catch (Exception e) {
+	    					Log.w(TAG, e.getMessage());
+	    				}
+	    				
 	    				cache.setSummary(
 	    		        		String.format("Cache Size: %s", 
 	    		        		SpecialNumberFormatter.readableFileSize(

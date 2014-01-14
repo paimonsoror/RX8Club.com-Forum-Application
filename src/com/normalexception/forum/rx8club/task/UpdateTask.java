@@ -94,7 +94,13 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 	 */
 	@Override
     protected void onPostExecute(Void result) {
-		mProgressDialog.dismiss();
+		try {
+			mProgressDialog.dismiss();
+			mProgressDialog = null;
+		} catch (Exception e) {
+			Log.w(TAG, e.getMessage());
+		}
+		
 		String url = HtmlFormUtils.getResponseUrl();
 		Intent _intent = null;
 		
