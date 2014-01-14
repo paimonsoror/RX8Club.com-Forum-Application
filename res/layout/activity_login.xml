@@ -1,128 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/darker_gray">
+    android:background="#ff07112c"
+    android:gravity="center_vertical|center_horizontal" >
 
     <ImageView
         android:id="@+id/la_topimage"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="false"
+        android:layout_centerHorizontal="true"
+        android:adjustViewBounds="true"
         android:contentDescription="RX8Club Logo"
-        android:scaleType="fitXY"
-        android:src="@drawable/rx8club_logo" />
-
-    <LinearLayout
+        android:maxWidth="250dp"
+        android:src="@drawable/rx8blue" />
+    
+    <RelativeLayout
         android:id="@+id/la_userlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/la_topimage"
 		android:orientation="vertical"
-		android:layout_below="@id/la_topimage"
 		android:paddingTop="10dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp" >
 
-        <TextView
-            android:id="@+id/UserName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loginUsernameInput"
-            android:textStyle="bold" />
-
         <EditText
             android:id="@+id/usernameText"
-            android:layout_width="fill_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="false"
+            android:hint="Username"
             android:inputType="text"
+            android:padding="12dp"
             android:typeface="serif"
-            android:padding="2dp" />
-
-    </LinearLayout>
-    
-    <LinearLayout      
-        android:id="@+id/la_passwordlayout"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:orientation="vertical"
-        android:layout_below="@id/la_userlayout"
-        android:paddingTop="10dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp">
-
-        <TextView
-            android:id="@+id/Password"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loginPasswordInput"
-            android:textStyle="bold" />
-
+	        android:textSize="10sp" />
+        
         <EditText
             android:id="@+id/passwordText"
-            android:layout_width="fill_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_below="@id/usernameText"
+            android:layout_centerHorizontal="true"
+            android:hint="Password"
             android:inputType="textPassword"
+            android:padding="12dp"
             android:typeface="serif"
-            android:padding="12dp" />
-
-    </LinearLayout>
-    
-    <LinearLayout
-        android:id="@+id/la_optionslayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/la_passwordlayout"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:paddingTop="20dp" >
-
-        <CheckBox
-            android:id="@+id/autoLoginBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Auto Login"/>
-
-        <CheckBox
-            android:id="@+id/rememberMeBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Remember Me"/>
-
-    </LinearLayout>
-    
-    <LinearLayout     
-        android:id="@+id/la_buttonlayout"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/la_optionslayout"
-        android:layout_alignParentRight="true"
-        android:paddingTop="10dp"
-        android:paddingRight="5dp">
-
-        <Button
-            android:id="@+id/loginButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loginLoginButton" >
-		</Button>
-		
-        <Button
-            android:id="@+id/guestButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loginGuestButton" >
-		</Button>
+	        android:textSize="10sp" />
         
+        <LinearLayout
+	        android:id="@+id/la_optionslayout"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/passwordText"
+	        android:gravity="center_horizontal"
+	        android:orientation="horizontal"
+	        android:paddingTop="5dp" >
 
-    </LinearLayout>
+	        <CheckBox
+	            android:id="@+id/autoLoginBox"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Auto Login"
+	            android:textColor="#ffffffff"
+	            android:textColorHint="#ffffffff"
+	            android:textSize="10sp" />
+	
+	        <CheckBox
+	            android:id="@+id/rememberMeBox"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="Remember Me"
+	            android:textColor="#ffffffff"
+	            android:textColorHint="#ffffffff"
+	            android:textSize="10sp"/>
+
+    	</LinearLayout>
+    	
+       <LinearLayout     
+	        android:id="@+id/la_buttonlayout"
+	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
+	        android:orientation="horizontal"
+	        android:layout_below="@id/la_optionslayout"
+	        android:layout_alignParentRight="true"
+	        android:paddingTop="10dp"
+	        android:paddingRight="5dp">
+	
+	        <Button
+	            android:id="@+id/loginButton"
+	            style="?android:attr/buttonStyleSmall"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/loginLoginButton"
+	            android:textSize="12sp" >
+			</Button>
+			
+	        <Button
+	            android:id="@+id/guestButton"
+	            style="?android:attr/buttonStyleSmall"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/loginGuestButton"
+	            android:textSize="12sp" >
+			</Button>
+	    </LinearLayout>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/la_versionlayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/la_buttonlayout"
+        android:layout_below="@id/la_userlayout"
         android:layout_alignParentRight="true"
         android:paddingRight="10dp" >
 
@@ -130,7 +121,8 @@
             android:id="@+id/versonCode"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:text="TextView" />
+            android:text="TextView"        
+	        android:textColor="#ffffffff"/>
 
     </LinearLayout>
 
