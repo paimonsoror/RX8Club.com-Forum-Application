@@ -40,12 +40,26 @@ public class PasswordUtils {
 	 * @return			The md5 encoded password
 	 * @throws NoSuchAlgorithmException
 	 */
-	public static String hexMd5(String password) throws NoSuchAlgorithmException {
+	public static String hexMd5(String password) {
 		Log.v(TAG, "Creating MD5 Password");
-		MessageDigest md5 = MessageDigest.getInstance("MD5");
-		md5.update(password.getBytes());
-		BigInteger hash = new BigInteger(1, md5.digest());
-		return pad(hash.toString(16), 32, '0');
+		try {
+			MessageDigest md5 = MessageDigest.getInstance("MD5");
+			md5.update(password.getBytes());
+			BigInteger hash = new BigInteger(1, md5.digest());
+			return pad(hash.toString(16), 32, '0');
+		} catch (NoSuchAlgorithmException e) {
+			Log.e(TAG, "Error Encoding Password ", e);
+			return password;
+		}
+	}
+	
+	/**
+	 * Check if already MD5 encoded
+	 * @param s	The string to check
+	 * @return	True if MD5 encoded
+	 */
+	public static boolean isValidMD5(String s) {
+	    return s.matches("[a-fA-F0-9]{32}");
 	}
 	    
 	/**

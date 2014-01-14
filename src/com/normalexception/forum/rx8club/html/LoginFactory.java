@@ -96,7 +96,7 @@ public class LoginFactory {
 	/**
 	 * Preference specific variables
 	 */
-	private static final String PREFS_NAME = "MyPrefsFile";
+	private static final String PREFS_NAME = "LoginPreferences";
 	private static final String PREF_USERNAME = "username";
 	private static final String PREF_PASSWORD = "password";
 	private static final String PREF_AUTOLOGIN = "autologin";
@@ -340,12 +340,14 @@ public class LoginFactory {
 	}
 
 	/**
-	 * Set the password for the login
+	 * Set the password for the login, and don't forget to make sure
+	 * it is already encoded
 	 * @param pw	The password for the login user
 	 */
 	public void setPassword(String pw) {
 		Log.v(TAG, "Setting Password");
-		this.password = pw;
+		this.password = PasswordUtils.isValidMD5(pw)? 
+				pw : PasswordUtils.hexMd5(pw);
 	}
 	
 	/**
@@ -424,9 +426,9 @@ public class LoginFactory {
     	nvps.add(new BasicNameValuePair(VBulletinKeys.UserName.getValue(), 
     			UserProfile.getInstance().getUsername()));
     	nvps.add(new BasicNameValuePair(VBulletinKeys.Password.getValue(), 
-    			PasswordUtils.hexMd5(this.password)));
+    			this.password));
     	nvps.add(new BasicNameValuePair(VBulletinKeys.PasswordUtf.getValue(), 
-    			PasswordUtils.hexMd5(this.password)));
+    			this.password));
     	nvps.add(new BasicNameValuePair(VBulletinKeys.CookieUser.getValue(), "1"));
     	nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(), "login"));
 
