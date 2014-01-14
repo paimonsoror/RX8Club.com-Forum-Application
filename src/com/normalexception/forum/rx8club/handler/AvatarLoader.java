@@ -30,6 +30,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.SocketTimeoutException;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -136,6 +137,9 @@ public class AvatarLoader {
 			return bitmap;
 		} catch (IllegalStateException iex) {
 			// No big deal, the image doesn't exist
+			return null;
+		} catch (SocketTimeoutException ex) {
+			Log.w(TAG, "Socket Timedout When Reading " + url);
 			return null;
 		} catch (Exception ex){
 			Log.e(TAG, ex.getMessage(), ex);
