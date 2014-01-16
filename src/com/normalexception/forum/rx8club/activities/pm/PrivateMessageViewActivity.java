@@ -202,7 +202,8 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
 			}
         	@Override
 		    protected void onProgressUpdate(String...progress) {
-		        loadingDialog.setMessage(progress[0]);
+        		if(loadingDialog != null)
+        			loadingDialog.setMessage(progress[0]);
 		    }
 			
         	@Override
