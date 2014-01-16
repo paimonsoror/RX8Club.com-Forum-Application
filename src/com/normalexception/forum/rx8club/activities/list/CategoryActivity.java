@@ -530,6 +530,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 						ProgressDialog.show(src, 
 								getString(R.string.loading), 
 								getString(R.string.pleaseWait), true);
+		    	((Button)findViewById(NEW_THREAD)).setEnabled(false);
 		    }
         	
         	@Override
@@ -547,6 +548,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 					Log.w(TAG, e.getMessage());
 				}
 				
+				
 				if(success) {
 					Intent _intent = 
 							new Intent(CategoryActivity.this, NewThreadActivity.class);
@@ -557,6 +559,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 				} else {
 					 Toast.makeText(src, R.string.noPermission, Toast.LENGTH_LONG).show();
 				}
+				
+				((Button)findViewById(NEW_THREAD)).setEnabled(true);
 			}
         };
         updaterTask.execute();
