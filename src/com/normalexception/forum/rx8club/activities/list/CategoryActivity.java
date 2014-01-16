@@ -56,7 +56,6 @@ import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
-import com.normalexception.forum.rx8club.bitmap.RegisteredBitmap;
 import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
 import com.normalexception.forum.rx8club.filter.ThreadFilter;
 import com.normalexception.forum.rx8club.filter.ThreadFilterFactory;
@@ -101,6 +100,8 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	private PTRListView lv;
 	
 	private final int NEW_THREAD = 5000;
+	
+	public static final int NO_PERMISSION = -2;
 
 	/*
 	 * (non-Javadoc)
@@ -489,7 +490,6 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 	public void onClick(View arg0) {
 		super.onClick(arg0);
 		Intent _intent = null;
-		boolean result = false;
 		
 		switch(arg0.getId()) {
 			case R.id.previousButton:
@@ -507,21 +507,66 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 				this.finish();
 				break;
 			case NEW_THREAD:
-				_intent = new Intent(CategoryActivity.this, NewThreadActivity.class);
-				_intent.putExtra("link", WebUrls.newThreadAddress + forumId);
-				_intent.putExtra("source", link);
-				_intent.putExtra("forumid", forumId);
-				result = true;
+		        createNewThreadHandler();
 				break;
 		}
 		
 		if(_intent != null)
-			if(result)
-				startActivityForResult(_intent, 1);
-			else
-				startActivity(_intent);
+			startActivity(_intent);
 	}
 	
+	/**
+	 * Handler used when the user clicks the new thread button.  This
+	 * checks to make sure the user has permissions before the page is
+	 * created
+	 */
+	private void createNewThreadHandler() {
+		final ForumBaseActivity src = this;
+		updaterTask = new AsyncTask<Void,String,Void>() {
+        	boolean success = false;
+        	
+        	@Override
+		    protected void onPreExecute() {
+		    	loadingDialog = 
+						ProgressDialog.show(src, 
+								getString(R.string.loading), 
+								getString(R.string.pleaseWait), true);
+		    }
+        	
+        	@Override
+			protected Void doInBackground(Void... params) {	
+        		success = NewThreadActivity.canUserCreateThread(src, forumId);
+        		return null;
+        	}
+        	
+        	@Override
+		    protected void onPostExecute(Void result) {
+				try {
+					loadingDialog.dismiss();
+					loadingDialog = null;
+				} catch (Exception e) {
+					Log.w(TAG, e.getMessage());
+				}
+				
+				if(success) {
+					Intent _intent = 
+							new Intent(CategoryActivity.this, NewThreadActivity.class);
+					_intent.putExtra("link", WebUrls.newThreadAddress + forumId);
+					_intent.putExtra("source", link);
+					_intent.putExtra("forumid", forumId);
+					startActivity(_intent);
+				} else {
+					 Toast.makeText(src, R.string.noPermission, Toast.LENGTH_LONG).show();
+				}
+			}
+        };
+        updaterTask.execute();
+	}
+	
+	/**
+	 * Add information to the title that shows some information
+	 * about the currently set filters
+	 */
 	private void updateFilterizedInformation() {
 		int totalF = CategoryFilterizer.getTotalFiltered();
 		
@@ -530,17 +575,5 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		((TextView)findViewById(R.id.mainlisttitle))
 			.setText(String.format("Filtered Threads: %d (%d Active Filters)", 
 				totalF, ThreadFilterFactory.getInstance().getFilterCount()	));
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
-	 */
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == 1) {
-		     if(resultCode == RESULT_OK) {
-		    	 finish();
-		     }
-		}
 	}
 }

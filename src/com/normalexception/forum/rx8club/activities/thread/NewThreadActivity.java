@@ -27,7 +27,9 @@ package com.normalexception.forum.rx8club.activities.thread;
 import java.util.ArrayList;
 
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,7 +38,9 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
+import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
 import com.normalexception.forum.rx8club.state.AppState;
@@ -85,6 +89,23 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
 			post 		= savedInstanceState.getString("post");
 		}
 	}
+	
+	/**
+	 * Check if the user can create a new thread.  If not, report back a
+	 * false boolean value
+	 * @param src	The source context
+	 * @param id	The forum id
+	 * @return		True if user has permission
+	 */
+	public static boolean canUserCreateThread(ForumBaseActivity src, String id) {
+		boolean result = false;
+		Document output = 
+				VBForumFactory.getInstance().get(src, WebUrls.newThreadAddress + id);
+		Elements eles = output.select("td[class=panelsurround]");
+		if(eles != null)
+			result = !eles.text().contains("do not have permission to access this page");
+		return result;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -106,8 +127,8 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
 	        lv.setScrollContainer(false);
 	        tlist   = new ArrayList<ThreadItemView>();
 	        
-	        if(savedInstanceState == null)
-	        	constructView();
+        	if(savedInstanceState == null)
+        		constructView();
 	        
     	} catch (Exception e) {
     		Log.e(TAG, "Error In New Thread Activity " + e.getMessage(), e);
