@@ -480,8 +480,6 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     	}
     }
     
-    
-
     /*
      * (non-Javadoc)
      * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -535,7 +533,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
         	
         	@Override
 			protected Void doInBackground(Void... params) {	
-        		success = NewThreadActivity.canUserCreateThread(src, forumId);
+        		success = doesUserHavePermissionToPage(WebUrls.newThreadAddress, forumId);
         		return null;
         	}
         	

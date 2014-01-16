@@ -27,6 +27,9 @@ package com.normalexception.forum.rx8club.activities;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
@@ -45,6 +48,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.utils.UtilitiesDialog;
 import com.normalexception.forum.rx8club.dialog.LogoffDialog;
 import com.normalexception.forum.rx8club.html.LoginFactory;
+import com.normalexception.forum.rx8club.html.VBForumFactory;
 import com.normalexception.forum.rx8club.preferences.Preferences;
 import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.state.AppState.State;
@@ -96,6 +100,25 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	public void setState(State state, Intent intent) {
 		Log.d(TAG, "## Current State " + state.toString());
 		AppState.getInstance().setCurrentState(state, intent);
+	}
+	
+	/**
+	 * Check if the user can create a new thread.  If not, report back a
+	 * false boolean value
+	 * @param address The page to check permission to
+	 * @param params  Parameters to the url
+	 * @return		  True if user has permission
+	 */
+	public boolean doesUserHavePermissionToPage(String address, String... params) {
+		boolean result = false;
+		for(String param : params)
+			address += param;
+		Document output = 
+				VBForumFactory.getInstance().get(this,  address);
+		Elements eles = output.select("td[class=panelsurround]");
+		if(eles != null)
+			result = !eles.text().contains("do not have permission to access this page");
+		return result;
 	}
 	
 	/*
