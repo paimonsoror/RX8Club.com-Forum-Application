@@ -43,7 +43,7 @@ import com.normalexception.forum.rx8club.state.AppState;
  */
 public class AboutActivity extends ForumBaseActivity {
 
-	private static String TAG = "AboutActivity";
+	private String TAG = this.getClass().getName();
 	
 	/*
 	 * (non-Javadoc)

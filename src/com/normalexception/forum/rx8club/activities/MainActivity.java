@@ -66,7 +66,7 @@ import com.normalexception.forum.rx8club.view.category.SubCategoryView;
  */
 public class MainActivity extends ForumBaseActivity {
     
-	private static final String TAG = "Application";
+	private String TAG = this.getClass().getName();
 	
 	private ArrayList<CategoryView> mainList;
 	private CategoryViewArrayAdapter cva;

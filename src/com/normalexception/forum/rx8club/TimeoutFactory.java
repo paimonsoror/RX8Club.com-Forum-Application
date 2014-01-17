@@ -39,7 +39,7 @@ public class TimeoutFactory {
 	protected static final long PING_EXPIRE = 2 /*hours*/ * 3600;
 	//protected static final long PING_DEBUG  = 10;
 	
-	private static String TAG = "TimeoutFactory";
+	private String TAG = this.getClass().getName();
 	
 	/**
 	 * Report an instanec of the TimeoutFactory, and create 
@@ -81,7 +81,7 @@ public class TimeoutFactory {
 			if(diffTime > PING_EXPIRE) {
 				src.runOnUiThread(new Runnable() {
 		    		public void run() {
-		    			Toast.makeText(src, "Connection Timedout", Toast.LENGTH_SHORT).show();
+		    			Toast.makeText(src, R.string.timeout, Toast.LENGTH_SHORT).show();
 		    		}
 				});
 				src.finish();

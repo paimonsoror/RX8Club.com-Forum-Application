@@ -50,7 +50,7 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
 	private List<String> bitmaps;
 	private Class<?> postClazz;
 
-	private static String TAG = "SubmitTask";
+	private String TAG = this.getClass().getName();
 	
 	/**
 	 * Constructor to a SubmitTask

@@ -58,7 +58,7 @@ import com.normalexception.forum.rx8club.view.threaditem.ThreadItemViewArrayAdap
  */
 public class EditPostActivity extends ForumBaseActivity {
 
-	private static final String TAG = "EditPostActivity";
+	private String TAG = this.getClass().getName();
 	private String postId, securityToken, postHash, poststart, 
 	pageNumber, pageTitle, postMessage;
 	private boolean delete = false, deleteThread = false;

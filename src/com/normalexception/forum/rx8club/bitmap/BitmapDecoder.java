@@ -39,7 +39,7 @@ import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 
 public class BitmapDecoder {
 	
-	private static String TAG = "BitmapDecoderHandler";
+	private static String TAG = BitmapDecoder.class.getName();
 	
 	/**
 	 * Decode our bitmap while taking memory into consideraiton.  Here we

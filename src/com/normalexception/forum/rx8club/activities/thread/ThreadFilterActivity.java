@@ -47,7 +47,7 @@ import com.normalexception.forum.rx8club.view.thread.ThreadRuleViewArrayAdapter;
 
 public class ThreadFilterActivity  extends ForumBaseActivity implements OnClickListener {
 
-	private static final String TAG = "ThreadFilterActivity";
+	private String TAG = this.getClass().getName();
 	
 	private PTRListView lv;
 	private ThreadRuleViewArrayAdapter cva;

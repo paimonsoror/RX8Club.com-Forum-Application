@@ -38,7 +38,7 @@ import ch.boye.httpclientandroidlib.protocol.HttpContext;
  */
 public class RetryHandler extends DefaultHttpRequestRetryHandler {
 	private static final int MAX_RETRY = 5;
-	private static final String TAG = "RetryHandler";
+	private String TAG = this.getClass().getName();
 	
 	/*
 	 * (non-Javadoc)

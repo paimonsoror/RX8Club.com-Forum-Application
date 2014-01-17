@@ -45,7 +45,7 @@ import com.normalexception.forum.rx8club.state.AppState;
  */
 public class SearchActivity extends ForumBaseActivity implements OnClickListener {
 
-	private static String TAG = "SearchActivity";
+	private String TAG = this.getClass().getName();
 	
 	/*
 	 * (non-Javadoc)

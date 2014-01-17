@@ -58,7 +58,7 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
 			       s, token, f, posthash, 
 			       subject, post, source;
 	
-	private static final String TAG = "NewThreadActivity";
+	private String TAG = this.getClass().getName();
 	
 	private ListView lv;
 	

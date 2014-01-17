@@ -38,7 +38,7 @@ import ch.boye.httpclientandroidlib.protocol.HttpContext;
  */
 public class RedirectStrategy extends DefaultRedirectStrategy {
 	
-	private static final String TAG = "RedirectStrategy";
+	private String TAG = this.getClass().getName();
 	
 	public RedirectStrategy() {
 		Log.d(TAG, "Custom Redirect Strategy Established");

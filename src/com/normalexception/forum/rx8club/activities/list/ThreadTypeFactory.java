@@ -49,7 +49,7 @@ public class ThreadTypeFactory {
 		POSTED_STICKY			// Sticky w/ Posts
 	};
 	
-	private static final String TAG = "ThreadTypeFactory";
+	private static String TAG = ThreadTypeFactory.class.getName();
 	
 	/**
 	 * Report a bitmap, and also cache the bitmap if it isn't already loaded

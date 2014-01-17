@@ -45,7 +45,7 @@ import com.normalexception.forum.rx8club.view.thread.ThreadViewArrayAdapter;
 
 public class FavoritesActivity extends ForumBaseActivity implements OnClickListener {
 	
-	private static final String TAG = "Application:Favorites";
+	private String TAG = this.getClass().getName();
 	
 	private FavoriteThreads threadlist;
 	private ThreadViewArrayAdapter tva;

@@ -83,7 +83,7 @@ public class LoginFactory {
 	
 	private static LoginFactory _instance = null;
 	
-	private static final String TAG = "Application:LoginFactory";
+	private String TAG = this.getClass().getName();
 	
 	private String password = null;
 	

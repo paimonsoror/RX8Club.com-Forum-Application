@@ -36,9 +36,8 @@ import com.normalexception.forum.rx8club.Log;
 
 public class RegisteredBitmap {
 	
-	private int id = 0;
 	private Bitmap bmp = null;
-	private static String TAG = "RegisteredBitmap";
+	private String TAG = this.getClass().getName();
 	
 	private static Map<String, SoftReference<RegisteredBitmap>> archive = 
 			new HashMap<String, SoftReference<RegisteredBitmap>>(); 
@@ -54,9 +53,7 @@ public class RegisteredBitmap {
 	 * @throws IOException
 	 */
 	public RegisteredBitmap(int id, String source, boolean onlyOpaque) 
-			throws MalformedURLException, IOException {
-		this.id = id;
-		
+			throws MalformedURLException, IOException {		
 		SoftReference<RegisteredBitmap> temp = archive.get(source);
 		
 		if(temp == null || temp.get() == null || temp.get().getBitmap() == null) {

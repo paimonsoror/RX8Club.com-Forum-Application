@@ -60,7 +60,7 @@ public class PTRListView extends ListView implements OnScrollListener {
     	RELEASE_TO_REFRESH, 
     	REFRESHING };
 
-    private static final String TAG = "PTRListView";
+    private String TAG = this.getClass().getName();
 
     private OnRefreshListener mOnRefreshListener;
 

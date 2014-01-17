@@ -45,7 +45,7 @@ import com.normalexception.forum.rx8club.view.ViewHolder;
  */
 public class StylerFragment extends Fragment implements OnClickListener {
 	
-	private static final String TAG = "Application:StylerFragment";
+	private String TAG = this.getClass().getName();
 
     public static int RESULT_LOAD_IMAGE = 1;
     

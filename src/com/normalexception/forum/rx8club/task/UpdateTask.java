@@ -42,7 +42,7 @@ import com.normalexception.forum.rx8club.html.HtmlFormUtils;
  * Task used to move all post editing tasks to an async task
  */
 public class UpdateTask extends AsyncTask<Void,Void,Void> {
-	private static final String TAG = "UpdateTask";
+	private String TAG = this.getClass().getName();
 	
 	private ProgressDialog mProgressDialog;
 	private Activity sourceActivity;

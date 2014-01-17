@@ -48,7 +48,7 @@ public class FavoriteFactory {
 	private static FavoriteFactory _instance;
 	private        FavoriteThreads _favorites;
 	
-	private static final String TAG = "FavoriteFactory";
+	private String TAG = this.getClass().getName();
 	
 	/**
 	 * Singleton constructor.  Will load the 

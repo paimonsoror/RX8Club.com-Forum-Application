@@ -60,7 +60,7 @@ import com.normalexception.forum.rx8club.utils.Utils;
 
 public class HtmlFormUtils {	
 	private static String responseUrl = "";
-	private static final String TAG = "HtmlFormUtils";
+	private static String TAG =HtmlFormUtils.class.getName();
 
 	/**
 	 * Submit a form and its contents

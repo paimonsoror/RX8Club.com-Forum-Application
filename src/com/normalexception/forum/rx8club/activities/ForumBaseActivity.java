@@ -69,7 +69,7 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	protected static final int USERCP_MENU = 4;
 	protected static final int UTILS_MENU = 5;
 	
-	private static String TAG = "ForumBaseActivity";
+	private String TAG = this.getClass().getName();
 	
 	protected String thisPage = "1", finalPage = "1";
 	

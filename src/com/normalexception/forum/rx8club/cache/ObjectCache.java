@@ -43,7 +43,7 @@ import com.normalexception.forum.rx8club.Log;
  */
 public class ObjectCache<T> extends ExpirableCache {
 	
-	private static final String TAG = "ObjectCache";
+	private String TAG = this.getClass().getName();
 	
 	/**
 	 * Constructor to an object cache

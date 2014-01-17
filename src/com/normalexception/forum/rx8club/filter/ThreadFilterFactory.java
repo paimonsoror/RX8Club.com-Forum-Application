@@ -48,7 +48,7 @@ public class ThreadFilterFactory {
 	private static ThreadFilterFactory _instance;
 	private        List<ThreadFilter>  _filters;
 	
-	private static final String TAG = "ThreadFilterFactory";
+	private String TAG = this.getClass().getName();
 	
 	/**
 	 * Singleton constructor.  Will load the 

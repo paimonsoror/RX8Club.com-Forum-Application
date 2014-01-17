@@ -60,7 +60,7 @@ import com.normalexception.forum.rx8club.user.UserProfile;
  */
 public class LoginActivity extends ForumBaseActivity implements OnClickListener, OnCheckedChangeListener {
 
-	private static String TAG = "LoginActivity";
+	private String TAG = this.getClass().getName();
 	private ProgressDialog loadingDialog;
 	
 	/*

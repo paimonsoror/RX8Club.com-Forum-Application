@@ -48,7 +48,7 @@ import com.normalexception.forum.rx8club.utils.Utils;
 public class VBForumFactory {
 	
 	private static VBForumFactory _instance = null;
-	private static final String TAG = "Application:VBForumFactory";
+	private String TAG = this.getClass().getName();
 		
 	/**
 	 * Constructor

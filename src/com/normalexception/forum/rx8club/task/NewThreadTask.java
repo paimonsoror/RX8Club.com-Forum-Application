@@ -47,7 +47,7 @@ public class NewThreadTask extends AsyncTask<Void,Void,Void> {
 	private Activity sourceActivity;
 	private String s, token, posthash, subject, post, forumId;
 	
-	private static String TAG = "NewThreadTask";
+	private String TAG = this.getClass().getName();
 	
 	public NewThreadTask(Activity source, String forumId, String s, 
 						 String token, String f, String posthash,

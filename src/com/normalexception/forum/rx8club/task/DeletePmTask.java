@@ -45,7 +45,7 @@ public class DeletePmTask extends AsyncTask<Void,Void,Void>{
 	private boolean outbound = false;
 	private Class<?> postClazz;
 
-	private static String TAG = "DeletePmTask";
+	private String TAG = this.getClass().getName();
 
 	/**
 	 * Async Task handler for deleting a Private messages

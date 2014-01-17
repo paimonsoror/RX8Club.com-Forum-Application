@@ -64,7 +64,7 @@ import com.normalexception.forum.rx8club.view.pm.PMViewArrayAdapter;
 
 public class PrivateMessageInboxActivity extends ForumBaseActivity implements OnClickListener {
 
-	private static String TAG = "PrivateMessageActivity";
+	private String TAG = this.getClass().getName();
 
 	private String token;
 	

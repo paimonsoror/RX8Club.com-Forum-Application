@@ -58,7 +58,7 @@ import com.normalexception.forum.rx8club.view.profile.ProfileViewArrayAdapter;
  */
 public class ProfileActivity extends ForumBaseActivity {
 
-	private static String TAG = "ProfileActivity";
+	private String TAG = this.getClass().getName();
 	
 	private ProgressDialog loadingDialog;
 	

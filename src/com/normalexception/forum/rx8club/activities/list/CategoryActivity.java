@@ -80,7 +80,7 @@ import com.normalexception.forum.rx8club.view.thread.ThreadViewArrayAdapter;
  */
 public class CategoryActivity extends ForumBaseActivity implements OnClickListener {
 	
-	private static final String TAG = "Application:Category";
+	private String TAG = this.getClass().getName();
 	private static String link;
 	private ProgressDialog loadingDialog;
 	

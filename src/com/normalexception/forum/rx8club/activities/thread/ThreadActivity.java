@@ -54,7 +54,6 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.activities.fragments.StylerFragment;
-import com.normalexception.forum.rx8club.bitmap.RegisteredBitmap;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
@@ -80,7 +79,7 @@ import com.normalexception.forum.rx8club.view.threadpost.PostViewArrayAdapter;
  */
 public class ThreadActivity extends ForumBaseActivity implements OnClickListener {
 
-	private static final String TAG = "Application:Thread";
+	private String TAG = this.getClass().getName();
 
 	private String currentPageLink;
 	private String currentPageTitle;

@@ -35,7 +35,7 @@ import com.normalexception.forum.rx8club.view.thread.ThreadView;
 
 public class CategoryFilterizer {
 	
-	private static String TAG = "CategoryFilterizer";
+	private static String TAG = CategoryFilterizer.class.getName();
 	
 	private static int TOTAL_FILTERED = 0;
 	

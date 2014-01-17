@@ -37,7 +37,7 @@ public class MainApplication extends Application {
 
 	private static Context context;
 	
-	private static String TAG = "Application";
+	private String TAG = this.getClass().getName();
 	
 	public static final String APP_PACKAGE = "com.normalexception.forum.rx8club";
 	public static final String BUG_APIKEY  = "fd9ce344";

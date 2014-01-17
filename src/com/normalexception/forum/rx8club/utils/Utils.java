@@ -39,7 +39,7 @@ import com.normalexception.forum.rx8club.html.LoginFactory;
 
 public class Utils {
 	
-	private static String TAG = "Utils";
+	private static String TAG = Utils.class.getName();
 	
 	/**
 	 * Safely copy one stream into another.  This is useful when copying
