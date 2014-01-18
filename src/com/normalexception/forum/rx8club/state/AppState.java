@@ -39,11 +39,15 @@ public class AppState {
 						USER_CP,
 		                MAIN_PAGE, 
 		                CATEGORY, 
-		                NEW_POSTS, 
+		                NEW_POSTS,
+		                EDIT_POST,
 		                THREAD, 
 		                NEW_THREAD,
+		                NEW_PM,
+		                FAVORITES,
 		                PMINBOX,
-		                PMVIEW};
+		                PMVIEW,
+		                UTIL_COMPRESSION};
 	
 	public static AppState getInstance() {
 		if(_instance == null)

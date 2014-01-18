@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
+import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
 /**
@@ -55,6 +56,8 @@ public class CompressionActivity extends ForumBaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.setState(AppState.State.UTIL_COMPRESSION, this.getIntent());
+        
         setContentView(R.layout.activity_basiclist);
         
         RelativeLayout rl = (RelativeLayout) findViewById(R.id.rootLayout);
