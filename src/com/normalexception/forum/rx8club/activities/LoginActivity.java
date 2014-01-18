@@ -179,6 +179,7 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 			lf.savePreferences(((CheckBox)findViewById(R.id.autoLoginBox)).isChecked(), 
 					   ((CheckBox)findViewById(R.id.rememberMeBox)).isChecked());
 			try {
+			    Log.v(TAG, "Checking for network connection before we log in");
 				if(LoginFactory.haveNetworkConnection())
 					loggedIn = lf.login();
 				else

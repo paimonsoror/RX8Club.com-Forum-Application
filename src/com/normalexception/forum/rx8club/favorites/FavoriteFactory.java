@@ -89,6 +89,7 @@ public class FavoriteFactory {
 	private boolean loadFromMemory() {
 		boolean rtn = false;
 		try {
+			Log.v(TAG, "Checking for favorites file In memory");
 			File storageFile = getFavoritesStorageDir();
 			FileInputStream fis = new FileInputStream(storageFile);
 			ObjectInputStream is = new ObjectInputStream(fis);
@@ -97,6 +98,7 @@ public class FavoriteFactory {
 			rtn = true;
 		} catch (FileNotFoundException e) {
 			// Its ok, first time there wont be a file
+			Log.v(TAG, "No favorites file cache exists");
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage(), e);
 		}
@@ -110,6 +112,7 @@ public class FavoriteFactory {
 		FileOutputStream outputStream;
 		Context ctx = MainApplication.getAppContext();
 		try {
+		  Log.v(TAG, "Saving favorites document to memory");
 		  outputStream = ctx.openFileOutput(
 				  MainApplication.getAppContext().getString(R.string.file_favorites), 
 				  Context.MODE_PRIVATE);
@@ -126,6 +129,7 @@ public class FavoriteFactory {
 	 * @param thread	The thread to add
 	 */
 	public void addFavorite(ThreadView thread) {
+		Log.v(TAG, String.format("Adding %s to favorites", thread.getTitle()));
 		_favorites.add(thread);
 		saveToMemory();
 		Toast.makeText(

@@ -107,6 +107,7 @@ public class ThreadFilterFactory {
 	private boolean loadFromMemory() {
 		boolean rtn = false;
 		try {
+			Log.v(TAG, "Loading thread filters from memory");
 			File storageFile = getFilterStorageDir();
 			FileInputStream fis = new FileInputStream(storageFile);
 			ObjectInputStream is = new ObjectInputStream(fis);
@@ -115,6 +116,7 @@ public class ThreadFilterFactory {
 			rtn = true;
 		} catch (FileNotFoundException e) {
 			// Its ok, first time there wont be a file
+			Log.v(TAG, "No thread filters exist");
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage(), e);
 		}
@@ -128,6 +130,7 @@ public class ThreadFilterFactory {
 		FileOutputStream outputStream;
 		Context ctx = MainApplication.getAppContext();
 		try {
+		  Log.v(TAG, "Saving thread filters to memory");
 		  outputStream = ctx.openFileOutput(
 				  MainApplication.getAppContext().getString(R.string.file_filtercache), 
 				  Context.MODE_PRIVATE);

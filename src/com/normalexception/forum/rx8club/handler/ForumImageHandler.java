@@ -28,6 +28,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.apache.log4j.Logger;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -50,7 +52,7 @@ public class ForumImageHandler implements ImageGetter {
 	private TextView container;
 	private int id;
 	
-	private final String TAG = "ForumImageHandler";
+	private final Logger TAG = Logger.getLogger(this.getClass());
 
 	/**
 	 * Construct the URLImageParser which will execute 
@@ -109,8 +111,7 @@ public class ForumImageHandler implements ImageGetter {
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            Log.d(TAG, "onPostExecute drawable " + mDrawable);
-            Log.d(TAG, "onPostExecute bitmap " + bitmap);
+            Log.d(TAG, "Post processing bitmap " + bitmap);
             if (bitmap != null) {
             	int newSize[] = {bitmap.getWidth(), bitmap.getHeight()};
             	while(newSize[0] >= 400) {

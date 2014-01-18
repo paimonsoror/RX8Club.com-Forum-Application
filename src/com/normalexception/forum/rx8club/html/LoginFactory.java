@@ -140,7 +140,7 @@ public class LoginFactory {
 	    boolean haveConnectedWifi = false;
 	    boolean haveConnectedMobile = false;
 	    boolean haveConnectedEth = false;
-
+	    
 	    ConnectivityManager cm = 
 	    		(ConnectivityManager) 
 	    			MainApplication.getAppContext()
