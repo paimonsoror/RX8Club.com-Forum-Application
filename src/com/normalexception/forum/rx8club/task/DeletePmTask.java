@@ -26,14 +26,15 @@ package com.normalexception.forum.rx8club.task;
 
 import java.io.IOException;
 
-import ch.boye.httpclientandroidlib.client.ClientProtocolException;
+import org.apache.log4j.Logger;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import com.normalexception.forum.rx8club.Log;
+import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.activities.pm.PrivateMessageInboxActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
@@ -45,7 +46,7 @@ public class DeletePmTask extends AsyncTask<Void,Void,Void>{
 	private boolean outbound = false;
 	private Class<?> postClazz;
 
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 
 	/**
 	 * Async Task handler for deleting a Private messages

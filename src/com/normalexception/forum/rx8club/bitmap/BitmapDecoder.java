@@ -30,6 +30,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.log4j.Logger;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -39,7 +41,7 @@ import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 
 public class BitmapDecoder {
 	
-	private static String TAG = BitmapDecoder.class.getName();
+	private static Logger TAG =  Logger.getLogger(BitmapDecoder.class);
 	
 	/**
 	 * Decode our bitmap while taking memory into consideraiton.  Here we
@@ -61,6 +63,8 @@ public class BitmapDecoder {
 					PreferenceHelper.getThreadImageSize(MainApplication.getAppContext());
 	        mBitmap = decodeSampledBitmapFromResourceMemOpt(is, sample_size,
 	        		sample_size, useMin);
+	        Log.d(TAG, String.format("Bitmap size %d bytes", 
+	        		mBitmap.getRowBytes() * mBitmap.getHeight()));
 		} catch (FileNotFoundException ex) {
 			Log.d(TAG, "-- File Not Found: " + source);
 		}

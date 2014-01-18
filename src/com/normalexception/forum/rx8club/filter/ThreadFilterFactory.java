@@ -33,6 +33,8 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import android.content.Context;
 
 import com.normalexception.forum.rx8club.Log;
@@ -48,7 +50,7 @@ public class ThreadFilterFactory {
 	private static ThreadFilterFactory _instance;
 	private        List<ThreadFilter>  _filters;
 	
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	/**
 	 * Singleton constructor.  Will load the 

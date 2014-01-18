@@ -2,14 +2,13 @@ package com.normalexception.forum.rx8club.task;
 
 import java.io.IOException;
 
-import ch.boye.httpclientandroidlib.client.ClientProtocolException;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import com.normalexception.forum.rx8club.Log;
+import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.activities.UserCpActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 

@@ -26,14 +26,15 @@ package com.normalexception.forum.rx8club.task;
 
 import java.io.IOException;
 
-import ch.boye.httpclientandroidlib.client.ClientProtocolException;
+import org.apache.log4j.Logger;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import com.normalexception.forum.rx8club.Log;
+import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
@@ -47,7 +48,7 @@ public class NewThreadTask extends AsyncTask<Void,Void,Void> {
 	private Activity sourceActivity;
 	private String s, token, posthash, subject, post, forumId;
 	
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	public NewThreadTask(Activity source, String forumId, String s, 
 						 String token, String f, String posthash,

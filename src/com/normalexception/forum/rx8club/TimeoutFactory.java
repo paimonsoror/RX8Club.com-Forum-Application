@@ -24,6 +24,8 @@ package com.normalexception.forum.rx8club;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import org.apache.log4j.Logger;
+
 import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
@@ -39,7 +41,7 @@ public class TimeoutFactory {
 	protected static final long PING_EXPIRE = 2 /*hours*/ * 3600;
 	//protected static final long PING_DEBUG  = 10;
 	
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	/**
 	 * Report an instanec of the TimeoutFactory, and create 
@@ -63,6 +65,7 @@ public class TimeoutFactory {
 	 * Reset all timeout values
 	 */
 	public void resetTimeouts() {
+		Log.v(TAG, "Resetting Timeouts");
 		pingTime = pongTime = diffTime = 0;
 	}
 	

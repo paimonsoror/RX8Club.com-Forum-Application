@@ -26,6 +26,7 @@ package com.normalexception.forum.rx8club.activities.list;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -80,7 +81,7 @@ import com.normalexception.forum.rx8club.view.thread.ThreadViewArrayAdapter;
  */
 public class CategoryActivity extends ForumBaseActivity implements OnClickListener {
 	
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	private static String link;
 	private ProgressDialog loadingDialog;
 	

@@ -26,6 +26,8 @@ package com.normalexception.forum.rx8club.activities.list;
 
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
+
 import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -49,7 +51,7 @@ public class ThreadTypeFactory {
 		POSTED_STICKY			// Sticky w/ Posts
 	};
 	
-	private static String TAG = ThreadTypeFactory.class.getName();
+	private static Logger TAG = Logger.getLogger(ThreadTypeFactory.class.getName());
 	
 	/**
 	 * Report a bitmap, and also cache the bitmap if it isn't already loaded

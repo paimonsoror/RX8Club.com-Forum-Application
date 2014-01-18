@@ -89,6 +89,10 @@
 	        android:title="Clear Cache"
 	        android:key="appcache"
 	        android:summary="Clear application cache"/>
+	    <Preference
+	        android:title="Export Log File"
+	        android:key="exportLog"
+	        android:summary="Export the application log file"/>
 	   	<Preference
 	   	    android:title="Rate Application"
 	   	    android:key="rate"

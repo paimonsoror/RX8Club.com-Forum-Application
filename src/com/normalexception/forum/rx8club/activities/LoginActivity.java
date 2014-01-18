@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.security.NoSuchAlgorithmException;
 
+import org.apache.log4j.Logger;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -60,7 +62,7 @@ import com.normalexception.forum.rx8club.user.UserProfile;
  */
 public class LoginActivity extends ForumBaseActivity implements OnClickListener, OnCheckedChangeListener {
 
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	private ProgressDialog loadingDialog;
 	
 	/*

@@ -24,6 +24,8 @@ package com.normalexception.forum.rx8club.activities.fragments;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import org.apache.log4j.Logger;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -45,7 +47,7 @@ import com.normalexception.forum.rx8club.view.ViewHolder;
  */
 public class StylerFragment extends Fragment implements OnClickListener {
 	
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 
     public static int RESULT_LOAD_IMAGE = 1;
     

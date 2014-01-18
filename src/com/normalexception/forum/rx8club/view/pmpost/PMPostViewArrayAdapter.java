@@ -37,8 +37,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.handler.AvatarLoader;
+import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.utils.Utils;
 import com.normalexception.forum.rx8club.view.ViewHolder;

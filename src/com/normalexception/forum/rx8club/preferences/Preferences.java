@@ -24,6 +24,7 @@ package com.normalexception.forum.rx8club.preferences;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.io.File;
 import java.util.Map;
 
 import android.app.ProgressDialog;
@@ -46,6 +47,7 @@ import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.thread.ThreadFilterActivity;
 import com.normalexception.forum.rx8club.cache.Cache;
 import com.normalexception.forum.rx8club.cache.FileCache;
+import com.normalexception.forum.rx8club.cache.impl.LogFile;
 import com.normalexception.forum.rx8club.dialog.FavoriteDialog;
 import com.normalexception.forum.rx8club.dialog.SignatureDialog;
 import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
@@ -69,6 +71,22 @@ public class Preferences extends PreferenceActivity {
         addPreferencesFromResource(R.xml.preferences);
         
         final Context ctx = this;
+        
+        Preference shareLog = (Preference)findPreference("exportLog");
+        shareLog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {			
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+				sharingIntent.setType("text/plain");
+				
+				Uri uri = Uri.fromFile(
+						new File(
+								(new LogFile(MainApplication.getAppContext())).getLogFile()));
+				sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
+				startActivity(sharingIntent);
+				return true;
+			}
+		});
         
         Preference threadFilter = (Preference)findPreference("threadFilter");
         threadFilter.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

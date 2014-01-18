@@ -24,6 +24,8 @@ package com.normalexception.forum.rx8club.activities.thread;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import org.apache.log4j.Logger;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -47,7 +49,7 @@ import com.normalexception.forum.rx8club.view.thread.ThreadRuleViewArrayAdapter;
 
 public class ThreadFilterActivity  extends ForumBaseActivity implements OnClickListener {
 
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	private PTRListView lv;
 	private ThreadRuleViewArrayAdapter cva;

@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -79,7 +80,7 @@ import com.normalexception.forum.rx8club.view.threadpost.PostViewArrayAdapter;
  */
 public class ThreadActivity extends ForumBaseActivity implements OnClickListener {
 
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 
 	private String currentPageLink;
 	private String currentPageTitle;

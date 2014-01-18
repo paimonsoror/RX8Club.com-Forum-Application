@@ -31,6 +31,8 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.apache.log4j.Logger;
+
 import android.content.Context;
 
 import com.normalexception.forum.rx8club.Log;
@@ -43,7 +45,7 @@ import com.normalexception.forum.rx8club.Log;
  */
 public class ObjectCache<T> extends ExpirableCache {
 	
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	/**
 	 * Constructor to an object cache

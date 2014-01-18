@@ -26,6 +26,7 @@ package com.normalexception.forum.rx8club.activities.thread;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
@@ -41,6 +42,7 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
+import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.task.UpdateTask;
 import com.normalexception.forum.rx8club.view.threaditem.ThreadItemView;
 import com.normalexception.forum.rx8club.view.threaditem.ThreadItemViewArrayAdapter;
@@ -58,7 +60,7 @@ import com.normalexception.forum.rx8club.view.threaditem.ThreadItemViewArrayAdap
  */
 public class EditPostActivity extends ForumBaseActivity {
 
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	private String postId, securityToken, postHash, poststart, 
 	pageNumber, pageTitle, postMessage;
 	private boolean delete = false, deleteThread = false;
@@ -77,7 +79,8 @@ public class EditPostActivity extends ForumBaseActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		super.setState(AppState.State.EDIT_POST, this.getIntent());
+		
 		setContentView(R.layout.activity_basiclist);
 
 		Log.v(TAG, "Edit Thread Activity Started");

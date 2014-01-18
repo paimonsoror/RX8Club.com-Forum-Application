@@ -27,6 +27,7 @@ package com.normalexception.forum.rx8club.activities.pm;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -58,7 +59,7 @@ import com.normalexception.forum.rx8club.view.pmpost.PMPostViewArrayAdapter;
 
 public class PrivateMessageViewActivity extends ForumBaseActivity {
 
-	private final String TAG = "PrivateMessageViewActivity";
+	private Logger TAG = Logger.getLogger(this.getClass());
 	
 	private String postUser = null;
 	private String securityToken = null;

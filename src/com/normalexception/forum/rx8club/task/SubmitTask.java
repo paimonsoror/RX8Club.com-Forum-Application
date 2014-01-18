@@ -27,6 +27,8 @@ package com.normalexception.forum.rx8club.task;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -50,7 +52,7 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
 	private List<String> bitmaps;
 	private Class<?> postClazz;
 
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	/**
 	 * Constructor to a SubmitTask

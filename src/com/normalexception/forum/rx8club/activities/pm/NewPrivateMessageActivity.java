@@ -26,6 +26,7 @@ package com.normalexception.forum.rx8club.activities.pm;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 
 import android.app.ProgressDialog;
@@ -42,13 +43,14 @@ import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
+import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.task.PmTask;
 import com.normalexception.forum.rx8club.view.pmitem.PMItemView;
 import com.normalexception.forum.rx8club.view.pmitem.PMItemViewArrayAdapter;
 
 public class NewPrivateMessageActivity extends ForumBaseActivity {
 
-	private final String TAG = "NewPrivateMessageActivity";
+	private Logger TAG = Logger.getLogger(this.getClass());
 	
 	private String postUser = null;
 	private String postText = null;
@@ -101,6 +103,7 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.setState(AppState.State.NEW_PM, this.getIntent());
         
         setContentView(R.layout.activity_basiclist);
         

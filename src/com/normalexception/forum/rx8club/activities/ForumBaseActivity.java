@@ -27,6 +27,7 @@ package com.normalexception.forum.rx8club.activities;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
+import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
@@ -69,7 +70,7 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	protected static final int USERCP_MENU = 4;
 	protected static final int UTILS_MENU = 5;
 	
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	protected String thisPage = "1", finalPage = "1";
 	

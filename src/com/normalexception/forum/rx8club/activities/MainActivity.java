@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -66,7 +67,7 @@ import com.normalexception.forum.rx8club.view.category.SubCategoryView;
  */
 public class MainActivity extends ForumBaseActivity {
     
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	private ArrayList<CategoryView> mainList;
 	private CategoryViewArrayAdapter cva;

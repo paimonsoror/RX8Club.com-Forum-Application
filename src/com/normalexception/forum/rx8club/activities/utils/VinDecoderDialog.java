@@ -26,12 +26,12 @@ package com.normalexception.forum.rx8club.activities.utils;
 
 import java.util.Locale;
 
-import com.normalexception.forum.rx8club.R;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.widget.EditText;
+
+import com.normalexception.forum.rx8club.R;
 
 public class VinDecoderDialog extends AlertDialog.Builder {
 	private Context ctx = null;

@@ -27,15 +27,17 @@ package com.normalexception.forum.rx8club.activities.list;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.filter.ThreadFilter;
-import com.normalexception.forum.rx8club.filter.ThreadFilterFactory;
 import com.normalexception.forum.rx8club.filter.ThreadFilter.RuleType;
+import com.normalexception.forum.rx8club.filter.ThreadFilterFactory;
 import com.normalexception.forum.rx8club.view.thread.ThreadView;
 
 public class CategoryFilterizer {
 	
-	private static String TAG = CategoryFilterizer.class.getName();
+	private static Logger TAG =  Logger.getLogger(CategoryFilterizer.class);
 	
 	private static int TOTAL_FILTERED = 0;
 	

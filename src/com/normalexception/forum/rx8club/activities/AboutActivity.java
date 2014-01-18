@@ -24,6 +24,8 @@ package com.normalexception.forum.rx8club.activities;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import org.apache.log4j.Logger;
+
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.view.View;
@@ -43,7 +45,7 @@ import com.normalexception.forum.rx8club.state.AppState;
  */
 public class AboutActivity extends ForumBaseActivity {
 
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	/*
 	 * (non-Javadoc)

@@ -1,6 +1,12 @@
 package com.normalexception.forum.rx8club;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
 import com.bugsense.trace.BugSenseHandler;
+import com.normalexception.forum.rx8club.cache.impl.LogFile;
+
+import de.mindpipe.android.logging.log4j.LogConfigurator;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -32,7 +38,7 @@ import com.bugsense.trace.BugSenseHandler;
  */
 public class Log {
 	// The log int definitions
-	public static int VERBOSE = 0,
+	public static final int VERBOSE = 0,
 			DEBUG = 1,
 			INFO = 2,
 			WARN = 3,
@@ -40,6 +46,44 @@ public class Log {
 
 	// The log level
 	private static int mLevel = VERBOSE;
+	
+	/////////////////////////////////////////////////////////
+	// Log4J Specific Methods
+	/////////////////////////////////////////////////////////
+	
+	private static final long MAX_SIZE = 1024 * 1024;
+	
+	public static void configure() {
+        final LogConfigurator logConfigurator = 
+        		new LogConfigurator();
+        LogFile lf = new LogFile(MainApplication.getAppContext());
+        logConfigurator.setFileName(lf.getLogFile());
+        logConfigurator.setRootLevel(toLog4jLevel(mLevel));
+        logConfigurator.setMaxFileSize(MAX_SIZE);
+        logConfigurator.setMaxBackupSize(0);
+        logConfigurator.setFilePattern("%d{ISO8601} [%t] %-5p %c %x - %m%n");
+        logConfigurator.configure();
+    }
+	
+	private static Level toLog4jLevel(final int level) {
+		switch(level) {
+		case VERBOSE:
+			return Level.TRACE;
+		case DEBUG:
+			return Level.DEBUG;
+		case INFO:
+			return Level.INFO;
+		case WARN:
+			return Level.WARN;
+		case ERROR:
+			return Level.ERROR;
+		default:
+			return Level.TRACE;
+		}
+	}
+	
+	/////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////
 
 	/**
 	 * Set the level of the logger
@@ -58,6 +102,9 @@ public class Log {
 		if( mLevel > VERBOSE ) return;
 		android.util.Log.v(tag, message);
 	}
+	public final static void v(Logger log, String message) {
+		log.trace(message);
+	}
 
 	/**
 	 * Log a 'debug' level message
@@ -67,6 +114,9 @@ public class Log {
 	public final static void d(String tag, String message){
 		if( mLevel > DEBUG ) return;
 		android.util.Log.d(tag, message);
+	}
+	public final static void d(Logger log, String message) {
+		log.debug(message);
 	}
 
 	/**
@@ -78,6 +128,9 @@ public class Log {
 		if( mLevel > INFO ) return;
 		android.util.Log.d(tag, message);
 	}
+	public final static void i(Logger log, String message) {
+		log.info(message);
+	}
 
 	/**
 	 * Log a 'warn' level message
@@ -87,6 +140,9 @@ public class Log {
 	public final static void w(String tag, String message){
 		if( mLevel > WARN ) return;
 		android.util.Log.w(tag, message);
+	}
+	public final static void w(Logger log, String message) {
+		log.warn(message);
 	}
 
 	/**
@@ -106,5 +162,8 @@ public class Log {
 			if(ex instanceof Exception)
 				BugSenseHandler.sendException((Exception)ex);
 		}
+	}
+	public final static void e(Logger log, String message, Throwable ex) {
+		log.error(message, ex);
 	}
 }

@@ -26,14 +26,15 @@ package com.normalexception.forum.rx8club.task;
 
 import java.io.IOException;
 
-import ch.boye.httpclientandroidlib.client.ClientProtocolException;
+import org.apache.log4j.Logger;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import com.normalexception.forum.rx8club.Log;
+import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
@@ -42,7 +43,7 @@ import com.normalexception.forum.rx8club.html.HtmlFormUtils;
  * Task used to move all post editing tasks to an async task
  */
 public class UpdateTask extends AsyncTask<Void,Void,Void> {
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	private ProgressDialog mProgressDialog;
 	private Activity sourceActivity;

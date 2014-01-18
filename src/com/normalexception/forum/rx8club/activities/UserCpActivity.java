@@ -24,6 +24,7 @@ package com.normalexception.forum.rx8club.activities;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -47,7 +48,7 @@ public class UserCpActivity extends ForumBaseActivity {
 
 	private String token, customTitle, homepageurl, biography, location, interests, occupation;
 	
-	public static String TAG = "UserCpActivity";
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	private ProgressDialog loadingDialog;
 	

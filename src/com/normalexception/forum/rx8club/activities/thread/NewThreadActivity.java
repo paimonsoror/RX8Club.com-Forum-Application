@@ -26,6 +26,7 @@ package com.normalexception.forum.rx8club.activities.thread;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 
 import android.os.Bundle;
@@ -58,7 +59,7 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
 			       s, token, f, posthash, 
 			       subject, post, source;
 	
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	private ListView lv;
 	

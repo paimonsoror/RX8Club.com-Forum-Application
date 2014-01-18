@@ -33,13 +33,15 @@ import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 
+import org.apache.log4j.Logger;
+
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 
 public class Utils {
 	
-	private static String TAG = Utils.class.getName();
+	private static Logger TAG =  Logger.getLogger(Utils.class);
 	
 	/**
 	 * Safely copy one stream into another.  This is useful when copying

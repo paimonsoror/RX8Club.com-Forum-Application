@@ -30,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.log4j.Logger;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -83,7 +85,7 @@ public class LoginFactory {
 	
 	private static LoginFactory _instance = null;
 	
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	private String password = null;
 	

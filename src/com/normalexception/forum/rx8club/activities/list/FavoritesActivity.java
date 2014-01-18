@@ -24,6 +24,8 @@ package com.normalexception.forum.rx8club.activities.list;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import org.apache.log4j.Logger;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,12 +42,13 @@ import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
 import com.normalexception.forum.rx8club.favorites.FavoriteThreads;
+import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.view.thread.ThreadView;
 import com.normalexception.forum.rx8club.view.thread.ThreadViewArrayAdapter;
 
 public class FavoritesActivity extends ForumBaseActivity implements OnClickListener {
 	
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	private FavoriteThreads threadlist;
 	private ThreadViewArrayAdapter tva;
@@ -60,6 +63,8 @@ public class FavoritesActivity extends ForumBaseActivity implements OnClickListe
     public void onCreate(Bundle savedInstanceState) {
         try {
         	super.onCreate(savedInstanceState);      
+        	super.setState(AppState.State.FAVORITES, this.getIntent());
+        	
 	        setContentView(R.layout.activity_basiclist);        
 	        
 	        lv = (ListView)findViewById(R.id.mainlistview);

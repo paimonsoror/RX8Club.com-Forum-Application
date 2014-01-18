@@ -28,11 +28,10 @@ package com.normalexception.forum.rx8club.view;
  * Implementation based on: https://github.com/erikwt/PullToRefresh-ListView
  */
 
-import com.normalexception.forum.rx8club.R;
+import org.apache.log4j.Logger;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,13 +39,16 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.AbsListView.OnScrollListener;
+
+import com.normalexception.forum.rx8club.Log;
+import com.normalexception.forum.rx8club.R;
 
 /**
  * An extension of a ListView that will implement a google mail style
@@ -60,7 +62,7 @@ public class PTRListView extends ListView implements OnScrollListener {
     	RELEASE_TO_REFRESH, 
     	REFRESHING };
 
-    private String TAG = this.getClass().getName();
+    private Logger TAG =  Logger.getLogger(this.getClass());
 
     private OnRefreshListener mOnRefreshListener;
 

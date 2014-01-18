@@ -24,6 +24,8 @@ package com.normalexception.forum.rx8club;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import org.apache.log4j.Logger;
+
 import android.app.Application;
 import android.content.Context;
 
@@ -37,7 +39,7 @@ public class MainApplication extends Application {
 
 	private static Context context;
 	
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	public static final String APP_PACKAGE = "com.normalexception.forum.rx8club";
 	public static final String BUG_APIKEY  = "fd9ce344";
@@ -50,15 +52,18 @@ public class MainApplication extends Application {
 	 * @see android.app.Application#onCreate()
 	 */
     public void onCreate(){
+        // Register the main application context
+        MainApplication.context = getApplicationContext();
+        
     	// Set the logger level for our log wrapper
     	Log.setLevel(LOG_LEVEL);
+    	Log.configure();
     	
-    	Log.v(TAG, "Starting Application");
+    	Log.v(TAG, "Initializing Application");
         super.onCreate();
         
         BugSenseHandler.initAndStartSession(getApplicationContext(), BUG_APIKEY);
-        
-        MainApplication.context = getApplicationContext();
+
     }
 
     /**

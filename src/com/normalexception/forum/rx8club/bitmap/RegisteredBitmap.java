@@ -30,6 +30,8 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import android.graphics.Bitmap;
 
 import com.normalexception.forum.rx8club.Log;
@@ -37,7 +39,7 @@ import com.normalexception.forum.rx8club.Log;
 public class RegisteredBitmap {
 	
 	private Bitmap bmp = null;
-	private String TAG = this.getClass().getName();
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	private static Map<String, SoftReference<RegisteredBitmap>> archive = 
 			new HashMap<String, SoftReference<RegisteredBitmap>>(); 

@@ -24,26 +24,35 @@ package com.normalexception.forum.rx8club.cache.impl;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import java.util.List;
+import java.io.File;
 
 import android.content.Context;
 
-import com.normalexception.forum.rx8club.cache.ObjectCache;
+import com.normalexception.forum.rx8club.cache.Cache;
 
-public class ViewListCache<T> extends ObjectCache< List<T> > {
+public class LogFile extends Cache {
+	
+	private static final String FILENAME = "rx8club.log";
+	private String logfile = null;
+
+	/**
+	 * Initialize a reference to our log file
+	 * @param ctx	The application context
+	 */
+	public LogFile(Context ctx) {
+		super(ctx);	
+		File external = getExternalCache();
+		logfile = String.format("%s%s%s", 
+				external.getAbsolutePath(), 
+				File.separator,
+				FILENAME);
+	}
 	
 	/**
-	 * To help increase the speed of the app, we are going to go ahead
-	 * and cache the view list.  The cache expires each day, so if
-	 * the forums update it wont take long for the app to get the
-	 * updates
-	 * @param ctx		The source context
-	 * @param filename	The name of the cache file
+	 * Report the log file
+	 * @return	The location of the log file as a string
 	 */
-	public ViewListCache(Context ctx, String filename) {
-		super(ctx);
-		this.CACHEFILENAME = filename;
-		this.cacheDir = getExternalCache();
-		this.setCacheDays(1);
+	public String getLogFile() {
+		return logfile;
 	}
 }
