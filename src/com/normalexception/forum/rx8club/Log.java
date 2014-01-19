@@ -53,6 +53,9 @@ public class Log {
 	
 	private static final long MAX_SIZE = 1024 * 1024;
 	
+	/**
+	 * Configure log4j logging parameters
+	 */
 	public static void configure() {
         final LogConfigurator logConfigurator = 
         		new LogConfigurator();
@@ -65,6 +68,12 @@ public class Log {
         logConfigurator.configure();
     }
 	
+	/**
+	 * Convert our internal logging level to a log4j logging
+	 * level
+	 * @param level	Our integer level value
+	 * @return		A log4j logging level
+	 */
 	private static Level toLog4jLevel(final int level) {
 		switch(level) {
 		case VERBOSE:
