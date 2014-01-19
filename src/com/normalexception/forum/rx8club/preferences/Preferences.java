@@ -76,13 +76,21 @@ public class Preferences extends PreferenceActivity {
         shareLog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {			
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
+				// We need to create an intent here for sharing
 				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+				
+				// The intent type is a text type
 				sharingIntent.setType("text/plain");
 				
+				// Open the file
 				Uri uri = Uri.fromFile(
 						new File(
 								(new LogFile(MainApplication.getAppContext())).getLogFile()));
+				
+				// Add the file to the intent
 				sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
+				
+				// Start the intent
 				startActivity(sharingIntent);
 				return true;
 			}
