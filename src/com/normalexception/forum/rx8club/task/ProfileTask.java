@@ -58,6 +58,7 @@ public class ProfileTask extends AsyncTask<Void,Void,Void>{
 	 */
     @Override
     protected void onPreExecute() {
+    	
         mProgressDialog = 
         		ProgressDialog.show(this.sourceActivity, "Updating...", "Updating Profile...");
     }

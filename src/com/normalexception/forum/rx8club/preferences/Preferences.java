@@ -132,6 +132,7 @@ public class Preferences extends PreferenceActivity {
             		
         		    @Override
         		    protected void onPreExecute() {
+        		    	
         		    	loadingDialog = 
         						ProgressDialog.show(ctx, 
         								getString(R.string.dialogClearingCache), 

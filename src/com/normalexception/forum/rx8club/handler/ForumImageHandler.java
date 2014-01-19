@@ -90,6 +90,11 @@ public class ForumImageHandler implements ImageGetter {
 	public class ImageGetterAsyncTask extends AsyncTask<Object, Void, Bitmap>  {
 		private LevelListDrawable mDrawable;
 
+		@Override
+		protected void onPreExecute() {			
+        	
+		}
+		
         @Override
         protected Bitmap doInBackground(Object... params) {
             String source = (String) params[0];

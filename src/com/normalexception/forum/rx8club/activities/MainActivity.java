@@ -209,6 +209,7 @@ public class MainActivity extends ForumBaseActivity {
         	
         	@Override
 		    protected void onPreExecute() {
+        		
 		    	loadingDialog = 
 						ProgressDialog.show(thisActivity, 
 								getString(R.string.loading), 

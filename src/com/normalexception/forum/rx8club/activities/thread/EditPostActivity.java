@@ -116,6 +116,7 @@ public class EditPostActivity extends ForumBaseActivity {
 		updaterTask = new AsyncTask<Void,String,Void>() {
 			@Override
 			protected void onPreExecute() {
+				
 				loadingDialog = 
 						ProgressDialog.show(a, 
 								getString(R.string.loading), 

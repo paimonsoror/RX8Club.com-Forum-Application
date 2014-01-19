@@ -124,6 +124,7 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 	 */
     @Override
     protected void onPreExecute() {
+    	
     	if(delete) 
     		mProgressDialog = 
     			ProgressDialog.show(this.sourceActivity, "Deleting...", "Deleting Post...");

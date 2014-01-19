@@ -179,6 +179,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 						Intent _intent = 
 								new Intent(CategoryActivity.this, ThreadActivity.class);
 						
+												
 						// If the user wants the last page when recently updated
 						// threads, grab it.
 						if(getLastPage(itm) && 
@@ -527,6 +528,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
         	
         	@Override
 		    protected void onPreExecute() {
+        		
 		    	loadingDialog = 
 						ProgressDialog.show(src, 
 								getString(R.string.loading), 

@@ -63,8 +63,13 @@ public class BitmapDecoder {
 					PreferenceHelper.getThreadImageSize(MainApplication.getAppContext());
 	        mBitmap = decodeSampledBitmapFromResourceMemOpt(is, sample_size,
 	        		sample_size, useMin);
-	        Log.d(TAG, String.format("Bitmap size %d bytes", 
+	        try {
+	        	Log.d(TAG, String.format("Bitmap size %d bytes", 
 	        		mBitmap.getRowBytes() * mBitmap.getHeight()));
+	        } catch (NullPointerException e) {
+	        	// Just incase image is empty
+	        	Log.d(TAG, "Couldn't get bitmap size");
+	        }
 		} catch (FileNotFoundException ex) {
 			Log.d(TAG, "-- File Not Found: " + source);
 		}
@@ -117,8 +122,7 @@ public class BitmapDecoder {
             return BitmapFactory.decodeByteArray(byteArr, 0, count, options);
 
         } catch (Exception e) {
-            e.printStackTrace();
-
+            Log.e(TAG, "Error Decoding Bitmap", e);
             return null;
         }
     }

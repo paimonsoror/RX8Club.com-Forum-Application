@@ -89,6 +89,7 @@ public class NewThreadTask extends AsyncTask<Void,Void,Void> {
 	 */
     @Override
     protected void onPreExecute() {
+    	
         mProgressDialog = 
         		ProgressDialog.show(this.sourceActivity, "Submitting...", "Creating New Thread...");
     }

@@ -162,6 +162,7 @@ public class LoginActivity extends ForumBaseActivity implements OnClickListener,
 		 */
 		@Override
 		protected Void doInBackground(final Context... params) {
+			
 			runOnUiThread(new Runnable() {
 				  public void run() {
 					  loadingDialog = 

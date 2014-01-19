@@ -98,8 +98,6 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 
 	private List<String> bmapList;
 	
-	private AsyncTask<Void,String,Void> updaterTask;
-	
 	private boolean isPoll = false, isLocked = false;
 	
 	private ProgressDialog loadingDialog;
@@ -144,6 +142,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		updaterTask = new AsyncTask<Void,String,Void>() {
 		    @Override
 		    protected void onPreExecute() {
+		    	
 		    	loadingDialog = 
 						ProgressDialog.show(src, 
 								getString(R.string.loading), 
@@ -266,7 +265,10 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 					pageNumbers.first().select("td[class^=vbmenu_control]");
 			thisPage = pageLinks.text().split(" ")[1];
 			finalPage = pageLinks.text().split(" ")[3];
-		} catch (Exception e) {}
+			Log.v(TAG, String.format("This Page: %s, Final Page: %s", thisPage, finalPage));
+		} catch (Exception e) {
+			Log.e(TAG, "We had an error with pagination", e);
+		}
 
 		// Get the user's actual ID, there is a chance they never got it
 		// before
@@ -283,6 +285,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		threadNumber = doc.select("input[name=searchthreadid]").attr("value");
 
 		Elements posts = doc.select("div[id=posts]").select("div[id^=edit]");
+		Log.v(TAG, String.format("Parsing through %d posts", posts.size()));
 		for(Element post : posts) {
 			Elements innerPost = post.select("table[id^=post]");
 

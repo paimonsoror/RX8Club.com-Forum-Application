@@ -122,6 +122,7 @@ public class PrivateMessageViewActivity extends ForumBaseActivity {
     	updaterTask = new AsyncTask<Void,String,Void>() {
         	@Override
 		    protected void onPreExecute() {
+        		
 		    	loadingDialog = 
 						ProgressDialog.show(src, 
 								getString(R.string.loading), 

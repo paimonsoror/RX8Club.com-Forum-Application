@@ -93,6 +93,7 @@ public class PmTask extends AsyncTask<Void,Void,Void>{
 	 */
     @Override
     protected void onPreExecute() {
+    	
         mProgressDialog = 
         		ProgressDialog.show(this.sourceActivity, "Sending...", "Sending PM...");
     }
