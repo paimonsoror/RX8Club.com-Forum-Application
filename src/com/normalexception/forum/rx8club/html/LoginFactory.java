@@ -85,7 +85,7 @@ public class LoginFactory {
 	
 	private static LoginFactory _instance = null;
 	
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private static Logger TAG =  Logger.getLogger(LoginFactory.class);
 	
 	private String password = null;
 	
@@ -141,6 +141,7 @@ public class LoginFactory {
 	    boolean haveConnectedMobile = false;
 	    boolean haveConnectedEth = false;
 	    
+	    Log.d(TAG, "Checking available network connections");
 	    ConnectivityManager cm = 
 	    		(ConnectivityManager) 
 	    			MainApplication.getAppContext()
@@ -148,14 +149,20 @@ public class LoginFactory {
 	    NetworkInfo[] netInfo = cm.getAllNetworkInfo();
 	    for (NetworkInfo ni : netInfo) {
 	        if (ni.getTypeName().equalsIgnoreCase(LoginFactory.NETWORK_WIFI))
-	            if (ni.isConnected())
+	            if (ni.isConnected()) {
+	            	Log.d(TAG, "Wifi Connection Detected");
 	                haveConnectedWifi = true;
+	            }
 	        if (ni.getTypeName().equalsIgnoreCase(LoginFactory.NETWORK_MOBILE))
-	            if (ni.isConnected())
+	            if (ni.isConnected()) {
+	            	Log.d(TAG, "Mobile Connection Detected");
 	                haveConnectedMobile = true;
+	            }
 	        if(ni.getTypeName().equalsIgnoreCase(LoginFactory.NETWORK_ETH))
-	        	if (ni.isConnected())
+	        	if (ni.isConnected()) {
+	        		Log.d(TAG, "Ethernet Connection Detected");
 	        		haveConnectedEth = true;
+	        	}
 	    }
 	    return haveConnectedWifi || 
 	    		haveConnectedMobile || 
@@ -244,12 +251,15 @@ public class LoginFactory {
         });
 	    
 	    // Follow Redirects
+        Log.d(TAG, "Registering Redirect Strategy");
 	    httpclient.setRedirectStrategy(new RedirectStrategy());
 	    
 	    // Setup retry handler
+	    Log.d(TAG, "Registering Retry Handler");
 	    httpclient.setHttpRequestRetryHandler(new RetryHandler());
 	    
 	    // Setup KAS
+	    Log.d(TAG, "Registering Keep Alive Strategy");
 	    httpclient.setKeepAliveStrategy(new KeepAliveStrategy());
 	    
 	    isInitialized = true;

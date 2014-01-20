@@ -152,7 +152,8 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         boolean hasPosts = !vMyCount.getText().equals("0");
         Bitmap scaledimg = 
     			ThreadTypeFactory.getBitmap(
-    					null, 15, 13, m.isLocked(), m.isSticky(), hasPosts);
+    					null, 15, 13, m.isLocked(), m.isSticky(), hasPosts, 
+    					m.isAnnouncement());
         vImage.setImageBitmap(scaledimg);      
         
         // Hide a few things if we are a guest
@@ -176,6 +177,11 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 		
 		if (m.isFavorite())
 			hideThreadDetails();
+		
+		if (m.isAnnouncement()) {
+			setMode(vi, true, Color.CYAN);
+			hideThreadDetails();
+		}
 		
 		if (!m.hasAttachment())
 			vAttachment.setVisibility(View.GONE);

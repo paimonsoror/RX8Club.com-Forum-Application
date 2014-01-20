@@ -48,23 +48,26 @@ public class ThreadTypeFactory {
 		LOCKED, 				// Locked thread
 		POSTED_LOCKED,          // Locked w/ Posts
 		STICKY,					// Sticky thread
-		POSTED_STICKY			// Sticky w/ Posts
+		POSTED_STICKY,			// Sticky w/ Posts
+		ANNOUNCEMENT
 	};
 	
 	private static Logger TAG = Logger.getLogger(ThreadTypeFactory.class.getName());
 	
 	/**
 	 * Report a bitmap, and also cache the bitmap if it isn't already loaded
-	 * @param src		The source activity
-	 * @param width		The width of the bitmap
-	 * @param height	The height of the bitmap
-	 * @param isLocked	True if the thread is locked
-	 * @param isSticky  True if the thread is sticky
-	 * @param hasPosts  True if user has posts within thread
-	 * @return			A reference to the bitmap
+	 * @param src				The source activity
+	 * @param width				The width of the bitmap
+	 * @param height			The height of the bitmap
+	 * @param isLocked			True if the thread is locked
+	 * @param isSticky  		True if the thread is sticky
+	 * @param hasPosts  		True if user has posts within thread
+	 * @param isAnnouncement	True if announcement
+	 * @return					A reference to the bitmap
 	 */
 	public static Bitmap getBitmap(Activity src, int width, int height, 
-			boolean isLocked, boolean isSticky, boolean hasPosts) {
+			boolean isLocked, boolean isSticky, boolean hasPosts, 
+			boolean isAnnouncement) {
 		Bitmap scaledimg;
 		
 		Resources rsc = (src == null)? 
@@ -90,6 +93,9 @@ public class ThreadTypeFactory {
 				theType = Type.STICKY;
 				res     = R.drawable.push_pin;
 			}
+		} else if (isAnnouncement) {
+			theType = Type.ANNOUNCEMENT;
+			res = R.drawable.exclamation;
 		} else {
 			if (hasPosts) {
 				theType = Type.POSTED;

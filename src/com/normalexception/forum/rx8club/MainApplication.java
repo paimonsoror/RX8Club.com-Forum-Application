@@ -62,6 +62,7 @@ public class MainApplication extends Application {
     	Log.v(TAG, "Initializing Application");
         super.onCreate();
         
+        Log.d(TAG, "Registering BugSense");
         BugSenseHandler.initAndStartSession(getApplicationContext(), BUG_APIKEY);
 
     }

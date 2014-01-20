@@ -386,18 +386,38 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
     			doc.select("table[id=threadslist] > tbody > tr");
  
     	for(Element thread : threadListing) {
-    		try {
+    		try {  
+    			boolean isSticky = false, isLocked = false, 
+    					hasAttachment = false, isAnnounce = false,
+    					isPoll = false;
+    			String formattedTitle = "", postCount = "0", 
+    					views = "0", forum = "", threadUser = "", 
+    					lastUser = "", threadLink = "", lastPage = "", 
+    					totalPosts = "0", threadDate = "";
+	    		
+    			Elements announcementContainer = thread.select("td[colspan=5]");
     			Elements threadTitleContainer  = thread.select("a[id^=thread_title]");
         		
-        		if(threadTitleContainer != null && !threadTitleContainer.isEmpty()) {
-		    		Element threadLink  = thread.select("a[id^=thread_title]").first();
+    			// We could have two different types of threads.  Announcement threads are 
+    			// completely different than the other types of threads (sticky, locked, etc)
+    			// so we need to play some games here
+    			if(announcementContainer != null && !announcementContainer.isEmpty()) {
+    				Log.d(TAG, "Announcement Thread Found");
+    				
+    				Elements annThread = announcementContainer.select("div > a");
+    				Elements annUser   = announcementContainer.select("div > span[class=smallfont]");
+    				formattedTitle = "Announcement: " + annThread.first().text();
+    				threadUser = annUser.last().text();
+    				threadLink = annThread.attr("href");
+    				isAnnounce = true;
+    			} else if(threadTitleContainer != null && !threadTitleContainer.isEmpty()) {
+		    		Element threadLinkEl= thread.select("a[id^=thread_title]").first();
 		    		Element repliesText = thread.select("td[title^=Replies]").first();
 		    		Element threaduser  = thread.select("td[id^=td_threadtitle_] div.smallfont").first();
 		    		Element threadicon  = thread.select("img[id^=thread_statusicon_]").first();
 		    		Element threadDiv   = thread.select("td[id^=td_threadtitle_] > div").first();
 		    		Element threadDateFull  = thread.select("td[title^=Replies:] > div").first();
 		    		
-		    		boolean isSticky = false, isLocked = false, hasAttachment = false, isPoll = false;    		
 		    		try {
 		    			isSticky = threadDiv.text().contains("Sticky:");
 		    		} catch (Exception e) { }
@@ -420,17 +440,15 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		    		} catch (Exception e) { }
 		    		
 		    		// Find the last page if it exists
-		    		String lastPage = "";
 		    		try {
 		    			lastPage = threadDiv.select("span").last().select("a").last().attr("href");
 		    		} catch (Exception e) { }
 		    		
-		    		String threadDate = threadDateFull.text();
+		    		threadDate = threadDateFull.text();
 		    		int findAMPM = threadDate.indexOf("M") + 1;
 		    		threadDate = threadDate.substring(0, findAMPM);
 		    		
 		    		String totalPostsInThreadTitle = threadicon.attr("alt");
-		    		String totalPosts = "";	
 		    		
 		    		if(totalPostsInThreadTitle != null && totalPostsInThreadTitle.length() > 0)
 		    			totalPosts = totalPostsInThreadTitle.split(" ")[2];
@@ -438,44 +456,53 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		    		// Remove page from the link
 		    		String realLink = Utils.removePageFromLink(link);  			
 		    		
-		    		if(threadLink.attr("href").contains(realLink) || (isNewTopicActivity || isMarket) ) {
+		    		if(threadLinkEl.attr("href").contains(realLink) || (isNewTopicActivity || isMarket) ) {
 			    		
 			    		String txt = repliesText.getElementsByClass("alt2").attr("title");
 			    		String splitter[] = txt.split(" ", 4);
-			    		String postCount = splitter[1].substring(0, splitter[1].length() - 1);
-			    		String views = splitter[3];
-			    		String forum = "";
+			    		
+			    		postCount = splitter[1].substring(0, splitter[1].length() - 1);
+			    		views = splitter[3];
 			    		
 			    		try {
 			    			if(this.isNewTopicActivity)
 			    			 	forum = thread.select("td[class=alt1]").last().text();
 			    		} catch (Exception e) { }
 		
-			    		String formattedTitle = 
+			    		formattedTitle = 
 			    				String.format("%s%s%s", 
 			    						isSticky? "Sticky: " : 
 			    							isPoll? "Poll: " : "",
 			    								preString.length() == 0? "" : preString + " ",
-			    								threadLink.text()); 
-			    		
-			    		ThreadView tv = new ThreadView();
-			    		tv.setTitle(formattedTitle);
-			    		tv.setStartUser(threaduser.text());
-			    		tv.setLastUser(repliesText.select("a[href*=members]").text());
-			    		tv.setLink(threadLink.attr("href"));
-			    		tv.setLastLink(lastPage);
-			    		tv.setPostCount(postCount);
-			    		tv.setMyPosts(totalPosts);
-			    		tv.setViewCount(views);
-			    		tv.setLocked(isLocked);
-			    		tv.setSticky(isSticky);
-			    		tv.setPoll(isPoll);
-			    		tv.setHasAttachment(hasAttachment);
-			    		tv.setForum(forum);
-			    		tv.setLastPostTime(threadDate);
-			    		threadlist.add(tv);
+			    									threadLinkEl.text());
+			    		threadUser = threaduser.text();
+			    		lastUser = repliesText.select("a[href*=members]").text();
+			    		threadLink = threadLinkEl.attr("href");
 		    		}
+		    		
         		}
+    			
+    			// Add our thread to our list as long as the thread
+    			// contains a title
+    			if(!formattedTitle.equals("")) {
+		    		ThreadView tv = new ThreadView();
+		    		tv.setTitle(formattedTitle);
+		    		tv.setStartUser(threadUser);
+		    		tv.setLastUser(lastUser);
+		    		tv.setLink(threadLink);
+		    		tv.setLastLink(lastPage);
+		    		tv.setPostCount(postCount);
+		    		tv.setMyPosts(totalPosts);
+		    		tv.setViewCount(views);
+		    		tv.setLocked(isLocked);
+		    		tv.setSticky(isSticky);
+		    		tv.setAnnouncement(isAnnounce);
+		    		tv.setPoll(isPoll);
+		    		tv.setHasAttachment(hasAttachment);
+		    		tv.setForum(forum);
+		    		tv.setLastPostTime(threadDate);
+		    		threadlist.add(tv);
+    			}
     		} catch (Exception e) { 
     			Log.e(TAG, "Error Parsing That Thread...", e);
     			Log.d(TAG, "Thread may have moved");

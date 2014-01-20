@@ -35,7 +35,23 @@ public class ThreadView implements Serializable {
 	private String startUser, lastUser;
 	private String link, lastLink, lastPostTime;
 	private String forum;
-	private boolean isSticky, isLocked, isFavorite, isPoll, hasAttachment = false;
+	private boolean isAnnouncement, isSticky, isLocked, isFavorite, isPoll, hasAttachment = false;
+	
+	/**
+	 * Report if thread is an announcement
+	 * @return	True if announcement
+	 */
+	public boolean isAnnouncement() {
+		return this.isAnnouncement;
+	}
+	
+	/**
+	 * Set if thread is an announcement
+	 * @param ann	True if announcement
+	 */
+	public void setAnnouncement(boolean ann) {
+		this.isAnnouncement = ann;
+	}
 	
 	/**
 	 * Set the last post time
