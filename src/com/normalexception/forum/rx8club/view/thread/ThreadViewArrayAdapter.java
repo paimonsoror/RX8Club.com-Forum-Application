@@ -138,6 +138,9 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         vAttachment= (ImageView) ViewHolder.get(vi,R.id.tv_attachment);
         vForumC    = (LinearLayout) ViewHolder.get(vi, R.id.tv_forum_details);
         
+        // Set all display components to visible to start
+        hideThreadDetails(false);
+        
         vTitle.setText(       m.getTitle());
         vPostUser.setText(    m.getStartUser());
         vLastUser.setText(    m.getLastUser());
@@ -176,11 +179,11 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 			setMode(vi, false, Color.GRAY);
 		
 		if (m.isFavorite())
-			hideThreadDetails();
+			hideThreadDetails(true);
 		
 		if (m.isAnnouncement()) {
 			setMode(vi, true, Color.CYAN);
-			hideThreadDetails();
+			hideThreadDetails(true);
 		}
 		
 		if (!m.hasAttachment())
@@ -213,19 +216,19 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 	 * Hide the thread details, which is really only used on special
 	 * occasions like the favorites list
 	 */
-	public void hideThreadDetails() {
-		vPostCount .setVisibility(View.GONE);
-		vPostCountL.setVisibility(View.GONE);
+	public void hideThreadDetails(boolean hide) {
+		vPostCount .setVisibility(hide? View.GONE : View.VISIBLE);
+		vPostCountL.setVisibility(hide? View.GONE : View.VISIBLE);
 
-		vLastUser .setVisibility(View.GONE);
-		vLastUserL.setVisibility(View.GONE);
+		vLastUser .setVisibility(hide? View.GONE : View.VISIBLE);
+		vLastUserL.setVisibility(hide? View.GONE : View.VISIBLE);
 		
-		vMyCount  .setVisibility(View.GONE);
-		vMyCountL .setVisibility(View.GONE);
+		vMyCount  .setVisibility(hide? View.GONE : View.VISIBLE);
+		vMyCountL .setVisibility(hide? View.GONE : View.VISIBLE);
 		
-		vViewCount .setVisibility(View.GONE);
-		vViewCountL.setVisibility(View.GONE);
+		vViewCount .setVisibility(hide? View.GONE : View.VISIBLE);
+		vViewCountL.setVisibility(hide? View.GONE : View.VISIBLE);
 		
-		vForumC.setVisibility(View.GONE);
+		vForumC.setVisibility(hide? View.GONE : View.VISIBLE);
 	}
 }

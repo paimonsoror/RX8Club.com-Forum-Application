@@ -475,11 +475,11 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 			    							isPoll? "Poll: " : "",
 			    								preString.length() == 0? "" : preString + " ",
 			    									threadLinkEl.text());
-			    		threadUser = threaduser.text();
-			    		lastUser = repliesText.select("a[href*=members]").text();
-			    		threadLink = threadLinkEl.attr("href");
 		    		}
 		    		
+		    		threadUser = threaduser.text();
+		    		lastUser = repliesText.select("a[href*=members]").text();
+		    		threadLink = threadLinkEl.attr("href");
         		}
     			
     			// Add our thread to our list as long as the thread
