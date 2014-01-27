@@ -261,11 +261,15 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		// Update pagination
 		try {
 			Elements pageNumbers = doc.select("div[class=pagenav]");
-			Elements pageLinks = 
+			if(pageNumbers.first() != null) {
+				Elements pageLinks = 
 					pageNumbers.first().select("td[class^=vbmenu_control]");
-			thisPage = pageLinks.text().split(" ")[1];
-			finalPage = pageLinks.text().split(" ")[3];
-			Log.v(TAG, String.format("This Page: %s, Final Page: %s", thisPage, finalPage));
+				thisPage = pageLinks.text().split(" ")[1];
+				finalPage = pageLinks.text().split(" ")[3];
+				Log.d(TAG, String.format("This Page: %s, Final Page: %s", thisPage, finalPage));
+			} else {
+				Log.d(TAG, "Thread only contains one page");
+			}
 		} catch (Exception e) {
 			Log.e(TAG, "We had an error with pagination", e);
 		}
@@ -372,6 +376,11 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			this.pageNumber = finalPage;
 
 		switch(arg0.getId()) {
+		case R.id.nr_downButton:
+			Log.d(TAG, "Scrolling To Bottom of Screen");
+			_intent = null;
+			lv.setSelection(lv.getCount());
+			break;
 		case R.id.previousButton:
 			_intent.putExtra("link", Utils.decrementPage(this.currentPageLink, this.pageNumber));
 			_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) - 1));
@@ -386,15 +395,19 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			_intent = null;
 			String advert = PreferenceHelper.isAdvertiseEnabled(MainApplication.getAppContext())?
 					LoginFactory.getInstance().getSignature() : "";
-			String toPost = 
-					String.format("%s\n\n%s", 
-							((TextView)findViewById(R.id.postBox)).getText().toString(), advert);
-			SubmitTask sTask = new SubmitTask(
+			String thePost = ((TextView)findViewById(R.id.postBox)).getText().toString();
+			if(thePost != null && !thePost.equals("")) {
+				String toPost = 
+					String.format("%s\n\n%s", thePost, advert);
+				SubmitTask sTask = new SubmitTask(
 					this, bmapList, this.securityToken, 
 					this.threadNumber, this.postNumber,
 					toPost, this.currentPageTitle, this.pageNumber);
-			sTask.debug();
-			sTask.execute();
+				sTask.debug();
+				sTask.execute();
+			} else {
+				Toast.makeText(this, R.string.enterPost, Toast.LENGTH_SHORT).show();
+			}
 			break;
 		case R.id.paginationText:
 			final EditText input = new EditText(this);

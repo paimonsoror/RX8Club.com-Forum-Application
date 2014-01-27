@@ -424,7 +424,8 @@ public class LoginFactory {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public boolean login() throws NoSuchAlgorithmException, ClientProtocolException, IOException {
+	public boolean login() 
+			throws NoSuchAlgorithmException, ClientProtocolException, IOException {
 		if(UserProfile.getInstance().getUsername() == null || password == null)
 			return false;
 		

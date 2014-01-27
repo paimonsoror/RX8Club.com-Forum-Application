@@ -101,11 +101,20 @@
 	        android:layout_toRightOf="@id/titleTextContainer"
 	        android:layout_alignParentRight="true"
 	        android:padding="3dip">
-			<ImageView
-			    android:id="@+id/nr_quoteButton"
+		    <ImageView
+			    android:id="@+id/nr_downButton"
 			    android:layout_width="15dip"
 		        android:layout_height="15dip"	 
 		        android:layout_alignParentRight="true"   
+			    android:src="@drawable/downicon"
+			    android:focusable="false"/>
+		    
+			<ImageView
+			    android:id="@+id/nr_quoteButton"
+			    android:layout_width="15dip"
+		        android:layout_height="15dip"  
+		        android:layout_marginRight="5dp"
+		        android:layout_toLeftOf="@id/nr_downButton"
 			    android:src="@drawable/quote_icon"
 			    android:focusable="false"/>
 			
@@ -113,7 +122,7 @@
 			    android:id="@+id/nr_pmButton"
 			    android:layout_width="15dip"
 			    android:layout_height="15dip"
-			    android:layout_marginRight="10dp"
+			    android:layout_marginRight="5dp"
 			    android:layout_toLeftOf="@id/nr_quoteButton"
 			    android:src="@drawable/black_mail"
 			    android:focusable="false" />
@@ -122,7 +131,7 @@
 			    android:id="@+id/nr_editButton"
 			    android:layout_width="15dip"
 			    android:layout_height="15dip"
-			    android:layout_marginRight="10dp"
+			    android:layout_marginRight="5dp"
 			    android:layout_toLeftOf="@id/nr_pmButton"
 			    android:src="@drawable/black_pencil_icon"
 			    android:focusable="false" />
@@ -133,7 +142,7 @@
 		        android:layout_height="15dip"
 			    android:layout_toLeftOf="@id/nr_editButton"
 			    android:src="@drawable/black_x"
-			    android:layout_marginRight="10dp"
+			    android:layout_marginRight="5dp"
 			    android:focusable="false"/>
 		</RelativeLayout>
 				

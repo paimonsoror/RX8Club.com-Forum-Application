@@ -60,6 +60,7 @@
     <string name="tvMyPosts">Yours:\u0020</string>
     <string name="tvForum">Forum:\u0020</string>
     <string name="commentText">Comment</string>
+    <string name="enterPost">Sorry, Can\'t Submit Blank Post</string>
         
     <!-- Banner Fragment Strings -->
     <string name="bannerNewTopics">New Posts</string>

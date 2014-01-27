@@ -46,6 +46,7 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.pm.NewPrivateMessageActivity;
 import com.normalexception.forum.rx8club.activities.thread.EditPostActivity;
+import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.handler.AvatarLoader;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.html.LoginFactory;
@@ -158,6 +159,10 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         
         // Display the right items if the user is logged in
         setUserIcons(vi, cv.isLoggedInUser());
+        
+        
+        ((ImageView)ViewHolder.get(vi, R.id.nr_downButton))
+        	.setOnClickListener((ThreadActivity)activity);
         
         // Set click listeners if we are logged in, hide the buttons
         // if we are not logged in

@@ -3,8 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/darker_gray"
-    android:baselineAligned="false"
-    android:orientation="vertical" >
+    android:baselineAligned="false">
         
         <fragment
             android:id="@+id/fragment_pagination"
@@ -18,7 +17,9 @@
             android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:orientation="vertical"
-		    android:layout_below="@id/fragment_pagination">          
+		    android:layout_below="@id/fragment_pagination"
+		    android:paddingLeft="3dp"
+		    android:paddingRight="3dp" >          
 	        <TextView
 	            android:id="@+id/textView1"
 	            android:layout_width="wrap_content"

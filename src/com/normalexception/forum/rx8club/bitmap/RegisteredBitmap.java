@@ -58,6 +58,7 @@ public class RegisteredBitmap {
 			throws MalformedURLException, IOException {		
 		SoftReference<RegisteredBitmap> temp = archive.get(source);
 		
+		// Check to see if a archived image exists
 		if(temp == null || temp.get() == null || temp.get().getBitmap() == null) {
 			Log.d(TAG, String.format("Creating New Bitmap (%d)", id));
 			
@@ -65,7 +66,14 @@ public class RegisteredBitmap {
 			archive.put(source, new SoftReference<RegisteredBitmap>(this));
 		} else {
 			Log.d(TAG, "Reporting Cached Bitmap");
-			bmp = temp.get().getBitmap();
+			RegisteredBitmap cached = temp.get();
+			try {
+				bmp = cached.getBitmap();
+			} catch (NullPointerException e) {
+				// In the off chance that the reference
+				// is blown before we get the bitmap
+				Log.e(TAG, "Cached Bitmap Got Cleared As We Referenced", e);
+			}
 		}
 	}
 	
@@ -73,7 +81,7 @@ public class RegisteredBitmap {
 	 * Report the bitmap
 	 * @return	The bitmap object
 	 */
-	public Bitmap getBitmap() {
+	public synchronized Bitmap getBitmap() {
 		return this.bmp;
 	}
 }
