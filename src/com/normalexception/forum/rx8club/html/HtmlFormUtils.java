@@ -245,7 +245,7 @@ public class HtmlFormUtils {
 		nvps.add(new BasicNameValuePair("parseame_check", "1"));
 		nvps.add(new BasicNameValuePair("vbseo_retrtitle", "1"));
 		nvps.add(new BasicNameValuePair("vbseo_is_retrtitle", "1"));
-		nvps.add(new BasicNameValuePair("emailupdate", "9999"));
+		//nvps.add(new BasicNameValuePair("emailupdate", "9999"));
     	nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(), doType));
     	
     	return formSubmit(WebUrls.quickPostAddress + thread, nvps, attId != null);
