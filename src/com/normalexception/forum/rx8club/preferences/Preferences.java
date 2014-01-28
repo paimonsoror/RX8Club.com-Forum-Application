@@ -50,6 +50,7 @@ import com.normalexception.forum.rx8club.cache.FileCache;
 import com.normalexception.forum.rx8club.cache.impl.LogFile;
 import com.normalexception.forum.rx8club.dialog.FavoriteDialog;
 import com.normalexception.forum.rx8club.dialog.SignatureDialog;
+import com.normalexception.forum.rx8club.user.UserProfile;
 import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
 
 /**
@@ -76,11 +77,20 @@ public class Preferences extends PreferenceActivity {
         shareLog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {			
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
+				String user =  UserProfile.getInstance().getUsername();
+				if(user.equals("")) user = "Guest";
+
 				// We need to create an intent here for sharing
 				Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 				
 				// The intent type is a text type
-				sharingIntent.setType("text/plain");
+				sharingIntent.setType("message/rfc822");
+				
+				// Add email details
+				sharingIntent.putExtra(Intent.EXTRA_EMAIL  , 
+						new String[]{ctx.getString(R.string.bug_contact)});
+				sharingIntent.putExtra(Intent.EXTRA_SUBJECT, 
+						"RX8Club.com Log: " + user);
 				
 				// Open the file
 				Uri uri = Uri.fromFile(
@@ -91,7 +101,14 @@ public class Preferences extends PreferenceActivity {
 				sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
 				
 				// Start the intent
-				startActivity(sharingIntent);
+				try {
+				    startActivity(Intent.createChooser(sharingIntent, "Send mail..."));
+				} catch (android.content.ActivityNotFoundException ex) {
+				    Toast.makeText(MainApplication.getAppContext(), 
+				    		"There are no email clients installed.", 
+				    		Toast.LENGTH_SHORT).show();
+				}
+				
 				return true;
 			}
 		});
