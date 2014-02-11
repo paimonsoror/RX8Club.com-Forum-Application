@@ -158,8 +158,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         postText.setTextSize(font_size);
         
         // Display the right items if the user is logged in
-        setUserIcons(vi, cv.isLoggedInUser());
-        
+        setUserIcons(vi, cv.isLoggedInUser());      
         
         ((ImageView)ViewHolder.get(vi, R.id.nr_downButton))
         	.setOnClickListener((ThreadActivity)activity);

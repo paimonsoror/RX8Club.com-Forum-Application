@@ -49,20 +49,18 @@ import ch.boye.httpclientandroidlib.HttpStatus;
 import ch.boye.httpclientandroidlib.NameValuePair;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 import ch.boye.httpclientandroidlib.client.CookieStore;
+import ch.boye.httpclientandroidlib.client.config.RequestConfig;
 import ch.boye.httpclientandroidlib.client.entity.GzipDecompressingEntity;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
 import ch.boye.httpclientandroidlib.client.methods.HttpPost;
-import ch.boye.httpclientandroidlib.client.params.ClientPNames;
-import ch.boye.httpclientandroidlib.client.protocol.ClientContext;
-import ch.boye.httpclientandroidlib.conn.ClientConnectionManager;
 import ch.boye.httpclientandroidlib.cookie.Cookie;
 import ch.boye.httpclientandroidlib.impl.client.BasicCookieStore;
-import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
-import ch.boye.httpclientandroidlib.impl.conn.PoolingClientConnectionManager;
+import ch.boye.httpclientandroidlib.impl.client.CloseableHttpClient;
+import ch.boye.httpclientandroidlib.impl.client.cache.CacheConfig;
+import ch.boye.httpclientandroidlib.impl.client.cache.CachingHttpClientBuilder;
+import ch.boye.httpclientandroidlib.impl.client.cache.CachingHttpClients;
+import ch.boye.httpclientandroidlib.impl.conn.PoolingHttpClientConnectionManager;
 import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
-import ch.boye.httpclientandroidlib.params.BasicHttpParams;
-import ch.boye.httpclientandroidlib.params.HttpConnectionParams;
-import ch.boye.httpclientandroidlib.params.HttpParams;
 import ch.boye.httpclientandroidlib.protocol.BasicHttpContext;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
 
@@ -89,7 +87,7 @@ public class LoginFactory {
 	
 	private String password = null;
 	
-	private DefaultHttpClient httpclient = null;
+	private CloseableHttpClient httpclient = null;
 	
 	private boolean isLoggedIn = false;
 	
@@ -197,25 +195,36 @@ public class LoginFactory {
 	private void initializeClientInformation() {
 		Log.d(TAG, "Initializing Client...");
 		
-		HttpParams params = new BasicHttpParams();
-	    params.setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true); 
-	    HttpConnectionParams.setConnectionTimeout(params, TIMEOUT);
-	    HttpConnectionParams.setSoTimeout(params, TIMEOUT);
-	    HttpConnectionParams.setTcpNoDelay(params, true);
+		Log.d(TAG, "Creating Custom Cache Configuration");
+		CacheConfig cacheConfig = CacheConfig.custom()
+		        .setMaxCacheEntries(1000)
+		        .setMaxObjectSize(8192)
+		        .build();
+		
+		Log.d(TAG, "Creating Custom Request Configuration");
+	    RequestConfig rConfig = RequestConfig.custom()
+	    		.setCircularRedirectsAllowed(true)
+	    		.setConnectionRequestTimeout(TIMEOUT)
+	    		.setSocketTimeout(TIMEOUT)
+	    		.build();
 	    
 	    cookieStore = new BasicCookieStore();
 	    httpContext = new BasicHttpContext();
-	    httpContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
-	    httpclient = new DefaultHttpClient();
-	    ClientConnectionManager mgr = httpclient.getConnectionManager();
-	    httpclient = new DefaultHttpClient(
-	    		new PoolingClientConnectionManager(mgr.getSchemeRegistry()),
-	    		params);
-	    httpclient.log.enableDebug(
-	    		MainApplication.isHttpClientLogEnabled());
 	    
-	    // GZIP Enabled
-	    httpclient.addRequestInterceptor(new HttpRequestInterceptor() {
+	    Log.d(TAG, "Building Custom HTTP Client");
+	    CachingHttpClientBuilder httpclientbuilder = CachingHttpClients.custom();
+	    httpclientbuilder.setCacheConfig(cacheConfig);
+	    httpclientbuilder.setDefaultRequestConfig(rConfig);
+	    httpclientbuilder.setDefaultCookieStore(cookieStore);
+
+	    Log.d(TAG, "Connection Manager Initializing");
+	    PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+	    cm.setMaxTotal(200);
+	    cm.setDefaultMaxPerRoute(20);
+	    httpclientbuilder.setConnectionManager(cm);
+	    
+	    Log.d(TAG, "Enable GZIP Compression");
+	    httpclientbuilder.addInterceptorLast(new HttpRequestInterceptor() {
 
             public void process(
                     final HttpRequest request,
@@ -226,8 +235,7 @@ public class LoginFactory {
             }
 
         });
-
-        httpclient.addResponseInterceptor(new HttpResponseInterceptor() {
+        httpclientbuilder.addInterceptorLast(new HttpResponseInterceptor() {
 
             public void process(
                     final HttpResponse response,
@@ -252,15 +260,20 @@ public class LoginFactory {
 	    
 	    // Follow Redirects
         Log.d(TAG, "Registering Redirect Strategy");
-	    httpclient.setRedirectStrategy(new RedirectStrategy());
+	    httpclientbuilder.setRedirectStrategy(new RedirectStrategy());
 	    
 	    // Setup retry handler
 	    Log.d(TAG, "Registering Retry Handler");
-	    httpclient.setHttpRequestRetryHandler(new RetryHandler());
+	    httpclientbuilder.setRetryHandler(new RetryHandler());
 	    
 	    // Setup KAS
 	    Log.d(TAG, "Registering Keep Alive Strategy");
-	    httpclient.setKeepAliveStrategy(new KeepAliveStrategy());
+	    httpclientbuilder.setKeepAliveStrategy(new KeepAliveStrategy());
+	    
+	    httpclient = httpclientbuilder.build();
+	    
+	    httpclient.log.enableDebug(
+	    		MainApplication.isHttpClientLogEnabled());
 	    
 	    isInitialized = true;
 	}
@@ -366,7 +379,7 @@ public class LoginFactory {
 	 * Get the http client object
 	 * @return	A DefaultHttpClient object
 	 */
-	public DefaultHttpClient getClient() {
+	public CloseableHttpClient getClient() {
 		return httpclient;
 	}
 	
@@ -375,7 +388,7 @@ public class LoginFactory {
 	 */
 	public void setGuestMode() {		
 		Log.d(TAG, "Clearing Cookies");
-		httpclient.getCookieStore().clear();
+		//httpclient.getCookieStore().clear();
 		
 		if(!isInitialized)
     		initializeClientInformation();
@@ -409,8 +422,10 @@ public class LoginFactory {
 		this.password = "";
 		if(clearPrefs)
 			this.savePreferences(false, false);
-		httpclient.getCookieStore().clear();
-		httpclient.getConnectionManager().shutdown();
+		//httpclient.getCookieStore().clear();
+		try {
+			httpclient.close();
+		} catch (IOException ioe) {}
 		isLoggedIn = false;
 		isInitialized = false;
 		
@@ -447,22 +462,26 @@ public class LoginFactory {
 
     	httpost.setEntity(new UrlEncodedFormEntity(nvps));
 
-    	HttpResponse response = httpclient.execute(httpost, getHttpContext());
-    	HttpEntity entity = response.getEntity();
-
-    	if (entity != null) {
-    		List<Cookie> cookies = cookieStore.getCookies();        	
-        	boolean val = 
-        			response.getStatusLine().getStatusCode() != HttpStatus.SC_BAD_REQUEST;
-        	httpost.releaseConnection();
-        	
-        	for(Cookie cookie : cookies)
-        		if(cookie.getName().equals(VBulletinKeys.CheckLoginStatus.getValue()) && 
-        				cookie.getValue().toLowerCase(Locale.US).equals("yes"))
-        			isLoggedIn = true;
-        	
-        	isGuestMode = !isLoggedIn;
-        	return val && isLoggedIn;
+    	try {
+	    	HttpResponse response = httpclient.execute(httpost, getHttpContext());
+	    	HttpEntity entity = response.getEntity();
+	
+	    	if (entity != null) {
+	    		List<Cookie> cookies = cookieStore.getCookies();        	
+	        	boolean val = 
+	        			response.getStatusLine().getStatusCode() != HttpStatus.SC_BAD_REQUEST;
+	        	httpost.releaseConnection();
+	        	
+	        	for(Cookie cookie : cookies)
+	        		if(cookie.getName().equals(VBulletinKeys.CheckLoginStatus.getValue()) && 
+	        				cookie.getValue().toLowerCase(Locale.US).equals("yes"))
+	        			isLoggedIn = true;
+	        	
+	        	isGuestMode = !isLoggedIn;
+	        	return val && isLoggedIn;
+	    	}
+    	} catch (Exception e) {
+    		Log.e(TAG, "HTTP Response based error!", e);
     	}
     	
     	return false;

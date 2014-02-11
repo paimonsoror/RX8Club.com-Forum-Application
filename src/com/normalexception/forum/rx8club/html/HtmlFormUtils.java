@@ -37,18 +37,19 @@ import ch.boye.httpclientandroidlib.HttpResponse;
 import ch.boye.httpclientandroidlib.NameValuePair;
 import ch.boye.httpclientandroidlib.StatusLine;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
+import ch.boye.httpclientandroidlib.client.HttpClient;
 import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
 import ch.boye.httpclientandroidlib.client.methods.HttpGet;
 import ch.boye.httpclientandroidlib.client.methods.HttpPost;
 import ch.boye.httpclientandroidlib.client.methods.HttpUriRequest;
+import ch.boye.httpclientandroidlib.entity.ContentType;
 import ch.boye.httpclientandroidlib.entity.mime.HttpMultipartMode;
-import ch.boye.httpclientandroidlib.entity.mime.MultipartEntity;
+import ch.boye.httpclientandroidlib.entity.mime.MultipartEntityBuilder;
 import ch.boye.httpclientandroidlib.entity.mime.content.FileBody;
 import ch.boye.httpclientandroidlib.entity.mime.content.StringBody;
-import ch.boye.httpclientandroidlib.impl.client.DefaultHttpClient;
 import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
-import ch.boye.httpclientandroidlib.protocol.ExecutionContext;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
+import ch.boye.httpclientandroidlib.protocol.HttpCoreContext;
 import ch.boye.httpclientandroidlib.util.EntityUtils;
 
 import com.normalexception.forum.rx8club.Log;
@@ -87,7 +88,8 @@ public class HtmlFormUtils {
 	private static boolean formSubmit(String url, List<NameValuePair> nvps, 
 			boolean attachment)
 		throws ClientProtocolException, IOException {
-		DefaultHttpClient httpclient = LoginFactory.getInstance().getClient();
+		HttpClient httpclient = 
+				LoginFactory.getInstance().getClient();
 		
 		HttpPost httpost = ClientUtils.getHttpPost(url);	
 		Log.d(TAG, "[Submit] Submit URL: " + url);
@@ -118,7 +120,7 @@ public class HtmlFormUtils {
     		httpost.releaseConnection();
     		
     		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
-    		        ExecutionContext.HTTP_REQUEST);
+    		        HttpCoreContext.HTTP_REQUEST);
 
     		responseUrl = request.getURI().toString();
     		Log.d(TAG, "[Submit] Response URL: " + responseUrl);
@@ -308,7 +310,7 @@ public class HtmlFormUtils {
 	 */
 	public static String submitAttachment(String securitytoken, List<String> bmapList, 
 			String postnum) throws ClientProtocolException, IOException {
-		DefaultHttpClient httpclient = 
+		HttpClient httpclient = 
 				LoginFactory.getInstance().getClient();
 		
 		String posthash = "", t = "", p = "", attId = "", poststarttime = "";
@@ -338,23 +340,36 @@ public class HtmlFormUtils {
 		
 		// We need to make sure that we got all of the information before
 		// proceeding, or else the attachment will not work
-		MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-		entity.addPart("s", new StringBody(""));
-		entity.addPart(VBulletinKeys.SecurityToken.getValue(), new StringBody(VBulletinKeys.SecurityToken.getValue()));
-		entity.addPart(VBulletinKeys.Do.getValue(), new StringBody("manageattach"));
-		entity.addPart(VBulletinKeys.ThreadId.getValue(), new StringBody(t));
-		entity.addPart(VBulletinKeys.ForumId.getValue(), new StringBody("6"));
-		entity.addPart(VBulletinKeys.PostNumber.getValue(), new StringBody(p));
-		entity.addPart(VBulletinKeys.PostStartTime.getValue(), new StringBody(poststarttime));
-		entity.addPart("editpost", new StringBody("0"));
-		entity.addPart(VBulletinKeys.PostHash.getValue(), new StringBody(posthash));
-		entity.addPart("MAX_FILE_SIZE", new StringBody("2097152"));
-		entity.addPart("upload", new StringBody("Upload"));
-		entity.addPart("attachmenturl[]", new StringBody(""));
+		MultipartEntityBuilder entity = MultipartEntityBuilder.create();
+		entity.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+		entity.addPart("s", new StringBody("", ContentType.TEXT_PLAIN));
+		entity.addPart(VBulletinKeys.SecurityToken.getValue(), 
+				new StringBody(VBulletinKeys.SecurityToken.getValue(), 
+						ContentType.TEXT_PLAIN));
+		entity.addPart(VBulletinKeys.Do.getValue(), 
+				new StringBody("manageattach", ContentType.TEXT_PLAIN));
+		entity.addPart(VBulletinKeys.ThreadId.getValue(), 
+				new StringBody(t, ContentType.TEXT_PLAIN));
+		entity.addPart(VBulletinKeys.ForumId.getValue(), 
+				new StringBody("6", ContentType.TEXT_PLAIN));
+		entity.addPart(VBulletinKeys.PostNumber.getValue(),
+				new StringBody(p, ContentType.TEXT_PLAIN));
+		entity.addPart(VBulletinKeys.PostStartTime.getValue(), 
+				new StringBody(poststarttime, ContentType.TEXT_PLAIN));
+		entity.addPart("editpost", 
+				new StringBody("0", ContentType.TEXT_PLAIN));
+		entity.addPart(VBulletinKeys.PostHash.getValue(), 
+				new StringBody(posthash, ContentType.TEXT_PLAIN));
+		entity.addPart("MAX_FILE_SIZE", 
+				new StringBody("2097152", ContentType.TEXT_PLAIN));
+		entity.addPart("upload", 
+				new StringBody("Upload", ContentType.TEXT_PLAIN));
+		entity.addPart("attachmenturl[]", 
+				new StringBody("", ContentType.TEXT_PLAIN));
 		
 		for(String bmap : bmapList) {
 			File fileToUpload = new File(bmap);
-			FileBody fileBody = new FileBody(fileToUpload, "image/png");
+			FileBody fileBody = new FileBody(fileToUpload, ContentType.DEFAULT_BINARY);
 			entity.addPart("attachment[]", fileBody);
 		}
 
@@ -362,7 +377,7 @@ public class HtmlFormUtils {
 		// image to our profile.
 		HttpPost httpPost = 
 				ClientUtils.getHttpPost(WebUrls.postAttachmentAddress);
-		httpPost.setEntity(entity);
+		httpPost.setEntity(entity.build());
 		HttpResponse response = 
 				httpclient.execute(httpPost, 
 						LoginFactory.getInstance().getHttpContext());
@@ -411,7 +426,7 @@ public class HtmlFormUtils {
 			throws ClientProtocolException, IOException {
 		String output = "";
 		
-		DefaultHttpClient httpclient = 
+		HttpClient httpclient = 
 				LoginFactory.getInstance().getClient();
 		
 		HttpPost httpost = ClientUtils.getHttpPost(WebUrls.editPostAddress + postid);

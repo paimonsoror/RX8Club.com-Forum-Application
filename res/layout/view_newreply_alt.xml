@@ -149,8 +149,6 @@
 	    android:id="@+id/postContainer"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
-	    android:layout_toRightOf="@id/titleContainer"
-	    android:layout_alignParentTop="true"
 	    android:background="#444444">
 
 	    <TextView
@@ -166,5 +164,12 @@
 	        android:textColor="#ffffff"
 	        android:textSize="8dip"
 	        android:layout_weight="1" />
+	    
+	    <ImageView 
+		    android:id="@+id/nr_downButton" 
+		    android:layout_width="15dip" 
+	        android:layout_height="15dip"
+		    android:src="@drawable/downicon" 
+		    android:focusable="false"/>
 	</LinearLayout>
 </LinearLayout>
