@@ -12,7 +12,7 @@
     
     <!-- Emailing -->
     <string name="noEmail">There are no email clients installed!</string>
-    <string name="sendEmail">Send mail...</string>
+    <string name="sendEmail">Send mail&#8230;</string>
     
     <!-- Category Screen String -->
     <string name="categoryDescription">My Description that is really long to make sure it doesn\'t overlap because sometimes when you have a long desc it does</string>
