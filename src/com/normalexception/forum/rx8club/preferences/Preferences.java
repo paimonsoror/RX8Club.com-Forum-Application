@@ -27,6 +27,8 @@ package com.normalexception.forum.rx8club.preferences;
 import java.io.File;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -58,7 +60,7 @@ import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
  */
 public class Preferences extends PreferenceActivity {
 	
-	private final String TAG = "Preferences";
+	private final Logger TAG = Logger.getLogger(this.getClass());
 	
 	/*
 	 * (non-Javadoc)
@@ -102,10 +104,11 @@ public class Preferences extends PreferenceActivity {
 				
 				// Start the intent
 				try {
-				    startActivity(Intent.createChooser(sharingIntent, "Send mail..."));
+				    startActivity(Intent.createChooser(sharingIntent, 
+				    		ctx.getString(R.string.sendEmail)));
 				} catch (android.content.ActivityNotFoundException ex) {
 				    Toast.makeText(MainApplication.getAppContext(), 
-				    		"There are no email clients installed.", 
+				    		R.string.noEmail, 
 				    		Toast.LENGTH_SHORT).show();
 				}
 				

@@ -10,6 +10,10 @@
     <string name="networkTimedOut">Network Timed Out</string>
     <string name="noPermission">Sorry, You Dont Have Permission To Do That (New User?)</string>
     
+    <!-- Emailing -->
+    <string name="noEmail">There are no email clients installed!</string>
+    <string name="sendEmail">Send mail...</string>
+    
     <!-- Category Screen String -->
     <string name="categoryDescription">My Description that is really long to make sure it doesn\'t overlap because sometimes when you have a long desc it does</string>
     <string name="categoryName">Here is a cool category name</string>
