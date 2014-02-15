@@ -51,7 +51,7 @@ public class Log {
 	// Log4J Specific Methods
 	/////////////////////////////////////////////////////////
 	
-	private static final long MAX_SIZE = 1024 * 1024;
+	private static final long MAX_SIZE = 1024 * 10;
 	
 	/**
 	 * Configure log4j logging parameters
