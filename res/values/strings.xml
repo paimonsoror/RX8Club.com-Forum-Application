@@ -9,6 +9,7 @@
     <string name="networkNotAvailable">No Internet Connection Available!</string>
     <string name="networkTimedOut">Network Timed Out</string>
     <string name="noPermission">Sorry, You Dont Have Permission To Do That (New User?)</string>
+    <string name="youSure">You Sure&#8230;</string>
     
     <!-- Emailing -->
     <string name="noEmail">There are no email clients installed!</string>
@@ -66,6 +67,7 @@
     <string name="tvForum">Forum:\u0020</string>
     <string name="commentText">Comment</string>
     <string name="enterPost">Sorry, Can\'t Submit Blank Post</string>
+    <string name="navigateAway">You Entered Some Text, Navigate Away?</string>
         
     <!-- Banner Fragment Strings -->
     <string name="bannerNewTopics">New Posts</string>

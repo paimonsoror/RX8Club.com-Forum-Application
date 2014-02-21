@@ -97,7 +97,7 @@ public class Preferences extends PreferenceActivity {
 				// Open the file
 				Uri uri = Uri.fromFile(
 						new File(
-								(new LogFile(MainApplication.getAppContext())).getLogFile()));
+								LogFile.getLogFile()));
 				
 				// Add the file to the intent
 				sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);

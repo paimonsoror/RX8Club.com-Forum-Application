@@ -24,12 +24,15 @@ package com.normalexception.forum.rx8club.utils;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Calendar;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 
@@ -281,5 +284,11 @@ public class Utils {
 	    int randomNum = rand.nextInt((max - min) + 1) + min;
 
 	    return randomNum;
+	}
+	
+	public static String readFile(String file) throws IOException {
+		String content = 
+				new Scanner(new File(file)).useDelimiter("\\Z").next();
+		return content;
 	}
 }

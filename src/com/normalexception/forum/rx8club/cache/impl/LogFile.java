@@ -33,7 +33,7 @@ import com.normalexception.forum.rx8club.cache.Cache;
 public class LogFile extends Cache {
 	
 	private static final String FILENAME = "rx8club.log";
-	private String logfile = null;
+	private static String logfile = null;
 
 	/**
 	 * Initialize a reference to our log file
@@ -41,18 +41,20 @@ public class LogFile extends Cache {
 	 */
 	public LogFile(Context ctx) {
 		super(ctx);	
-		File external = getExternalCache();
-		logfile = String.format("%s%s%s", 
-				external.getAbsolutePath(), 
-				File.separator,
-				FILENAME);
+		if(logfile == null) {
+			File external = getExternalCache();
+			logfile = String.format("%s%s%s", 
+					external.getAbsolutePath(), 
+					File.separator,
+					FILENAME);
+		}
 	}
 	
 	/**
 	 * Report the log file
 	 * @return	The location of the log file as a string
 	 */
-	public String getLogFile() {
+	public synchronized static String getLogFile() {
 		return logfile;
 	}
 }

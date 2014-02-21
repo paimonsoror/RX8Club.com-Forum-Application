@@ -184,6 +184,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 									.show();
 							}
 						});
+						Log.e(TAG, "Exception Grabbing Thread Contents", e);
 					}
 					publishProgress(getString(R.string.asyncDialogPopulating));
 					updateList();

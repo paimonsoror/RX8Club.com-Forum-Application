@@ -47,6 +47,7 @@ public class AppState {
 		                FAVORITES,
 		                PMINBOX,
 		                PMVIEW,
+		                LOGVIEW,
 		                UTIL_COMPRESSION};
 	
 	public static AppState getInstance() {

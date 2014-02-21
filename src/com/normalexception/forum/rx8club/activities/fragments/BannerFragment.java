@@ -24,6 +24,9 @@ package com.normalexception.forum.rx8club.activities.fragments;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.MainActivity;
@@ -38,7 +42,10 @@ import com.normalexception.forum.rx8club.activities.ProfileActivity;
 import com.normalexception.forum.rx8club.activities.SearchActivity;
 import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
 import com.normalexception.forum.rx8club.activities.list.FavoritesActivity;
+import com.normalexception.forum.rx8club.activities.pm.NewPrivateMessageActivity;
 import com.normalexception.forum.rx8club.activities.pm.PrivateMessageInboxActivity;
+import com.normalexception.forum.rx8club.activities.thread.NewThreadActivity;
+import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.dialog.FavoriteDialog;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
@@ -93,6 +100,51 @@ public class BannerFragment extends Fragment implements OnClickListener {
     	ViewHolder.get(getView(), R.id.searchButton).setOnClickListener(this);
     }
     
+    /**
+     * Validate that the user really wants to navigate away from the page if they
+     * entered some text into the Thread box
+     * @param context	The source context
+     * @param fIntent	The destination intent
+     * @return			True if validated that the user wants to navigate away
+     */
+    private boolean validateButtonPress(Context context, final Intent fIntent) {
+    	int viewId = 0;
+    	
+    	// Set up our view id based off of the current context
+		if(context instanceof ThreadActivity) {
+			viewId = R.id.postBox;
+		} else if (context instanceof NewPrivateMessageActivity) {
+			viewId = R.id.pmMessageText;
+		} else if (context instanceof NewThreadActivity) {
+			viewId = R.id.postPost;
+		}
+		
+		// If we set up a viewId then we need to display the
+		// dialog if the view contains text
+		if(viewId != 0) {
+			String thePost = 
+					((TextView)getActivity().findViewById(viewId)).getText().toString();
+
+			if(!thePost.equals("")) {
+				new AlertDialog.Builder(getActivity())
+				.setTitle(R.string.youSure)
+				.setMessage(R.string.navigateAway)
+				.setPositiveButton(R.string.Yes, new DialogInterface.OnClickListener() {				
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						startActivity(fIntent);
+					}
+				})
+				.setNegativeButton(R.string.No, null)
+				.show();
+				
+				return false;
+			}
+		}
+		
+		return true;
+    }
+    
     /*
 	 * (non-Javadoc)
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -100,6 +152,7 @@ public class BannerFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onClick(View arg0) {
 		Intent _intent = null;
+		
 		switch(arg0.getId()) {
 			case R.id.newTopicsButton:
 				_intent = new Intent(arg0.getContext(), CategoryActivity.class);
@@ -135,7 +188,7 @@ public class BannerFragment extends Fragment implements OnClickListener {
 				break;
 		}
 		
-		if(_intent != null)
+		if(_intent != null && validateButtonPress(arg0.getContext(), _intent))
 			startActivity(_intent);
 	}
 }
