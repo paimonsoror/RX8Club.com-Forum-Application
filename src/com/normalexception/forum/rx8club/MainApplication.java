@@ -28,8 +28,10 @@ import org.apache.log4j.Logger;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
 
 import com.bugsense.trace.BugSenseHandler;
+import com.normalexception.forum.rx8club.cache.impl.LogFile;
 import com.normalexception.forum.rx8club.state.AppState;
 
 /**
@@ -55,15 +57,24 @@ public class MainApplication extends Application {
         // Register the main application context
         MainApplication.context = getApplicationContext();
         
+        // Initialize the logger
+        new LogFile(MainApplication.getAppContext());
+        
     	// Set the logger level for our log wrapper
     	Log.setLevel(LOG_LEVEL);
     	Log.configure();
     	
-    	Log.v(TAG, "Initializing Application");
+    	Log.d(TAG, "Initializing Application");
         super.onCreate();
         
         Log.d(TAG, "Registering BugSense");
         BugSenseHandler.initAndStartSession(getApplicationContext(), BUG_APIKEY);
+        
+        try {
+			Log.d(TAG, "Version Number: " + 
+						getPackageManager().getPackageInfo(
+								this.getPackageName(), 0).versionName);
+		} catch (NameNotFoundException e) {	}
 
     }
 

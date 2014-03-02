@@ -59,8 +59,7 @@ public class Log {
 	public static void configure() {
         final LogConfigurator logConfigurator = 
         		new LogConfigurator();
-        LogFile lf = new LogFile(MainApplication.getAppContext());
-        logConfigurator.setFileName(lf.getLogFile());
+        logConfigurator.setFileName(LogFile.getLogFile());
         logConfigurator.setRootLevel(toLog4jLevel(mLevel));
         logConfigurator.setMaxFileSize(MAX_SIZE);
         logConfigurator.setMaxBackupSize(0);

@@ -48,6 +48,7 @@ import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.cache.impl.UserProfileCache;
 import com.normalexception.forum.rx8club.cache.impl.ViewListCache;
 import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
+import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
 import com.normalexception.forum.rx8club.state.AppState;
@@ -135,12 +136,17 @@ public class MainActivity extends ForumBaseActivity {
 			        upcache = new UserProfileCache(this, currentUser);
 			        UserProfile cachedProfile = upcache.getCachedContents();
 			        if(cachedProfile == null || 
-			        		!cachedProfile.getUsername().equals(currentUser)) {
+			        		!cachedProfile.getUsername().equals(currentUser) ||
+			        		cachedProfile.getUserId().equals("")) {
 			        	Log.d(TAG, "User Cache Expired, Recreating");
 			        	constructUserProfile(null);
 			        } else {
 			        	UserProfile.getInstance().copy(upcache.getCachedContents());
 			        }
+			        
+			        Log.d(TAG, String.format("%s(%s) succesfully logged in.", 
+			        		UserProfile.getInstance().getUsername(), 
+			        		UserProfile.getInstance().getUserId()));
 		        }
 	        }
     	} catch (Exception e) {
@@ -174,8 +180,14 @@ public class MainActivity extends ForumBaseActivity {
     				if(localDoc != null) {
     					Elements userElement = 
     							localDoc.select("a[href^=http://www.rx8club.com/members/" + 
-    									UserProfile.getInstance().getUsername().replace(".", "-") + "]");
-    					UserProfile.getInstance().setUserProfileLink(userElement.attr("href"));
+    									UserProfile.getInstance().getHtmlUsername()+ "]");
+    					String un = userElement.attr("href");
+    					
+    					UserProfile.getInstance().setUserProfileLink(un);
+    					
+    					// Try and scrap the uid from the href
+    					UserProfile.getInstance().setUserId(
+    							un.substring(un.lastIndexOf("-") + 1, un.lastIndexOf("/")));
     				}
     			}
 				return null;

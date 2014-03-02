@@ -336,7 +336,10 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			}
 			
 			pv.setSecurityToken(securityToken);
-			postlist.add(pv);
+			
+			// Make sure we aren't adding a blank user post
+			if(pv.getUserPost() != null)
+				postlist.add(pv);
 		}
 	}
 	
@@ -347,18 +350,27 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	 * @return			The formatted string
 	 */
 	private String formatUserPost(Elements innerPost) {
-		Element ipost = 
-				innerPost.select("td[class=alt1]").select("div[id^=post_message]").first();
-	
-		// Remove the duplicate youtube links (this is caused by a plugin on 
-		// the forum that embeds youtube videos automatically)
-		for(Element embedded : ipost.select("div[id^=ame_doshow_post_]"))
-			embedded.remove();
-		
-		// Remove the vbulletin quotes
-		String upost = Utils.reformatQuotes(ipost.html());
-		
-		return upost;
+		try {
+			Element ipost = 
+					innerPost.select("td[class=alt1]").select("div[id^=post_message]").first();
+			
+			// Only if there is a post to key off of
+			if(ipost != null) {
+				// Remove the duplicate youtube links (this is caused by a plugin on 
+				// the forum that embeds youtube videos automatically)
+				for(Element embedded : ipost.select("div[id^=ame_doshow_post_]"))
+					embedded.remove();
+			
+			
+				// Remove the vbulletin quotes
+				return Utils.reformatQuotes(ipost.html());
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			Log.e(TAG, "Error Parsing Post", e);
+			return null;
+		}
 	}
 
 	/*
@@ -404,7 +416,7 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 					this, bmapList, this.securityToken, 
 					this.threadNumber, this.postNumber,
 					toPost, this.currentPageTitle, this.pageNumber);
-				sTask.debug();
+				//sTask.debug();
 				sTask.execute();
 			} else {
 				Toast.makeText(this, R.string.enterPost, Toast.LENGTH_SHORT).show();

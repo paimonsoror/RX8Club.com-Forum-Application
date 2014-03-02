@@ -115,6 +115,17 @@ public class UserProfile implements Serializable {
 	}
 	
 	/**
+	 * Report the username that has dots and spaces
+	 * replaced
+	 * @return	The html formatted username
+	 */
+	public String getHtmlUsername() {
+		return this.user
+				.replace(".", "-")
+				.replace(" ", "-");
+	}
+	
+	/**
 	 * Set the user forum title
 	 * @param title The user title
 	 */

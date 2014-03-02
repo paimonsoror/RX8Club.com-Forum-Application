@@ -146,6 +146,9 @@ public class LoginFactory {
 	    				.getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo[] netInfo = cm.getAllNetworkInfo();
 	    for (NetworkInfo ni : netInfo) {
+	    	Log.d(TAG, 
+	    			String.format("%s is %sconnected", 
+	    					ni.getTypeName(), ni.isConnected()? "" : "not "));
 	        if (ni.getTypeName().equalsIgnoreCase(LoginFactory.NETWORK_WIFI))
 	            if (ni.isConnected()) {
 	            	Log.d(TAG, "Wifi Connection Detected");
