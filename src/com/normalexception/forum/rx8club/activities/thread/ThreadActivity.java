@@ -168,6 +168,16 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 
 				Document doc = 
 						VBForumFactory.getInstance().get(src, currentPageLink);
+				
+				// Grab the canonical link if it exists.  This is the safest way to
+				// make sure that we got the actual URL of the page
+				String canonUrl = null;
+				try {
+					if((canonUrl = doc.select("link[rel=canonical]").attr("href")) != null) {
+						currentPageLink = canonUrl;
+						Log.d(TAG, String.format("Grabbed Canonical URL: %s", currentPageLink));
+					} 
+				} catch (Exception e) {}
 
 				if(doc != null) {
 					lv = (PTRListView)findViewById(R.id.mainlistview);

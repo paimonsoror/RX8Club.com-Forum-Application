@@ -2,8 +2,8 @@
     android:name="com.normalexception.forum.MainApplication"
     package="com.normalexception.forum.rx8club"
     android:installLocation="auto"
-    android:versionCode="12983"
-    android:versionName="1.2.44" >
+    android:versionCode="12984"
+    android:versionName="1.2.45" >
 
     <uses-sdk
         android:minSdkVersion="8"

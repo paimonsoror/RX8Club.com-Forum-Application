@@ -81,6 +81,14 @@ public class FavoriteFactory {
 	public FavoriteThreads getFavorites() {
 		return _favorites;
 	}
+	
+	/**
+	 * Report the total number of favorites
+	 * @return	The total number of favorites
+	 */
+	public int getCount() {
+		return _favorites.size();
+	}
 
 	/**
 	 * Load the favorites from memory

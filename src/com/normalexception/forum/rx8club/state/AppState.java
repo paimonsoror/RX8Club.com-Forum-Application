@@ -32,7 +32,8 @@ public class AppState {
 	private        Intent   _intent;
 	private        State    _state;
 	
-	public enum State { ABOUT,
+	public enum State { NO_KNOWN_STATE,
+						ABOUT,
 						LOGIN,
 						PROFILE,
 						SEARCH,
@@ -49,7 +50,11 @@ public class AppState {
 		                PMVIEW,
 		                LOGVIEW,
 		                UTIL_COMPRESSION};
-	
+	/**
+	 * Report an instance of the AppState object
+	 * @return	An instance of the AppState object or
+	 * 			create a new one if one doesn't exist
+	 */
 	public static AppState getInstance() {
 		if(_instance == null)
 			_instance = new AppState();
@@ -57,19 +62,35 @@ public class AppState {
 		return _instance;
 	}
 	
+	/**
+	 * Initialize our AppState
+	 */
 	private AppState() {
-		
+		_state = State.NO_KNOWN_STATE;
 	}
 	
+	/**
+	 * Set the current state of our application
+	 * @param state		The current state of the application
+	 * @param intent	The current intent
+	 */
 	public void setCurrentState(State state, Intent intent) {
 		_state = state;
 		_intent= intent;
 	}
 	
+	/**
+	 * Report the current state of the application
+	 * @return	The current state of the application
+	 */
 	public State getCurrentState() {
 		return _state;
 	}
 	
+	/**
+	 * Report the current intent within the app state
+	 * @return	The application intent
+	 */
 	public Intent getCurrentIntent() {
 		return _intent;
 	}

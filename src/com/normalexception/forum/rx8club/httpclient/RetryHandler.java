@@ -30,8 +30,8 @@ import org.apache.log4j.Logger;
 
 import ch.boye.httpclientandroidlib.NoHttpResponseException;
 import ch.boye.httpclientandroidlib.impl.client.DefaultHttpRequestRetryHandler;
-import ch.boye.httpclientandroidlib.protocol.ExecutionContext;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
+import ch.boye.httpclientandroidlib.protocol.HttpCoreContext;
 
 import com.normalexception.forum.rx8club.Log;
 
@@ -63,7 +63,7 @@ public class RetryHandler extends DefaultHttpRequestRetryHandler {
 		}
 
 		Boolean b = (Boolean)
-				context.getAttribute(ExecutionContext.HTTP_REQ_SENT);
+				context.getAttribute(HttpCoreContext.HTTP_REQ_SENT);
 		boolean sent = (b != null && b.booleanValue());   
 		if (!sent) {
 			// Retry if the request has not been sent fully or

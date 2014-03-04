@@ -48,7 +48,6 @@ import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.cache.impl.UserProfileCache;
 import com.normalexception.forum.rx8club.cache.impl.ViewListCache;
 import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
-import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
 import com.normalexception.forum.rx8club.state.AppState;

@@ -52,6 +52,7 @@ import com.normalexception.forum.rx8club.cache.FileCache;
 import com.normalexception.forum.rx8club.cache.impl.LogFile;
 import com.normalexception.forum.rx8club.dialog.FavoriteDialog;
 import com.normalexception.forum.rx8club.dialog.SignatureDialog;
+import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
 import com.normalexception.forum.rx8club.user.UserProfile;
 import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
 
@@ -140,9 +141,13 @@ public class Preferences extends PreferenceActivity {
         man_fave.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {			
 			@Override
 			public boolean onPreferenceClick(Preference arg0) {
-				FavoriteDialog fd = new FavoriteDialog(ctx);
-				fd.registerToRemove();
-				fd.show();
+				if(FavoriteFactory.getInstance().getCount() > 0) {
+					FavoriteDialog fd = new FavoriteDialog(ctx);
+					fd.registerToRemove();
+					fd.show();
+				} else {
+					notifyError("No Favorites Defined Yet!");
+				}
 				return true;
 			}
 		});

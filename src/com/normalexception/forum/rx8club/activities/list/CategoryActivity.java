@@ -175,7 +175,7 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		            public void onItemClick(AdapterView<?> parent, View view,
 		                    int position, long id) {
 		            	ThreadView itm = (ThreadView) parent.getItemAtPosition(position);
-		            	Log.v(TAG, "User clicked '" + itm.getTitle() + "'");
+		            	Log.d(TAG, "User clicked '" + itm.getTitle() + "'");
 						Intent _intent = 
 								new Intent(CategoryActivity.this, ThreadActivity.class);
 						

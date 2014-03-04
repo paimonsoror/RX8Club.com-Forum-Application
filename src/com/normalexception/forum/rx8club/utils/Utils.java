@@ -260,8 +260,6 @@ public class Utils {
 	 */
 	public static long getTime() {
 		Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-    	calendar.clear();
-    	calendar.set(2011, Calendar.OCTOBER, 1);
     	return calendar.getTimeInMillis() / 1000L;
 	}
 	
@@ -286,6 +284,12 @@ public class Utils {
 	    return randomNum;
 	}
 	
+	/**
+	 * Read a file front start to EOF to a string
+	 * @param file	The file to read
+	 * @return		The string that contains the file
+	 * @throws IOException
+	 */
 	public static String readFile(String file) throws IOException {
 		String content = 
 				new Scanner(new File(file)).useDelimiter("\\Z").next();

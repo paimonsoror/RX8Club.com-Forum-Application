@@ -473,6 +473,7 @@ public class LoginFactory {
 	    		List<Cookie> cookies = cookieStore.getCookies();        	
 	        	boolean val = 
 	        			response.getStatusLine().getStatusCode() != HttpStatus.SC_BAD_REQUEST;
+	        	Log.d(TAG, "Login status code: " + response.getStatusLine().getStatusCode());
 	        	httpost.releaseConnection();
 	        	
 	        	for(Cookie cookie : cookies)
