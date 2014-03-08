@@ -427,7 +427,9 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		    		} catch (Exception e) { }
 		    		
 		    		try {
-		    			isLocked = threadicon.attr("src").contains("lock.gif");
+		    			String icSt = threadicon.attr("src");
+		    			isLocked =
+		    					( icSt.contains("lock") && icSt.endsWith(".gif") );
 		    		} catch (Exception e) { }
 		    		
 		    		String preString = "";
