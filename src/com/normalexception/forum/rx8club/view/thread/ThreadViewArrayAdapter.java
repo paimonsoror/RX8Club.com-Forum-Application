@@ -24,11 +24,7 @@ package com.normalexception.forum.rx8club.view.thread;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -45,7 +41,6 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.list.ThreadTypeFactory;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.utils.DateDifference;
-import com.normalexception.forum.rx8club.utils.DateDifference.TimeField;
 import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
@@ -153,7 +148,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         vPostUser.setText(    m.getStartUser());
         vLastUser.setText(    m.getLastUser());
         
-        String differenceTime = getLastPostDifference(m.getLastPostTime());
+        String differenceTime = DateDifference.getPrettyDate(m.getLastPostTime());
         vLastDate.setText(   differenceTime);
 
         vPostCount.setText(   
@@ -211,39 +206,6 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 	}
 	
 	/**
-	 * Convenient method for grabbing the difference between the
-	 * last post and today
-	 * @param lastpost	The last post time
-	 * @return			The difference string
-	 */
-	private String getLastPostDifference(String lastpost) {
-		String differenceTime = "";
-        try {
-        	SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy hh:mm a", Locale.getDefault());
-        	Date lastDate = sdf.parse(lastpost);
-        	long diffs[]  = DateDifference.getTimeDifference(lastDate, new Date());
-        	if(diffs[TimeField.DAY.ordinal()] != 0) {
-        		if(diffs[TimeField.DAY.ordinal()] > 365) {
-        			differenceTime = String.format(Locale.getDefault(), " (%d years ago)", 
-	        				diffs[TimeField.DAY.ordinal()] / 365);
-        		} else {
-	        		differenceTime = String.format(Locale.getDefault(), " (%d days ago)", 
-	        				diffs[TimeField.DAY.ordinal()]);
-        		}
-        	} else if(diffs[TimeField.HOUR.ordinal()] == 0)
-        		differenceTime = String.format(Locale.getDefault(), " (%dmins ago)", 
-        				diffs[TimeField.MINUTE.ordinal()]);
-        	else
-        		differenceTime = String.format(Locale.getDefault(), " (%dhrs%s ago)", 
-        				diffs[TimeField.HOUR.ordinal()], 
-        				diffs[TimeField.MINUTE.ordinal()] > 0? "+" : "");
-        } catch (ParseException pe) { }
-        
-        return differenceTime;
-	}
-
-	
-	/**
 	 * Set the mode of the thread view object.  If the view is a 
 	 * special view, we want to set a different font color and 
 	 * background color
@@ -256,10 +218,13 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 		vPostCount.setTextColor(isSpecial? Color.BLACK : Color.WHITE);
 		vPostUser .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
 		vLastUser .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
-		vLastDate .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
 		vMyCount  .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
 		vViewCount.setTextColor(isSpecial? Color.BLACK : Color.WHITE);
 		vForum    .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
+		
+		// Get a bit fancy here to make the difference of last post 
+		// stand out a bit
+		vLastDate .setTextColor(isSpecial? Color.BLACK : Color.rgb(0,0,128));
 	}
 	
 	/**

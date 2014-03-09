@@ -24,12 +24,23 @@ package com.normalexception.forum.rx8club.utils;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
+import org.apache.log4j.Logger;
+
+import com.normalexception.forum.rx8club.Log;
+
 public class DateDifference {
-	public static enum TimeField {DAY,
+	
+	private static Logger TAG =  Logger.getLogger(DateDifference.class);
+	
+	public static enum TimeField {
+		DAY,
         HOUR,
         MINUTE,
         SECOND,
@@ -90,5 +101,47 @@ public class DateDifference {
         result[4] = ms;
 
         return result;
+    }
+    
+    /**
+	 * Convenient method for grabbing the difference between the
+	 * last post and today
+	 * @param preFormatted	The last post time
+	 * @return				The difference string
+	 */
+    public static String getPrettyDate(String preFormatted) {
+    	String differenceTime = "";
+        try {
+        	SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy hh:mm a", Locale.getDefault());
+        	Date lastDate = sdf.parse(preFormatted);
+        	long diffs[]  = DateDifference.getTimeDifference(lastDate, new Date());
+        	long years    = diffs[TimeField.DAY.ordinal()] / 365;
+        	if(diffs[TimeField.DAY.ordinal()] != 0) {
+        		if(years > 0) {
+        			differenceTime = String.format(Locale.getDefault(), " (%d year%s ago)", 
+        					years,
+	        				years > 1? "s" : "");
+        		} else {
+	        		differenceTime = String.format(Locale.getDefault(), " (%d day%s ago)", 
+	        				diffs[TimeField.DAY.ordinal()],
+	        				diffs[TimeField.DAY.ordinal()] > 1? "s" : "");
+        		}
+        	} else if(diffs[TimeField.HOUR.ordinal()] == 0) {
+        		if(diffs[TimeField.MINUTE.ordinal()] <= 1)
+        			differenceTime = " (Just now)";
+        		else
+        			differenceTime = String.format(Locale.getDefault(), " (%dmin%s ago)", 
+        				diffs[TimeField.MINUTE.ordinal()],
+        				diffs[TimeField.MINUTE.ordinal()] > 1? "s" : "");
+        	} else
+        		differenceTime = String.format(Locale.getDefault(), " (%s%dhr%s ago)", 
+        				diffs[TimeField.MINUTE.ordinal()] > 0? "over " : "",
+                				diffs[TimeField.HOUR.ordinal()],
+    	        				diffs[TimeField.HOUR.ordinal()] > 1? "s" : "" );
+        } catch (ParseException pe) { 
+        	Log.e(TAG, "Couldn't parse the date for the thread", pe);
+        }
+        
+        return differenceTime;    	
     }
 }
