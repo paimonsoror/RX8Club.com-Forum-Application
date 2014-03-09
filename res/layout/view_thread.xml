@@ -67,6 +67,7 @@
         android:layout_marginTop="1dip"
         android:layout_toRightOf="@+id/tv_postUser_label"
         android:text="The Thread Starter" />
+
     
     <!-- Started By -->
     <TextView
@@ -88,8 +89,23 @@
         android:textColor="#ffffff"
         android:textSize="10dip"
         android:layout_marginTop="1dip"
+        android:layout_marginLeft="5dp"
         android:layout_toRightOf="@+id/tv_lastUser_label"
         android:text="@string/tvLastPostPerson" />
+    
+    <TextView
+        android:id="@+id/tv_lastUserDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_postUser"
+        android:textColor="#ffffff"
+        android:textSize="10dip"
+        android:layout_marginTop="1dip"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@+id/tv_lastUser"
+        android:text="01/01/2014" />
+    
+
  
     <!-- Rightend Post Counts -->
     <RelativeLayout 
@@ -193,7 +209,7 @@
         android:id="@+id/tv_forum_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/postcount_details"
+        android:layout_below="@id/tv_lastUserDate"
         android:orientation="horizontal"
         android:layout_alignLeft="@id/tv_lastUser_label"
         android:visibility="gone">

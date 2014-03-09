@@ -109,6 +109,7 @@ public class LoginFactory {
 	private static final String NETWORK_WIFI = "WIFI";
 	private static final String NETWORK_MOBILE = "MOBILE";
 	private static final String NETWORK_ETH = "ETH";
+	private static final String NETWORK_ETHERNET = "ETHERNET";
 	
 	private static BasicCookieStore cookieStore;
 	private static HttpContext httpContext;
@@ -159,7 +160,8 @@ public class LoginFactory {
 	            	Log.d(TAG, "Mobile Connection Detected");
 	                haveConnectedMobile = true;
 	            }
-	        if(ni.getTypeName().equalsIgnoreCase(LoginFactory.NETWORK_ETH))
+	        if(ni.getTypeName().equalsIgnoreCase(LoginFactory.NETWORK_ETH) || 
+	        		ni.getTypeName().equalsIgnoreCase(LoginFactory.NETWORK_ETHERNET))
 	        	if (ni.isConnected()) {
 	        		Log.d(TAG, "Ethernet Connection Detected");
 	        		haveConnectedEth = true;

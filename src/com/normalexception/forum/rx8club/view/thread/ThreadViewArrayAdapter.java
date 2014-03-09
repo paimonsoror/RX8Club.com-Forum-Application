@@ -24,7 +24,11 @@ package com.normalexception.forum.rx8club.view.thread;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -40,6 +44,8 @@ import android.widget.TextView;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.list.ThreadTypeFactory;
 import com.normalexception.forum.rx8club.html.LoginFactory;
+import com.normalexception.forum.rx8club.utils.DateDifference;
+import com.normalexception.forum.rx8club.utils.DateDifference.TimeField;
 import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
@@ -58,6 +64,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
     private TextView vPostUser 	= null;
     private TextView vLastUser 	= null;
     private TextView vLastUserL = null;
+    private TextView vLastDate  = null;
     private TextView vMyCount 	= null;
     private TextView vMyCountL  = null;
     private TextView vViewCount = null;
@@ -129,6 +136,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         vPostUser  = (TextView) ViewHolder.get(vi,R.id.tv_postUser);
         vLastUser  = (TextView) ViewHolder.get(vi,R.id.tv_lastUser);
         vLastUserL = (TextView) ViewHolder.get(vi,R.id.tv_lastUser_label);
+        vLastDate  = (TextView) ViewHolder.get(vi,R.id.tv_lastUserDate);
         vMyCount   = (TextView) ViewHolder.get(vi,R.id.tv_myCount);
         vMyCountL  = (TextView) ViewHolder.get(vi,R.id.tv_myCount_label);
         vViewCount = (TextView) ViewHolder.get(vi,R.id.tv_viewCount);
@@ -144,6 +152,9 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         vTitle.setText(       m.getTitle());
         vPostUser.setText(    m.getStartUser());
         vLastUser.setText(    m.getLastUser());
+        
+        String differenceTime = getLastPostDifference(m.getLastPostTime());
+        vLastDate.setText(   differenceTime);
 
         vPostCount.setText(   
         		SpecialNumberFormatter.collapseNumber(m.getPostCount()));
@@ -167,10 +178,10 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         
         vForumC.setVisibility(this.isNewThread? View.VISIBLE : View.GONE);
         vForum.setText(m.getForum());
-        
-	    //vForumL.setVisibility(this.isNewThread? View.VISIBLE : View.GONE);
-	    //vForum.setVisibility(this.isNewThread? View.VISIBLE : View.GONE);
 		
+        // Set up our color scheme for the threads if the
+        // thread is a sticky or if it is locked.  Else
+        // lets use the default
 		if (m.isSticky()) {
 			setMode(vi, true, Color.CYAN);
 		} else if(m.isLocked())
@@ -178,14 +189,19 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 		else 
 			setMode(vi, false, Color.GRAY);
 		
+		// If this is a favorite view then just hide the 
+		// details.  We dont care
 		if (m.isFavorite())
 			hideThreadDetails(true);
 		
+		// If this is an announcement, then display without
+		// any particular details
 		if (m.isAnnouncement()) {
 			setMode(vi, true, Color.CYAN);
 			hideThreadDetails(true);
 		}
 		
+		// Display the attachment icon if we have an attachment
 		if (!m.hasAttachment())
 			vAttachment.setVisibility(View.GONE);
 		else 
@@ -193,6 +209,39 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 		
         return vi;
 	}
+	
+	/**
+	 * Convenient method for grabbing the difference between the
+	 * last post and today
+	 * @param lastpost	The last post time
+	 * @return			The difference string
+	 */
+	private String getLastPostDifference(String lastpost) {
+		String differenceTime = "";
+        try {
+        	SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy hh:mm a", Locale.getDefault());
+        	Date lastDate = sdf.parse(lastpost);
+        	long diffs[]  = DateDifference.getTimeDifference(lastDate, new Date());
+        	if(diffs[TimeField.DAY.ordinal()] != 0) {
+        		if(diffs[TimeField.DAY.ordinal()] > 365) {
+        			differenceTime = String.format(Locale.getDefault(), " (%d years ago)", 
+	        				diffs[TimeField.DAY.ordinal()] / 365);
+        		} else {
+	        		differenceTime = String.format(Locale.getDefault(), " (%d days ago)", 
+	        				diffs[TimeField.DAY.ordinal()]);
+        		}
+        	} else if(diffs[TimeField.HOUR.ordinal()] == 0)
+        		differenceTime = String.format(Locale.getDefault(), " (%dmins ago)", 
+        				diffs[TimeField.MINUTE.ordinal()]);
+        	else
+        		differenceTime = String.format(Locale.getDefault(), " (%dhrs%s ago)", 
+        				diffs[TimeField.HOUR.ordinal()], 
+        				diffs[TimeField.MINUTE.ordinal()] > 0? "+" : "");
+        } catch (ParseException pe) { }
+        
+        return differenceTime;
+	}
+
 	
 	/**
 	 * Set the mode of the thread view object.  If the view is a 
@@ -207,6 +256,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 		vPostCount.setTextColor(isSpecial? Color.BLACK : Color.WHITE);
 		vPostUser .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
 		vLastUser .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
+		vLastDate .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
 		vMyCount  .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
 		vViewCount.setTextColor(isSpecial? Color.BLACK : Color.WHITE);
 		vForum    .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
@@ -222,6 +272,8 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 
 		vLastUser .setVisibility(hide? View.GONE : View.VISIBLE);
 		vLastUserL.setVisibility(hide? View.GONE : View.VISIBLE);
+		
+		vLastDate.setVisibility(hide? View.GONE : View.VISIBLE);
 		
 		vMyCount  .setVisibility(hide? View.GONE : View.VISIBLE);
 		vMyCountL .setVisibility(hide? View.GONE : View.VISIBLE);
