@@ -130,6 +130,16 @@ public class PreferenceHelper {
     }
     
     /**
+     * Report if user wants to show likes in threads
+     * @param context	Application context
+     * @return			True if likes enabled
+     */
+    public static boolean isShowLikes(Context context) {
+    	SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+    	return prefs.getBoolean("showlikes", true);
+    }
+    
+    /**
      * Report if show avatar option is enabled
      * @param context	The application context
      * @return			True if option enabled

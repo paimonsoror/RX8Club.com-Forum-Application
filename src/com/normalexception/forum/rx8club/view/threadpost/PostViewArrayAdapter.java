@@ -123,6 +123,22 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         ((TextView)ViewHolder.get(vi,R.id.nr_userJoin)).setText(cv.getJoinDate());
         ((TextView)ViewHolder.get(vi,R.id.nr_postDate)).setText(cv.getPostDate());
         
+        TextView likeText = ((TextView)ViewHolder.get(vi,R.id.nr_likeText));
+        if(PreferenceHelper.isShowLikes(activity)) {
+	        if(cv.getLikes().size() > 0) {
+		        String delim = "", likes = "Liked by: ";
+		        for(String like : cv.getLikes()) {
+		        	likes += delim + like;
+		        	delim = ", ";
+		        }
+		        likeText.setText(likes);
+	        } else {
+	        	likeText.setVisibility(View.GONE);
+	        }
+        } else {
+        	likeText.setVisibility(View.GONE);
+        }
+        
         TextView postText = ((TextView)ViewHolder.get(vi,R.id.nr_postText));
         ForumImageHandler fih = new ForumImageHandler(postText, threadId, activity);  
         postText.setMovementMethod(LinkMovementMethod.getInstance());

@@ -32,6 +32,7 @@ public class PostView {
 	private String userPostCount, userPost;
 	private String postId, token;
 	private String userImageUrl;
+	private List<String> likes;
 	private List<String> attachments;
 	private boolean isLoggedInUser = false;
 	
@@ -41,6 +42,14 @@ public class PostView {
 	
 	public String getUserImageUrl() {
 		return userImageUrl;
+	}
+	
+	public void setLikes(List<String> likes) {
+		this.likes = likes;
+	}
+	
+	public List<String> getLikes() {
+		return likes;
 	}
 	
 	/**

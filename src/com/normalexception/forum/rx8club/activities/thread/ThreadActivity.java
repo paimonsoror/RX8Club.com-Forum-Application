@@ -302,55 +302,66 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		Elements posts = doc.select("div[id=posts]").select("div[id^=edit]");
 		Log.v(TAG, String.format("Parsing through %d posts", posts.size()));
 		for(Element post : posts) {
-			Elements innerPost = post.select("table[id^=post]");
-
-			// User Control Panel
-			Elements userCp = innerPost.select("td[class=alt2]");
-			Elements userDetail = userCp.select("div[class=smallfont]");
-			Elements userSubDetail = userDetail.last().select("div"); 
-			Elements userAvatar = userDetail.select("img[alt$=Avatar]");
-
-			// User Information
-			PostView pv = new PostView();
-			pv.setUserName(userCp.select("div[id^=postmenu]").text());
-			pv.setIsLoggedInUser(
-					LoginFactory.getInstance().isLoggedIn()?
-							UserProfile.getInstance().getUsername().equals(
-									pv.getUserName()) : false);	
-			pv.setUserTitle(userDetail.first().text());
-			pv.setUserImageUrl(userAvatar.attr("src"));
-			pv.setPostDate(innerPost.select("td[class=thead]").first().text());
-			pv.setPostId(Utils.parseInts(post.attr("id")));
-
-			Iterator<Element> itr = userSubDetail.listIterator();
-			while(itr.hasNext()) {
-				String txt = itr.next().text();
-				if(txt.contains("Location:"))
-					pv.setUserLocation(txt);
-				else if (txt.contains("Posts:"))
-					pv.setUserPostCount(txt);
-				else if (txt.contains("Join Date:"))
-					pv.setJoinDate(txt);
-			}
-
-			// User Post Content
-			pv.setUserPost(formatUserPost(innerPost));
-
-			Elements postAttachments = innerPost.select("a[id^=attachment]");
-			if(postAttachments != null && !postAttachments.isEmpty()) {
-				ArrayList<String> attachments = new ArrayList<String>();
-				for(Element postAttachment : postAttachments) {
-					attachments.add(postAttachment.attr("href"));
+			try {
+				Elements innerPost = post.select("table[id^=post]");
+	
+				// User Control Panel
+				Elements userCp = innerPost.select("td[class=alt2]");
+				Elements userDetail = userCp.select("div[class=smallfont]");
+				Elements userSubDetail = userDetail.last().select("div"); 
+				Elements userAvatar = userDetail.select("img[alt$=Avatar]");
+	
+				// User Information
+				PostView pv = new PostView();
+				pv.setUserName(userCp.select("div[id^=postmenu]").text());
+				pv.setIsLoggedInUser(
+						LoginFactory.getInstance().isLoggedIn()?
+								UserProfile.getInstance().getUsername().equals(
+										pv.getUserName()) : false);	
+				pv.setUserTitle(userDetail.first().text());
+				pv.setUserImageUrl(userAvatar.attr("src"));
+				pv.setPostDate(innerPost.select("td[class=thead]").first().text());
+				pv.setPostId(Utils.parseInts(post.attr("id")));
+				
+				// get Likes if any exist
+				Elements eLikes = innerPost.select("div[class*=vbseo_liked] > a");
+				List<String> likes = new ArrayList<String>();
+				for(Element eLike : eLikes)
+					likes.add(eLike.text());
+				pv.setLikes(likes);
+	
+				Iterator<Element> itr = userSubDetail.listIterator();
+				while(itr.hasNext()) {
+					String txt = itr.next().text();
+					if(txt.contains("Location:"))
+						pv.setUserLocation(txt);
+					else if (txt.contains("Posts:"))
+						pv.setUserPostCount(txt);
+					else if (txt.contains("Join Date:"))
+						pv.setJoinDate(txt);
 				}
-				pv.setAttachments(attachments);
+	
+				// User Post Content
+				pv.setUserPost(formatUserPost(innerPost));
+	
+				Elements postAttachments = innerPost.select("a[id^=attachment]");
+				if(postAttachments != null && !postAttachments.isEmpty()) {
+					ArrayList<String> attachments = new ArrayList<String>();
+					for(Element postAttachment : postAttachments) {
+						attachments.add(postAttachment.attr("href"));
+					}
+					pv.setAttachments(attachments);
+				}
+				
+				pv.setSecurityToken(securityToken);
+				
+				// Make sure we aren't adding a blank user post
+				if(pv.getUserPost() != null)
+					postlist.add(pv);
+			} catch (Exception e) {
+				Log.w(TAG, "Error Parsing Post...Probably Deleted");
 			}
-			
-			pv.setSecurityToken(securityToken);
-			
-			// Make sure we aren't adding a blank user post
-			if(pv.getUserPost() != null)
-				postlist.add(pv);
-		}
+		}		
 	}
 	
 	/**

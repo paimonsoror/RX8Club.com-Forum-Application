@@ -173,22 +173,41 @@
 		        android:textStyle="bold|italic" />
 		</LinearLayout>
 	</RelativeLayout>
-	<RelativeLayout
+	<RelativeLayout
 	    android:id="@+id/postContainer"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_below="@id/titleContainer"
 	    android:background="#444444"
-	    android:paddingBottom="30dip" >
+	    android:paddingBottom="5dp" >
 
 	    <TextView
 	        android:id="@+id/nr_postText"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="5dip"
-	        android:paddingTop="5dip"
+	        android:cacheColorHint="#00000000"
+	        android:paddingBottom="30dp"
 	        android:paddingLeft="5dip"
 	        android:paddingRight="5dip"
+	        android:paddingTop="5dip"
+	        android:scrollbars="none"
+	        android:text="@string/nrPostText"
+	        android:textColor="#ffffff"
+	        android:textSize="8dip" />
+	    
+	    <TextView
+	        android:id="@+id/nr_likeText"
+	        android:background="@drawable/container_rectangle"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="5dip"
+	        android:layout_marginRight="15dip"
+	        android:layout_marginLeft="15dip"
+	        android:layout_below="@id/nr_postText"
+	        android:paddingTop="5dip"
+	        android:paddingLeft="15dip"
+	        android:paddingRight="15dip"
 	        android:paddingBottom="5dip"
 	        android:text="@string/nrPostText"
 	        android:textColor="#ffffff"

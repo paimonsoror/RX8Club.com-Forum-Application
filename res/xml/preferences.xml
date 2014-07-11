@@ -59,6 +59,11 @@
 	        android:summary="Show post attachments if they exist"
 	        android:key="showattachments"
 	        android:defaultValue="true"/>
+	    <CheckBoxPreference
+	        android:title="Display Likes"
+	        android:summary="Show Likes on Posts"
+	        android:key="showlikes"
+	        android:defaultValue="true"/>
 	    <ListPreference 
 	        android:title="Embedded Image Display Size"
 	        android:summary="Size of the images displayed in a thread"
