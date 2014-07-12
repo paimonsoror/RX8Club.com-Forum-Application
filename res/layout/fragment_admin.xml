@@ -1,0 +1,52 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center" >
+        
+        <ImageButton
+            android:id="@+id/threadLockButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="20px"
+            android:maxWidth="20px"
+            android:scaleType="centerCrop"
+            android:src="@drawable/thread_lock" />
+        
+        <ImageButton
+            android:id="@+id/threadMoveButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="20px"
+            android:maxWidth="20px"
+            android:scaleType="centerCrop"
+            android:src="@drawable/thread_move" />
+        
+        <ImageButton
+            android:id="@+id/threadCopyButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="20px"
+            android:maxWidth="20px"
+            android:scaleType="centerCrop"
+            android:src="@drawable/thread_copy" />
+        
+        <ImageButton
+            android:id="@+id/threadDeleteButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:adjustViewBounds="false"
+            android:cropToPadding="false"
+            android:maxHeight="20px"
+            android:maxWidth="20px"
+            android:scaleType="centerCrop"
+            android:src="@drawable/thread_delete" />
+
+</LinearLayout>

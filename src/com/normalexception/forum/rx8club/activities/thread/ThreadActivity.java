@@ -103,6 +103,10 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 	private ProgressDialog loadingDialog;
 	
 	private int threadId = 0;
+	
+	private final String MODERATION_TOOLS = "Moderation Tools";
+	
+	private boolean isAdmin = false;
 
 	/*
 	 * (non-Javadoc)
@@ -228,6 +232,14 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 		final ThreadActivity a = this;
 		runOnUiThread(new Runnable() {
 			public void run() {
+				// Inflate the header if we are an admin
+				if(isAdmin) {
+					View h = getLayoutInflater()
+							.inflate(R.layout.view_newreply_header, null);
+					h.setOnClickListener(a);
+					lv.addHeaderView(h);
+				}
+				
 				// Inflate the footer (pagination, styler, reply box)
 				View v = getLayoutInflater().
 						inflate(R.layout.view_newreply_footer, null);
@@ -283,6 +295,13 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "We had an error with pagination", e);
+		}
+		
+		// Is user thread admin??
+		Elements threadTools = doc.select("div[id=threadtools_menu] > form > table");
+		if(threadTools.text().contains(MODERATION_TOOLS)) {
+			Log.d(TAG, "<><> User has administrative rights here! <><>");
+			isAdmin = true;
 		}
 
 		// Get the user's actual ID, there is a chance they never got it

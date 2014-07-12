@@ -1,0 +1,15 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/darker_gray"
+    android:baselineAligned="false">
+
+	        <fragment
+	            android:id="@+id/fragment_content_admin"
+	            android:name="com.normalexception.forum.rx8club.activities.fragments.AdminFragment"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+				tools:layout="@layout/fragment_admin">
+	        </fragment>
+</RelativeLayout>
