@@ -213,6 +213,24 @@ public class HtmlFormUtils {
 	}
 	
 	/**
+	 * Lock a thread in the forum, admins only
+	 * @param doType		The posting type
+	 * @param securitytoken	The security token of the user
+	 * @param thread		The thread number
+	 * @return				True if submit worked
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public static boolean adminTypePost(String doType, String securitytoken, String thread) 
+			throws ClientProtocolException, IOException {
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair(VBulletinKeys.ThreadId.getValue(), thread));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.SecurityToken.getValue(), securitytoken));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(), doType));
+		return formSubmit(WebUrls.adminLockUrl + "?t=" + thread + "&pollid=", nvps);
+	}
+	
+	/**
 	 * Submit a post to the server
 	 * @param VBulletinKeys.SecurityToken.getValue()	The posting security token
 	 * @param thread		The thread number

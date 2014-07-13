@@ -531,4 +531,12 @@ public class ThreadActivity extends ForumBaseActivity implements OnClickListener
 			bmapList.add(picturePath);         
 		}     
 	}
+	
+	public String getThreadNumber() {
+		return threadNumber;
+	}
+	
+	public String getSecurityToken() {
+		return this.securityToken;
+	}
 }

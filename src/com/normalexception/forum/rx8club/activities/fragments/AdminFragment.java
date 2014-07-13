@@ -1,21 +1,49 @@
 package com.normalexception.forum.rx8club.activities.fragments;
 
+/************************************************************************
+ * NormalException.net Software, and other contributors
+ * http://www.normalexception.net
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ ************************************************************************/
+
 import org.apache.log4j.Logger;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 
+import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
+import com.normalexception.forum.rx8club.task.AdminTask;
+import com.normalexception.forum.rx8club.view.ViewHolder;
 
 public class AdminFragment extends Fragment implements OnClickListener {
 	
 	private Logger TAG =  Logger.getLogger(this.getClass());
-
-    public static int RESULT_LOAD_IMAGE = 1;
     
 	/*
 	 * (non-Javadoc)
@@ -35,6 +63,10 @@ public class AdminFragment extends Fragment implements OnClickListener {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
     	super.onActivityCreated(savedInstanceState);
+    	ViewHolder.get(getView(), R.id.threadCopyButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.threadDeleteButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.threadLockButton).setOnClickListener(this);
+    	ViewHolder.get(getView(), R.id.threadMoveButton).setOnClickListener(this);
     }
     
     /*
@@ -44,5 +76,51 @@ public class AdminFragment extends Fragment implements OnClickListener {
 	@Override
 	public void onClick(View arg0) {
 		
+		ThreadActivity ta = 
+				(ThreadActivity)this.getActivity();
+		Log.d(TAG, String.format("sid:%s, tid:%s", ta.getSecurityToken(), ta.getThreadNumber()));
+		AdminTask lt = null;
+		
+		switch(arg0.getId()) {
+		case R.id.threadCopyButton:
+			Log.d(TAG, "Thread Copy Button Pressed");
+			break;
+		case R.id.threadDeleteButton:
+			Log.d(TAG, "Thread Delete Button Pressed");
+			lt = new AdminTask(ta, ta.getSecurityToken(), ta.getThreadNumber(), AdminTask.DELETE_THREAD);
+			break;
+		case R.id.threadLockButton:
+			Log.d(TAG, "Thread Lock Button Pressed");
+			lt = new AdminTask(ta, ta.getSecurityToken(), ta.getThreadNumber(), AdminTask.LOCK_THREAD);
+			break;
+		case R.id.threadMoveButton:
+			Log.d(TAG, "Thread Move Button Pressed");
+			break;
+		}
+		
+		if(lt != null) {
+			final AdminTask flt = lt;
+			final String desc = lt.getDescription();
+			
+			DialogInterface.OnClickListener dialogClickListener = 
+				new DialogInterface.OnClickListener() {
+			    @Override
+			    public void onClick(DialogInterface dialog, int which) {
+			        switch (which){
+			        case DialogInterface.BUTTON_POSITIVE:  
+			        	flt.execute();
+			            break;
+			        }
+			    }
+			};
+
+			AlertDialog.Builder builder = 
+					new AlertDialog.Builder(ta);
+			builder
+				.setMessage("Are you sure you want to " + desc + "?")
+				.setPositiveButton("Yes", dialogClickListener)
+			    .setNegativeButton("No", dialogClickListener)
+			    .show();
+		}
 	}
 }

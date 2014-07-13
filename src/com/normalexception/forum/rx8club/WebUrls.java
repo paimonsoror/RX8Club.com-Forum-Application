@@ -40,6 +40,8 @@ public class WebUrls {
 	public static final String profileUrl = rootUrl + "/profile.php";
 	public static final String searchUrl = rootUrl + "/search.php?do=process&query=";
 	public static final String userUrl = rootUrl + "/search.php?do=finduser&u=";
+
+	public static final String adminLockUrl = rootUrl + "/postings.php";
 	
 	public static final String postSubmitAddress = 	rootUrl + "/newreply.php?do=newreply&noquote=1&p=";
 	public static final String quickPostAddress = rootUrl + "/newreply.php?do=postreply&t=";
