@@ -26,9 +26,14 @@ package com.normalexception.forum.rx8club.task;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -37,6 +42,7 @@ import android.os.AsyncTask;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
 import com.normalexception.forum.rx8club.Log;
+import com.normalexception.forum.rx8club.dialog.MoveThreadDialog;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
 /**
@@ -54,21 +60,29 @@ public class AdminTask extends AsyncTask<Void,String,Void>{
 	
 	public static final String LOCK_THREAD = "openclosethread";
 	public static final String DELETE_THREAD = "dodeletethread";
+	public static final String MOVE_THREAD = "movethread";
+	public static final String DOMOVE_THREAD = "domovethread";
 	
 	public static final String DELETE_REASON = "Deleted From Mobile App";
 	
 	private static final Map<String, String> progressText;
 	private static final Map<String, String> descriptionText;
 	
+	private String threadTitle = "";
+	private Map<String,Integer> selectOptions = 
+			new LinkedHashMap<String,Integer>();
+	
 	static
     {
 			progressText = new HashMap<String, String>();
 			progressText.put(LOCK_THREAD, "Un/Locking Thread...");
 			progressText.put(DELETE_THREAD, "Deleting Thread...");
+			progressText.put(MOVE_THREAD, "Moving Thread...");
 			
 			descriptionText = new HashMap<String, String>();
 			descriptionText.put(LOCK_THREAD, "Lock / Unlock Thread");
 			descriptionText.put(DELETE_THREAD, "Delete Thread");
+			descriptionText.put(MOVE_THREAD, "Move Thread");
     }
 	
 	/*
@@ -80,6 +94,24 @@ public class AdminTask extends AsyncTask<Void,String,Void>{
     	try {
     		Log.d(TAG, progressText.get(doType));
     		HtmlFormUtils.adminTypePost(doType, token, thread);
+    		
+    		if(this.doType == MOVE_THREAD) {
+	    		String response = HtmlFormUtils.getResponseUrl();
+	    		Log.d(TAG, "Response: " + response);
+	    			
+	    		Document doc = Jsoup.parse(HtmlFormUtils.getResponseContent());
+	    		
+	    		threadTitle = HtmlFormUtils.getInputElementValueByName(doc, "title");
+	    		Log.d(TAG, "Thread Title: " + threadTitle);
+	    		
+	    		Elements selects = doc.select("select[name=destforumid] > option");
+	    		for(Element select : selects) {
+	    			selectOptions.put(select.text(), 
+	    					Integer.parseInt(select.attr("value")));
+	    		}
+	    		
+	    		Log.d(TAG, "Parsed " + selectOptions.keySet().size() + " options");
+    		}
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, e.getMessage(), e);
 		} catch (IOException e) {
@@ -144,6 +176,10 @@ public class AdminTask extends AsyncTask<Void,String,Void>{
 			Log.d(TAG, "Setting Thread Lock To: " + !isLocked);
 			_intent.putExtra("locked", !isLocked);
 			this.sourceActivity.startActivity(_intent);
+		} else if (doType == MOVE_THREAD) {
+			MoveThreadDialog mtd = new MoveThreadDialog(
+					this.sourceActivity, token, thread, threadTitle, selectOptions);
+			mtd.show();
 		} else {
 			this.sourceActivity.finish();
 		}

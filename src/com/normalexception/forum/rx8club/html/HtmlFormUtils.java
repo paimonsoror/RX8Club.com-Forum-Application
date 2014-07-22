@@ -61,6 +61,7 @@ import com.normalexception.forum.rx8club.utils.Utils;
 
 public class HtmlFormUtils {	
 	private static String responseUrl = "";
+	private static String responseContent = "";
 	private static String TAG =HtmlFormUtils.class.getName();
 
 	/**
@@ -117,6 +118,9 @@ public class HtmlFormUtils {
     	
     	Log.d(TAG, "[Submit] Status: " + statusLine.getStatusCode());
     	if (entity != null) {
+    		responseContent = 
+    	    		EntityUtils.toString(entity, "UTF-8" );
+    		
     		httpost.releaseConnection();
     		
     		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
@@ -228,6 +232,28 @@ public class HtmlFormUtils {
 		nvps.add(new BasicNameValuePair(VBulletinKeys.SecurityToken.getValue(), securitytoken));
 		nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(), doType));
 		return formSubmit(WebUrls.adminLockUrl + "?t=" + thread + "&pollid=", nvps);
+	}
+	
+	/**
+	 * Admin option to move the thread
+	 * @param securitytoken		The security token id
+	 * @param src_thread		The source thread that is being moved
+	 * @param title				The title of the thread
+	 * @param dest_threadid		The destination forum
+	 * @return					True on success
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public static boolean adminMoveThread(String securitytoken, String src_thread, 
+			String title, String dest_threadid) throws ClientProtocolException, IOException {
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair(VBulletinKeys.ThreadId.getValue(), src_thread));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.SecurityToken.getValue(), securitytoken));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(), "domovethread"));
+		nvps.add(new BasicNameValuePair("title", title));
+		nvps.add(new BasicNameValuePair("destforumid", dest_threadid));
+		nvps.add(new BasicNameValuePair("redirect", "none"));
+		return formSubmit(WebUrls.adminLockUrl + "?do=domovethread&t=" + src_thread, nvps);
 	}
 	
 	/**
@@ -501,6 +527,10 @@ public class HtmlFormUtils {
 	 */
 	public static String getResponseUrl() {
 		return WebUrls.rootUrl + responseUrl;
+	}
+	
+	public static String getResponseContent() {
+		return responseContent;
 	}
 
     /**

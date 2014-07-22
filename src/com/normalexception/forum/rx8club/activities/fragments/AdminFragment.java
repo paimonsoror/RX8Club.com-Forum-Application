@@ -95,6 +95,7 @@ public class AdminFragment extends Fragment implements OnClickListener {
 			break;
 		case R.id.threadMoveButton:
 			Log.d(TAG, "Thread Move Button Pressed");
+			lt = new AdminTask(ta, ta.getSecurityToken(), ta.getThreadNumber(), AdminTask.MOVE_THREAD);
 			break;
 		}
 		

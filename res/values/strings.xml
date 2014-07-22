@@ -133,6 +133,7 @@
     <string name="dialogCacheCleared">Cache Cleared!</string>
     <string name="dialogFavoriteAdded">Favorite Added</string>
     <string name="dialogSignature">Signature:\u0020</string>
+    <string name="dialogMoveThread">Move Thread:\u0020</string>
     <string name="dialogFilter">New Filter:\u0020</string>
     <string name="dialogFilterInvalid">Invalid Filter!</string>
     
@@ -149,6 +150,7 @@
     <string name="loggingIn">Logging In</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
+    <string name="Move">Move</string>
     <string name="Default">Default</string>
     <string name="cancel">Cancel</string>
     <string name="fillForm">Please Fill Form</string>
