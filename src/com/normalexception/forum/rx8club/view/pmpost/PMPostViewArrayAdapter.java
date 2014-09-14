@@ -95,6 +95,8 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
         
         final PostView cv = data.get(position);
         
+
+        ((TextView) ViewHolder.get(vi,R.id.nr_likeText)).setVisibility(View.GONE);
         ((TextView) ViewHolder.get(vi,R.id.nr_username)).setText(cv.getUserName());
         ((TextView) ViewHolder.get(vi,R.id.nr_userTitle)).setText(cv.getUserTitle());
         ((TextView) ViewHolder.get(vi,R.id.nr_userPosts)).setText(cv.getUserPostCount());

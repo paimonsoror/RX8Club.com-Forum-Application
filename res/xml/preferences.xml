@@ -90,6 +90,11 @@
 	</PreferenceCategory>
     <PreferenceCategory
                 android:title="Misc Options">
+	    <CheckBoxPreference
+	        android:title="Hide Banner"
+	        android:defaultValue="false"
+	        android:summary="Hide banner to maximize realestate"
+	        android:key="hidebanner" />
 	    <Preference
 	        android:title="Clear Cache"
 	        android:key="appcache"

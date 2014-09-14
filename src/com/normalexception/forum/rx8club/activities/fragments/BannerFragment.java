@@ -79,6 +79,11 @@ public class BannerFragment extends Fragment implements OnClickListener {
         	mode = View.VISIBLE;
         }
         
+        if(PreferenceHelper.isHideBanner(this.getActivity()))
+        	ViewHolder.get(view, R.id.imageView1).setVisibility(View.GONE);
+        else
+        	ViewHolder.get(view, R.id.imageView1).setVisibility(View.VISIBLE);
+        
         ViewHolder.get(view, R.id.newTopicsButton).setVisibility(mode);
         ViewHolder.get(view, R.id.favoritesButton).setVisibility(mode);
         ViewHolder.get(view, R.id.inboxButton).setVisibility(mode);

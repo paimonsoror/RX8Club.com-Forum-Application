@@ -40,6 +40,16 @@ public class PreferenceHelper {
 	public final static String PREFS_NAME = "app_prefs";
 	
 	/**
+	 * Report if the user wants the banner hidden
+	 * @param context	The source context
+	 * @return			The option value
+	 */
+	public static boolean isHideBanner(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+		return prefs.getBoolean("hidebanner", false);
+	}
+	
+	/**
 	 * Get the thread image size from the preferences
 	 * @param context	The source context
 	 * @return			The option value

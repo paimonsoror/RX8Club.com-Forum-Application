@@ -34,6 +34,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
@@ -119,22 +120,29 @@ public class NewThreadActivity extends ForumBaseActivity implements OnClickListe
      * Construct the view
      */
     private void constructView() {    	
-    	Document doc = VBForumFactory.getInstance().get(this, link);
-    	if(doc != null) {
-	    	s 			= HtmlFormUtils.getInputElementValueByName(doc, "s");
-	    	token 		= HtmlFormUtils.getInputElementValueByName(doc, "securitytoken");
-	    	f 			= HtmlFormUtils.getInputElementValueByName(doc, "f");
-	    	posthash 	= HtmlFormUtils.getInputElementValueByName(doc, "posthash");
-	    	
-	    	tlist.add(new ThreadItemView());
-	    	
-	    	final NewThreadActivity a = this;
-	    	runOnUiThread(new Runnable() {
-	            public void run() {
-			    	pva = new ThreadItemViewArrayAdapter(a, R.layout.view_newthread, tlist);
-					lv.setAdapter(pva);		        
-	            }
-	    	});
+    	if(link != null) {
+	    	Document doc = VBForumFactory.getInstance().get(this, link);
+	    	if(doc != null) {
+		    	s 			= HtmlFormUtils.getInputElementValueByName(doc, "s");
+		    	token 		= HtmlFormUtils.getInputElementValueByName(doc, "securitytoken");
+		    	f 			= HtmlFormUtils.getInputElementValueByName(doc, "f");
+		    	posthash 	= HtmlFormUtils.getInputElementValueByName(doc, "posthash");
+		    	
+		    	tlist.add(new ThreadItemView());
+		    	
+		    	final NewThreadActivity a = this;
+		    	runOnUiThread(new Runnable() {
+		            public void run() {
+				    	pva = new ThreadItemViewArrayAdapter(a, R.layout.view_newthread, tlist);
+						lv.setAdapter(pva);		        
+		            }
+		    	});
+	    	}
+    	} else {
+    		Log.e(TAG, "Link Was NULL!", null);
+    		Toast.makeText(this, "Sorry! Error Trying To Create New Thread!", 
+    				Toast.LENGTH_SHORT).show();
+    		this.finish();
     	}
     }
     

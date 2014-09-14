@@ -106,14 +106,17 @@ public class VBForumFactory {
 			HttpClient client = null;		
 			
 			// Grab the login client
+			Log.d(TAG, "Grabbing Login Client");
 			client = lf.getClient();
 			
 			// If client isn't null, continue
 			if(client != null && (addr != null && !addr.equals(""))) {
 				HttpGet httpget = null;
+				Log.d(TAG, "Resolving URL");
 				addr = Utils.resolveUrl(addr);
 				
 				try {
+					Log.d(TAG, "Executing HTTP Get on: " + addr);
 					httpget = ClientUtils.getHttpGet(addr);
 			    	output = 
 		    			EntityUtils.toString( 
@@ -124,14 +127,17 @@ public class VBForumFactory {
 					
 					if(output == null || 
 							output.equals("") || 
-							output.contains("You are not logged in"))
+							output.contains("You are not logged in")) {
+						Log.w(TAG, "Error Parsing Output!");
+						Log.w(TAG, output);
 						src.returnToLoginPage(false, false);
+					}
 				} catch (NullPointerException e) {		
 					notifyError(src, 
 							"Error Opening Page. This Has Been Logged", e);
 				} catch (IllegalStateException e) {
 					Log.e(TAG, e.getMessage(), e);
-				}	
+				}
 			} else {
 				notifyError(src, 
 						"Error With Credentials", null);

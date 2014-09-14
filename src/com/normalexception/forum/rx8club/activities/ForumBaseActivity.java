@@ -114,9 +114,17 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 		boolean result = false;
 		for(String param : params)
 			address += param;
+		
 		Document output = 
 				VBForumFactory.getInstance().get(this,  address);
-		Elements eles = output.select("td[class=panelsurround]");
+		Elements eles = null;
+		
+		eles = output.select("div[class=ib-padding]");
+		Log.v(TAG, "doesUserHavePermissionToPage:Mobile Check = " + eles.size());
+		if(eles.isEmpty()) {
+			eles = output.select("td[class=panelsurround]");
+			Log.v(TAG, "doesUserHavePermissionToPage:Standard Check = " + eles.size());
+		}
 		if(eles != null)
 			result = !eles.text().contains("do not have permission to access this page");
 		return result;
