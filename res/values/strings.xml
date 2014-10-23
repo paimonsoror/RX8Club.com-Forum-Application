@@ -11,6 +11,9 @@
     <string name="noPermission">Sorry, You Dont Have Permission To Do That (New User?)</string>
     <string name="youSure">You Sure&#8230;</string>
     
+    <!-- Admin Strings -->
+    <string name="deleteReason">Reason?</string>
+    
     <!-- Emailing -->
     <string name="noEmail">There are no email clients installed!</string>
     <string name="sendEmail">Send mail&#8230;</string>
@@ -184,4 +187,7 @@
     <string name="ptrRelease">Release to Refresh&#8230;</string>
     <string name="ptrLoading">Loading&#8230;</string>
     <string name="ptrTap">Tap Here to Refresh&#8230;</string>
+    
+    <!-- Forum Specific Strings -->
+    <string name="constantNoUpdate">The threads below have not been updated since your last visit but still contain unread posts</string>
 </resources>

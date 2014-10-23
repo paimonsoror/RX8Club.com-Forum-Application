@@ -36,6 +36,23 @@ public class ThreadView implements Serializable {
 	private String link, lastLink, lastPostTime;
 	private String forum;
 	private boolean isAnnouncement, isSticky, isLocked, isFavorite, isPoll, hasAttachment = false;
+	private boolean isStub = false;
+	
+	public ThreadView() {
+		this.isStub = false;
+	}
+	
+	public ThreadView(boolean stub) {
+		this.isStub = stub;
+	}
+	
+	/**
+	 * Report if this is a stub thread.  Typically used for the end of new threads
+	 * @return	True if stub thread.
+	 */
+	public boolean isStub() {
+		return this.isStub;
+	}
 	
 	/**
 	 * Report if thread is an announcement

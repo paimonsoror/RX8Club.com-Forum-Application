@@ -51,6 +51,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.Log;
+import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.TimeoutFactory;
 import com.normalexception.forum.rx8club.WebUrls;
@@ -175,25 +176,26 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		            public void onItemClick(AdapterView<?> parent, View view,
 		                    int position, long id) {
 		            	ThreadView itm = (ThreadView) parent.getItemAtPosition(position);
-		            	Log.d(TAG, "User clicked '" + itm.getTitle() + "'");
-						Intent _intent = 
-								new Intent(CategoryActivity.this, ThreadActivity.class);
-						
-												
-						// If the user wants the last page when recently updated
-						// threads, grab it.
-						if(getLastPage(itm) && 
-								!itm.getLastLink().equals("#") &&
-								!itm.getLastLink().endsWith("/#")) {
-							_intent.putExtra("link", itm.getLastLink());
-							_intent.putExtra("page", "last");
-						} else
-							_intent.putExtra("link", itm.getLink());
-						
-						_intent.putExtra("poll", itm.isPoll());
-						_intent.putExtra("locked", itm.isLocked());
-						_intent.putExtra("title", itm.getTitle());
-						startActivity(_intent);
+		            	if(!itm.isStub()) {
+			            	Log.d(TAG, "User clicked '" + itm.getTitle() + "'");
+							Intent _intent = 
+									new Intent(CategoryActivity.this, ThreadActivity.class);							
+													
+							// If the user wants the last page when recently updated
+							// threads, grab it.
+							if(getLastPage(itm) && 
+									!itm.getLastLink().equals("#") &&
+									!itm.getLastLink().endsWith("/#")) {
+								_intent.putExtra("link", itm.getLastLink());
+								_intent.putExtra("page", "last");
+							} else
+								_intent.putExtra("link", itm.getLink());
+							
+							_intent.putExtra("poll", itm.isPoll());
+							_intent.putExtra("locked", itm.isLocked());
+							_intent.putExtra("title", itm.getTitle());
+							startActivity(_intent);
+		            	}
 		            }
 		        });
 				lv.setOnRefreshListener(new OnRefreshListener() {
@@ -504,6 +506,15 @@ public class CategoryActivity extends ForumBaseActivity implements OnClickListen
 		    		tv.setForum(forum);
 		    		tv.setLastPostTime(threadDate);
 		    		threadlist.add(tv);
+    			} else if (thread.text().contains(
+    					MainApplication.getAppContext().getString(R.string.constantNoUpdate))) {
+    				Log.d(TAG, String.format(
+    						"Found End of New Threads after %d threads...", threadlist.size()));
+    				if(threadlist.size() > 0) {
+    					ThreadView ltv = threadlist.get(threadlist.size() - 1);
+    					Log.d(TAG, String.format("Last New Thread '%s'", ltv.getTitle()));
+    				}
+    				threadlist.add(new ThreadView(true));
     			}
     		} catch (Exception e) { 
     			Log.e(TAG, "Error Parsing That Thread...", e);

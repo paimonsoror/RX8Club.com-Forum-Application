@@ -56,6 +56,7 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.enums.VBulletinKeys;
 import com.normalexception.forum.rx8club.httpclient.ClientUtils;
+import com.normalexception.forum.rx8club.task.AdminTask;
 import com.normalexception.forum.rx8club.user.UserProfile;
 import com.normalexception.forum.rx8club.utils.Utils;
 
@@ -221,16 +222,21 @@ public class HtmlFormUtils {
 	 * @param doType		The posting type
 	 * @param securitytoken	The security token of the user
 	 * @param thread		The thread number
+	 * @param reason		The reason for delete (only used in delete thread)
 	 * @return				True if submit worked
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public static boolean adminTypePost(String doType, String securitytoken, String thread) 
+	public static boolean adminTypePost(String doType, String securitytoken, String thread, String reason) 
 			throws ClientProtocolException, IOException {
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
 		nvps.add(new BasicNameValuePair(VBulletinKeys.ThreadId.getValue(), thread));
 		nvps.add(new BasicNameValuePair(VBulletinKeys.SecurityToken.getValue(), securitytoken));
 		nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(), doType));
+		if(doType == AdminTask.DELETE_THREAD) {
+			nvps.add(new BasicNameValuePair(VBulletinKeys.DeleteType.getValue(), "1"));
+			nvps.add(new BasicNameValuePair(VBulletinKeys.DeleteReason.getValue(), reason));
+		}
 		return formSubmit(WebUrls.adminLockUrl + "?t=" + thread + "&pollid=", nvps);
 	}
 	

@@ -26,6 +26,7 @@ package com.normalexception.forum.rx8club.activities.fragments;
 
 import org.apache.log4j.Logger;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ import android.view.ViewGroup;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
+import com.normalexception.forum.rx8club.dialog.DeleteThreadDialog;
 import com.normalexception.forum.rx8club.task.AdminTask;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
@@ -102,14 +104,19 @@ public class AdminFragment extends Fragment implements OnClickListener {
 		if(lt != null) {
 			final AdminTask flt = lt;
 			final String desc = lt.getDescription();
-			
+			final Activity sourceActivity = this.getActivity();
 			DialogInterface.OnClickListener dialogClickListener = 
 				new DialogInterface.OnClickListener() {
 			    @Override
 			    public void onClick(DialogInterface dialog, int which) {
 			        switch (which){
-			        case DialogInterface.BUTTON_POSITIVE:  
-			        	flt.execute();
+			        case DialogInterface.BUTTON_POSITIVE:
+			        	if(flt.getType() == AdminTask.DELETE_THREAD) {
+			    			DeleteThreadDialog dtd = new DeleteThreadDialog(sourceActivity, flt);
+			    			dtd.show();
+			        	} else {        	
+			        		flt.execute();
+			        	}
 			            break;
 			        }
 			    }

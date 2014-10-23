@@ -40,6 +40,7 @@ import android.widget.Toast;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.TimeoutFactory;
+import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
@@ -135,11 +136,10 @@ public class NewPrivateMessageActivity extends ForumBaseActivity {
 		    }
         	@Override
 			protected Void doInBackground(Void... params) {
-				String link = 
-		        		(String) getIntent().getStringExtra("link");
+				//String link = 
+		        //		(String) getIntent().getStringExtra("link");
 				Document doc = 
-						VBForumFactory.getInstance().get(src, 
-								VBForumFactory.getRootAddress() + "/" + link);
+						VBForumFactory.getInstance().get(src, WebUrls.newPmAddress);
 				
 				if(doc != null) {
 					securityToken =

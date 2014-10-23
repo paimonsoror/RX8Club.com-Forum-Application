@@ -42,6 +42,7 @@ import android.os.AsyncTask;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
 import com.normalexception.forum.rx8club.Log;
+import com.normalexception.forum.rx8club.dialog.DeleteThreadDialog;
 import com.normalexception.forum.rx8club.dialog.MoveThreadDialog;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
@@ -54,7 +55,7 @@ public class AdminTask extends AsyncTask<Void,String,Void>{
 	private ProgressDialog mProgressDialog;
 	private Activity sourceActivity;
 	
-	private String token, thread, doType;
+	private String token, thread, doType, deleteResponse;
 
 	private Logger TAG =  Logger.getLogger(this.getClass());
 	
@@ -93,7 +94,11 @@ public class AdminTask extends AsyncTask<Void,String,Void>{
     protected Void doInBackground(Void... params) {
     	try {
     		Log.d(TAG, progressText.get(doType));
-    		HtmlFormUtils.adminTypePost(doType, token, thread);
+    		
+    		if(this.doType == DELETE_THREAD) {
+    			HtmlFormUtils.adminTypePost(doType, token, thread, deleteResponse);
+    		} else
+    			HtmlFormUtils.adminTypePost(doType, token, thread, null);
     		
     		if(this.doType == MOVE_THREAD) {
 	    		String response = HtmlFormUtils.getResponseUrl();
@@ -134,8 +139,16 @@ public class AdminTask extends AsyncTask<Void,String,Void>{
 		this.doType = action;
 	}
 	
+	public String getType() {
+		return doType;
+	}
+	
 	public String getDescription() {
 		return descriptionText.get(doType);
+	}
+	
+	public void setDeleteResponse(String resp) {
+		this.deleteResponse = resp;
 	}
 	
 	public void debug() {
@@ -150,7 +163,6 @@ public class AdminTask extends AsyncTask<Void,String,Void>{
 	 */
     @Override
     protected void onPreExecute() {
-    	
         mProgressDialog = 
         		ProgressDialog.show(this.sourceActivity, progressText.get(doType), "Please Wait...");
     }

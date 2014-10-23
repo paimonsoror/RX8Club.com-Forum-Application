@@ -25,6 +25,9 @@ package com.normalexception.forum.rx8club.enums;
  ************************************************************************/
 
 public enum VBulletinKeys {
+	// Admin Form Data
+	DeleteType		("deletetype"),
+	DeleteReason	("deletereason"),
 	
 	// Login Form Data
 	UserName 		("vb_login_username"),

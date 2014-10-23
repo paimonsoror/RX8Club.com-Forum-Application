@@ -184,9 +184,13 @@ public class MainActivity extends ForumBaseActivity {
     					
     					UserProfile.getInstance().setUserProfileLink(un);
     					
-    					// Try and scrap the uid from the href
-    					UserProfile.getInstance().setUserId(
+    					try {
+    						// Try and scrap the uid from the href
+    						UserProfile.getInstance().setUserId(
     							un.substring(un.lastIndexOf("-") + 1, un.lastIndexOf("/")));
+    					} catch (Exception e) {
+    						Log.e(TAG, "Error Parsing User ID", e);
+    					}
     				}
     			}
 				return null;
@@ -338,34 +342,38 @@ public class MainActivity extends ForumBaseActivity {
     			
     			// Each forum object should have 5 columns
     			Elements columns = forum.select("tr[align=center] > td");
-    			if(columns.size() != 5) continue;
-
-    			String forum_name = columns.get(MainActivity.FORUM_NAME).select("strong").text();
-    			String forum_href = columns.get(MainActivity.FORUM_NAME).select("a").attr("href");
-    			String forum_desc = "";
     			try {
-    				forum_desc = 
-    					columns.get(MainActivity.FORUM_NAME).select("div[class=smallfont]").first().text();
-    			} catch (NullPointerException npe) { /* Some might not have a desc */ }
-    			String threads    = columns.get(MainActivity.THREADS_CNT).text();
-    			String posts      = columns.get(MainActivity.POSTS_CNT).text();
-    			
-    			// Lets grab each subcategory
-    			Elements subCats  = columns.select("tbody a");
-    			for(Element subCat : subCats) {
-    				SubCategoryView scv = new SubCategoryView();
-    				scv.setLink(subCat.attr("href"));
-    				scv.setTitle(subCat.text().toString());
-    				scvList.add(scv);
+	    			if(columns.size() != 5) continue;
+	
+	    			String forum_name = columns.get(MainActivity.FORUM_NAME).select("strong").text();
+	    			String forum_href = columns.get(MainActivity.FORUM_NAME).select("a").attr("href");
+	    			String forum_desc = "";
+	    			try {
+	    				forum_desc = 
+	    					columns.get(MainActivity.FORUM_NAME).select("div[class=smallfont]").first().text();
+	    			} catch (NullPointerException npe) { /* Some might not have a desc */ }
+	    			String threads    = columns.get(MainActivity.THREADS_CNT).text();
+	    			String posts      = columns.get(MainActivity.POSTS_CNT).text();
+	    			
+	    			// Lets grab each subcategory
+	    			Elements subCats  = columns.select("tbody a");
+	    			for(Element subCat : subCats) {
+	    				SubCategoryView scv = new SubCategoryView();
+	    				scv.setLink(subCat.attr("href"));
+	    				scv.setTitle(subCat.text().toString());
+	    				scvList.add(scv);
+	    			}
+	    			
+	    			cv.setTitle(forum_name);
+	    			cv.setThreadCount(threads);
+	    			cv.setPostCount(posts);
+	    			cv.setLink(forum_href);
+	    			cv.setDescription(forum_desc);
+	    			cv.setSubCategories(scvList);
+	    			mainList.add(cv);
+    			} catch (Exception e) {
+    				Log.e(TAG, "Error Parsing Forum", e);
     			}
-    			
-    			cv.setTitle(forum_name);
-    			cv.setThreadCount(threads);
-    			cv.setPostCount(posts);
-    			cv.setLink(forum_href);
-    			cv.setDescription(forum_desc);
-    			cv.setSubCategories(scvList);
-    			mainList.add(cv);
     		}
     	}
         

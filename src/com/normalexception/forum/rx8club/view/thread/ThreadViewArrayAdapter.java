@@ -25,10 +25,15 @@ package com.normalexception.forum.rx8club.view.thread;
  ************************************************************************/
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.log4j.Logger;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +42,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.normalexception.forum.rx8club.Log;
+import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.activities.list.ThreadTypeFactory;
 import com.normalexception.forum.rx8club.html.LoginFactory;
@@ -48,6 +55,8 @@ import com.normalexception.forum.rx8club.view.ViewHolder;
  * A custom view adapter for a thread view object
  */
 public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
+	
+	private Logger TAG =  Logger.getLogger(this.getClass());
 	
 	private Context activity;
     private List<ThreadView> data; 
@@ -144,63 +153,86 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         // Set all display components to visible to start
         hideThreadDetails(false);
         
-        vTitle.setText(       m.getTitle());
-        vPostUser.setText(    m.getStartUser());
-        vLastUser.setText(    m.getLastUser());
-        
-        String differenceTime = DateDifference.getPrettyDate(m.getLastPostTime());
-        vLastDate.setText(   differenceTime);
-
-        vPostCount.setText(   
-        		SpecialNumberFormatter.collapseNumber(m.getPostCount()));
-        vMyCount.setText(
-        		SpecialNumberFormatter.collapseNumber(m.getMyPosts()));
-        vViewCount.setText(
-        		SpecialNumberFormatter.collapseNumber(m.getViewCount()));
-        
-        boolean hasPosts = !vMyCount.getText().equals("0");
-        Bitmap scaledimg = 
-    			ThreadTypeFactory.getBitmap(
-    					null, 15, 13, m.isLocked(), m.isSticky(), hasPosts, 
-    					m.isAnnouncement());
-        vImage.setImageBitmap(scaledimg);      
-        
-        // Hide a few things if we are a guest
-        if(LoginFactory.getInstance().isGuestMode()) {
-        	vMyCountL.setVisibility(View.GONE);
-        	vMyCount.setVisibility(View.GONE);
+        if(!m.isStub()) {
+	        // Check if the thread title is a for sale type thread
+	        String threadTitle = m.getTitle();
+	        Pattern pattern = Pattern.compile("(\\{\\s\\w*\\s\\})(.*)", Pattern.CASE_INSENSITIVE);
+	        Matcher matcher = pattern.matcher(threadTitle);
+	        
+	        if(matcher.matches()) {
+	        	Log.d(TAG, "Found a FS Type Thread...");
+	        	vTitle.setText(Html.fromHtml("<font color='red'>"
+	        			+ matcher.group(1) + "</font>" 
+	        			+ matcher.group(2)));
+	        } else {   
+	        	vTitle.setText(       threadTitle);
+	        }
+	        vPostUser.setText(    m.getStartUser());
+	        vLastUser.setText(    m.getLastUser());
+	        
+	        String differenceTime = DateDifference.getPrettyDate(m.getLastPostTime());
+	        vLastDate.setText(   differenceTime);
+	
+	        vPostCount.setText(   
+	        		SpecialNumberFormatter.collapseNumber(m.getPostCount()));
+	        vMyCount.setText(
+	        		SpecialNumberFormatter.collapseNumber(m.getMyPosts()));
+	        vViewCount.setText(
+	        		SpecialNumberFormatter.collapseNumber(m.getViewCount()));
+	        
+	        boolean hasPosts = !vMyCount.getText().equals("0");
+	        Bitmap scaledimg = 
+	    			ThreadTypeFactory.getBitmap(
+	    					null, 15, 13, m.isLocked(), m.isSticky(), hasPosts, 
+	    					m.isAnnouncement());
+	        vImage.setImageBitmap(scaledimg);      
+	        
+	        // Hide a few things if we are a guest
+	        if(LoginFactory.getInstance().isGuestMode()) {
+	        	vMyCountL.setVisibility(View.GONE);
+	        	vMyCount.setVisibility(View.GONE);
+	        }
+	        
+	        vForumC.setVisibility(this.isNewThread? View.VISIBLE : View.GONE);
+	        vForum.setText(m.getForum());
+			
+	        // Set up our color scheme for the threads if the
+	        // thread is a sticky or if it is locked.  Else
+	        // lets use the default
+			if (m.isSticky()) {
+				setMode(vi, true, Color.CYAN);
+			} else if(m.isLocked())
+				setMode(vi, false, Color.DKGRAY);
+			else 
+				setMode(vi, false, Color.GRAY);
+			
+			// If this is a favorite view then just hide the 
+			// details.  We dont care
+			if (m.isFavorite())
+				hideThreadDetails(true);
+			
+			// If this is an announcement, then display without
+			// any particular details
+			if (m.isAnnouncement()) {
+				setMode(vi, true, Color.CYAN);
+				hideThreadDetails(true);
+			}
+			
+			// Display the attachment icon if we have an attachment
+			if (!m.hasAttachment())
+				vAttachment.setVisibility(View.GONE);
+			else 
+				vAttachment.setVisibility(View.VISIBLE);
+        } else {
+        	// If it is a stub, then at this time it means that we have 
+        	// reached the end of our newest posts.  So show the user a 
+        	// message letting them know
+        	vTitle.setText(
+        		MainApplication.getAppContext().getString(R.string.constantNoUpdate));
+        	vTitle.setTextColor(Color.WHITE);
+        	setMode(vi, true, Color.BLACK);
+        	hideThreadDetails(true);
         }
-        
-        vForumC.setVisibility(this.isNewThread? View.VISIBLE : View.GONE);
-        vForum.setText(m.getForum());
-		
-        // Set up our color scheme for the threads if the
-        // thread is a sticky or if it is locked.  Else
-        // lets use the default
-		if (m.isSticky()) {
-			setMode(vi, true, Color.CYAN);
-		} else if(m.isLocked())
-			setMode(vi, false, Color.DKGRAY);
-		else 
-			setMode(vi, false, Color.GRAY);
-		
-		// If this is a favorite view then just hide the 
-		// details.  We dont care
-		if (m.isFavorite())
-			hideThreadDetails(true);
-		
-		// If this is an announcement, then display without
-		// any particular details
-		if (m.isAnnouncement()) {
-			setMode(vi, true, Color.CYAN);
-			hideThreadDetails(true);
-		}
-		
-		// Display the attachment icon if we have an attachment
-		if (!m.hasAttachment())
-			vAttachment.setVisibility(View.GONE);
-		else 
-			vAttachment.setVisibility(View.VISIBLE);
 		
         return vi;
 	}
@@ -247,5 +279,6 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 		vViewCountL.setVisibility(hide? View.GONE : View.VISIBLE);
 		
 		vForumC.setVisibility(hide? View.GONE : View.VISIBLE);
+		vAttachment.setVisibility(hide? View.GONE : View.VISIBLE);
 	}
 }

@@ -57,27 +57,29 @@ public class CategoryFilterizer {
     		ArrayList<ThreadView> filtered = new ArrayList<ThreadView>();
     		for(ThreadView tv : threadlist) {
     			boolean filterOut = false;
-    			for(ThreadFilter tf : filters) {
-    				// Filter by thread owner
-    				if(tf.getRule() == RuleType.OWNER) {
-    					if(tv.getStartUser().equalsIgnoreCase(tf.getSubject()))
-    						filterOut = true;
-    					
-    				// Filter by thread title
-    				} else if(tf.getRule() == RuleType.TITLE) {
-    					if(tv.getTitle().equalsIgnoreCase(tf.getSubject()))
-    						filterOut = true;
-    					
-    				// Filter by last responded user
-    				} else if(tf.getRule() == RuleType.LASTUSER) {
-    					if(tv.getLastUser().equalsIgnoreCase(tf.getSubject()))
-    						filterOut = true;
-    					
-    				// Filter by the title contains
-    				} else if(tf.getRule() == RuleType.TITLE_CONTAINS) {
-    					if(tv.getTitle().contains(tf.getSubject()))
-    						filterOut = true;
-    				}
+    			if(!tv.isStub()) { 
+	    			for(ThreadFilter tf : filters) {
+	    				// Filter by thread owner
+	    				if(tf.getRule() == RuleType.OWNER) {
+	    					if(tv.getStartUser().equalsIgnoreCase(tf.getSubject()))
+	    						filterOut = true;
+	    					
+	    				// Filter by thread title
+	    				} else if(tf.getRule() == RuleType.TITLE) {
+	    					if(tv.getTitle().equalsIgnoreCase(tf.getSubject()))
+	    						filterOut = true;
+	    					
+	    				// Filter by last responded user
+	    				} else if(tf.getRule() == RuleType.LASTUSER) {
+	    					if(tv.getLastUser().equalsIgnoreCase(tf.getSubject()))
+	    						filterOut = true;
+	    					
+	    				// Filter by the title contains
+	    				} else if(tf.getRule() == RuleType.TITLE_CONTAINS) {
+	    					if(tv.getTitle().contains(tf.getSubject()))
+	    						filterOut = true;
+	    				}
+	    			}
     			}
     			if(!filterOut) {
     				filtered.add(tv);
