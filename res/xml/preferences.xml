@@ -32,6 +32,14 @@
 	        android:summary="Show the favorites list as a pop up dialog instead of a list"/>
 	</PreferenceCategory>
 	<PreferenceCategory
+	    		android:title="Thread Listing Options">
+	    <CheckBoxPreference 
+	        android:title="Hide Posts With No Updates"
+	        android:summary="Dont Show Posts Without Updates Since Last Visit (New Posts Only)"
+	        android:key="oldposts"
+	        android:defaultValue="false"/>
+	</PreferenceCategory>
+	<PreferenceCategory
                 android:title="Thread Options">
 	    <CheckBoxPreference 
 	        android:title="Linear View"

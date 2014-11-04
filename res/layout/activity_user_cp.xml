@@ -1,119 +1,123 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:scrollbars="vertical"
-    tools:context=".ThreadActivity" >
+    android:layout_height="fill_parent"
+    android:scrollbars="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:background="@android:color/darker_gray"
         android:orientation="vertical"
         android:padding="2dp" >
-		
-	    <fragment
-	        android:id="@+id/fragment_content"
-	        android:name="com.normalexception.forum.rx8club.activities.fragments.BannerFragment"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent" >
-	
-	        <!-- Preview: layout=@layout/fragment_banner -->
-	    </fragment>
 	
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="25dip"
 	        android:text="@string/userTitle"
-	        tools:context=".UserCpActivity" />
+	        android:textColor="@android:color/black"
+	        tools:context=".UserCpFragment" />
 	
 	    <EditText
 	        android:id="@+id/customTitle"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:ems="10"
-	        android:inputType="text" />
+	        android:inputType="text"
+	        android:textColor="@android:color/black" />
 	    	        
 	    <TextView
 	        android:layout_width="fill_parent"
 			android:layout_height="2dip"
-			android:background="#666666" />
+			android:background="#666666"
+	        android:textColor="@android:color/black" />
 	    
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="25dip"
 	        android:text="@string/homepage"
-	        tools:context=".UserCpActivity" />
+	        tools:context=".UserCpFragment"
+	        android:textColor="@android:color/black" />
 	
 	    <EditText
 	        android:id="@+id/homepageUrl"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:ems="10"
-	        android:inputType="textUri" />
+	        android:inputType="textUri"
+	        android:textColor="@android:color/black" />
 	    
 	    <TextView
 	        android:layout_width="fill_parent"
 			android:layout_height="2dip"
-			android:background="#666666" />
+			android:background="#666666"
+	        android:textColor="@android:color/black" />
 	    
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="5dip"
 	        android:text="@string/location"
-	        tools:context=".UserCpActivity" />
+	        tools:context=".UserCpFragment"
+	        android:textColor="@android:color/black" />
 	
 	    <EditText
 	        android:id="@+id/biography"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:ems="10"
-	        android:inputType="text" />
+	        android:inputType="text"
+	        android:textColor="@android:color/black" />
 	    
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="5dip"
 	        android:text="@string/biography"
-	        tools:context=".UserCpActivity" />
+	        tools:context=".UserCpFragment"
+	        android:textColor="@android:color/black" />
 	
 	    <EditText
 	        android:id="@+id/location"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:ems="10"
-	        android:inputType="text" />
+	        android:inputType="text"
+	        android:textColor="@android:color/black" />
 	    
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="5dip"
 	        android:text="@string/interests"
-	        tools:context=".UserCpActivity" />
+	        tools:context=".UserCpFragment"
+	        android:textColor="@android:color/black" />
 	
 	    <EditText
 	        android:id="@+id/interests"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:ems="10"
-	        android:inputType="text" />
+	        android:inputType="text"
+	        android:textColor="@android:color/black" />
 	    
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="5dip"
 	        android:text="@string/occupation"
-	        tools:context=".UserCpActivity" />
+	        tools:context=".UserCpFragment"
+	        android:textColor="@android:color/black" />
 	
 	    <EditText
 	        android:id="@+id/occupation"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:ems="10"
-	        android:inputType="text" />
+	        android:inputType="text"
+	        android:textColor="@android:color/black" />
 	    
 	    <Button
 	        android:id="@+id/submitUserCpButton"

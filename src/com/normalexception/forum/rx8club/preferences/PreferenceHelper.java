@@ -40,6 +40,17 @@ public class PreferenceHelper {
 	public final static String PREFS_NAME = "app_prefs";
 	
 	/**
+	 * Report if the user wants to hide old posts in the 'new posts'
+	 * page
+	 * @param context	The source context
+	 * @return			The option value
+	 */
+	public static boolean hideOldPosts(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+		return prefs.getBoolean("oldposts", false);
+	}
+	
+	/**
 	 * Report if the user wants the banner hidden
 	 * @param context	The source context
 	 * @return			The option value

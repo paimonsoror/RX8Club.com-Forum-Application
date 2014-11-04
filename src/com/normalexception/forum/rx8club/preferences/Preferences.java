@@ -27,11 +27,11 @@ package com.normalexception.forum.rx8club.preferences;
 import java.io.File;
 import java.util.Map;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -39,42 +39,54 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.WebUrls;
-import com.normalexception.forum.rx8club.activities.thread.ThreadFilterActivity;
 import com.normalexception.forum.rx8club.cache.Cache;
 import com.normalexception.forum.rx8club.cache.FileCache;
 import com.normalexception.forum.rx8club.cache.impl.LogFile;
 import com.normalexception.forum.rx8club.dialog.FavoriteDialog;
 import com.normalexception.forum.rx8club.dialog.SignatureDialog;
 import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
+import com.normalexception.forum.rx8club.fragment.thread.ThreadFilterFragment;
 import com.normalexception.forum.rx8club.user.UserProfile;
 import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
 
 /**
  * Class used to set and save preferences
  */
-public class Preferences extends PreferenceActivity {
+public class Preferences extends PreferenceFragment {
 	
-	private final Logger TAG = Logger.getLogger(this.getClass());
+	private final Logger TAG = LogManager.getLogger(this.getClass());
+	
+	/*
+	 * (non-Javadoc)
+	 * @see android.preference.PreferenceFragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+	 */
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	    View view = super.onCreateView(inflater, container, savedInstanceState);
+	    view.setBackgroundColor(getResources().getColor(android.R.color.black));
+	    return view;
+	}
 	
 	/*
 	 * (non-Javadoc)
 	 * @see android.preference.PreferenceActivity#onCreate(android.os.Bundle)
 	 */
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getPreferenceManager().setSharedPreferencesName(
                 PreferenceHelper.PREFS_NAME);
         addPreferencesFromResource(R.xml.preferences);
-        
-        final Context ctx = this;
         
         Preference shareLog = (Preference)findPreference("exportLog");
         shareLog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {			
@@ -91,7 +103,7 @@ public class Preferences extends PreferenceActivity {
 				
 				// Add email details
 				sharingIntent.putExtra(Intent.EXTRA_EMAIL  , 
-						new String[]{ctx.getString(R.string.bug_contact)});
+						new String[]{getResources().getString(R.string.bug_contact)});
 				sharingIntent.putExtra(Intent.EXTRA_SUBJECT, 
 						"RX8Club.com Log: " + user);
 				
@@ -106,7 +118,7 @@ public class Preferences extends PreferenceActivity {
 				// Start the intent
 				try {
 				    startActivity(Intent.createChooser(sharingIntent, 
-				    		ctx.getString(R.string.sendEmail)));
+				    		getResources().getString(R.string.sendEmail)));
 				} catch (android.content.ActivityNotFoundException ex) {
 				    Toast.makeText(MainApplication.getAppContext(), 
 				    		R.string.noEmail, 
@@ -122,7 +134,7 @@ public class Preferences extends PreferenceActivity {
         	@Override
         	public boolean onPreferenceClick(Preference arg0) {
         		startActivity(
-            			new Intent(MainApplication.getAppContext(), ThreadFilterActivity.class));
+            			new Intent(MainApplication.getAppContext(), ThreadFilterFragment.class));
         		return true;
         	}
         });
@@ -131,7 +143,7 @@ public class Preferences extends PreferenceActivity {
         customAdv.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
         	@Override
         	public boolean onPreferenceClick(Preference arg0) {
-        		SignatureDialog sd = new SignatureDialog(ctx);
+        		SignatureDialog sd = new SignatureDialog(getActivity());
         		sd.show();
         		return true;
         	}
@@ -142,7 +154,7 @@ public class Preferences extends PreferenceActivity {
 			@Override
 			public boolean onPreferenceClick(Preference arg0) {
 				if(FavoriteFactory.getInstance().getCount() > 0) {
-					FavoriteDialog fd = new FavoriteDialog(ctx);
+					FavoriteDialog fd = new FavoriteDialog(getActivity());
 					fd.registerToRemove();
 					fd.show();
 				} else {
@@ -156,7 +168,7 @@ public class Preferences extends PreferenceActivity {
         cache.setSummary(
         		String.format("Cache Size: %s", 
         		SpecialNumberFormatter.readableFileSize(
-        				(new Cache(ctx)).getCacheSize())));
+        				(new Cache(getActivity())).getCacheSize())));
         cache.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference arg0) { 
@@ -167,7 +179,7 @@ public class Preferences extends PreferenceActivity {
         		    protected void onPreExecute() {
         		    	
         		    	loadingDialog = 
-        						ProgressDialog.show(ctx, 
+        						ProgressDialog.show(getActivity(), 
         								getString(R.string.dialogClearingCache), 
         								getString(R.string.pleaseWait), true);
         		    }
@@ -175,7 +187,7 @@ public class Preferences extends PreferenceActivity {
         			@Override
         			protected Void doInBackground(Void... params) {
         				try {
-        					(new FileCache(ctx)).clear();
+        					(new FileCache(getActivity())).clear();
         				} catch (Exception e) {}
 		            	return null;
         			}
@@ -192,8 +204,8 @@ public class Preferences extends PreferenceActivity {
 	    				cache.setSummary(
 	    		        		String.format("Cache Size: %s", 
 	    		        		SpecialNumberFormatter.readableFileSize(
-	    		        				(new Cache(ctx)).getCacheSize())));
-	    				Toast.makeText(ctx, 
+	    		        				(new Cache(getActivity())).getCacheSize())));
+	    				Toast.makeText(getActivity(), 
             					R.string.dialogCacheCleared, 
             					Toast.LENGTH_SHORT).show();
 	    			}
@@ -239,16 +251,16 @@ public class Preferences extends PreferenceActivity {
         try {
         	Preference version = (Preference)findPreference("version");
         	version.setSummary(
-        			getPackageManager().getPackageInfo(
-        					this.getPackageName(), 0).versionName);
+        			getActivity().getPackageManager().getPackageInfo(
+        					getActivity().getPackageName(), 0).versionName);
         } catch (Exception e) {}
         
         try {
         	Preference build = (Preference)findPreference("build");
         	build.setSummary(
         			Integer.toString(
-        					getPackageManager().getPackageInfo(
-        							this.getPackageName(), 0).versionCode));
+        					getActivity().getPackageManager().getPackageInfo(
+        							getActivity().getPackageName(), 0).versionCode));
         } catch (Exception e) {}
     }
 	
@@ -260,7 +272,7 @@ public class Preferences extends PreferenceActivity {
 	@Override
 	public void addPreferencesFromResource(int resId) {
 		SharedPreferences sharedPrefs = 
-				this.getSharedPreferences(PreferenceHelper.PREFS_NAME, 0);
+				getActivity().getSharedPreferences(PreferenceHelper.PREFS_NAME, 0);
 		Editor edit = sharedPrefs.edit();
 		Map<String, ?> savedPrefs = sharedPrefs.getAll();
 		for(Map.Entry<String, ?> entry : savedPrefs.entrySet()) {
@@ -282,7 +294,7 @@ public class Preferences extends PreferenceActivity {
 	 * @param e		The exception to log
 	 */
 	private void notifyError(final String msg) {
-		this.runOnUiThread(new Runnable() {
+		getActivity().runOnUiThread(new Runnable() {
 			  public void run() {
 				Toast.makeText(MainApplication.getAppContext(),
 						msg,

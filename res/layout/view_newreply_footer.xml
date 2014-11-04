@@ -5,19 +5,75 @@
     android:background="@android:color/darker_gray"
     android:baselineAligned="false">
         
-        <fragment
-            android:id="@+id/fragment_pagination"
-            android:name="com.normalexception.forum.rx8club.activities.fragments.PaginationFragment"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-			tools:layout="@layout/fragment_pagination"/>
+        <RelativeLayout
+            android:id="@+id/nr_pagination"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:background="@android:color/darker_gray"
+		    android:baselineAligned="false">
+		    
+		    <ImageButton
+		            android:id="@+id/firstButton"
+		            android:layout_width="38dp"
+		            android:layout_height="38dp"
+		            android:adjustViewBounds="false"
+		            android:cropToPadding="false"
+		            android:maxHeight="20px"
+		            android:maxWidth="20px"
+		            android:scaleType="centerCrop"
+		            android:src="@drawable/firsticon" />
+		
+		    <ImageButton
+		            android:id="@+id/previousButton"
+		            android:layout_width="38dp"
+		            android:layout_height="38dp"
+		            android:adjustViewBounds="false"
+		            android:cropToPadding="false"
+		            android:maxHeight="20px"
+		            android:maxWidth="20px"
+		            android:scaleType="centerCrop"
+		            android:layout_toRightOf="@id/firstButton"
+		            android:src="@drawable/previcon" />
+		    
+		    <TextView
+		        android:id="@+id/paginationText"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="center_horizontal"
+		        android:text="@string/pageXofY"
+		        android:layout_centerInParent="true" />
+		     
+			<ImageButton
+			     android:id="@+id/lastButton"
+			     android:layout_alignParentRight="true"
+			     android:layout_width="38dp"
+			     android:layout_height="38dp"
+		            android:adjustViewBounds="false"
+		            android:cropToPadding="false"
+		            android:maxHeight="20px"
+		            android:maxWidth="20px"
+		            android:scaleType="centerCrop"
+			     android:src="@drawable/lasticon" />
+		    
+		    <ImageButton
+		            android:id="@+id/nextButton"
+		            android:layout_toLeftOf="@id/lastButton"
+		            android:layout_width="38dp"
+		            android:layout_height="38dp"
+		            android:adjustViewBounds="false"
+		            android:cropToPadding="false"
+		            android:maxHeight="20px"
+		            android:maxWidth="20px"
+		            android:scaleType="centerCrop"
+		            android:src="@drawable/nexticon" />
+		</RelativeLayout>
 
         <LinearLayout
             android:id="@+id/nr_replycontainer"
             android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:orientation="vertical"
-		    android:layout_below="@id/fragment_pagination"
+		    android:layout_below="@id/nr_pagination"
 		    android:paddingLeft="3dp"
 		    android:paddingRight="3dp" >          
 	        <TextView
@@ -26,25 +82,23 @@
 	            android:layout_height="wrap_content"
 	            android:text="@string/commentText"/>
 	
-	        <fragment
+	        <LinearLayout
 	            android:id="@+id/fragment_content_styler"
-	            android:name="com.normalexception.forum.rx8club.activities.fragments.StylerFragment"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-				tools:layout="@layout/fragment_styler">
-	        </fragment>
+	            android:orientation="horizontal"
+				tools:layout="@layout/fragment_styler"/>
 	
 	        <EditText
 	            android:id="@+id/postBox"
-	            android:inputType="textMultiLine" 
-			    android:lines="8"
-			    android:minLines="6" 
-			    android:gravity="top|left" 
-			    android:maxLines="10"
-			    android:layout_height="wrap_content"
-			    android:layout_width="fill_parent" 
-			    android:scrollbars="vertical" 
-			/>
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="top|left"
+	            android:inputType="textMultiLine"
+	            android:lines="8"
+	            android:maxLines="10"
+	            android:minLines="6"
+	            android:scrollbars="vertical" />
 	
 	        <Button
 	            android:id="@+id/submitButton"

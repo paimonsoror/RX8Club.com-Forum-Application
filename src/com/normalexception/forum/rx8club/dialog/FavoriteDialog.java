@@ -34,9 +34,9 @@ import android.content.Intent;
 import android.view.ContextThemeWrapper;
 
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
 import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
 import com.normalexception.forum.rx8club.favorites.FavoriteThreads;
+import com.normalexception.forum.rx8club.fragment.thread.ThreadFragment;
 import com.normalexception.forum.rx8club.view.thread.ThreadView;
 
 /**
@@ -100,7 +100,7 @@ public class FavoriteDialog {
 	           	// of the selected item
 	    		ThreadView tv = ft.get(which);
 	    		Intent _intent = 
-						new Intent(ctx, ThreadActivity.class);
+						new Intent(ctx, ThreadFragment.class);
 				_intent.putExtra("link", tv.getLink());
 				_intent.putExtra("title", tv.getTitle());
 				ctx.startActivity(_intent);

@@ -31,13 +31,14 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.normalexception.forum.rx8club.Log;
 
 public class DateDifference {
 	
-	private static Logger TAG =  Logger.getLogger(DateDifference.class);
+	private static Logger TAG =  LogManager.getLogger(DateDifference.class);
 	
 	public static enum TimeField {
 		DAY,

@@ -31,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import android.content.Context;
@@ -50,7 +51,7 @@ public class FavoriteFactory {
 	private static FavoriteFactory _instance;
 	private        FavoriteThreads _favorites;
 	
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	/**
 	 * Singleton constructor.  Will load the 

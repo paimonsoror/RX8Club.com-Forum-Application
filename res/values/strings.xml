@@ -10,6 +10,10 @@
     <string name="networkTimedOut">Network Timed Out</string>
     <string name="noPermission">Sorry, You Dont Have Permission To Do That (New User?)</string>
     <string name="youSure">You Sure&#8230;</string>
+    <string name="desc_list_item_icon">Item Icon</string>
+    
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
     
     <!-- Admin Strings -->
     <string name="deleteReason">Reason?</string>
@@ -73,6 +77,7 @@
     <string name="navigateAway">You Entered Some Text, Navigate Away?</string>
         
     <!-- Banner Fragment Strings -->
+    <string name="bannerHome">Home</string>
     <string name="bannerNewTopics">New Posts</string>
     <string name="bannerNewPms">Inbox</string>
     <string name="bannerProfileButton">Profile</string>

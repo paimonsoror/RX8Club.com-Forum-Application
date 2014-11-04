@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import android.app.Activity;
@@ -52,7 +53,7 @@ public class MoveThreadDialog {
 	private int selection = -1;
 	private String newTitle = "";
 	
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	/**
 	 * Constructor for method that is used to move a thread from one

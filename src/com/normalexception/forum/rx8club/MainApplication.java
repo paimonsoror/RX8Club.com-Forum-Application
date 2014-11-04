@@ -24,15 +24,18 @@ package com.normalexception.forum.rx8club;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import android.app.Application;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 
 import com.bugsense.trace.BugSenseHandler;
 import com.normalexception.forum.rx8club.cache.impl.LogFile;
 import com.normalexception.forum.rx8club.state.AppState;
+import com.normalexception.forum.rx8club.state.AppState.State;
 
 /**
  * Main Application
@@ -41,7 +44,7 @@ public class MainApplication extends Application {
 
 	private static Context context;
 	
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private static Logger TAG =  LogManager.getLogger(MainApplication.class);
 	
 	public static final String APP_PACKAGE = "com.normalexception.forum.rx8club";
 	public static final String BUG_APIKEY  = "fd9ce344";
@@ -75,8 +78,18 @@ public class MainApplication extends Application {
 						getPackageManager().getPackageInfo(
 								this.getPackageName(), 0).versionName);
 		} catch (NameNotFoundException e) {	}
-
     }
+
+	/**
+	 * Set the current state of our application as well as the respective
+	 * intent
+	 * @param state		The state
+	 * @param intent	The intent
+	 */
+	public static void setState(State state, Fragment frag) {
+		Log.d(TAG, "## Current State " + state.toString());
+		AppState.getInstance().setCurrentState(state, frag);
+	}
 
     /**
      * Report the application context

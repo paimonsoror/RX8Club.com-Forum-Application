@@ -24,12 +24,15 @@ package com.normalexception.forum.rx8club;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.widget.Toast;
 
-import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
-import com.normalexception.forum.rx8club.activities.LoginActivity;
+import com.normalexception.forum.rx8club.fragment.FragmentUtils;
+import com.normalexception.forum.rx8club.fragment.LoginFragment;
 
 public class TimeoutFactory {
 	private static TimeoutFactory _instance = null;
@@ -41,7 +44,7 @@ public class TimeoutFactory {
 	protected static final long PING_EXPIRE = 2 /*hours*/ * 3600;
 	//protected static final long PING_DEBUG  = 10;
 	
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	/**
 	 * Report an instanec of the TimeoutFactory, and create 
@@ -73,23 +76,27 @@ public class TimeoutFactory {
 	 * When we create our activities, we want to update the ping time
 	 * this will help us re-login when our cache expires
 	 */
-	public boolean checkTimeout(final ForumBaseActivity src) {		
+	public boolean checkTimeout(final Activity src) {
+		return this.checkTimeout(src);
+	}
+	
+	public boolean checkTimeout(final Fragment src) {
 		// Only update pong when the login activity was called
-		if(!(src instanceof LoginActivity)) {
+		if(!(src instanceof LoginFragment)) {
 			pingTime = System.currentTimeMillis() / 1000l;
 			diffTime = pingTime - pongTime;
 			Log.d(TAG, String.format("Ping Time: %d", pingTime));
 			Log.d(TAG, String.format("Difference Time: %d", diffTime));
 			
 			if(diffTime > PING_EXPIRE) {
-				src.runOnUiThread(new Runnable() {
+				src.getActivity().runOnUiThread(new Runnable() {
 		    		public void run() {
-		    			Toast.makeText(src, R.string.timeout, Toast.LENGTH_SHORT).show();
+		    			Toast.makeText(src.getActivity(), R.string.timeout, Toast.LENGTH_SHORT).show();
 		    		}
 				});
-				src.finish();
+				src.getActivity().finish();
 				Log.d(TAG, "## PING TIME EXPIRED ##");
-				src.returnToLoginPage(false, false);
+				FragmentUtils.returnToLoginPage(src.getActivity(), false, false);
 				return false;
 			}
 		}

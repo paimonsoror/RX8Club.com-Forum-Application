@@ -44,9 +44,9 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.activities.pm.NewPrivateMessageActivity;
-import com.normalexception.forum.rx8club.activities.thread.EditPostActivity;
-import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
+import com.normalexception.forum.rx8club.fragment.pm.NewPrivateMessageFragment;
+import com.normalexception.forum.rx8club.fragment.thread.EditPostFragment;
+import com.normalexception.forum.rx8club.fragment.thread.ThreadFragment;
 import com.normalexception.forum.rx8club.handler.AvatarLoader;
 import com.normalexception.forum.rx8club.handler.ForumImageHandler;
 import com.normalexception.forum.rx8club.html.LoginFactory;
@@ -60,6 +60,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	private Context activity;
 	private List<PostView> data;
 	private AvatarLoader imageLoader; 
+	private OnClickListener listener;
 	private int threadId;
 	private final String TAG = "PostViewArrayAdapter";
 
@@ -70,12 +71,13 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	 * @param objects				The list of objects
 	 */
 	public PostViewArrayAdapter(Context context, int textViewResourceId,
-			List<PostView> objects) {
+			List<PostView> objects, OnClickListener listener) {
 		super(context, textViewResourceId, objects);
-		activity = context;
-		data = objects;
-		imageLoader=new AvatarLoader(activity.getApplicationContext());
-		threadId = 0;
+		this.activity = context;
+		this.data = objects;
+		this.imageLoader=new AvatarLoader(activity.getApplicationContext());
+		this.threadId = 0;
+		this.listener = listener;
 	}
 	
 	public void setThreadId(int id) {
@@ -177,7 +179,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         setUserIcons(vi, cv.isLoggedInUser());      
         
         ((ImageView)ViewHolder.get(vi, R.id.nr_downButton))
-        	.setOnClickListener((ThreadActivity)activity);
+        	.setOnClickListener(listener);
         
         // Set click listeners if we are logged in, hide the buttons
         // if we are not logged in
@@ -205,7 +207,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	        	@Override
 	        	public void onClick(View arg0) {
 	        		Log.d(TAG, "Edit Clicked");
-	        		Intent _intent = new Intent(activity, EditPostActivity.class); 
+	        		Intent _intent = new Intent(activity, EditPostFragment.class); 
 	        		_intent.putExtra("postid", cv.getPostId());
 					_intent.putExtra("securitytoken", cv.getToken());
 					activity.startActivity(_intent);
@@ -217,7 +219,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	        	@Override
 	        	public void onClick(View arg0) {
 	        		Log.d(TAG, "PM Clicked");
-	        		Intent _intent =  new Intent(activity, NewPrivateMessageActivity.class);
+	        		Intent _intent =  new Intent(activity, NewPrivateMessageFragment.class);
 					_intent.putExtra("user", cv.getUserName());
 					activity.startActivity(_intent);
 	        	}
@@ -228,7 +230,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	        	.setOnClickListener(new OnClickListener() {
 	        	@Override
 	        	public void onClick(View arg0) {
-	        		final Intent _intent = new Intent(activity, EditPostActivity.class);     		
+	        		final Intent _intent = new Intent(activity, EditPostFragment.class);     		
 					DialogInterface.OnClickListener dialogClickListener = 
 						new DialogInterface.OnClickListener() {
 					    @Override

@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import android.graphics.Bitmap;
@@ -41,7 +42,7 @@ import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 
 public class BitmapDecoder {
 	
-	private static Logger TAG =  Logger.getLogger(BitmapDecoder.class);
+	private static Logger TAG =  LogManager.getLogger(BitmapDecoder.class);
 	
 	/**
 	 * Decode our bitmap while taking memory into consideraiton.  Here we

@@ -27,12 +27,16 @@ package com.normalexception.forum.rx8club.view.category;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+import android.os.Bundle;
 
-import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
+import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.fragment.category.CategoryFragment;
 
 public class SubCategoryDialog {
 
@@ -66,11 +70,29 @@ public class SubCategoryDialog {
 	    	public void onClick(DialogInterface dialog, int which) {
 	          	// The 'which' argument contains the index position
 	           	// of the selected item
+	    		
 	    		SubCategoryView tv = scv.get(which);
-	    		Intent intent = 
-						new Intent(ctx, CategoryActivity.class);
+	    		/*Intent intent = 
+						new Intent(ctx, CategoryFragment.class);
 				intent.putExtra("link", tv.getLink());
 				ctx.startActivity(intent);
+				*/
+	    		Bundle args = new Bundle();
+	    		args.putString("link", tv.getLink());
+	    		
+	    		Fragment newFragment = new CategoryFragment();
+				newFragment.setArguments(args);
+				
+				FragmentTransaction transaction = 
+						((Activity)ctx).getFragmentManager().beginTransaction();
+
+				// Replace whatever is in the fragment_container view with this fragment,
+				// and add the transaction to the back stack
+				transaction.replace(R.id.content_frame, newFragment);
+				transaction.addToBackStack(null);
+
+				// Commit the transaction
+				transaction.commit();
 	        }
 	  	};
 	}

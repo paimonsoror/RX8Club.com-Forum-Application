@@ -2,12 +2,12 @@
     android:name="com.normalexception.forum.MainApplication"
     package="com.normalexception.forum.rx8club"
     android:installLocation="auto"
-    android:versionCode="13003"
-    android:versionName="1.2.54" >
+    android:versionCode="13014"
+    android:versionName="2.00" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="10" />
+        android:minSdkVersion="15"
+        android:targetSdkVersion="17" />
 
     <supports-screens
         android:anyDensity="true"
@@ -28,89 +28,13 @@
         android:icon="@drawable/rotor_icon"
         android:label="@string/app_name"
         android:testOnly="false"
-        android:theme="@style/AppTheme"
+        android:theme="@android:style/Theme.Holo"
         android:vmSafeMode="false" >
-        <activity
-            android:name=".activities.LoginActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:icon="@drawable/rotor_icon"
-            android:label="@string/app_name">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activities.MainActivity"
-            android:configChanges="keyboardHidden|orientation">
-        </activity>
-        <activity
-            android:name=".activities.list.CategoryActivity"
-            android:configChanges="keyboardHidden|orientation">
-        </activity>
-        <activity
-            android:name=".activities.list.FavoritesActivity"
-            android:configChanges="keyboardHidden|orientation">
-        </activity>
-        <activity
-            android:name=".activities.thread.ThreadActivity"
-            android:configChanges="keyboardHidden|orientation" >
-        </activity>
-        <activity
-            android:name=".activities.thread.ThreadFilterActivity"
-            android:configChanges="keyboardHidden|orientation" >
-        </activity>
-        <activity
-            android:name=".activities.thread.NewThreadActivity"
-            android:configChanges="keyboardHidden|orientation">
-        </activity>
-        <activity
-            android:name=".activities.thread.EditPostActivity"
-            android:configChanges="keyboardHidden|orientation">
-        </activity>
-        <activity
-            android:name=".activities.ProfileActivity"
-            android:configChanges="keyboardHidden|orientation">
-        </activity>
-        <activity
-            android:name=".activities.SearchActivity"
-            android:configChanges="keyboardHidden|orientation">
-        </activity>
-        <activity
-            android:name=".activities.AboutActivity"
-            android:configChanges="keyboardHidden|orientation">
-        </activity>
-        <activity
-            android:name=".activities.utils.CompressionActivity"
-            android:configChanges="keyboardHidden|orientation">
-        </activity>
-        <activity
-            android:name=".preferences.Preferences"
-            android:label="@string/preferencesLabel"
-            android:theme="@android:style/Theme.Black" >
-        </activity>
-        <activity
-            android:name=".activities.fragments.BannerFragment">
-        </activity>
-        <activity
-            android:name=".activities.pm.PrivateMessageInboxActivity"
-            android:configChanges="keyboardHidden|orientation" >
-        </activity>
-        <activity
-            android:name=".activities.pm.PrivateMessageViewActivity"
-            android:configChanges="keyboardHidden|orientation" >
-        </activity>
-        <activity
-            android:name=".activities.pm.NewPrivateMessageActivity"
-            android:configChanges="keyboardHidden|orientation" >
-        </activity>
-        <activity
-            android:name=".activities.UserCpActivity"
-            android:configChanges="keyboardHidden|orientation" >
-        </activity>
-        <activity
-            android:name=".activities.fragments.StylerFragment"
-            android:configChanges="keyboardHidden|orientation" >
+            	<action android:name="android.intent.action.MAIN" />
+            	<category android:name="android.intent.category.LAUNCHER" />
+        	</intent-filter>
         </activity>
     </application>
 

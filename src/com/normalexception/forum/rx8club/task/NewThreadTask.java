@@ -26,16 +26,17 @@ package com.normalexception.forum.rx8club.task;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.normalexception.forum.rx8club.Log;
-import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
+import com.normalexception.forum.rx8club.fragment.thread.ThreadFragment;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
 /**
@@ -48,7 +49,7 @@ public class NewThreadTask extends AsyncTask<Void,Void,Void> {
 	private Activity sourceActivity;
 	private String s, token, posthash, subject, post, forumId;
 	
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	public NewThreadTask(Activity source, String forumId, String s, 
 						 String token, String f, String posthash,
@@ -75,7 +76,7 @@ public class NewThreadTask extends AsyncTask<Void,Void,Void> {
 			Log.w(TAG, e.getMessage());
 		}
 		
-		Intent _intent = new Intent(sourceActivity, ThreadActivity.class);
+		Intent _intent = new Intent(sourceActivity, ThreadFragment.class);
 		_intent.putExtra("link", HtmlFormUtils.getResponseUrl());
 		_intent.putExtra("title", subject);
 		_intent.putExtra("page", "1");

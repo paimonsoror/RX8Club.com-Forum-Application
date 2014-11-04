@@ -24,14 +24,15 @@ package com.normalexception.forum.rx8club.httpclient;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import org.apache.log4j.Logger;
-
 import ch.boye.httpclientandroidlib.HttpRequest;
 import ch.boye.httpclientandroidlib.HttpResponse;
 import ch.boye.httpclientandroidlib.HttpStatus;
 import ch.boye.httpclientandroidlib.ProtocolException;
 import ch.boye.httpclientandroidlib.impl.client.DefaultRedirectStrategy;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.normalexception.forum.rx8club.Log;
 
@@ -40,7 +41,7 @@ import com.normalexception.forum.rx8club.Log;
  */
 public class RedirectStrategy extends DefaultRedirectStrategy {
 	
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	public RedirectStrategy() {
 		Log.d(TAG, "Custom Redirect Strategy Established");

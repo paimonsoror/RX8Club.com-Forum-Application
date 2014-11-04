@@ -30,9 +30,69 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/darker_gray"
-        android:paddingTop="5dip"
-        android:stretchColumns="*" >
-           
+        android:stretchColumns="1" >
+
+        	<ImageButton
+        	    android:id="@+id/profileButton"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="38dp"
+        	    android:adjustViewBounds="false"
+        	    android:cropToPadding="false"
+        	    android:maxHeight="20dp"
+        	    android:maxWidth="40dp"
+        	    android:scaleType="fitCenter"
+        	    android:src="@drawable/profile_icon" 
+        	    android:layout_weight="1"/>
+
+        	<ImageButton
+        	    android:id="@+id/newTopicsButton"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="38dp"
+        	    android:adjustViewBounds="false"
+        	    android:cropToPadding="false"
+        	    android:maxHeight="20dp"
+        	    android:maxWidth="20dp"
+        	    android:scaleType="fitCenter"
+        	    android:src="@drawable/new_posts"
+        	    android:layout_weight="1" />
+
+        	<ImageButton
+        	    android:id="@+id/favoritesButton"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="38dp"
+        	    android:adjustViewBounds="false"
+        	    android:cropToPadding="false"
+        	    android:maxHeight="20dp"
+        	    android:maxWidth="40dp"
+        	    android:scaleType="fitCenter"
+        	    android:src="@drawable/favorites"
+        	    android:layout_weight="1" />
+
+        	<ImageButton
+        	    android:id="@+id/inboxButton"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="38dp"
+        	    android:adjustViewBounds="false"
+        	    android:cropToPadding="false"
+        	    android:maxHeight="20dp"
+        	    android:maxWidth="40dp"
+        	    android:scaleType="fitCenter"
+        	    android:src="@drawable/inbox_icon"
+        	    android:layout_weight="1" />
+
+        	<ImageButton
+        	    android:id="@+id/searchButton"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="38dp"
+        	    android:adjustViewBounds="false"
+        	    android:cropToPadding="false"
+        	    android:maxHeight="20dp"
+        	    android:maxWidth="40dp"
+        	    android:scaleType="fitCenter"
+        	    android:src="@drawable/search_icon"
+        	    android:layout_weight="1" />
+
+           <!-- 
            <Button
                android:id="@+id/profileButton"
                style="?android:attr/buttonStyleSmall"
@@ -77,5 +137,6 @@
                android:layout_weight="1"
                android:text="@string/bannerSearchButton"
                android:textSize="10dip" />
+               -->
        </TableRow>
 </LinearLayout>

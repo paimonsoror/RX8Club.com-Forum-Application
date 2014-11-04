@@ -28,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import android.content.Context;
@@ -52,7 +53,7 @@ public class ForumImageHandler implements ImageGetter {
 	private TextView container;
 	private int id;
 	
-	private final Logger TAG = Logger.getLogger(this.getClass());
+	private final Logger TAG = LogManager.getLogger(this.getClass());
 
 	/**
 	 * Construct the URLImageParser which will execute 

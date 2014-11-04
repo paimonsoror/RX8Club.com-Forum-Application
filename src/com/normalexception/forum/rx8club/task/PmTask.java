@@ -26,16 +26,17 @@ package com.normalexception.forum.rx8club.task;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.normalexception.forum.rx8club.Log;
-import com.normalexception.forum.rx8club.activities.pm.PrivateMessageInboxActivity;
+import com.normalexception.forum.rx8club.fragment.pm.PrivateMessageInboxFragment;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
 public class PmTask extends AsyncTask<Void,Void,Void>{
@@ -45,7 +46,7 @@ public class PmTask extends AsyncTask<Void,Void,Void>{
 	private String token, text, doType, recipients, title, pmid;
 	private Class<?> postClazz;
 
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 
 	/**
 	 * Async Task handler for submitting a Private messages
@@ -65,7 +66,7 @@ public class PmTask extends AsyncTask<Void,Void,Void>{
 		this.recipients = recipients;
 		this.title = subject;
 		this.pmid = pmid;
-		this.postClazz = PrivateMessageInboxActivity.class;
+		this.postClazz = PrivateMessageInboxFragment.class;
 	}
 
 	/*

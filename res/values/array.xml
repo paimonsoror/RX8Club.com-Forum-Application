@@ -1,5 +1,47 @@
 <resources>
 	<!-- String Arrays -->
+	<!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item>Home</item>
+        <item>New Posts</item>
+        <item>Favorites</item>
+        <item>Profile</item>
+        <item>Inbox</item>
+        <item>Search</item>  
+        <item>User CP</item>
+        <item>Login</item>
+        <item>Preferences</item>
+        <item>About</item>
+    </string-array>
+    
+    <string-array name="nav_drawer_guest">
+        <item>true</item>
+        <item>false</item>
+        <item>false</item>
+        <item>false</item>
+        <item>false</item>
+        <item>true</item>  
+        <item>false</item>
+        <item>true</item>
+        <item>true</item>
+        <item>true</item>
+    </string-array>
+     
+    <!-- Nav Drawer List Item Icons -->
+    <!-- Keep them in order as the titles are in -->
+    <array name="nav_drawer_icons">
+        <item>@drawable/home</item>
+        <item>@drawable/new_posts</item>
+        <item>@drawable/favorites</item>
+        <item>@drawable/profile_icon</item>
+        <item>@drawable/inbox_icon</item>
+        <item>@drawable/search_icon</item>
+        <item>@drawable/usercp</item>
+        <item>@drawable/login</item>
+        <item>@drawable/prefs</item>
+        <item>@drawable/about</item>
+    </array>
+    
 	<string-array name="searchTypeArray">
 	    <item>Thread Content</item>
 	    <item>Thread Title</item>

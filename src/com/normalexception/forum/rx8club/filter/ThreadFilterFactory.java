@@ -33,6 +33,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import android.content.Context;
@@ -50,7 +51,7 @@ public class ThreadFilterFactory {
 	private static ThreadFilterFactory _instance;
 	private        List<ThreadFilter>  _filters;
 	
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	/**
 	 * Singleton constructor.  Will load the 

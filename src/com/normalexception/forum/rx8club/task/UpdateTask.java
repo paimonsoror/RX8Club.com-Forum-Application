@@ -26,24 +26,25 @@ package com.normalexception.forum.rx8club.task;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.normalexception.forum.rx8club.Log;
-import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
-import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
+import com.normalexception.forum.rx8club.fragment.category.CategoryFragment;
+import com.normalexception.forum.rx8club.fragment.thread.ThreadFragment;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
 /**
  * Task used to move all post editing tasks to an async task
  */
 public class UpdateTask extends AsyncTask<Void,Void,Void> {
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	private ProgressDialog mProgressDialog;
 	private Activity sourceActivity;
@@ -106,9 +107,9 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 		Intent _intent = null;
 		
 		if(deleteThread) {
-			_intent = new Intent(sourceActivity, CategoryActivity.class);
+			_intent = new Intent(sourceActivity, CategoryFragment.class);
 		} else {
-			_intent = new Intent(sourceActivity, ThreadActivity.class);			
+			_intent = new Intent(sourceActivity, ThreadFragment.class);			
 		}
 		
 		_intent.putExtra("title", pageTitle);

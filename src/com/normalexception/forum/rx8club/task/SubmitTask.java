@@ -27,17 +27,18 @@ package com.normalexception.forum.rx8club.task;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
+import com.normalexception.forum.rx8club.fragment.thread.ThreadFragment;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
 /**
@@ -52,7 +53,7 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
 	private List<String> bitmaps;
 	private Class<?> postClazz;
 
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	/**
 	 * Constructor to a SubmitTask
@@ -79,7 +80,7 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
 		this.pageTitle = pageTitle;
 		this.pageNumber = pageNumber;
 		this.doType = "postreply";
-		this.postClazz = ThreadActivity.class;
+		this.postClazz = ThreadFragment.class;
 	}
 	
 	public void debug() {

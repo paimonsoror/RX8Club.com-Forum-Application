@@ -31,7 +31,6 @@ import android.text.InputType;
 import android.widget.EditText;
 
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.task.AdminTask;
 
 public class DeleteThreadDialog {

@@ -1,410 +1,322 @@
 package com.normalexception.forum.rx8club.activities;
 
-/************************************************************************
- * NormalException.net Software, and other contributors
- * http://www.normalexception.net
- * 
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- * 
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- ************************************************************************/
-
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
-import com.bugsense.trace.BugSenseHandler;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.TimeoutFactory;
-import com.normalexception.forum.rx8club.cache.impl.UserProfileCache;
-import com.normalexception.forum.rx8club.cache.impl.ViewListCache;
-import com.normalexception.forum.rx8club.favorites.FavoriteFactory;
+import com.normalexception.forum.rx8club.dialog.FavoriteDialog;
+import com.normalexception.forum.rx8club.fragment.AboutFragment;
+import com.normalexception.forum.rx8club.fragment.HomeFragment;
+import com.normalexception.forum.rx8club.fragment.LoginFragment;
+import com.normalexception.forum.rx8club.fragment.ProfileFragment;
+import com.normalexception.forum.rx8club.fragment.SearchFragment;
+import com.normalexception.forum.rx8club.fragment.UserCpFragment;
+import com.normalexception.forum.rx8club.fragment.category.CategoryFragment;
+import com.normalexception.forum.rx8club.fragment.category.FavoritesFragment;
+import com.normalexception.forum.rx8club.fragment.pm.PrivateMessageInboxFragment;
 import com.normalexception.forum.rx8club.html.LoginFactory;
-import com.normalexception.forum.rx8club.html.VBForumFactory;
-import com.normalexception.forum.rx8club.state.AppState;
-import com.normalexception.forum.rx8club.user.UserProfile;
-import com.normalexception.forum.rx8club.view.PTRListView;
-import com.normalexception.forum.rx8club.view.PTRListView.OnRefreshListener;
-import com.normalexception.forum.rx8club.view.category.CategoryView;
-import com.normalexception.forum.rx8club.view.category.CategoryViewArrayAdapter;
-import com.normalexception.forum.rx8club.view.category.SubCategoryView;
+import com.normalexception.forum.rx8club.navigation.NavDrawerItem;
+import com.normalexception.forum.rx8club.navigation.NavDrawerListAdapter;
+import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
+import com.normalexception.forum.rx8club.preferences.Preferences;
 
-/**
- * Main activity for the application.  This is the main forum view that 
- * is displayed after login has been completed.
- * 
- * Required Intent Parameters:
- * none
- */
-public class MainActivity extends ForumBaseActivity {
-    
-	private Logger TAG =  Logger.getLogger(this.getClass());
+public class MainActivity extends Activity {
+
+	private Logger TAG =  LogManager.getLogger(this.getClass());
+
+	private DrawerLayout mDrawerLayout;
+	private ListView mDrawerList;
+	private ActionBarDrawerToggle mDrawerToggle;
+
+	// nav drawer title
+	private CharSequence mDrawerTitle;
+
+	// used to store app title
+	private CharSequence mTitle;
+
+	// slide menu items
+	private String[] navMenuTitles;
+	private String[] navGuestEnabled;
+	private TypedArray navMenuIcons;
+
+	private ArrayList<NavDrawerItem> navDrawerItems;
+	private NavDrawerListAdapter adapter;
 	
-	private ArrayList<CategoryView> mainList;
-	private CategoryViewArrayAdapter cva;
+	enum MenuState {
+		USER,
+		GUEST
+	}
+	public MenuState menu_mode = MenuState.GUEST;
 	
-	// The Forum's Main Page Has The Following Column
-	@SuppressWarnings("unused")
-	private static final int ROTOR_ICON = 0,
-			                 FORUM_NAME = 1,
-			                 LAST_POST  = 2,
-			                 THREADS_CNT= 3,
-			                 POSTS_CNT  = 4;
-	
-	private ViewListCache<CategoryView> hcache = null;
-	private UserProfileCache upcache = null;
-	
-	private ProgressDialog loadingDialog;
-	private ProgressDialog profileDialog = null;
-	
-	/*
-	 * (non-Javadoc)
-	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	/**
+	 * Start our analytics tracking
 	 */
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
-    	try {
-	    	Log.v(TAG, "Application Started");
-	    	
-	        super.onCreate(savedInstanceState);
-	        super.setState(AppState.State.MAIN_PAGE, this.getIntent());
-	        	        
-	        setContentView(R.layout.activity_basiclist);
-	        findViewById(R.id.mainlisttitle).setVisibility(View.GONE);
-
-	        if(TimeoutFactory.getInstance().checkTimeout(this)) {
-		        // Read in the favorites if they exist
-		        FavoriteFactory.getInstance();
-		        
-		        // Now that we introduced a cache, we are going to first
-		        // check to see if the cache is valid, if so, use it 
-		        // so that we dont waste bandwidth
-		        hcache = new ViewListCache<CategoryView>(this, getString(R.string.file_homecache));
-		        if(hcache.isCacheExpired()) {
-		        	Log.d(TAG, "Cache Expired, Creating Main");
-			        if(savedInstanceState == null || 
-			        		(cva == null || cva.getCount() == 0)) {
-			        	constructView();
-			        }
-		        } else {
-		        	mainList = (ArrayList<CategoryView>) hcache.getCachedContents();
-			        updateList();
-		        }
-		        
-		        // Once we brought a cache into the mix, we now need a way to 
-		        // validate the user profile.  Unfortunately we can't place
-		        // the data in our cache, because we cache the main page
-		        // regardless of user / guest.  What we will do now, is cache
-		        // the user profile as well.
-		        if(LoginFactory.getInstance().isLoggedIn()) {
-			        String currentUser = UserProfile.getInstance().getUsername();
-			        
-			        // Register user to bugsense so that we can search for them
-			        // if they report an error
-			        BugSenseHandler.setUserIdentifier(currentUser);
-			        
-			        upcache = new UserProfileCache(this, currentUser);
-			        UserProfile cachedProfile = upcache.getCachedContents();
-			        if(cachedProfile == null || 
-			        		!cachedProfile.getUsername().equals(currentUser) ||
-			        		cachedProfile.getUserId().equals("")) {
-			        	Log.d(TAG, "User Cache Expired, Recreating");
-			        	constructUserProfile(null);
-			        } else {
-			        	UserProfile.getInstance().copy(upcache.getCachedContents());
-			        }
-			        
-			        Log.d(TAG, String.format("%s(%s) succesfully logged in.", 
-			        		UserProfile.getInstance().getUsername(), 
-			        		UserProfile.getInstance().getUserId()));
-		        }
-	        }
-    	} catch (Exception e) {
-    		Log.e(TAG, "Fatal Error In Main Activity! " + e.getMessage(), e);
-    	}
-    }
-    
-	/**
-	 * User profile will be read as an async task after the main
-	 * activity has started.  This doesn't always run, only when 
-	 * the cache is either non-existant, or expired
-	 * @param doc	The current page
-	 */
-	private void constructUserProfile(final Document doc) {
-		final ForumBaseActivity thisActivity = this;
-		new AsyncTask<Void,String,Void>() {
-			@Override
-		    protected void onPreExecute() {
-				profileDialog = 
-						ProgressDialog.show(thisActivity, 
-								getString(R.string.loading), 
-								"Validating Profile", true);
-		    }
-			@Override
-			protected Void doInBackground(Void... params) {		
-    			if(LoginFactory.getInstance().isLoggedIn()) {
-    				Document localDoc = doc;
-    				if(localDoc == null)
-    					localDoc = VBForumFactory.getInstance().get(
-	    					thisActivity, VBForumFactory.getRootAddress());
-    				if(localDoc != null) {
-    					Elements userElement = 
-    							localDoc.select("a[href^=http://www.rx8club.com/members/" + 
-    									UserProfile.getInstance().getHtmlUsername()+ "]");
-    					String un = userElement.attr("href");
-    					
-    					UserProfile.getInstance().setUserProfileLink(un);
-    					
-    					try {
-    						// Try and scrap the uid from the href
-    						UserProfile.getInstance().setUserId(
-    							un.substring(un.lastIndexOf("-") + 1, un.lastIndexOf("/")));
-    					} catch (Exception e) {
-    						Log.e(TAG, "Error Parsing User ID", e);
-    					}
-    				}
-    			}
-				return null;
-			}	
-			@Override
-		    protected void onPostExecute(Void result) {
-				try {
-					profileDialog.dismiss();
-					profileDialog = null;
-				} catch (Exception e) {
-					Log.w(TAG, e.getMessage());
-				}
-				upcache.cacheContents(UserProfile.getInstance());
-			}
-		}.execute();
+	public void onStart() {
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this); // Add this method.
 	}
 	
-    /**
-     * Start the application activity
-     */
-    private void constructView() {
-        final ForumBaseActivity thisActivity = this;
-        
-        /**
-         * Thread created to list the contents of the forum into
-         * the screen.  The screen contains a table layout, and
-         * each category and each forum is inserted as a row
-         */
-        updaterTask = new AsyncTask<Void,String,Void>() {
-        	Document doc = null;
-        	
-        	@Override
-		    protected void onPreExecute() {
-        		
-		    	loadingDialog = 
-						ProgressDialog.show(thisActivity, 
-								getString(R.string.loading), 
-								getString(R.string.pleaseWait), true);
-		    }
-        	@Override
-			protected Void doInBackground(Void... params) {
-        		try {
-	        		Log.v(TAG, "Updater Thread Started");
-	        		
-	        		publishProgress(getString(R.string.asyncDialogGrabForumContents));
-	        		doc 	 = getForum();
-	        		
-	        		mainList = new ArrayList<CategoryView>();
-	        		
-	        		publishProgress(getString(R.string.asyncDialogCategorySort));
-	                getCategories(doc);
-	                
-	                publishProgress(getString(R.string.asyncDialogUpdateCache));
-		        	hcache.cacheContents(mainList);
-        		} catch(Exception e) {
-        			thisActivity.runOnUiThread(new Runnable() {
-        				public void run() {
-        					Toast.makeText(thisActivity, 
-                					R.string.connectionError, 
-                					Toast.LENGTH_SHORT).show();
-        				}
-        			});
-        			Log.e(TAG, e.getMessage(), e);
-        		}
-        		return null;
-        	}
-        	@Override
-		    protected void onProgressUpdate(String...progress) {
-        		if(loadingDialog != null)
-        			loadingDialog.setMessage(progress[0]);
-		    }			
-			@Override
-		    protected void onPostExecute(Void result) {
-				updateList();
-				
-				try {
-					loadingDialog.dismiss();
-					loadingDialog = null;
-				} catch (Exception e) {
-					Log.w(TAG, e.getMessage());
-				}
-        		
-				if(LoginFactory.getInstance().isLoggedIn()) {
-	        		// Construct a new user profile
-	        		constructUserProfile(doc);
-				}
-			}
-        };
-        updaterTask.execute();
-    }
-    
-    /**
-     * Update the view contents
-     * @param contents	List of view rows
-     */
-    private void updateList() {
-    	final Activity a = this;
-    	runOnUiThread(new Runnable() {
-            public void run() {	        
-		    	final PTRListView lv = (PTRListView)findViewById(R.id.mainlistview);
-		    	cva = new CategoryViewArrayAdapter(a, R.layout.view_category, mainList);
-		    	lv.setOnRefreshListener(new OnRefreshListener() {
-		            @Override
-		            public void onRefresh() {
-		            	// Call onRefreshComplete when the list has been refreshed.
-		                lv.onRefreshComplete();
-		            }
-		        });
-				lv.setAdapter(cva);
-		        lv.setLongClickable(true);
-            }
-    	});
-    }
-    
-    /**
-     * Get the forum contents as a Map that links the category names
-     * to a list of the forums within each category
-     * @param root	The full forum document
-     * @return		A map of the categories to the forums
-     */
-    private void getCategories(Document root) {	    	
-    	// Grab each category
-    	Elements categories       = root.select("td[class=tcat][colspan=5]");	
-    	Log.d(TAG, "Category Size: " + categories.size());
-    	
-    	// Now grab each section within a category
-    	Elements categorySections = root.select("tbody[id^=collapseobj_forumbit_]");
-    	
-    	// These should match in size
-    	if(categories.size() != categorySections.size()) {
-    		Log.w(TAG, 
-    				String.format("Size of Categories (%d) doesn't match Category Sections (%d)", 
-    						categories.size(), categorySections.size()));
-    		return;
-    	}
-    		
-    	// Iterate over each category
-    	int catIndex = 0;
-    	for(Element category : categorySections) {
-    		
-    		CategoryView cv = new CategoryView();
-    		cv.setTitle(categories.get(catIndex++).text());
-    		mainList.add(cv);
-    		
-    		Elements forums = category.select("tr[align=center]");
-    		for(Element forum : forums) {
-    			cv = new CategoryView();
-    			List<SubCategoryView> scvList = cv.getSubCategories();
-    			
-    			// Each forum object should have 5 columns
-    			Elements columns = forum.select("tr[align=center] > td");
-    			try {
-	    			if(columns.size() != 5) continue;
-	
-	    			String forum_name = columns.get(MainActivity.FORUM_NAME).select("strong").text();
-	    			String forum_href = columns.get(MainActivity.FORUM_NAME).select("a").attr("href");
-	    			String forum_desc = "";
-	    			try {
-	    				forum_desc = 
-	    					columns.get(MainActivity.FORUM_NAME).select("div[class=smallfont]").first().text();
-	    			} catch (NullPointerException npe) { /* Some might not have a desc */ }
-	    			String threads    = columns.get(MainActivity.THREADS_CNT).text();
-	    			String posts      = columns.get(MainActivity.POSTS_CNT).text();
-	    			
-	    			// Lets grab each subcategory
-	    			Elements subCats  = columns.select("tbody a");
-	    			for(Element subCat : subCats) {
-	    				SubCategoryView scv = new SubCategoryView();
-	    				scv.setLink(subCat.attr("href"));
-	    				scv.setTitle(subCat.text().toString());
-	    				scvList.add(scv);
-	    			}
-	    			
-	    			cv.setTitle(forum_name);
-	    			cv.setThreadCount(threads);
-	    			cv.setPostCount(posts);
-	    			cv.setLink(forum_href);
-	    			cv.setDescription(forum_desc);
-	    			cv.setSubCategories(scvList);
-	    			mainList.add(cv);
-    			} catch (Exception e) {
-    				Log.e(TAG, "Error Parsing Forum", e);
-    			}
-    		}
-    	}
-        
-        return;
-    }
+	/**
+	 * End our analytics tracking
+	 */
+	@Override
+	public void onStop() {
+		super.onStop();
+	    EasyTracker.getInstance(this).activityStop(this); // Add this method.
+	}
 
-    /**
-     * Grab the forum as a jsoup document
-     * @return	A jsoup document object that contains the 
-     * 			forum contents
-     */
-    public Document getForum() {    	
-		LoginFactory lf = LoginFactory.getInstance();
-		
-		String output = null;
-		
-		try {
-			VBForumFactory ff = VBForumFactory.getInstance();
-			output = ff.getForumFrontpage(this, lf);
-		} catch (IOException ioe) {
-			Log.e(TAG, "Error Grabbing Forum Frontpage: " + ioe.getMessage(), ioe);
-		}		
-				
-		if(output == null) {
-			Toast.makeText(this, 
-					R.string.connectionError, 
-					Toast.LENGTH_LONG).show();
-			returnToLoginPage(false, false);
-			return null;
-		} else {
-			return Jsoup.parse(output);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.activity_basiclist);
+
+		mTitle = mDrawerTitle = getTitle();
+
+		constructNavMenu();
+
+		if (savedInstanceState == null) {
+			// Initial display
+			displayView(7, false);
 		}
-    }
+	}
+	
+	private void constructNavMenu() {
+
+		// load slide menu items
+		navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
+		navGuestEnabled = getResources().getStringArray(R.array.nav_drawer_guest);
+
+		// nav drawer icons from resources
+		navMenuIcons = getResources()
+				.obtainTypedArray(R.array.nav_drawer_icons);
+
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+		navDrawerItems = new ArrayList<NavDrawerItem>();
+
+		// adding nav drawer items to array
+		for(int i = 0; i < navMenuTitles.length; i++) {
+			navDrawerItems.add(
+					new NavDrawerItem(
+							navMenuTitles[i], 
+							navMenuIcons.getResourceId(i, -1),
+							Boolean.parseBoolean(navGuestEnabled[i])));
+		}
+
+		navMenuIcons.recycle();
+
+		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
+
+		// setting the nav drawer list adapter
+		adapter = new NavDrawerListAdapter(getApplicationContext(),
+				navDrawerItems);
+		mDrawerList.setAdapter(adapter);
+
+		// enabling action bar app icon and behaving it as toggle button
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setHomeButtonEnabled(true);
+
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+				R.drawable.ic_drawer, //nav menu toggle icon
+				R.string.app_name, // nav drawer open - description for accessibility
+				R.string.app_name // nav drawer close - description for accessibility
+				) {
+			public void onDrawerClosed(View view) {
+				getActionBar().setTitle(mTitle);
+				// calling onPrepareOptionsMenu() to show action bar icons
+				invalidateOptionsMenu();
+			}
+
+			public void onDrawerOpened(View drawerView) {
+				getActionBar().setTitle(mDrawerTitle);
+				// calling onPrepareOptionsMenu() to hide action bar icons
+				invalidateOptionsMenu();
+			}
+		};
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
+	}
+
+	public void displayView(int position, boolean stack) {
+		Fragment _fragment = null;
+		switch(position) {
+		case 0:
+			_fragment = new HomeFragment();
+			break;
+		case 1:
+			Bundle args = new Bundle();
+			args.putBoolean("isNewTopics", true);
+			_fragment = new CategoryFragment();
+			_fragment.setArguments(args);
+			break;
+		case 2:
+			if(PreferenceHelper.isFavoriteAsDialog(this)) {
+				FavoriteDialog fd = new FavoriteDialog(this);
+				fd.registerToExecute();
+				fd.show();
+			} else {
+				_fragment = new FavoritesFragment();
+			}
+			break;
+		case 3:
+			_fragment = new ProfileFragment();
+			break;
+
+		case 4:
+			_fragment = new PrivateMessageInboxFragment();
+			break;
+		case 5:
+			_fragment = new SearchFragment();
+			break;
+		case 6:
+			_fragment = new UserCpFragment();
+			break;
+		case 7:
+			_fragment = new LoginFragment(stack);
+			stack = false;
+			break;
+		case 8:
+			_fragment = new Preferences();
+			break;
+		case 9:
+			_fragment = new AboutFragment();
+			break;
+		}
+
+		if (_fragment != null) {
+			FragmentManager fragmentManager = getFragmentManager();
+			FragmentTransaction ft = fragmentManager.beginTransaction();
+
+			if(stack) {
+				ft.addToBackStack(null);
+				ft.add(R.id.content_frame, _fragment).commit();
+			} else {
+				ft.replace(R.id.content_frame,  _fragment).commit();
+			}
+
+			// update selected item and title, then close the drawer
+			mDrawerList.setItemChecked(position, true);
+			mDrawerList.setSelection(position);
+			setTitle(String.format("%s - %s", 
+					getResources().getString(R.string.app_name),
+					navMenuTitles[position].split("\\|")[0]));
+			mDrawerLayout.closeDrawer(mDrawerList);
+		} else {
+			// error in creating fragment
+			Log.e(TAG, "Error in creating fragment", null);
+		}
+	}
+
+	/**
+	 * Slide menu item click listener
+	 * */
+	protected class SlideMenuClickListener implements
+	ListView.OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+			displayView(position, true);
+		}
+	}
+	
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// toggle nav drawer on selecting action bar app icon/title
+		if (mDrawerToggle.onOptionsItemSelected(item)) {
+			return true;
+		}
+		// Handle action bar actions click
+		switch (item.getItemId()) {
+		case R.id.action_new_posts:
+			displayView(1,true);
+			return true;
+		case R.id.action_inbox:
+			displayView(4,true);
+			return true;
+		case R.id.action_search:
+			displayView(5,true);
+			return true;
+		case R.id.action_preferences:
+			displayView(8,true);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		Log.v(TAG, String.format("Setting Up Menu For %s Mode", 
+				menu_mode == MenuState.USER? "user" : "guest"));
+		menu.findItem(R.id.action_new_posts)
+			.setVisible(menu_mode == MenuState.USER);
+		menu.findItem(R.id.action_inbox)
+			.setVisible(menu_mode == MenuState.USER);
+		return true;
+	}
+	
+	public void setUserMenu() {
+		menu_mode = MenuState.USER;
+	}
+	
+	public void setGuestMenu() {
+		menu_mode = MenuState.GUEST;
+	}
+
+	/* *
+	 * Called when invalidateOptionsMenu() is triggered
+	 */
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		// if nav drawer is opened, hide the action items
+		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+		menu.findItem(R.id.action_new_posts).setVisible(!drawerOpen && menu_mode == MenuState.USER);
+		menu.findItem(R.id.action_inbox).setVisible(!drawerOpen && menu_mode == MenuState.USER);
+		menu.findItem(R.id.action_search).setVisible(!drawerOpen);
+		menu.findItem(R.id.action_preferences).setVisible(!drawerOpen);
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
+	public void setTitle(CharSequence title) {
+		mTitle = title;
+		getActionBar().setTitle(mTitle);
+	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		// Sync the toggle state after onRestoreInstanceState has occurred.
+		mDrawerToggle.syncState();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		// Pass any configuration change to the drawer toggls
+		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
 }

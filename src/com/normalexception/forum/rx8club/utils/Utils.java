@@ -36,6 +36,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import com.normalexception.forum.rx8club.Log;
@@ -44,7 +45,7 @@ import com.normalexception.forum.rx8club.html.LoginFactory;
 
 public class Utils {
 	
-	private static Logger TAG =  Logger.getLogger(Utils.class);
+	private static Logger TAG =  LogManager.getLogger(Utils.class);
 	
 	/**
 	 * Safely copy one stream into another.  This is useful when copying

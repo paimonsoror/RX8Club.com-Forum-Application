@@ -26,12 +26,13 @@ package com.normalexception.forum.rx8club.httpclient;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
-
 import ch.boye.httpclientandroidlib.NoHttpResponseException;
 import ch.boye.httpclientandroidlib.impl.client.DefaultHttpRequestRetryHandler;
 import ch.boye.httpclientandroidlib.protocol.HttpContext;
 import ch.boye.httpclientandroidlib.protocol.HttpCoreContext;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import com.normalexception.forum.rx8club.Log;
 
@@ -40,7 +41,7 @@ import com.normalexception.forum.rx8club.Log;
  */
 public class RetryHandler extends DefaultHttpRequestRetryHandler {
 	private static final int MAX_RETRY = 5;
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	/*
 	 * (non-Javadoc)

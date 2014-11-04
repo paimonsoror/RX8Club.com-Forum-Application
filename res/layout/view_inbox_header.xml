@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:background="@android:color/darker_gray"
     android:gravity="center"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:clickable="true" >
 
     <Button
         android:id="@+id/inboxButtonNewPm"
@@ -13,8 +14,7 @@
         android:layout_height="wrap_content"
         android:textSize="10sp"
         android:text="@string/inboxNewPm"
-        android:layout_weight="1"
-        android:onClick="onClick" />
+        android:layout_weight="1"/>
     
     <Button
         android:id="@+id/inboxButtonInbox"
@@ -23,8 +23,7 @@
         android:layout_height="wrap_content"
         android:textSize="10sp"
         android:text="@string/inboxInbox"
-        android:layout_weight="1"
-        android:onClick="onClick" />
+        android:layout_weight="1"/>
     
     <Button
         android:id="@+id/inboxButtonSent"
@@ -33,7 +32,6 @@
         android:layout_height="wrap_content"
         android:textSize="10sp"
         android:text="@string/inboxSent"
-        android:layout_weight="1"
-        android:onClick="onClick" />
+        android:layout_weight="1"/>
 
 </LinearLayout>

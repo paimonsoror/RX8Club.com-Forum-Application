@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -42,7 +43,6 @@ import android.os.AsyncTask;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
 import com.normalexception.forum.rx8club.Log;
-import com.normalexception.forum.rx8club.dialog.DeleteThreadDialog;
 import com.normalexception.forum.rx8club.dialog.MoveThreadDialog;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
@@ -57,7 +57,7 @@ public class AdminTask extends AsyncTask<Void,String,Void>{
 	
 	private String token, thread, doType, deleteResponse;
 
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	public static final String LOCK_THREAD = "openclosethread";
 	public static final String DELETE_THREAD = "dodeletethread";

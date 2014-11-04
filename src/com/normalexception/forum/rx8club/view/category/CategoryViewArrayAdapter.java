@@ -26,9 +26,12 @@ package com.normalexception.forum.rx8club.view.category;
 
 import java.util.List;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,7 +42,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.activities.list.CategoryActivity;
+import com.normalexception.forum.rx8club.fragment.category.CategoryFragment;
 import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
@@ -113,10 +116,22 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
     			@Override
 	            public void onClick(View v) {
 					if(cv.getLink() != null) {
-						Intent intent = 
-								new Intent(activity, CategoryActivity.class);
-						intent.putExtra("link", cv.getLink());
-						activity.startActivity(intent);
+						// Create new fragment and transaction
+						Bundle args = new Bundle();
+						args.putString("link", cv.getLink());
+						Fragment newFragment = new CategoryFragment();
+						newFragment.setArguments(args);
+						
+						FragmentTransaction transaction = 
+								((Activity)activity).getFragmentManager().beginTransaction();
+
+						// Replace whatever is in the fragment_container view with this fragment,
+						// and add the transaction to the back stack
+						transaction.replace(R.id.content_frame, newFragment);
+						transaction.addToBackStack(null);
+
+						// Commit the transaction
+						transaction.commit();
 					}
 				}
         	});

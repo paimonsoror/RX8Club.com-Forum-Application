@@ -9,7 +9,7 @@ import android.os.AsyncTask;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
 import com.normalexception.forum.rx8club.Log;
-import com.normalexception.forum.rx8club.activities.UserCpActivity;
+import com.normalexception.forum.rx8club.fragment.UserCpFragment;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
 public class ProfileTask extends AsyncTask<Void,Void,Void>{
@@ -46,7 +46,7 @@ public class ProfileTask extends AsyncTask<Void,Void,Void>{
 			Log.w(TAG, e.getMessage());
 		}
 		
-		Intent _intent = new Intent(sourceActivity, UserCpActivity.class);
+		Intent _intent = new Intent(sourceActivity, UserCpFragment.class);
 		_intent.putExtra("link", HtmlFormUtils.getResponseUrl());
 		sourceActivity.finish();
 		sourceActivity.startActivity(_intent);

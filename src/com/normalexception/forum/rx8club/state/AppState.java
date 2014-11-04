@@ -24,12 +24,13 @@ package com.normalexception.forum.rx8club.state;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import android.app.Fragment;
 import android.content.Intent;
 
 public class AppState {
 	
 	private static AppState _instance;
-	private        Intent   _intent;
+	private        Fragment _intent;
 	private        State    _state;
 	
 	public enum State { NO_KNOWN_STATE,
@@ -74,7 +75,7 @@ public class AppState {
 	 * @param state		The current state of the application
 	 * @param intent	The current intent
 	 */
-	public void setCurrentState(State state, Intent intent) {
+	public void setCurrentState(State state, Fragment intent) {
 		_state = state;
 		_intent= intent;
 	}
@@ -91,7 +92,7 @@ public class AppState {
 	 * Report the current intent within the app state
 	 * @return	The application intent
 	 */
-	public Intent getCurrentIntent() {
+	public Fragment getCurrentIntent() {
 		return _intent;
 	}
 }

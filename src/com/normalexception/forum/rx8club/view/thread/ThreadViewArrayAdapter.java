@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import android.content.Context;
@@ -45,7 +46,7 @@ import android.widget.TextView;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.activities.list.ThreadTypeFactory;
+import com.normalexception.forum.rx8club.fragment.category.ThreadTypeFactory;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.utils.DateDifference;
 import com.normalexception.forum.rx8club.utils.SpecialNumberFormatter;
@@ -56,7 +57,7 @@ import com.normalexception.forum.rx8club.view.ViewHolder;
  */
 public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 	
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	private Context activity;
     private List<ThreadView> data; 
@@ -149,6 +150,9 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
         vImage 	   = (ImageView) ViewHolder.get(vi,R.id.tv_image);
         vAttachment= (ImageView) ViewHolder.get(vi,R.id.tv_attachment);
         vForumC    = (LinearLayout) ViewHolder.get(vi, R.id.tv_forum_details);
+        
+        // Set default text color
+        vTitle.setTextColor(Color.BLACK);
         
         // Set all display components to visible to start
         hideThreadDetails(false);
@@ -280,5 +284,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 		
 		vForumC.setVisibility(hide? View.GONE : View.VISIBLE);
 		vAttachment.setVisibility(hide? View.GONE : View.VISIBLE);
+		
+		vImage.setVisibility(hide? View.GONE : View.VISIBLE);
 	}
 }

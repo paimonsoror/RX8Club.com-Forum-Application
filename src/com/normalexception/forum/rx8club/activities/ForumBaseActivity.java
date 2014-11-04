@@ -26,31 +26,55 @@ package com.normalexception.forum.rx8club.activities;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
 import com.google.analytics.tracking.android.EasyTracker;
 import com.normalexception.forum.rx8club.Log;
-import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.activities.utils.UtilitiesDialog;
-import com.normalexception.forum.rx8club.dialog.LogoffDialog;
+import com.normalexception.forum.rx8club.R.array;
+import com.normalexception.forum.rx8club.R.drawable;
+import com.normalexception.forum.rx8club.R.id;
+import com.normalexception.forum.rx8club.R.layout;
+import com.normalexception.forum.rx8club.R.string;
+import com.normalexception.forum.rx8club.dialog.FavoriteDialog;
+import com.normalexception.forum.rx8club.fragment.HomeFragment;
+import com.normalexception.forum.rx8club.fragment.LoginFragment;
+import com.normalexception.forum.rx8club.fragment.ProfileFragment;
+import com.normalexception.forum.rx8club.fragment.SearchFragment;
+import com.normalexception.forum.rx8club.fragment.category.CategoryFragment;
+import com.normalexception.forum.rx8club.fragment.category.FavoritesFragment;
+import com.normalexception.forum.rx8club.fragment.pm.PrivateMessageInboxFragment;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.html.VBForumFactory;
-import com.normalexception.forum.rx8club.preferences.Preferences;
+import com.normalexception.forum.rx8club.navigation.NavDrawerItem;
+import com.normalexception.forum.rx8club.navigation.NavDrawerListAdapter;
+import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.state.AppState;
 import com.normalexception.forum.rx8club.state.AppState.State;
 
@@ -59,7 +83,7 @@ import com.normalexception.forum.rx8club.state.AppState.State;
  * contained in the application.  The most common are menu buttons and
  * GUI handlers
  */
-public abstract class ForumBaseActivity extends FragmentActivity implements OnClickListener {
+public abstract class ForumBaseActivity extends Activity implements OnClickListener {
 	
 	protected AsyncTask<Void,?,Void> updaterTask;
 	
@@ -70,65 +94,9 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 	protected static final int USERCP_MENU = 4;
 	protected static final int UTILS_MENU = 5;
 	
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	protected String thisPage = "1", finalPage = "1";
-	
-	/**
-	 * Start our analytics tracking
-	 */
-	@Override
-	public void onStart() {
-		super.onStart();
-		EasyTracker.getInstance(this).activityStart(this); // Add this method.
-	}
-	
-	/**
-	 * End our analytics tracking
-	 */
-	@Override
-	public void onStop() {
-		super.onStop();
-	    EasyTracker.getInstance(this).activityStop(this); // Add this method.
-	}
-	
-	/**
-	 * Set the current state of our application as well as the respective
-	 * intent
-	 * @param state		The state
-	 * @param intent	The intent
-	 */
-	public void setState(State state, Intent intent) {
-		Log.d(TAG, "## Current State " + state.toString());
-		AppState.getInstance().setCurrentState(state, intent);
-	}
-	
-	/**
-	 * Check if the user can create a new thread.  If not, report back a
-	 * false boolean value
-	 * @param address The page to check permission to
-	 * @param params  Parameters to the url
-	 * @return		  True if user has permission
-	 */
-	public boolean doesUserHavePermissionToPage(String address, String... params) {
-		boolean result = false;
-		for(String param : params)
-			address += param;
-		
-		Document output = 
-				VBForumFactory.getInstance().get(this,  address);
-		Elements eles = null;
-		
-		eles = output.select("div[class=ib-padding]");
-		Log.v(TAG, "doesUserHavePermissionToPage:Mobile Check = " + eles.size());
-		if(eles.isEmpty()) {
-			eles = output.select("td[class=panelsurround]");
-			Log.v(TAG, "doesUserHavePermissionToPage:Standard Check = " + eles.size());
-		}
-		if(eles != null)
-			result = !eles.text().contains("do not have permission to access this page");
-		return result;
-	}
 	
 	/*
 	 * (non-Javadoc)
@@ -146,11 +114,17 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
 			} catch (IOException e1) {}
 		}
 	}
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
 	 */
+	/**
 	@Override
     public boolean onCreateOptionsMenu(Menu menu){ 
 		menu.add(0,MAIN_MENU,0,R.string.menuGoMain);
@@ -164,23 +138,26 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
         menu.add(0,ABOUT_MENU,0,R.string.menuAbout);
         return true; 
     } 
-	
+	*/
 	/**
 	 * Close all activities and return to login
 	 */
 	public void returnToLoginPage(boolean clearPrefs, boolean timeout) {
 		Intent _intent = null;
 		LoginFactory.getInstance().logoff(clearPrefs);
-		_intent = new Intent(this, LoginActivity.class);
+		_intent = new Intent(this, LoginFragment.class);
 		_intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		finish();
 		startActivity(_intent);		
 	}
 	
+
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
 	 */
+	/*
 	@Override
     public boolean onOptionsItemSelected (MenuItem item)
     { 
@@ -219,7 +196,7 @@ public abstract class ForumBaseActivity extends FragmentActivity implements OnCl
         	startActivity(_intent);
         
         return false; 
-    } 
+    } */
 	
 	/*
 	 * (non-Javadoc)

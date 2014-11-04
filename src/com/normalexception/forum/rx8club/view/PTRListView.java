@@ -28,8 +28,6 @@ package com.normalexception.forum.rx8club.view;
  * Implementation based on: https://github.com/erikwt/PullToRefresh-ListView
  */
 
-import org.apache.log4j.Logger;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -47,6 +45,9 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 
@@ -54,7 +55,7 @@ import com.normalexception.forum.rx8club.R;
  * An extension of a ListView that will implement a google mail style
  * of a pull to refresh
  */
-public class PTRListView extends ListView implements OnScrollListener {
+public class PTRListView extends ListView /*implements OnScrollListener*/ {
 
     private static enum PTRState {
     	NEUTRAL, 
@@ -62,9 +63,9 @@ public class PTRListView extends ListView implements OnScrollListener {
     	RELEASE_TO_REFRESH, 
     	REFRESHING };
 
-    private Logger TAG =  Logger.getLogger(this.getClass());
+    private Logger TAG =  LogManager.getLogger(this.getClass());
 
-    private OnRefreshListener mOnRefreshListener;
+   // private OnRefreshListener mOnRefreshListener;
 
     /**
      * Listener that will receive notifications every time the list scrolls.
@@ -92,19 +93,19 @@ public class PTRListView extends ListView implements OnScrollListener {
 
     public PTRListView(Context context) {
         super(context);
-        init(context);
+        //init(context);
     }
 
     public PTRListView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        //init(context);
     }
 
     public PTRListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init(context);
+        //init(context);
     }
-
+/*
     private void init(Context context) {
         // Load all of the animations we need in code rather than through XML
         mFlipAnimation = new RotateAnimation(0, -180,
@@ -167,30 +168,30 @@ public class PTRListView extends ListView implements OnScrollListener {
     	}
     }
 
-    /**
+    *//**
      * Set the listener that will receive notifications every time the list
      * scrolls.
      * 
      * @param l The scroll listener. 
-     */
+     *//*
     @Override
     public void setOnScrollListener(AbsListView.OnScrollListener l) {
         mOnScrollListener = l;
     }
 
-    /**
+    *//**
      * Register a callback to be invoked when this list should be refreshed.
      * 
      * @param onRefreshListener The callback to run.
-     */
+     *//*
     public void setOnRefreshListener(OnRefreshListener onRefreshListener) {
         mOnRefreshListener = onRefreshListener;
     }
 
-    /**
+    *//**
      * Set a text to represent when the list was last updated. 
      * @param lastUpdated Last updated at.
-     */
+     *//*
     public void setLastUpdated(CharSequence lastUpdated) {
         if (lastUpdated != null) {
             mRefreshViewLastUpdated.setVisibility(View.VISIBLE);
@@ -262,9 +263,9 @@ public class PTRListView extends ListView implements OnScrollListener {
         }
     }
 
-    /**
+    *//**
      * Sets the header padding back to original size.
-     */
+     *//*
     private void resetHeaderPadding() {
         mRefreshView.setPadding(
                 mRefreshView.getPaddingLeft(),
@@ -273,9 +274,9 @@ public class PTRListView extends ListView implements OnScrollListener {
                 mRefreshView.getPaddingBottom());
     }
 
-    /**
+    *//**
      * Resets the header to the original state.
-     */
+     *//*
     private void resetHeader() {
         if (mRefreshState != PTRState.NEUTRAL) {
             mRefreshState = PTRState.NEUTRAL;
@@ -393,18 +394,18 @@ public class PTRListView extends ListView implements OnScrollListener {
         }
     }
 
-    /**
+    *//**
      * Resets the list to a normal state after a refresh.
      * @param lastUpdated Last updated at.
-     */
+     *//*
     public void onRefreshComplete(CharSequence lastUpdated) {
         setLastUpdated(lastUpdated);
         onRefreshComplete();
     }
 
-    /**
+    *//**
      * Resets the list to a normal state after a refresh.
-     */
+     *//*
     public void onRefreshComplete() {        
         Log.d(TAG, "onRefreshComplete");
 
@@ -418,11 +419,11 @@ public class PTRListView extends ListView implements OnScrollListener {
         }
     }
 
-    /**
+    *//**
      * Invoked when the refresh view is clicked on. This is mainly used when
      * there's only a few items in the list and it's not possible to drag the
      * list.
-     */
+     *//*
     private class OnClickRefreshListener implements OnClickListener {
 
         @Override
@@ -435,17 +436,17 @@ public class PTRListView extends ListView implements OnScrollListener {
 
     }
 
-    /**
+    *//**
      * Interface definition for a callback to be invoked when list should be
      * refreshed.
-     */
+     *//*
     public interface OnRefreshListener {
-        /**
+        *//**
          * Called when the list should be refreshed.
          * <p>
          * A call to {@link PullToRefreshListView #onRefreshComplete()} is
          * expected to indicate that the refresh has completed.
-         */
+         *//*
         public void onRefresh();
-    }
+    }*/
 }

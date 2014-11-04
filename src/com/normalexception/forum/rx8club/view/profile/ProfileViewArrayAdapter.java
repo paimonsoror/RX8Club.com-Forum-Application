@@ -38,7 +38,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.normalexception.forum.rx8club.activities.thread.ThreadActivity;
+import com.normalexception.forum.rx8club.fragment.thread.ThreadFragment;
 
 public class ProfileViewArrayAdapter extends ArrayAdapter<ProfileView> {
 	private Context activity;
@@ -102,7 +102,7 @@ public class ProfileViewArrayAdapter extends ArrayAdapter<ProfileView> {
 			@Override
 			public void onClick(View arg0) {
 				Intent _intent = 
-						new Intent(activity, ThreadActivity.class);
+						new Intent(activity, ThreadFragment.class);
 				_intent.putExtra("link", pm.getLink());
 				_intent.putExtra("title", pm.getName());
 				activity.startActivity(_intent);

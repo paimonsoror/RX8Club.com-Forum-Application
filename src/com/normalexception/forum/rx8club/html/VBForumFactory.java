@@ -26,10 +26,12 @@ package com.normalexception.forum.rx8club.html;
 
 import java.io.IOException;
 
+import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import android.app.Activity;
 import android.widget.Toast;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 import ch.boye.httpclientandroidlib.client.HttpClient;
@@ -40,6 +42,7 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.WebUrls;
 import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
+import com.normalexception.forum.rx8club.fragment.FragmentUtils;
 import com.normalexception.forum.rx8club.httpclient.ClientUtils;
 import com.normalexception.forum.rx8club.utils.Utils;
 
@@ -49,7 +52,7 @@ import com.normalexception.forum.rx8club.utils.Utils;
 public class VBForumFactory {
 	
 	private static VBForumFactory _instance = null;
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 		
 	/**
 	 * Constructor
@@ -85,7 +88,7 @@ public class VBForumFactory {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public String getForumFrontpage(ForumBaseActivity src, LoginFactory lf) 
+	public String getForumFrontpage(Activity src, LoginFactory lf) 
 			throws ClientProtocolException, IOException {
 		return getForumPage(src, lf, WebUrls.rootUrl);
 	}
@@ -99,7 +102,7 @@ public class VBForumFactory {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	public String getForumPage(ForumBaseActivity src, LoginFactory lf, String addr) 
+	public String getForumPage(Activity src, LoginFactory lf, String addr) 
 			throws ClientProtocolException, IOException {
 		String output = null;
 		try {
@@ -130,7 +133,7 @@ public class VBForumFactory {
 							output.contains("You are not logged in")) {
 						Log.w(TAG, "Error Parsing Output!");
 						Log.w(TAG, output);
-						src.returnToLoginPage(false, false);
+						FragmentUtils.returnToLoginPage(src, false, false);
 					}
 				} catch (NullPointerException e) {		
 					notifyError(src, 
@@ -144,12 +147,12 @@ public class VBForumFactory {
 			}
 		} catch (Exception e) {
 			notifyError(src, "No Internet Connection...", null);
-			src.returnToLoginPage(false, false);
+			FragmentUtils.returnToLoginPage(src, false, false);
 		}
 		
 		if(output == null || output.length() == 0) {
 			notifyError(src, "No Internet Connection...", null);
-			src.returnToLoginPage(false, false);		
+			FragmentUtils.returnToLoginPage(src, false, false);		
 		}
 		
 		return output;
@@ -162,7 +165,7 @@ public class VBForumFactory {
 	 * @param msg	The message to post
 	 * @param e		The exception to log
 	 */
-	private void notifyError(ForumBaseActivity src, final String msg, Exception e) {
+	private void notifyError(Activity src, final String msg, Exception e) {
 		src.runOnUiThread(new Runnable() {
 			  public void run() {
 				Toast.makeText(MainApplication.getAppContext(),
@@ -177,7 +180,7 @@ public class VBForumFactory {
      * @return	A jsoup document object that contains the 
      * 			forum contents
      */
-    public Document get(ForumBaseActivity src, String addr) {  
+    public Document get(Activity src, String addr) {  
     	LoginFactory lf = LoginFactory.getInstance();
     	
     	String output = "";	

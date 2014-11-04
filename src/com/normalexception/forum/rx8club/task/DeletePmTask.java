@@ -26,16 +26,17 @@ package com.normalexception.forum.rx8club.task;
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import com.normalexception.forum.rx8club.Log;
-import com.normalexception.forum.rx8club.activities.pm.PrivateMessageInboxActivity;
+import com.normalexception.forum.rx8club.fragment.pm.PrivateMessageInboxFragment;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
 public class DeletePmTask extends AsyncTask<Void,Void,Void>{
@@ -46,7 +47,7 @@ public class DeletePmTask extends AsyncTask<Void,Void,Void>{
 	private boolean outbound = false;
 	private Class<?> postClazz;
 
-	private Logger TAG =  Logger.getLogger(this.getClass());
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 
 	/**
 	 * Async Task handler for deleting a Private messages
@@ -60,7 +61,7 @@ public class DeletePmTask extends AsyncTask<Void,Void,Void>{
 		this.sourceActivity = sourceActivity;
 		this.token = securityToken;
 		this.pmid = pmid;
-		this.postClazz = PrivateMessageInboxActivity.class;
+		this.postClazz = PrivateMessageInboxFragment.class;
 		this.outbound = outbound;
 	}
 
@@ -79,7 +80,7 @@ public class DeletePmTask extends AsyncTask<Void,Void,Void>{
 		
 		Intent _intent = new Intent(sourceActivity, postClazz);
 		_intent.putExtra("link", HtmlFormUtils.getResponseUrl());
-		_intent.putExtra(PrivateMessageInboxActivity.showOutboundExtra, outbound);
+		_intent.putExtra(PrivateMessageInboxFragment.showOutboundExtra, outbound);
 		sourceActivity.finish();
 		sourceActivity.startActivity(_intent);
     }

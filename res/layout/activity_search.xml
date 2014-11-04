@@ -9,28 +9,21 @@
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical"
 	    android:padding="5dp" >
-		
-	    <fragment
-	        android:id="@+id/fragment_content"
-	        android:name="com.normalexception.forum.rx8club.activities.fragments.BannerFragment"
-	        android:layout_width="fill_parent"
-	        android:layout_height="fill_parent" >
-	
-	        <!-- Preview: layout=@layout/fragment_banner -->
-	    </fragment>
 	
 	    <TextView
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="25dip"
-	        android:text="@string/searchString" />
+	        android:text="@string/searchString"
+	        android:textColor="@android:color/black" />
 	
 	    <EditText
 	        android:id="@+id/searchText"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:ems="10"
-	        android:inputType="text" >
+	        android:inputType="text"
+	        android:textColor="@android:color/black"  >
 	
 	        <requestFocus android:layout_width="wrap_content" />
 	
@@ -48,44 +41,51 @@
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="10dip"
 	        android:text="@string/advancedOptions"
-	        android:textAppearance="?android:attr/textAppearanceMedium" />
+	        android:textAppearance="?android:attr/textAppearanceMedium"
+	        android:textColor="@android:color/black"  />
 	
 	    <TextView
 	        android:id="@+id/textView1"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_marginTop="5dip"
-	        android:text="@string/searchType" />
+	        android:text="@string/searchType"
+	        android:textColor="@android:color/black"  />
 
 		<Spinner 
 		    android:id="@+id/searchTypeSpinner"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
-		    android:entries="@array/searchTypeArray" />
+		    android:entries="@array/searchTypeArray"
+	        android:textColor="@android:color/black"  />
 	
 	    <TextView
 	        android:id="@+id/textView3"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/searchDate" />
+	        android:text="@string/searchDate"
+	        android:textColor="@android:color/black"  />
 	
 	    <Spinner
 	        android:id="@+id/searchDateSpinner"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:entries="@array/searchDateArray" />
+	        android:entries="@array/searchDateArray"
+	        android:textColor="@android:color/black"  />
 	    
 	    <TextView
 	        android:id="@+id/textView4"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="@string/searchSort" />
+	        android:text="@string/searchSort"
+	        android:textColor="@android:color/black"  />
 	
 	    <Spinner
 	        android:id="@+id/searchSortSpinner"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:entries="@array/searchSortArray" />
+	        android:entries="@array/searchSortArray"
+	        android:textColor="@android:color/black"  />
 	
 	</LinearLayout>
 
