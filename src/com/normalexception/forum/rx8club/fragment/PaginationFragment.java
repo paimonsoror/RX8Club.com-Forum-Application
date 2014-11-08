@@ -24,7 +24,7 @@ package com.normalexception.forum.rx8club.fragment;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +35,11 @@ import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
 public class PaginationFragment extends Fragment {
+	private OnClickListener _ocl = null;
+	
+	public PaginationFragment(OnClickListener ocl) {
+		this._ocl = ocl;
+	}
 	
 	/*
 	 * (non-Javadoc)
@@ -44,17 +49,15 @@ public class PaginationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	// Inflate our fragment
         View view = inflater.inflate(R.layout.fragment_pagination, container, false); 
-        /*
         // Setup the listeners for pagination clicks
         ViewHolder.get(view, R.id.firstButton)
-        	.setOnClickListener((OnClickListener)getActivity());
+        	.setOnClickListener(_ocl);
         ViewHolder.get(view, R.id.previousButton)
-    		.setOnClickListener((OnClickListener)getActivity());
+    		.setOnClickListener(_ocl);
         ViewHolder.get(view, R.id.nextButton)
-    		.setOnClickListener((OnClickListener)getActivity());
+    		.setOnClickListener(_ocl);
         ViewHolder.get(view, R.id.lastButton)
-    		.setOnClickListener((OnClickListener)getActivity());
-        */
+    		.setOnClickListener(_ocl);
         return view;
     }
     

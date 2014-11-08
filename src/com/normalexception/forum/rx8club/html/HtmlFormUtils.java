@@ -29,28 +29,23 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.ContentType;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.protocol.HttpCoreContext;
+import org.apache.http.util.EntityUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
-import ch.boye.httpclientandroidlib.HttpEntity;
-import ch.boye.httpclientandroidlib.HttpResponse;
-import ch.boye.httpclientandroidlib.NameValuePair;
-import ch.boye.httpclientandroidlib.StatusLine;
-import ch.boye.httpclientandroidlib.client.ClientProtocolException;
-import ch.boye.httpclientandroidlib.client.HttpClient;
-import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
-import ch.boye.httpclientandroidlib.client.methods.HttpGet;
-import ch.boye.httpclientandroidlib.client.methods.HttpPost;
-import ch.boye.httpclientandroidlib.client.methods.HttpUriRequest;
-import ch.boye.httpclientandroidlib.entity.ContentType;
-import ch.boye.httpclientandroidlib.entity.mime.HttpMultipartMode;
-import ch.boye.httpclientandroidlib.entity.mime.MultipartEntityBuilder;
-import ch.boye.httpclientandroidlib.entity.mime.content.FileBody;
-import ch.boye.httpclientandroidlib.entity.mime.content.StringBody;
-import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
-import ch.boye.httpclientandroidlib.protocol.HttpContext;
-import ch.boye.httpclientandroidlib.protocol.HttpCoreContext;
-import ch.boye.httpclientandroidlib.util.EntityUtils;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.WebUrls;
@@ -122,7 +117,7 @@ public class HtmlFormUtils {
     		responseContent = 
     	    		EntityUtils.toString(entity, "UTF-8" );
     		
-    		httpost.releaseConnection();
+    		//httpost.releaseConnection();
     		
     		HttpUriRequest request = (HttpUriRequest) context.getAttribute(
     		        HttpCoreContext.HTTP_REQUEST);
@@ -358,6 +353,7 @@ public class HtmlFormUtils {
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
+	/*
 	public static String submitAttachment(String securitytoken, List<String> bmapList, 
 			String postnum) throws ClientProtocolException, IOException {
 		HttpClient httpclient = 
@@ -463,6 +459,7 @@ public class HtmlFormUtils {
 		
 		return attId;
 	}
+	*/
 	
 	/**
 	 * Report the contents of the post that we are intending

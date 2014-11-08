@@ -27,14 +27,16 @@ package com.normalexception.forum.rx8club.task;
 import java.io.IOException;
 import java.util.List;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.AsyncTask;
-import ch.boye.httpclientandroidlib.client.ClientProtocolException;
-
+import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+
+import android.app.Activity;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+import android.os.Bundle;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
@@ -47,11 +49,10 @@ import com.normalexception.forum.rx8club.html.HtmlFormUtils;
  */
 public class SubmitTask extends AsyncTask<Void,String,Void>{
 	private ProgressDialog mProgressDialog;
-	private Activity sourceActivity;
+	private Fragment sourceActivity;
 	
 	private String token, thread, post, text, pageTitle, pageNumber, doType;
 	private List<String> bitmaps;
-	private Class<?> postClazz;
 
 	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
@@ -67,7 +68,7 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
 	 * @param pageTitle			The current page title
 	 * @param pageNumber		The current page number
 	 */
-	public SubmitTask(Activity sourceActivity, List<String> bmapList, 
+	public SubmitTask(Fragment sourceActivity, List<String> bmapList, 
 					  String securityToken, String threadNumber, String postNumber, 
 					  String toPost, String pageTitle, String pageNumber) 
 	{
@@ -80,7 +81,6 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
 		this.pageTitle = pageTitle;
 		this.pageNumber = pageNumber;
 		this.doType = "postreply";
-		this.postClazz = ThreadFragment.class;
 	}
 	
 	public void debug() {
@@ -102,13 +102,22 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
 			Log.w(TAG, e.getMessage());
 		}
 		
-		Intent _intent = new Intent(sourceActivity, postClazz);
-		_intent.putExtra("link", HtmlFormUtils.getResponseUrl());
-		_intent.putExtra("page", pageNumber.equals("last")? pageNumber :
+		final String respLink = HtmlFormUtils.getResponseUrl();
+		Log.d(TAG, String.format("Setting Response In Bundle: %s", respLink));
+		
+		Bundle _args = new Bundle();
+		_args.putString("link", respLink);
+		_args.putString("page", pageNumber.equals("last")? pageNumber :
 			String.valueOf(Integer.parseInt(pageNumber)));
-		_intent.putExtra("title", pageTitle);
-		sourceActivity.finish();
-		sourceActivity.startActivity(_intent);
+		_args.putString("title", pageTitle);
+
+		FragmentTransaction transaction = 
+				sourceActivity.getFragmentManager().beginTransaction();
+		Fragment _frag = new ThreadFragment();
+		_frag.setArguments(_args);
+		transaction.replace(R.id.content_frame, _frag);
+		transaction.addToBackStack("thread");
+		transaction.commit();
     }
 
 	/*
@@ -119,7 +128,7 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
     protected void onPreExecute() {
     	
         mProgressDialog = 
-        		ProgressDialog.show(this.sourceActivity, "Submitting...", "Please Wait...");
+        		ProgressDialog.show(sourceActivity.getActivity(), "Submitting...", "Please Wait...");
     }
 
     /*
@@ -133,14 +142,17 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
     		if(bitmaps.size() != 0) {
     			publishProgress(
     					sourceActivity.getString(R.string.asyncDialogUploadAttachment));
-    			attId = HtmlFormUtils.submitAttachment(token, bitmaps, post);
+    			//attId = HtmlFormUtils.submitAttachment(token, bitmaps, post);
     			publishProgress(
     					sourceActivity.getString(R.string.asyncDialogUploadDone));
     		}
     		
     		publishProgress(
     				sourceActivity.getString(R.string.asyncDialogSubmitting));
-    		HtmlFormUtils.submitPost(doType, token, thread, post, attId, text);
+    		if(HtmlFormUtils.submitPost(doType, token, thread, post, attId, text))
+    			Log.d(TAG, "Html Form Submitted");
+    		else
+    			Log.d(TAG, "Form Submit Failed");
 		} catch (ClientProtocolException e) {
 			Log.e(TAG, e.getMessage(), e);
 		} catch (IOException e) {

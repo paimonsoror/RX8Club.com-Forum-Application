@@ -28,7 +28,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.widget.Toast;
 
 import com.normalexception.forum.rx8club.fragment.FragmentUtils;

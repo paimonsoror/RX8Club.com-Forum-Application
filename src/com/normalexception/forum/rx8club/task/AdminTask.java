@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -40,7 +41,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
-import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.dialog.MoveThreadDialog;

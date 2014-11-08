@@ -24,7 +24,7 @@ package com.normalexception.forum.rx8club.state;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 
 public class AppState {

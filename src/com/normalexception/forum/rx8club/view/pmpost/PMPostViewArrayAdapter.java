@@ -133,8 +133,11 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
 	        		cv.getUserImageUrl().indexOf('?') == -1? 
 	        				cv.getUserImageUrl() : 
 	        					cv.getUserImageUrl().substring(0, cv.getUserImageUrl().indexOf('?'));
-	        ImageView avatar = ((ImageView)ViewHolder.get(vi,R.id.nr_image));
-	        imageLoader.DisplayImage(nodate_avatar, avatar);
+	        
+	        if(!nodate_avatar.isEmpty()) {
+	        	ImageView avatar = ((ImageView)ViewHolder.get(vi,R.id.nr_image));
+	        	imageLoader.DisplayImage(nodate_avatar, avatar);
+	        }
         }
         
         // Set click listeners

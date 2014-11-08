@@ -76,7 +76,7 @@ public class Log {
 	private static Level toLog4jLevel(final int level) {
 		switch(level) {
 		case VERBOSE:
-			return Level.TRACE;
+			return Level.ALL;
 		case DEBUG:
 			return Level.DEBUG;
 		case INFO:

@@ -31,7 +31,7 @@ import java.security.NoSuchAlgorithmException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -46,7 +46,6 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
-import ch.boye.httpclientandroidlib.client.ClientProtocolException;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
@@ -213,7 +212,7 @@ public class LoginFragment extends Fragment implements OnClickListener, OnChecke
 				timeout = true;
 			} catch (NoSuchAlgorithmException e) {
 				Log.e(TAG, "Error Logging In " + e.getMessage(), e);
-			} catch (ClientProtocolException e) {
+			} catch (org.apache.http.client.ClientProtocolException e) {
 				Log.e(TAG, "Error Logging In " + e.getMessage(), e);
 			} catch (IOException e) {
 				Log.e(TAG, "Error Logging In " + e.getMessage(), e);

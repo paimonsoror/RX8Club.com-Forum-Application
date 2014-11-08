@@ -167,8 +167,11 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	        		cv.getUserImageUrl().indexOf('?') == -1? 
 	        				cv.getUserImageUrl() : 
 	        					cv.getUserImageUrl().substring(0, cv.getUserImageUrl().indexOf('?'));
-	        ImageView avatar = ((ImageView)ViewHolder.get(vi,R.id.nr_image));
-	        imageLoader.DisplayImage(nodate_avatar, avatar);
+	        
+	        if(!nodate_avatar.isEmpty()) {
+	        	ImageView avatar = ((ImageView)ViewHolder.get(vi,R.id.nr_image));
+	        	imageLoader.DisplayImage(nodate_avatar, avatar);
+	        }
         }
         
         // Set the text size based on our preferences
@@ -207,10 +210,10 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	        	@Override
 	        	public void onClick(View arg0) {
 	        		Log.d(TAG, "Edit Clicked");
-	        		Intent _intent = new Intent(activity, EditPostFragment.class); 
-	        		_intent.putExtra("postid", cv.getPostId());
-					_intent.putExtra("securitytoken", cv.getToken());
-					activity.startActivity(_intent);
+	        		//Intent _intent = new Intent(activity, EditPostFragment.class); 
+	        		//_intent.putExtra("postid", cv.getPostId());
+					//_intent.putExtra("securitytoken", cv.getToken());
+					//activity.startActivity(_intent);
 	        	}
 	        });
 	        
@@ -219,9 +222,9 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	        	@Override
 	        	public void onClick(View arg0) {
 	        		Log.d(TAG, "PM Clicked");
-	        		Intent _intent =  new Intent(activity, NewPrivateMessageFragment.class);
-					_intent.putExtra("user", cv.getUserName());
-					activity.startActivity(_intent);
+	        		//Intent _intent =  new Intent(activity, NewPrivateMessageFragment.class);
+					//_intent.putExtra("user", cv.getUserName());
+					//activity.startActivity(_intent);
 	        	}
 	        });
 	    	
@@ -230,18 +233,18 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	        	.setOnClickListener(new OnClickListener() {
 	        	@Override
 	        	public void onClick(View arg0) {
-	        		final Intent _intent = new Intent(activity, EditPostFragment.class);     		
+	        		//final Intent _intent = new Intent(activity, EditPostFragment.class);     		
 					DialogInterface.OnClickListener dialogClickListener = 
 						new DialogInterface.OnClickListener() {
 					    @Override
 					    public void onClick(DialogInterface dialog, int which) {
 					        switch (which){
 					        case DialogInterface.BUTTON_POSITIVE:  
-					        	_intent.putExtra("postid", cv.getPostId());
-					        	_intent.putExtra("securitytoken", cv.getToken());
-					        	_intent.putExtra("delete", true);
-					        	_intent.putExtra("deleteThread", isFirstPost && cv.isLoggedInUser());
-					        	activity.startActivity(_intent);
+					        	//_intent.putExtra("postid", cv.getPostId());
+					        	//_intent.putExtra("securitytoken", cv.getToken());
+					        	//_intent.putExtra("delete", true);
+					        	//_intent.putExtra("deleteThread", isFirstPost && cv.isLoggedInUser());
+					        	//activity.startActivity(_intent);
 					            break;
 					        }
 					    }

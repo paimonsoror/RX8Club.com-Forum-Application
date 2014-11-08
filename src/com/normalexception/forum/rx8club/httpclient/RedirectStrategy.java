@@ -24,13 +24,12 @@ package com.normalexception.forum.rx8club.httpclient;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import ch.boye.httpclientandroidlib.HttpRequest;
-import ch.boye.httpclientandroidlib.HttpResponse;
-import ch.boye.httpclientandroidlib.HttpStatus;
-import ch.boye.httpclientandroidlib.ProtocolException;
-import ch.boye.httpclientandroidlib.impl.client.DefaultRedirectStrategy;
-import ch.boye.httpclientandroidlib.protocol.HttpContext;
-
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.ProtocolException;
+import org.apache.http.impl.client.DefaultRedirectStrategy;
+import org.apache.http.protocol.HttpContext;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 

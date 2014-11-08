@@ -27,8 +27,8 @@ package com.normalexception.forum.rx8club.fragment;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -24,24 +24,25 @@ package com.normalexception.forum.rx8club.dialog;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 import com.normalexception.forum.rx8club.R;
-import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
+import com.normalexception.forum.rx8club.fragment.FragmentUtils;
 import com.normalexception.forum.rx8club.html.LoginFactory;
 
 public class LogoffDialog {
 	
-	private ForumBaseActivity _ctx;
 	private AlertDialog.Builder builder;
+	private Activity _ctx = null;
 	
 	/**
 	 * Create a dialog used to ensure that the user
 	 * wanted to logoff
 	 * @param ctx	The source base activity
 	 */
-	public LogoffDialog(final ForumBaseActivity ctx) {
+	public LogoffDialog(final Activity ctx) {
 		_ctx = ctx;
 		
 		// Lets make sure the user didn't accidentally click this
@@ -51,7 +52,7 @@ public class LogoffDialog {
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which){
 			    	case DialogInterface.BUTTON_POSITIVE:
-			    		ctx.returnToLoginPage(true, false);
+			    		FragmentUtils.returnToLoginPage(ctx, true, false);
 		   				break;
 		        }
 		    }
@@ -68,7 +69,7 @@ public class LogoffDialog {
 	 */
 	public void show() {
 		if(LoginFactory.getInstance().isGuestMode())
-			_ctx.returnToLoginPage(true, false);
+			FragmentUtils.returnToLoginPage(_ctx, true, false);
 		else
 			builder.show();
 	}

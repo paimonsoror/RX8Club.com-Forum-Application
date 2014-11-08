@@ -1,18 +1,42 @@
 package com.normalexception.forum.rx8club.activities;
 
+/************************************************************************
+ * NormalException.net Software, and other contributors
+ * http://www.normalexception.net
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining
+ * a copy of this software and associated documentation files (the
+ * "Software"), to deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify, merge, publish,
+ * distribute, sublicense, and/or sell copies of the Software, and to
+ * permit persons to whom the Software is furnished to do so, subject to
+ * the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+ * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+ * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+ * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ ************************************************************************/
+
 import java.util.ArrayList;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +48,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.dialog.FavoriteDialog;
+import com.normalexception.forum.rx8club.dialog.LogoffDialog;
 import com.normalexception.forum.rx8club.fragment.AboutFragment;
 import com.normalexception.forum.rx8club.fragment.HomeFragment;
 import com.normalexception.forum.rx8club.fragment.LoginFragment;
@@ -33,13 +58,12 @@ import com.normalexception.forum.rx8club.fragment.UserCpFragment;
 import com.normalexception.forum.rx8club.fragment.category.CategoryFragment;
 import com.normalexception.forum.rx8club.fragment.category.FavoritesFragment;
 import com.normalexception.forum.rx8club.fragment.pm.PrivateMessageInboxFragment;
-import com.normalexception.forum.rx8club.html.LoginFactory;
 import com.normalexception.forum.rx8club.navigation.NavDrawerItem;
 import com.normalexception.forum.rx8club.navigation.NavDrawerListAdapter;
 import com.normalexception.forum.rx8club.preferences.PreferenceHelper;
 import com.normalexception.forum.rx8club.preferences.Preferences;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
 	private Logger TAG =  LogManager.getLogger(this.getClass());
 
@@ -139,7 +163,7 @@ public class MainActivity extends Activity {
 		getActionBar().setHomeButtonEnabled(true);
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, //nav menu toggle icon
+				/*R.drawable.ic_drawer, //nav menu toggle icon*/
 				R.string.app_name, // nav drawer open - description for accessibility
 				R.string.app_name // nav drawer close - description for accessibility
 				) {
@@ -193,7 +217,12 @@ public class MainActivity extends Activity {
 			_fragment = new UserCpFragment();
 			break;
 		case 7:
-			_fragment = new LoginFragment(stack);
+			if(!stack) {
+				_fragment = new LoginFragment(stack);
+			} else {
+				LogoffDialog ld = new LogoffDialog(this);
+           		ld.show();
+			}
 			stack = false;
 			break;
 		case 8:
@@ -202,10 +231,12 @@ public class MainActivity extends Activity {
 		case 9:
 			_fragment = new AboutFragment();
 			break;
+		default:
+			_fragment = null;
 		}
 
 		if (_fragment != null) {
-			FragmentManager fragmentManager = getFragmentManager();
+			FragmentManager fragmentManager = this.getSupportFragmentManager();
 			FragmentTransaction ft = fragmentManager.beginTransaction();
 
 			if(stack) {

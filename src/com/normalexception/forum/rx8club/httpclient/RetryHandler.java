@@ -26,11 +26,10 @@ package com.normalexception.forum.rx8club.httpclient;
 
 import java.io.IOException;
 
-import ch.boye.httpclientandroidlib.NoHttpResponseException;
-import ch.boye.httpclientandroidlib.impl.client.DefaultHttpRequestRetryHandler;
-import ch.boye.httpclientandroidlib.protocol.HttpContext;
-import ch.boye.httpclientandroidlib.protocol.HttpCoreContext;
-
+import org.apache.http.NoHttpResponseException;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.protocol.HttpCoreContext;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 

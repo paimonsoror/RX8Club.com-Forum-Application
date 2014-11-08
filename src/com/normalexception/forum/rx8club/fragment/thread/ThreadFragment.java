@@ -35,8 +35,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -55,6 +55,8 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.TimeoutFactory;
+import com.normalexception.forum.rx8club.fragment.FragmentUtils;
+import com.normalexception.forum.rx8club.fragment.PaginationFragment;
 import com.normalexception.forum.rx8club.fragment.StylerFragment;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 import com.normalexception.forum.rx8club.html.LoginFactory;
@@ -90,8 +92,8 @@ public class ThreadFragment extends Fragment {
 
 	private String securityToken = "none";
 	private String postNumber = "none";
-	private String finalPage = "0";
-	private String thisPage = "0";
+	private String finalPage = "1";
+	private String thisPage = "1";
 	
 	private ArrayList<PostView> postlist;
 	private PostViewArrayAdapter pva;
@@ -110,13 +112,46 @@ public class ThreadFragment extends Fragment {
 	private boolean isAdmin = false;
 	
 	private ThreadFragmentListener tal = 
-			new ThreadFragmentListener();
+			new ThreadFragmentListener(this);
+	
+	private View adminContent = null;
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
  
-        View rootView = inflater.inflate(R.layout.fragment_content, container, false);    	
+        View rootView = inflater.inflate(R.layout.fragment_content, container, false);   
+
+		lv = (ListView) rootView.findViewById(R.id.mainlistview);
+		
+		// Inflate the header if we are an admin
+		adminContent = inflater.inflate(R.layout.fragment_admin, null);
+		FragmentUtils.registerHandlerToViewObjects(tal, (ViewGroup)adminContent);
+		lv.addHeaderView(adminContent);
+		
+		// Inflate the footer (pagination, styler, reply box)
+		View v = inflater.inflate(R.layout.view_newreply_footer, null);
+		
+		getChildFragmentManager()
+			.beginTransaction()
+			.replace(R.id.fragment_content_styler, new StylerFragment())
+			.commit();
+		
+		getChildFragmentManager()
+			.beginTransaction()
+			.replace(R.id.nr_pagination, new PaginationFragment(this.tal))
+			.commit();
+
+		// If the user is guest or if the thread is locked, 
+		// then hide the items that they generally wont be able to use
+		if(LoginFactory.getInstance().isGuestMode() || isLocked) {
+			ViewHolder.get(v, R.id.nr_replycontainer)
+			.setVisibility(View.GONE);
+		}
+
+		lv.addFooterView(v);
+		rootView.findViewById(R.id.submitButton).setOnClickListener(tal);
+		
         return rootView;
     }
 	/*
@@ -129,39 +164,14 @@ public class ThreadFragment extends Fragment {
 			super.onCreate(savedInstanceState);
 			MainApplication.setState(AppState.State.THREAD, this);
 
-			lv = (ListView)getView().findViewById(R.id.mainlistview);
 			threadId = Utils.randomInt(0, 9999);
 			
 			Log.v(TAG, "Thread Activity Started");
 			
-			// Inflate the header if we are an admin
-			View h = getActivity().getLayoutInflater()
-					.inflate(R.layout.fragment_admin, null);
-			//FragmentUtils.registerHandlerToViewObjects(tal, h);
-			lv.addHeaderView(h);
-			
-			// Inflate the footer (pagination, styler, reply box)
-			View v = getActivity().getLayoutInflater()
-					.inflate(R.layout.view_newreply_footer, null);
-			
-			getFragmentManager()
-				.beginTransaction()
-				.replace(R.id.fragment_content_styler, new StylerFragment())
-				.commit();
-
-			// If the user is guest or if the thread is locked, 
-			// then hide the items that they generally wont be able to use
-			if(LoginFactory.getInstance().isGuestMode() || isLocked) {
-				ViewHolder.get(v, R.id.nr_replycontainer)
-				.setVisibility(View.GONE);
-			}
-
-			lv.addFooterView(v);
-			
 			if(TimeoutFactory.getInstance().checkTimeout(this)) {
 				postlist = new ArrayList<PostView>();
 				bmapList = new ArrayList<String>();
-				if(/*savedInstanceState == null ||*/ 
+				if(savedInstanceState == null ||
 						(pva == null || pva.getCount() == 0))
 					constructView();
 				else
@@ -260,6 +270,7 @@ public class ThreadFragment extends Fragment {
 	 * Update our list with the contents
 	 */
 	private void updateList() {
+		final Fragment frag = this;
 		getActivity().runOnUiThread(new Runnable() {
 			public void run() {	
 				getView().findViewById(R.id.mainlisttitle).setVisibility(View.VISIBLE);
@@ -269,7 +280,7 @@ public class ThreadFragment extends Fragment {
 				pva = new PostViewArrayAdapter(getActivity(), R.layout.view_thread, postlist, tal);
 				pva.setThreadId(threadId);
 				lv.setAdapter(pva);
-				//updatePagination(thisPage, finalPage);
+				FragmentUtils.updatePagination(frag, thisPage, finalPage);
 			}
 		});
 	}
@@ -303,7 +314,8 @@ public class ThreadFragment extends Fragment {
 			Log.d(TAG, "<><> User has administrative rights here! <><>");
 			isAdmin = true;
 		} else {
-			getView().findViewById(R.id.fragment_content_admin).setVisibility(View.GONE);
+			//adminContent.setVisibility(View.GONE);
+			lv.removeHeaderView(adminContent);
 		}
 
 		// Get the user's actual ID, there is a chance they never got it
@@ -416,6 +428,12 @@ public class ThreadFragment extends Fragment {
 	}
 
 	class ThreadFragmentListener implements OnClickListener {
+		private Fragment src = null;
+		
+		public ThreadFragmentListener(Fragment _src) {
+			src = _src;
+		}
+		
 		/*
 		 * (non-Javadoc)
 		 * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -446,7 +464,7 @@ public class ThreadFragment extends Fragment {
 				args.putString("page", String.valueOf(Integer.parseInt(pageNumber) + 1));
 				break;
 			case R.id.submitButton:
-				_fragment = new ThreadFragment();
+				_fragment = null;
 				String advert = PreferenceHelper.isAdvertiseEnabled(MainApplication.getAppContext())?
 						LoginFactory.getInstance().getSignature() : "";
 				String thePost = ((TextView)getActivity()
@@ -455,7 +473,7 @@ public class ThreadFragment extends Fragment {
 					String toPost = 
 						String.format("%s\n\n%s", thePost, advert);
 					SubmitTask sTask = new SubmitTask(
-						getActivity(), bmapList, securityToken, 
+						src, bmapList, securityToken, 
 						threadNumber, postNumber,
 						toPost, currentPageTitle, pageNumber);
 					//sTask.debug();
@@ -473,13 +491,18 @@ public class ThreadFragment extends Fragment {
 				.setView(input)
 				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
-						String value = input.getText().toString(); 
-						//Intent _intent = new Intent(ThreadActivity.this, ThreadActivity.class);
-						//_intent.putExtra("link", Utils.getPage(currentPageLink, value));
-						//_intent.putExtra("page", value);
-						//_intent.putExtra("title", currentPageTitle);
-						//startActivity(_intent);
-						//finish();
+						String value = input.getText().toString();
+						Fragment __fragment = new ThreadFragment();
+						
+						Bundle _args = new Bundle();
+						_args.putString("link", Utils.getPage(currentPageLink, value));
+						_args.putString("page", value);
+						_args.putString("title", currentPageTitle);
+
+						__fragment.setArguments(_args);
+						FragmentTransaction transaction = getFragmentManager().beginTransaction();
+						transaction.add(R.id.content_frame, __fragment);
+						transaction.commit();
 					}
 				}).setNegativeButton("Cancel", null).show();
 				break;
@@ -507,7 +530,8 @@ public class ThreadFragment extends Fragment {
 	
 				// Replace whatever is in the fragment_container view with this fragment,
 				// and add the transaction to the back stack
-				transaction.replace(R.id.content_frame, _fragment);
+				transaction.add(R.id.content_frame, _fragment);
+				transaction.addToBackStack(null);
 	
 				// Commit the transaction
 				transaction.commit();

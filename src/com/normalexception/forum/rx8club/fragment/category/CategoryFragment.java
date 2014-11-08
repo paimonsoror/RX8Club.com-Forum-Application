@@ -32,8 +32,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -96,6 +96,8 @@ public class CategoryFragment extends Fragment {
 
 	private String pageNumber = "1";
 	private String forumId = "";
+	private String thisPage = "";
+	private String finalPage = "";
 	
 	private boolean isNewTopicActivity = false;
 	
@@ -123,7 +125,7 @@ public class CategoryFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
     	try {
         	super.onCreate(savedInstanceState);
-        	//super.setState(AppState.State.CATEGORY, this.getIntent()); 
+        	MainApplication.setState(AppState.State.CATEGORY, this); 
 	        
 	        Log.v(TAG, "Category Activity Started");
 	        
@@ -156,8 +158,9 @@ public class CategoryFragment extends Fragment {
 		        }
 		        
 		        // Footer has pagination information
-		        View v = getActivity().getLayoutInflater().inflate(R.layout.fragment_pagination, null);
-		    	v.setOnClickListener(cl);
+		        ViewGroup v = (ViewGroup) getActivity()
+		        		.getLayoutInflater().inflate(R.layout.fragment_pagination, null);
+		    	FragmentUtils.registerHandlerToViewObjects(cl, v);
 		    	lv.addFooterView(v);
 		        
 		        if(savedInstanceState == null || 
@@ -176,6 +179,7 @@ public class CategoryFragment extends Fragment {
 	 * Update the view's list with the appropriate data
 	 */
 	private void updateList() {
+		final Fragment frag = this;
     	getActivity().runOnUiThread(new Runnable() {
             public void run() {
 		    	tva = new ThreadViewArrayAdapter(getActivity(), R.layout.view_thread, threadlist);
@@ -224,7 +228,11 @@ public class CategoryFragment extends Fragment {
 		        });
 				if(LoginFactory.getInstance().isLoggedIn())
 					registerForContextMenu(lv);
-				//updatePagination(thisPage, finalPage);
+				
+				
+				if(FragmentUtils.updatePagination(frag, thisPage, finalPage) == null)
+					getView().findViewById(R.id.paginationView).setVisibility(View.GONE);
+
 		        updateFilterizedInformation();
             }
     	});
@@ -336,7 +344,7 @@ public class CategoryFragment extends Fragment {
     
     /*
 	 * (non-Javadoc)
-	 * @see android.app.Fragment#onCreateContextMenu(android.view.ContextMenu, android.view.View, android.view.ContextMenu.ContextMenuInfo)
+	 * @see android.support.v4.app.Fragment#onCreateContextMenu(android.view.ContextMenu, android.view.View, android.view.ContextMenu.ContextMenuInfo)
 	 */
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
@@ -349,7 +357,7 @@ public class CategoryFragment extends Fragment {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see android.app.Fragment#onContextItemSelected(android.view.MenuItem)
+	 * @see android.support.v4.app.Fragment#onContextItemSelected(android.view.MenuItem)
 	 */
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -389,8 +397,8 @@ public class CategoryFragment extends Fragment {
 	    	Elements pageNumbers = doc.select("div[class=pagenav]");
 			Elements pageLinks = 
 					pageNumbers.first().select("td[class^=vbmenu_control]");
-			//thisPage = pageLinks.text().split(" ")[1];
-			//finalPage = pageLinks.text().split(" ")[3];
+			thisPage = pageLinks.text().split(" ")[1];
+			finalPage = pageLinks.text().split(" ")[3];
     	} catch (Exception e) { }
     	    	
     	// Make sure id contains only numbers
@@ -551,29 +559,40 @@ public class CategoryFragment extends Fragment {
 		@Override
 		public void onClick(View arg0) {
 			Intent _intent = null;
-			
+			Log.v(TAG, String.format("%d Clicked...", arg0.getId()));
+			Fragment _fragment = null;
+			Bundle args = new Bundle();
 			switch(arg0.getId()) {
 				case R.id.previousButton:
-					//_intent = new Intent(CategoryFragment.this, CategoryFragment.class);
-					//_intent.putExtra("link", Utils.decrementPage(link, this.pageNumber));
-					//_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) - 1));
-					//_intent.putExtra("isNewTopics", this.isNewTopicActivity);
-					//this.finish();
+					args.putString("link", Utils.decrementPage(link, pageNumber));
+					args.putString("page", String.valueOf(Integer.parseInt(pageNumber) - 1));
+					args.putBoolean("isNewTopics", isNewTopicActivity);
+					_fragment = new CategoryFragment();
 					break;
 				case R.id.nextButton:
-					//_intent = new Intent(CategoryFragment.this, CategoryFragment.class);
-					//_intent.putExtra("link", Utils.incrementPage(link, this.pageNumber));
-					//_intent.putExtra("page", String.valueOf(Integer.parseInt(this.pageNumber) + 1));
-					//_intent.putExtra("isNewTopics", this.isNewTopicActivity);
-					//this.finish();
+					args.putString("link", Utils.incrementPage(link, pageNumber));
+					args.putString("page", String.valueOf(Integer.parseInt(pageNumber) + 1));
+					args.putBoolean("isNewTopics", isNewTopicActivity);
+					_fragment = new CategoryFragment();
 					break;
 				case NEW_THREAD:
 			        createNewThreadHandler();
 					break;
 			}
 			
-			if(_intent != null)
-				startActivity(_intent);
+			if(_fragment != null) {
+				// Create new fragment and transaction
+				_fragment.setArguments(args);
+				FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+				// Replace whatever is in the fragment_container view with this fragment,
+				// and add the transaction to the back stack
+				transaction.add(R.id.content_frame, _fragment);
+				transaction.addToBackStack("newpage");
+
+				// Commit the transaction
+				transaction.commit();
+			}
 		}
     }
 	

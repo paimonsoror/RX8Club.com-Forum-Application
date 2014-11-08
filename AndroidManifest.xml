@@ -2,7 +2,7 @@
     android:name="com.normalexception.forum.MainApplication"
     package="com.normalexception.forum.rx8club"
     android:installLocation="auto"
-    android:versionCode="13014"
+    android:versionCode="13016"
     android:versionName="2.00" >
 
     <uses-sdk
@@ -30,7 +30,7 @@
         android:testOnly="false"
         android:theme="@android:style/Theme.Holo"
         android:vmSafeMode="false" >
-        <activity android:name=".activities.MainActivity">
+        <activity android:name=".activities.MainActivity" android:launchMode="singleInstance" android:hardwareAccelerated="true">
             <intent-filter>
             	<action android:name="android.intent.action.MAIN" />
             	<category android:name="android.intent.category.LAUNCHER" />

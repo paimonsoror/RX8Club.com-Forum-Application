@@ -26,6 +26,10 @@ package com.normalexception.forum.rx8club.html;
 
 import java.io.IOException;
 
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
@@ -33,15 +37,10 @@ import org.jsoup.nodes.Document;
 
 import android.app.Activity;
 import android.widget.Toast;
-import ch.boye.httpclientandroidlib.client.ClientProtocolException;
-import ch.boye.httpclientandroidlib.client.HttpClient;
-import ch.boye.httpclientandroidlib.client.methods.HttpGet;
-import ch.boye.httpclientandroidlib.util.EntityUtils;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.WebUrls;
-import com.normalexception.forum.rx8club.activities.ForumBaseActivity;
 import com.normalexception.forum.rx8club.fragment.FragmentUtils;
 import com.normalexception.forum.rx8club.httpclient.ClientUtils;
 import com.normalexception.forum.rx8club.utils.Utils;
@@ -106,7 +105,7 @@ public class VBForumFactory {
 			throws ClientProtocolException, IOException {
 		String output = null;
 		try {
-			HttpClient client = null;		
+			CloseableHttpClient client = null;		
 			
 			// Grab the login client
 			Log.d(TAG, "Grabbing Login Client");
@@ -126,7 +125,9 @@ public class VBForumFactory {
 		    					client.execute( httpget, lf.getHttpContext() ).getEntity(), 
 		    					"ISO-8859-1");
 	
-					httpget.releaseConnection();
+			    	// Automatically released in new versions
+			    	// of httpclient
+					//httpget.releaseConnection();
 					
 					if(output == null || 
 							output.equals("") || 
@@ -146,7 +147,7 @@ public class VBForumFactory {
 						"Error With Credentials", null);
 			}
 		} catch (Exception e) {
-			notifyError(src, "No Internet Connection...", null);
+			notifyError(src, "No Internet Connection...", e);
 			FragmentUtils.returnToLoginPage(src, false, false);
 		}
 		
@@ -166,6 +167,7 @@ public class VBForumFactory {
 	 * @param e		The exception to log
 	 */
 	private void notifyError(Activity src, final String msg, Exception e) {
+		Log.e(TAG, "Error In VBForumFactory", e);
 		src.runOnUiThread(new Runnable() {
 			  public void run() {
 				Toast.makeText(MainApplication.getAppContext(),

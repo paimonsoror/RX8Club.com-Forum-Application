@@ -32,7 +32,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -154,8 +154,11 @@ public class ProfileFragment extends Fragment {
 		                        				upInstance.getUserImageLink() : 
 		                        					upInstance.getUserImageLink().substring(0, 
 		                        							upInstance.getUserImageLink().indexOf("&dateline"));
-		                        ImageView avatar = ((ImageView)getView().findViewById(R.id.pr_image));
-		                        imageLoader.DisplayImage(nodate_avatar, avatar);
+		                        
+		                        if(!nodate_avatar.isEmpty()) {
+		                        	ImageView avatar = ((ImageView)getView().findViewById(R.id.pr_image));
+		                        	imageLoader.DisplayImage(nodate_avatar, avatar);
+		                        }
 		                        
 		                    	((TextView)getView().findViewById(R.id.pr_username)).setText(
 		                    			upInstance.getUsername() + " (ID: " + upInstance.getUserId() + ")");

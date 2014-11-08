@@ -26,12 +26,12 @@ package com.normalexception.forum.rx8club.view.category;
 
 import java.util.List;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -123,7 +123,7 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
 						newFragment.setArguments(args);
 						
 						FragmentTransaction transaction = 
-								((Activity)activity).getFragmentManager().beginTransaction();
+								((FragmentActivity)activity).getSupportFragmentManager().beginTransaction();
 
 						// Replace whatever is in the fragment_container view with this fragment,
 						// and add the transaction to the back stack

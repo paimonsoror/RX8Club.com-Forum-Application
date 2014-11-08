@@ -10,63 +10,7 @@
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:background="@android:color/darker_gray"
-		    android:baselineAligned="false">
-		    
-		    <ImageButton
-		            android:id="@+id/firstButton"
-		            android:layout_width="38dp"
-		            android:layout_height="38dp"
-		            android:adjustViewBounds="false"
-		            android:cropToPadding="false"
-		            android:maxHeight="20px"
-		            android:maxWidth="20px"
-		            android:scaleType="centerCrop"
-		            android:src="@drawable/firsticon" />
-		
-		    <ImageButton
-		            android:id="@+id/previousButton"
-		            android:layout_width="38dp"
-		            android:layout_height="38dp"
-		            android:adjustViewBounds="false"
-		            android:cropToPadding="false"
-		            android:maxHeight="20px"
-		            android:maxWidth="20px"
-		            android:scaleType="centerCrop"
-		            android:layout_toRightOf="@id/firstButton"
-		            android:src="@drawable/previcon" />
-		    
-		    <TextView
-		        android:id="@+id/paginationText"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:gravity="center_horizontal"
-		        android:text="@string/pageXofY"
-		        android:layout_centerInParent="true" />
-		     
-			<ImageButton
-			     android:id="@+id/lastButton"
-			     android:layout_alignParentRight="true"
-			     android:layout_width="38dp"
-			     android:layout_height="38dp"
-		            android:adjustViewBounds="false"
-		            android:cropToPadding="false"
-		            android:maxHeight="20px"
-		            android:maxWidth="20px"
-		            android:scaleType="centerCrop"
-			     android:src="@drawable/lasticon" />
-		    
-		    <ImageButton
-		            android:id="@+id/nextButton"
-		            android:layout_toLeftOf="@id/lastButton"
-		            android:layout_width="38dp"
-		            android:layout_height="38dp"
-		            android:adjustViewBounds="false"
-		            android:cropToPadding="false"
-		            android:maxHeight="20px"
-		            android:maxWidth="20px"
-		            android:scaleType="centerCrop"
-		            android:src="@drawable/nexticon" />
-		</RelativeLayout>
+		    android:baselineAligned="false"/>
 
         <LinearLayout
             android:id="@+id/nr_replycontainer"
@@ -105,7 +49,6 @@
 	            style="?android:attr/buttonStyleSmall"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:text="@string/submit"
-	            android:onClick="onClick" />
+	            android:text="@string/submit"/>
         </LinearLayout>
     </RelativeLayout>

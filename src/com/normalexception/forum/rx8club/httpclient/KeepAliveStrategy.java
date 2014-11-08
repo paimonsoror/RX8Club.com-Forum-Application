@@ -24,13 +24,13 @@ package com.normalexception.forum.rx8club.httpclient;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import ch.boye.httpclientandroidlib.HeaderElement;
-import ch.boye.httpclientandroidlib.HeaderElementIterator;
-import ch.boye.httpclientandroidlib.HttpResponse;
-import ch.boye.httpclientandroidlib.impl.client.DefaultConnectionKeepAliveStrategy;
-import ch.boye.httpclientandroidlib.message.BasicHeaderElementIterator;
-import ch.boye.httpclientandroidlib.protocol.HTTP;
-import ch.boye.httpclientandroidlib.protocol.HttpContext;
+import org.apache.http.HeaderElement;
+import org.apache.http.HeaderElementIterator;
+import org.apache.http.HttpResponse;
+import org.apache.http.impl.client.DefaultConnectionKeepAliveStrategy;
+import org.apache.http.message.BasicHeaderElementIterator;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 
 /**
  * Custom Keep alive strategy

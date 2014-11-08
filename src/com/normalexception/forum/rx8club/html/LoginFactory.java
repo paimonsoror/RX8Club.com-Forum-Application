@@ -30,6 +30,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.http.Header;
+import org.apache.http.HeaderElement;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpException;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpResponseInterceptor;
+import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CookieStore;
+import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.GzipDecompressingEntity;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
@@ -38,32 +63,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import ch.boye.httpclientandroidlib.Header;
-import ch.boye.httpclientandroidlib.HeaderElement;
-import ch.boye.httpclientandroidlib.HttpEntity;
-import ch.boye.httpclientandroidlib.HttpException;
-import ch.boye.httpclientandroidlib.HttpRequest;
-import ch.boye.httpclientandroidlib.HttpRequestInterceptor;
-import ch.boye.httpclientandroidlib.HttpResponse;
-import ch.boye.httpclientandroidlib.HttpResponseInterceptor;
-import ch.boye.httpclientandroidlib.HttpStatus;
-import ch.boye.httpclientandroidlib.NameValuePair;
-import ch.boye.httpclientandroidlib.client.ClientProtocolException;
-import ch.boye.httpclientandroidlib.client.CookieStore;
-import ch.boye.httpclientandroidlib.client.config.RequestConfig;
-import ch.boye.httpclientandroidlib.client.entity.GzipDecompressingEntity;
-import ch.boye.httpclientandroidlib.client.entity.UrlEncodedFormEntity;
-import ch.boye.httpclientandroidlib.client.methods.HttpPost;
-import ch.boye.httpclientandroidlib.cookie.Cookie;
-import ch.boye.httpclientandroidlib.impl.client.BasicCookieStore;
-import ch.boye.httpclientandroidlib.impl.client.CloseableHttpClient;
-import ch.boye.httpclientandroidlib.impl.client.cache.CacheConfig;
-import ch.boye.httpclientandroidlib.impl.client.cache.CachingHttpClientBuilder;
-import ch.boye.httpclientandroidlib.impl.client.cache.CachingHttpClients;
-import ch.boye.httpclientandroidlib.impl.conn.PoolingHttpClientConnectionManager;
-import ch.boye.httpclientandroidlib.message.BasicNameValuePair;
-import ch.boye.httpclientandroidlib.protocol.BasicHttpContext;
-import ch.boye.httpclientandroidlib.protocol.HttpContext;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
@@ -201,11 +200,13 @@ public class LoginFactory {
 	private void initializeClientInformation() {
 		Log.d(TAG, "Initializing Client...");
 		
+		/*
 		Log.d(TAG, "Creating Custom Cache Configuration");
 		CacheConfig cacheConfig = CacheConfig.custom()
 		        .setMaxCacheEntries(1000)
 		        .setMaxObjectSize(8192)
 		        .build();
+		*/
 		
 		Log.d(TAG, "Creating Custom Request Configuration");
 	    RequestConfig rConfig = RequestConfig.custom()
@@ -218,8 +219,8 @@ public class LoginFactory {
 	    httpContext = new BasicHttpContext();
 	    
 	    Log.d(TAG, "Building Custom HTTP Client");
-	    CachingHttpClientBuilder httpclientbuilder = CachingHttpClients.custom();
-	    httpclientbuilder.setCacheConfig(cacheConfig);
+	    HttpClientBuilder httpclientbuilder = HttpClients.custom();
+	    //httpclientbuilder.setCacheConfig(cacheConfig);
 	    httpclientbuilder.setDefaultRequestConfig(rConfig);
 	    httpclientbuilder.setDefaultCookieStore(cookieStore);
 
@@ -278,8 +279,8 @@ public class LoginFactory {
 	    
 	    httpclient = httpclientbuilder.build();
 	    
-	    httpclient.log.enableDebug(
-	    		MainApplication.isHttpClientLogEnabled());
+	    //httpclient.log.enableDebug(
+	    //		MainApplication.isHttpClientLogEnabled());
 	    
 	    isInitialized = true;
 	}
@@ -477,7 +478,7 @@ public class LoginFactory {
 	        	boolean val = 
 	        			response.getStatusLine().getStatusCode() != HttpStatus.SC_BAD_REQUEST;
 	        	Log.d(TAG, "Login status code: " + response.getStatusLine().getStatusCode());
-	        	httpost.releaseConnection();
+	        	//httpost.releaseConnection();
 	        	
 	        	for(Cookie cookie : cookies)
 	        		if(cookie.getName().equals(VBulletinKeys.CheckLoginStatus.getValue()) && 
