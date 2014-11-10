@@ -34,8 +34,12 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 
 import com.normalexception.forum.rx8club.Log;
+import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.fragment.category.CategoryFragment;
 import com.normalexception.forum.rx8club.fragment.thread.ThreadFragment;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
@@ -47,18 +51,18 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	private ProgressDialog mProgressDialog;
-	private Activity sourceActivity;
+	private Fragment sourceFragment;
 	
 	private String securitytoken, p, posthash, 
 		poststarttime, msg, pageTitle;
 	
 	private boolean delete = false, deleteThread = false;
 	
-	public UpdateTask(Activity sourceActivity, String token, String postid, 
+	public UpdateTask(Fragment sourceFragment, String token, String postid, 
 					  String posthash, String poststarttime, String pageNumber,
 					  String pageTitle, String message, boolean delete,
 					  boolean deleteThread) {
-		this.sourceActivity = sourceActivity;
+		this.sourceFragment = sourceFragment;
 		securitytoken = token;
 		p = postid;
 		this.posthash = posthash;
@@ -104,19 +108,43 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 		}
 		
 		String url = HtmlFormUtils.getResponseUrl();
-		Intent _intent = null;
+		/*Intent _intent = null;
 		
 		if(deleteThread) {
 			_intent = new Intent(sourceActivity, CategoryFragment.class);
 		} else {
 			_intent = new Intent(sourceActivity, ThreadFragment.class);			
-		}
-		
+		}*/
+		/*
 		_intent.putExtra("title", pageTitle);
 		_intent.putExtra("page", "1");
 		_intent.putExtra("link", url);
 		sourceActivity.finish();
-		sourceActivity.startActivity(_intent);
+		sourceActivity.startActivity(_intent);*/
+		
+		Bundle args = new Bundle();
+		args.putString("link", url);
+		args.putString("title", pageTitle);
+		args.putString("page", "1");
+		
+		// Create new fragment and transaction
+		Fragment newFragment = null;
+		if(deleteThread) {
+			newFragment = new CategoryFragment();
+		} else {
+			newFragment = new ThreadFragment(((ThreadFragment)sourceFragment).getParentCategory());
+		}
+		newFragment.setArguments(args);
+		FragmentTransaction transaction = 
+				sourceFragment.getFragmentManager().beginTransaction();
+
+		// Replace whatever is in the fragment_container view with this fragment,
+		// and add the transaction to the back stack
+		transaction.replace(R.id.content_frame, newFragment);
+		transaction.addToBackStack("thread");
+
+		// Commit the transaction
+		transaction.commit();
 	}
 	
 	/*
@@ -128,9 +156,9 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
     	
     	if(delete) 
     		mProgressDialog = 
-    			ProgressDialog.show(this.sourceActivity, "Deleting...", "Deleting Post...");
+    			ProgressDialog.show(sourceFragment.getActivity(), "Deleting...", "Deleting Post...");
     	else
     		mProgressDialog = 
-        		ProgressDialog.show(this.sourceActivity, "Submitting...", "Submitting Post...");
+        		ProgressDialog.show(sourceFragment.getActivity(), "Submitting...", "Submitting Post...");
     }
 }

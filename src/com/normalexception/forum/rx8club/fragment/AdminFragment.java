@@ -47,6 +47,12 @@ import com.normalexception.forum.rx8club.view.ViewHolder;
 public class AdminFragment extends Fragment implements OnClickListener {
 	
 	private Logger TAG =  LogManager.getLogger(this.getClass());
+	
+	private	ThreadFragment ta = null;
+	
+	public AdminFragment(ThreadFragment tf) {
+		this.ta = tf;
+	}
     
 	/*
 	 * (non-Javadoc)
@@ -78,9 +84,6 @@ public class AdminFragment extends Fragment implements OnClickListener {
 	 */
 	@Override
 	public void onClick(View arg0) {
-		
-		ThreadFragment ta = null;
-				//(ThreadActivity)this.getActivity();
 		Log.d(TAG, String.format("sid:%s, tid:%s", ta.getSecurityToken(), ta.getThreadNumber()));
 		AdminTask lt = null;
 		
@@ -90,15 +93,15 @@ public class AdminFragment extends Fragment implements OnClickListener {
 			break;
 		case R.id.threadDeleteButton:
 			Log.d(TAG, "Thread Delete Button Pressed");
-			lt = new AdminTask(ta.getActivity(), ta.getSecurityToken(), ta.getThreadNumber(), AdminTask.DELETE_THREAD);
+			lt = new AdminTask(ta, ta.getSecurityToken(), ta.getThreadNumber(), AdminTask.DELETE_THREAD);
 			break;
 		case R.id.threadLockButton:
 			Log.d(TAG, "Thread Lock Button Pressed");
-			lt = new AdminTask(ta.getActivity(), ta.getSecurityToken(), ta.getThreadNumber(), AdminTask.LOCK_THREAD);
+			lt = new AdminTask(ta, ta.getSecurityToken(), ta.getThreadNumber(), AdminTask.LOCK_THREAD);
 			break;
 		case R.id.threadMoveButton:
 			Log.d(TAG, "Thread Move Button Pressed");
-			lt = new AdminTask(ta.getActivity(), ta.getSecurityToken(), ta.getThreadNumber(), AdminTask.MOVE_THREAD);
+			lt = new AdminTask(ta, ta.getSecurityToken(), ta.getThreadNumber(), AdminTask.MOVE_THREAD);
 			break;
 		}
 		

@@ -35,12 +35,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.AlertDialog;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +55,7 @@ import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.MainApplication;
 import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.TimeoutFactory;
+import com.normalexception.forum.rx8club.fragment.AdminFragment;
 import com.normalexception.forum.rx8club.fragment.FragmentUtils;
 import com.normalexception.forum.rx8club.fragment.PaginationFragment;
 import com.normalexception.forum.rx8club.fragment.StylerFragment;
@@ -115,6 +116,12 @@ public class ThreadFragment extends Fragment {
 			new ThreadFragmentListener(this);
 	
 	private View adminContent = null;
+	
+	private Fragment parentCategory = null;
+	
+	public ThreadFragment(Fragment parentCategory) {
+		this.parentCategory = parentCategory;
+	}
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -124,9 +131,14 @@ public class ThreadFragment extends Fragment {
 
 		lv = (ListView) rootView.findViewById(R.id.mainlistview);
 		
+		adminContent = inflater.inflate(R.layout.view_newreply_header, null);
+		
 		// Inflate the header if we are an admin
-		adminContent = inflater.inflate(R.layout.fragment_admin, null);
-		FragmentUtils.registerHandlerToViewObjects(tal, (ViewGroup)adminContent);
+		//adminContent = inflater.inflate(R.layout.fragment_admin, null);
+		getChildFragmentManager()
+			.beginTransaction()
+			.replace(R.id.fragment_content_admin, new AdminFragment(this))
+			.commit();
 		lv.addHeaderView(adminContent);
 		
 		// Inflate the footer (pagination, styler, reply box)
@@ -150,8 +162,9 @@ public class ThreadFragment extends Fragment {
 		}
 
 		lv.addFooterView(v);
-		rootView.findViewById(R.id.submitButton).setOnClickListener(tal);
+		v.findViewById(R.id.submitButton).setOnClickListener(tal);
 		
+		Log.v(TAG, "ThreadFragment view loaded");
         return rootView;
     }
 	/*
@@ -454,12 +467,12 @@ public class ThreadFragment extends Fragment {
 				lv.setSelection(lv.getCount());
 				break;
 			case R.id.previousButton:
-				_fragment = new ThreadFragment();
+				_fragment = new ThreadFragment(parentCategory);
 				args.putString("link", Utils.decrementPage(currentPageLink, pageNumber));
 				args.putString("page", String.valueOf(Integer.parseInt(pageNumber) - 1));
 				break;
 			case R.id.nextButton:
-				_fragment = new ThreadFragment();
+				_fragment = new ThreadFragment(parentCategory);
 				args.putString("link", Utils.incrementPage(currentPageLink, pageNumber));
 				args.putString("page", String.valueOf(Integer.parseInt(pageNumber) + 1));
 				break;
@@ -492,7 +505,7 @@ public class ThreadFragment extends Fragment {
 				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						String value = input.getText().toString();
-						Fragment __fragment = new ThreadFragment();
+						Fragment __fragment = new ThreadFragment(parentCategory);
 						
 						Bundle _args = new Bundle();
 						_args.putString("link", Utils.getPage(currentPageLink, value));
@@ -508,13 +521,13 @@ public class ThreadFragment extends Fragment {
 				break;
 	
 			case R.id.firstButton:
-				_fragment = new ThreadFragment();
+				_fragment = new ThreadFragment(parentCategory);
 				args.putString("link", Utils.getPage(currentPageLink, Integer.toString(1)));
 				args.putString("page", "1");
 				break;
 	
 			case R.id.lastButton:
-				_fragment = new ThreadFragment();
+				_fragment = new ThreadFragment(parentCategory);
 				args.putString("link", Utils.getPage(currentPageLink, finalPage));
 				args.putString("page", finalPage);
 				break;	
@@ -575,5 +588,9 @@ public class ThreadFragment extends Fragment {
 	
 	public String getSecurityToken() {
 		return this.securityToken;
+	}
+	
+	public Fragment getParentCategory() {
+		return this.parentCategory;
 	}
 }

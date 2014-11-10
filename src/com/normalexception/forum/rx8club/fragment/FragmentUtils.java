@@ -101,7 +101,7 @@ public class FragmentUtils {
 	public static void returnToLoginPage(Activity src, boolean clearPrefs, boolean timeout) {
 		LoginFactory.getInstance().logoff(clearPrefs);
 		
-		Fragment newFragment = new LoginFragment(false);		
+		Fragment newFragment = new LoginFragment(true);		
 		FragmentTransaction transaction = 
 				((FragmentActivity)src).getSupportFragmentManager().beginTransaction();
 
@@ -120,38 +120,40 @@ public class FragmentUtils {
      */
     public static String[] updatePagination(final Fragment src, String thisPage, String finalPage) {
     	try {
-	    	final boolean first, prev, next, last;
-	    	String myThisPage = thisPage;
-	    	String myFinalPage = finalPage;
-	
-			final TextView pagination = (TextView)src.getView().findViewById(R.id.paginationText);
-	    	String label = pagination.getText().toString();            	
-	    	label = label.replace("X", thisPage);
-	    	label = label.replace("Y", finalPage);
-	    	final String finalizedLabel = label;
-	    	
-	    	// Set up our buttons
-	    	prev = Integer.parseInt(thisPage) == 1?
-	    			false : true;
-	    	first = Integer.parseInt(thisPage) == 1?
-	    			false : true;
-	    	next = Integer.parseInt(finalPage) > Integer.parseInt(thisPage)?
-	    			true : false;
-	    	last = Integer.parseInt(thisPage) == Integer.parseInt(finalPage)?
-	    			false : true;
-	    	
-	    	// Update GUI components
-	    	src.getActivity().runOnUiThread(new Runnable() {
-	    		public void run() {
-	    			src.getView().findViewById(R.id.previousButton).setEnabled(prev);
-	    			src.getView().findViewById(R.id.firstButton).setEnabled(first);
-	    			src.getView().findViewById(R.id.nextButton).setEnabled(next);
-	    			src.getView().findViewById(R.id.lastButton).setEnabled(last);
-					pagination.setText(finalizedLabel);
-	    		}
-	    	});
-	    	
-	    	return new String[]{myThisPage, myFinalPage};
+    		if(!thisPage.equals("") && !finalPage.equals("")) {
+		    	final boolean first, prev, next, last;
+		    	String myThisPage = thisPage;
+		    	String myFinalPage = finalPage;
+		
+				final TextView pagination = (TextView)src.getView().findViewById(R.id.paginationText);
+		    	String label = pagination.getText().toString();            	
+		    	label = label.replace("X", thisPage);
+		    	label = label.replace("Y", finalPage);
+		    	final String finalizedLabel = label;
+		    	
+		    	// Set up our buttons
+		    	prev = Integer.parseInt(thisPage) == 1?
+		    			false : true;
+		    	first = Integer.parseInt(thisPage) == 1?
+		    			false : true;
+		    	next = Integer.parseInt(finalPage) > Integer.parseInt(thisPage)?
+		    			true : false;
+		    	last = Integer.parseInt(thisPage) == Integer.parseInt(finalPage)?
+		    			false : true;
+		    	
+		    	// Update GUI components
+		    	src.getActivity().runOnUiThread(new Runnable() {
+		    		public void run() {
+		    			src.getView().findViewById(R.id.previousButton).setEnabled(prev);
+		    			src.getView().findViewById(R.id.firstButton).setEnabled(first);
+		    			src.getView().findViewById(R.id.nextButton).setEnabled(next);
+		    			src.getView().findViewById(R.id.lastButton).setEnabled(last);
+						pagination.setText(finalizedLabel);
+		    		}
+		    	});
+		    	
+		    	return new String[]{myThisPage, myFinalPage};
+    		}
     	} catch (Exception e) { 
     		Log.e(TAG, "Error Parsing Pagination", e);
     	}

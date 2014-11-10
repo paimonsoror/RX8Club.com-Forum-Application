@@ -31,6 +31,8 @@ import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 
 import android.support.v4.app.Fragment;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,26 +73,7 @@ public class NewThreadFragment extends Fragment {
 	private ArrayList<ThreadItemView> tlist;
 	private ThreadItemViewArrayAdapter pva;
 	
-	/*
-	 * (non-Javadoc)
-	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onSaveInstanceState(android.os.Bundle)
-	 */
-	public void onSaveInstanceState(Bundle outState) {	
-		// First save the subject and post
-		subject = ((TextView)getView().findViewById(R.id.postSubject)).getText().toString();
-		post = ((TextView)getView().findViewById(R.id.postPost)).getText().toString();
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onRestoreInstanceState(android.os.Bundle)
-	 */
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		if(savedInstanceState != null) {
-			subject 	= savedInstanceState.getString("subject");
-			post 		= savedInstanceState.getString("post");
-		}
-	}
+	private ProgressDialog loadingDialog;
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,33 +112,70 @@ public class NewThreadFragment extends Fragment {
     /**
      * Construct the view
      */
-    private void constructView() {    	
-    	if(link != null) {
-	    	Document doc = VBForumFactory.getInstance().get(getActivity(), link);
-	    	if(doc != null) {
-		    	s 			= HtmlFormUtils.getInputElementValueByName(doc, "s");
-		    	token 		= HtmlFormUtils.getInputElementValueByName(doc, "securitytoken");
-		    	f 			= HtmlFormUtils.getInputElementValueByName(doc, "f");
-		    	posthash 	= HtmlFormUtils.getInputElementValueByName(doc, "posthash");
-		    	
-		    	tlist.add(new ThreadItemView());
-		    	
-		    	getActivity().runOnUiThread(new Runnable() {
-		            public void run() {
-				    	pva = new ThreadItemViewArrayAdapter(getActivity(), R.layout.view_newthread, tlist);
-						lv.setAdapter(pva);		        
-		            }
-		    	});
-	    	}
-    	} else {
-    		Log.e(TAG, "Link Was NULL!", null);
-    		Toast.makeText(getActivity(), "Sorry! Error Trying To Create New Thread!", 
-    				Toast.LENGTH_SHORT).show();
-    		//this.finish();
-    	}
+    private void constructView() { 
+    	final Fragment _src = this;
+    	AsyncTask<Void,String,Void> updaterTask = new AsyncTask<Void,String,Void>() {
+        	@Override
+		    protected void onPreExecute() {
+		    	loadingDialog = 
+						ProgressDialog.show(getActivity(), 
+								getString(R.string.loading), 
+								getString(R.string.pleaseWait), true);
+		    }
+        	@Override
+			protected Void doInBackground(Void... params) {	
+		    	if(link != null) {
+			    	Document doc = VBForumFactory.getInstance().get(getActivity(), link);
+			    	if(doc != null) {
+				    	s 			= HtmlFormUtils.getInputElementValueByName(doc, "s");
+				    	token 		= HtmlFormUtils.getInputElementValueByName(doc, "securitytoken");
+				    	f 			= HtmlFormUtils.getInputElementValueByName(doc, "f");
+				    	posthash 	= HtmlFormUtils.getInputElementValueByName(doc, "posthash");
+				    	
+				    	tlist.add(new ThreadItemView());
+				    	
+				    	getActivity().runOnUiThread(new Runnable() {
+				            public void run() {
+						    	pva = new ThreadItemViewArrayAdapter(_src, 
+						    			R.layout.view_newthread, tlist, new NewThreadListener(_src));
+								lv.setAdapter(pva);		        
+				            }
+				    	});
+			    	}
+		    	} else {
+		    		Log.e(TAG, "Link Was NULL!", null);
+		    		Toast.makeText(getActivity(), "Sorry! Error Trying To Create New Thread!", 
+		    				Toast.LENGTH_SHORT).show();
+		    		//this.finish();
+		    	}
+		    	return null;
+        	}
+	    	@Override
+		    protected void onProgressUpdate(String...progress) {
+        		if(loadingDialog != null)
+        			loadingDialog.setMessage(progress[0]);
+		    }
+			
+			@Override
+		    protected void onPostExecute(Void result) {
+				try {
+					loadingDialog.dismiss();
+					loadingDialog = null;
+				} catch (Exception e) {
+					Log.w(TAG, e.getMessage());
+				}
+			}
+        };
+        updaterTask.execute();
     }
     
     class NewThreadListener implements OnClickListener {
+    	private Fragment src_;
+    	
+    	public NewThreadListener(Fragment src) {
+    		this.src_ = src;
+    	}
+    	
 	    /*
 		 * (non-Javadoc)
 		 * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -168,7 +188,7 @@ public class NewThreadFragment extends Fragment {
 					
 			switch(arg0.getId()) {
 				case R.id.newThreadButton:
-					NewThreadTask ntt = new NewThreadTask(getActivity(), forumId, s, 
+					NewThreadTask ntt = new NewThreadTask(src_, forumId, s, 
 							 token, f, posthash, subject, post, source);
 					ntt.execute();
 				break;

@@ -32,6 +32,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
@@ -44,6 +48,7 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.fragment.category.CategoryFragment;
 import com.normalexception.forum.rx8club.fragment.pm.NewPrivateMessageFragment;
 import com.normalexception.forum.rx8club.fragment.thread.EditPostFragment;
 import com.normalexception.forum.rx8club.fragment.thread.ThreadFragment;
@@ -214,6 +219,24 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	        		//_intent.putExtra("postid", cv.getPostId());
 					//_intent.putExtra("securitytoken", cv.getToken());
 					//activity.startActivity(_intent);
+	        		
+	        		// Create new fragment and transaction
+					Bundle args = new Bundle();
+					args.putString("postid", cv.getPostId());
+					args.putString("securitytoken", cv.getToken());
+					Fragment newFragment = new EditPostFragment();
+					newFragment.setArguments(args);
+					
+					FragmentTransaction transaction = 
+							((FragmentActivity)activity).getSupportFragmentManager().beginTransaction();
+
+					// Replace whatever is in the fragment_container view with this fragment,
+					// and add the transaction to the back stack
+					transaction.replace(R.id.content_frame, newFragment);
+					transaction.addToBackStack(null);
+
+					// Commit the transaction
+					transaction.commit();
 	        	}
 	        });
 	        
@@ -225,6 +248,23 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	        		//Intent _intent =  new Intent(activity, NewPrivateMessageFragment.class);
 					//_intent.putExtra("user", cv.getUserName());
 					//activity.startActivity(_intent);
+	        		
+	        		// Create new fragment and transaction
+					Bundle args = new Bundle();
+					args.putString("user", cv.getUserName());
+					Fragment newFragment = new NewPrivateMessageFragment();
+					newFragment.setArguments(args);
+					
+					FragmentTransaction transaction = 
+							((FragmentActivity)activity).getSupportFragmentManager().beginTransaction();
+
+					// Replace whatever is in the fragment_container view with this fragment,
+					// and add the transaction to the back stack
+					transaction.add(R.id.content_frame, newFragment);
+					transaction.addToBackStack(null);
+
+					// Commit the transaction
+					transaction.commit();
 	        	}
 	        });
 	    	
@@ -245,6 +285,26 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 					        	//_intent.putExtra("delete", true);
 					        	//_intent.putExtra("deleteThread", isFirstPost && cv.isLoggedInUser());
 					        	//activity.startActivity(_intent);
+					        	
+					        	// Create new fragment and transaction
+								Bundle args = new Bundle();
+								args.putString("postid", cv.getPostId());
+								args.putString("securitytoken", cv.getToken());
+								args.putBoolean("delete", true);
+								args.putBoolean("deleteThread", isFirstPost && cv.isLoggedInUser());
+								Fragment newFragment = new EditPostFragment();
+								newFragment.setArguments(args);
+								
+								FragmentTransaction transaction = 
+										((FragmentActivity)activity).getSupportFragmentManager().beginTransaction();
+
+								// Replace whatever is in the fragment_container view with this fragment,
+								// and add the transaction to the back stack
+								transaction.add(R.id.content_frame, newFragment);
+								transaction.addToBackStack(null);
+
+								// Commit the transaction
+								transaction.commit();
 					            break;
 					        }
 					    }

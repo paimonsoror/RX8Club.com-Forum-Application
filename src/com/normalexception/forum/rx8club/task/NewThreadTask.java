@@ -32,10 +32,13 @@ import org.apache.log4j.Logger;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 
 import com.normalexception.forum.rx8club.Log;
+import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.fragment.thread.ThreadFragment;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
@@ -46,15 +49,15 @@ import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 public class NewThreadTask extends AsyncTask<Void,Void,Void> {
 	private ProgressDialog mProgressDialog;
 	
-	private Activity sourceActivity;
+	private Fragment sourceFragment;
 	private String s, token, posthash, subject, post, forumId;
 	
 	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
-	public NewThreadTask(Activity source, String forumId, String s, 
+	public NewThreadTask(Fragment source, String forumId, String s, 
 						 String token, String f, String posthash,
 						 String subject, String post, String sourceLink) {
-		this.sourceActivity = source;
+		this.sourceFragment = source;
 		this.s = s;
 		this.token = token;
 		this.posthash = posthash;
@@ -76,12 +79,31 @@ public class NewThreadTask extends AsyncTask<Void,Void,Void> {
 			Log.w(TAG, e.getMessage());
 		}
 		
+		/*
 		Intent _intent = new Intent(sourceActivity, ThreadFragment.class);
 		_intent.putExtra("link", HtmlFormUtils.getResponseUrl());
 		_intent.putExtra("title", subject);
 		_intent.putExtra("page", "1");
 		sourceActivity.finish();
-		sourceActivity.startActivity(_intent);
+		sourceActivity.startActivity(_intent);*/
+		Bundle args = new Bundle();
+		args.putString("link", HtmlFormUtils.getResponseUrl());
+		args.putString("title", subject);
+		args.putString("page", "1");
+		
+		// Create new fragment and transaction
+		Fragment newFragment = new ThreadFragment(((ThreadFragment)sourceFragment).getParentCategory());
+		newFragment.setArguments(args);
+		FragmentTransaction transaction = 
+				sourceFragment.getFragmentManager().beginTransaction();
+
+		// Replace whatever is in the fragment_container view with this fragment,
+		// and add the transaction to the back stack
+		transaction.replace(R.id.content_frame, newFragment);
+		transaction.addToBackStack("thread");
+
+		// Commit the transaction
+		transaction.commit();
     }
 
 	/*
@@ -92,7 +114,7 @@ public class NewThreadTask extends AsyncTask<Void,Void,Void> {
     protected void onPreExecute() {
     	
         mProgressDialog = 
-        		ProgressDialog.show(this.sourceActivity, "Submitting...", "Creating New Thread...");
+        		ProgressDialog.show(sourceFragment.getActivity(), "Submitting...", "Creating New Thread...");
     }
 	
     /*

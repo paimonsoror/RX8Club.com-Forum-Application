@@ -5,10 +5,9 @@
     android:background="@android:color/darker_gray"
     android:baselineAligned="false">
 		    
-	    <fragment
+	    <RelativeLayout
 	      android:id="@+id/fragment_content_admin"
-	      android:name="com.normalexception.forum.rx8club.fragment.AdminFragment"
 	      android:layout_width="fill_parent"
-	      android:layout_height="wrap_content"></fragment>	
+	      android:layout_height="wrap_content"></RelativeLayout>	
 	        
 </RelativeLayout>

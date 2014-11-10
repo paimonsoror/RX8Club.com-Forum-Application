@@ -61,49 +61,8 @@ public class UserCpFragment extends Fragment {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onSaveInstanceState(android.os.Bundle)
+	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
 	 */
-	public void onSaveInstanceState(Bundle outState) {	
-		try {
-			outState.putSerializable("token", token);
-			outState.putSerializable("customTitle", customTitle); 
-			outState.putSerializable("homepageurl", homepageurl);
-			outState.putSerializable("biography", biography);
-			outState.putSerializable("location", location);
-			outState.putSerializable("interests", interests);
-			outState.putSerializable("occupation", occupation);
-		} catch (Exception e) {
-			Log.e(TAG, "Error Serializing: " + e.getMessage(), e);
-		}
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onRestoreInstanceState(android.os.Bundle)
-	 */
-	public void onRestoreInstanceState(Bundle savedInstanceState) {
-		try {
-			if(savedInstanceState != null) {
-				token =
-						(String)savedInstanceState.getSerializable("token");
-				customTitle = 
-						(String)savedInstanceState.getSerializable("customTitle");
-				homepageurl =
-						(String)savedInstanceState.getSerializable("homepageurl");
-				biography =
-						(String)savedInstanceState.getSerializable("biography");
-				location =
-						(String)savedInstanceState.getSerializable("location");
-				interests =
-						(String)savedInstanceState.getSerializable("interests");
-				occupation =
-						(String)savedInstanceState.getSerializable("occupation");
-			}
-		} catch (Exception e) {
-			Log.e(TAG, "Error UnSerializing: " + e.getMessage(), e);
-		}
-	}
-	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -112,6 +71,11 @@ public class UserCpFragment extends Fragment {
         return rootView;
     }
 	
+	/*
+	 * (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
+	 */
+	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         MainApplication.setState(AppState.State.USER_CP, this);

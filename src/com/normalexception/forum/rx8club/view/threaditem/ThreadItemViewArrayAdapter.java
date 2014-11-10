@@ -27,8 +27,10 @@ package com.normalexception.forum.rx8club.view.threaditem;
 import java.util.List;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -40,8 +42,9 @@ import com.normalexception.forum.rx8club.fragment.thread.NewThreadFragment;
 import com.normalexception.forum.rx8club.view.ViewHolder;
 
 public class ThreadItemViewArrayAdapter extends ArrayAdapter<ThreadItemView> {
-	private Context activity;
+	private Fragment frag_;
 	private List<ThreadItemView> data;
+	private OnClickListener ocl_;
 
 	/**
 	 * Custom adapter to handle PMItemView's
@@ -49,11 +52,12 @@ public class ThreadItemViewArrayAdapter extends ArrayAdapter<ThreadItemView> {
 	 * @param textViewResourceId	The resource id
 	 * @param objects				The list of objects
 	 */
-	public ThreadItemViewArrayAdapter(Context context, int textViewResourceId,
-			List<ThreadItemView> objects) {
-		super(context, textViewResourceId, objects);
-		activity = context;
+	public ThreadItemViewArrayAdapter(Fragment frag, int textViewResourceId,
+			List<ThreadItemView> objects, OnClickListener ocl) {
+		super(frag.getActivity(), textViewResourceId, objects);
+		frag_ = frag;
 		data = objects;
+		ocl_ = ocl;
 	}
 	
 	/*
@@ -82,25 +86,25 @@ public class ThreadItemViewArrayAdapter extends ArrayAdapter<ThreadItemView> {
 		View vi = convertView;
         if(vi == null) {
         	LayoutInflater vinf =
-                    (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    (LayoutInflater)frag_.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             vi = vinf.inflate(R.layout.view_newthread, null);
         }
         
         // Because we use this class when handling edits, we need to make
         // sure that we cast this properly and then rename our submit button
-        /*if(activity instanceof NewThreadActivity) {
+        if(frag_ instanceof NewThreadFragment) {
         	((Button) ViewHolder.get(vi,R.id.newThreadButton))
-        		.setOnClickListener((NewThreadActivity)activity);
-        } else if (activity instanceof EditPostActivity) {
+        		.setOnClickListener(ocl_);
+        } else if (frag_ instanceof EditPostFragment) {
         	((Button) ViewHolder.get(vi,R.id.newThreadButton))
-    			.setOnClickListener((EditPostActivity)activity);
+    			.setOnClickListener(ocl_);
         	((Button) ViewHolder.get(vi,R.id.newThreadButton))
         		.setText("Submit Changes");
         	
         	ThreadItemView ti = getItem(position);
         	((EditText) ViewHolder.get(vi,R.id.postPost))
         		.setText(ti.getPost());
-        }*/
+        }
                
         return vi;
 	}

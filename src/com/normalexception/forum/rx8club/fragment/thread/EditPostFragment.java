@@ -123,6 +123,7 @@ public class EditPostFragment extends Fragment {
 	 * Construct the view items
 	 */
 	private void constructView() {
+		final Fragment _src = this;
 		AsyncTask<Void,String,Void> updaterTask = new AsyncTask<Void,String,Void>() {
 			@Override
 			protected void onPreExecute() {
@@ -156,7 +157,8 @@ public class EditPostFragment extends Fragment {
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
 
-							pva = new ThreadItemViewArrayAdapter(getActivity(), R.layout.view_newthread, tlist);
+							pva = new ThreadItemViewArrayAdapter(_src, 
+									R.layout.view_newthread, tlist, new EditPostListener(_src));
 							lv.setAdapter(pva);	
 						}
 					});
@@ -191,7 +193,7 @@ public class EditPostFragment extends Fragment {
 	 */
 	private void deletePost() {
 		UpdateTask utask = 
-				new UpdateTask(getActivity(), this.securityToken, this.postId,
+				new UpdateTask(this, this.securityToken, this.postId,
 						this.postHash, this.poststart, this.pageNumber, 
 						this.pageTitle, null, true, deleteThread);
 		utask.execute();
@@ -208,6 +210,10 @@ public class EditPostFragment extends Fragment {
 	}
 
 	class EditPostListener implements OnClickListener {
+		private Fragment _src;
+		public EditPostListener(Fragment src) {
+			_src = src;
+		}
 		/*
 		 * (non-Javadoc)
 		 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onClick(android.view.View)
@@ -219,7 +225,7 @@ public class EditPostFragment extends Fragment {
 				String toPost = 
 				((TextView)getView().findViewById(R.id.postPost)).getText().toString();
 				UpdateTask utask = 
-						new UpdateTask(getActivity(), securityToken, postId,
+						new UpdateTask(_src, securityToken, postId,
 								postHash, poststart, pageNumber, 
 								pageTitle, toPost, false, false);
 				utask.execute();

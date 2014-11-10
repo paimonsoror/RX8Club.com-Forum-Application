@@ -109,6 +109,20 @@ public class CategoryFragment extends Fragment {
 	private final int NEW_THREAD = 5000;
 	
 	public static final int NO_PERMISSION = -2;
+	
+	/**
+	 * Refresh our view.  The idea here is when we restore our
+	 * fragment from an admin operation, like deleting or removing
+	 * we want to refresh our view
+	 */
+	public void refreshView() {
+		Log.d(TAG, "Refreshing View");
+		if(tva != null) {
+			threadlist.clear();
+			constructView();
+			tva.notifyDataSetChanged();
+		}
+	}
 
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -212,7 +226,7 @@ public class CategoryFragment extends Fragment {
 							args.putString("title", itm.getTitle());
 							
 							// Create new fragment and transaction
-							Fragment newFragment = new ThreadFragment();
+							Fragment newFragment = new ThreadFragment(frag);
 							newFragment.setArguments(args);
 							FragmentTransaction transaction = getFragmentManager().beginTransaction();
 

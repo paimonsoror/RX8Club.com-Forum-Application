@@ -94,7 +94,6 @@ public class TimeoutFactory {
 		    			Toast.makeText(src.getActivity(), R.string.timeout, Toast.LENGTH_SHORT).show();
 		    		}
 				});
-				src.getActivity().finish();
 				Log.d(TAG, "## PING TIME EXPIRED ##");
 				FragmentUtils.returnToLoginPage(src.getActivity(), false, false);
 				return false;

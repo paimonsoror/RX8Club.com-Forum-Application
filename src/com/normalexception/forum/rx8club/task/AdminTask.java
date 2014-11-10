@@ -41,9 +41,14 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 
 import com.normalexception.forum.rx8club.Log;
+import com.normalexception.forum.rx8club.R;
 import com.normalexception.forum.rx8club.dialog.MoveThreadDialog;
+import com.normalexception.forum.rx8club.fragment.thread.ThreadFragment;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
 /**
@@ -53,7 +58,7 @@ import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 public class AdminTask extends AsyncTask<Void,String,Void>{
 
 	private ProgressDialog mProgressDialog;
-	private Activity sourceActivity;
+	private Fragment sourceFragment;
 	
 	private String token, thread, doType, deleteResponse;
 
@@ -127,13 +132,13 @@ public class AdminTask extends AsyncTask<Void,String,Void>{
 	
 	/**
 	 * Constructor to a LockTask
-	 * @param sourceActivity	The source activity
+	 * @param sourceFragment	The source activity
 	 * @param securityToken		The users security token
 	 * @param threadNumber		The source thread number
 	 */
-	public AdminTask(Activity sourceActivity, String securityToken, String threadNumber, String action) 
+	public AdminTask(Fragment sourceFragment, String securityToken, String threadNumber, String action) 
 	{
-		this.sourceActivity = sourceActivity;
+		this.sourceFragment = sourceFragment;
 		this.token = securityToken;
 		this.thread = threadNumber;
 		this.doType = action;
@@ -164,7 +169,7 @@ public class AdminTask extends AsyncTask<Void,String,Void>{
     @Override
     protected void onPreExecute() {
         mProgressDialog = 
-        		ProgressDialog.show(this.sourceActivity, progressText.get(doType), "Please Wait...");
+        		ProgressDialog.show(sourceFragment.getActivity(), progressText.get(doType), "Please Wait...");
     }
     
     /*
@@ -181,19 +186,32 @@ public class AdminTask extends AsyncTask<Void,String,Void>{
 		}
 		
 		if(doType == LOCK_THREAD) {
-			Intent _intent = this.sourceActivity.getIntent();
-			boolean isLocked = _intent.getBooleanExtra("locked", false);
-			this.sourceActivity.finish();
-			
+			Bundle args = sourceFragment.getArguments();
+			boolean isLocked = args.getBoolean("locked");
 			Log.d(TAG, "Setting Thread Lock To: " + !isLocked);
-			_intent.putExtra("locked", !isLocked);
-			this.sourceActivity.startActivity(_intent);
+			args.putBoolean("locked", !isLocked);
+			
+			// Create new fragment and transaction
+			Fragment newFragment = 
+					new ThreadFragment(((ThreadFragment)sourceFragment).getParentCategory());
+			newFragment.setArguments(args);
+			FragmentTransaction transaction = 
+					sourceFragment.getFragmentManager().beginTransaction();
+
+			// Replace whatever is in the fragment_container view with this fragment,
+			// and add the transaction to the back stack
+			transaction.replace(R.id.content_frame, newFragment);
+			transaction.addToBackStack("thread");
+
+			// Commit the transaction
+			transaction.commit();
 		} else if (doType == MOVE_THREAD) {
 			MoveThreadDialog mtd = new MoveThreadDialog(
-					this.sourceActivity, token, thread, threadTitle, selectOptions);
+					sourceFragment, token, thread, threadTitle, selectOptions);
 			mtd.show();
 		} else {
-			this.sourceActivity.finish();
+			//this.sourceFragment.finish();
+			sourceFragment.getFragmentManager().popBackStack();
 		}
     }
 }

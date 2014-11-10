@@ -72,18 +72,6 @@ public class NewPrivateMessageFragment extends Fragment {
 	
 	private ProgressDialog loadingDialog;
 
-	/*
-	 * (non-Javadoc)
-	 * @see com.normalexception.forum.rx8club.activities.ForumBaseActivity#onSaveInstanceState(android.os.Bundle)
-	 */
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putString("postUser", postUser);
-		outState.putString("postText", postText);
-		outState.putString("title", title);
-	}
-	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {

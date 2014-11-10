@@ -287,7 +287,7 @@ public class HomeFragment extends Fragment {
 
 				if(LoginFactory.getInstance().isLoggedIn()) {
 					// Construct a new user profile
-					constructUserProfile(doc);
+					//constructUserProfile(doc);
 				}
 			}
 		};

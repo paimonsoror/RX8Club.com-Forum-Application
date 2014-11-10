@@ -96,7 +96,7 @@ public class LoginFragment extends Fragment implements OnClickListener, OnChecke
 	        if(!LoginFactory.getInstance().isLoggedIn() || this.userClick) {
 	        	
 	        	if(this.userClick)
-	        		LoginFactory.getInstance().logoff(true);
+	        		LoginFactory.getInstance().logoff(false);
 	        	
 		        Button loginButton = (Button)view.findViewById(R.id.loginButton);
 		        loginButton.setOnClickListener(this);

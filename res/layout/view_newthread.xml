@@ -9,7 +9,8 @@
 	    android:id="@+id/postSubjectTitle"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="@string/ntThreadName" />
+	    android:text="@string/ntThreadName"
+	    android:textColor="@android:color/black" />
 	
 	<EditText
 	    android:id="@+id/postSubject"
@@ -27,7 +28,8 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:paddingTop="20dip"
-	    android:text="@string/ntThreadPost" />
+	    android:text="@string/ntThreadPost"
+	    android:textColor="@android:color/black" />
 	
 	<EditText
 	    android:id="@+id/postPost"

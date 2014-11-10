@@ -31,11 +31,11 @@ import java.util.Map;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -45,6 +45,8 @@ import android.widget.TextView;
 
 import com.normalexception.forum.rx8club.Log;
 import com.normalexception.forum.rx8club.R;
+import com.normalexception.forum.rx8club.fragment.category.CategoryFragment;
+import com.normalexception.forum.rx8club.fragment.thread.ThreadFragment;
 import com.normalexception.forum.rx8club.html.HtmlFormUtils;
 
 public class MoveThreadDialog {
@@ -64,15 +66,15 @@ public class MoveThreadDialog {
 	 * @param tTitle		The new thread title
 	 * @param options		The options from the move dialog
 	 */
-	public MoveThreadDialog(final Context ctx, final String securitytoken, 
+	public MoveThreadDialog(final Fragment ctx, final String securitytoken, 
 			final String src_thread, String tTitle, final Map<String,Integer> options) {
-		builder = new AlertDialog.Builder(ctx);
+		builder = new AlertDialog.Builder(ctx.getActivity());
 		
 		// Set up the input
-		final TextView lbl_title = new TextView(ctx);
-		final EditText title     = new EditText(ctx);
-		final TextView lbl_dest  = new TextView(ctx);
-		final Spinner  destination = new Spinner(ctx);
+		final TextView lbl_title = new TextView(ctx.getActivity());
+		final EditText title     = new EditText(ctx.getActivity());
+		final TextView lbl_dest  = new TextView(ctx.getActivity());
+		final Spinner  destination = new Spinner(ctx.getActivity());
 		
 		// Lets make sure the user didn't accidentally click this
 		DialogInterface.OnClickListener dialogClickListener = 
@@ -85,14 +87,27 @@ public class MoveThreadDialog {
 			    		String selectText = destination.getSelectedItem().toString();
 			    		selection = options.get(selectText);
 			    		
-						try {
-							HtmlFormUtils.adminMoveThread(securitytoken, src_thread, 
-				    				newTitle, Integer.toString(selection));
-						} catch (Exception e) {
-							Log.e(TAG, "Error Submitting Form For Move", e);
-						}
-						
-						((Activity)ctx).finish();
+			    		AsyncTask<Void,String,Void> updaterTask = new AsyncTask<Void,String,Void>() {
+			    			@Override
+			    			protected Void doInBackground(Void... params) {
+			    				try {
+									HtmlFormUtils.adminMoveThread(securitytoken, src_thread, 
+						    				newTitle, Integer.toString(selection));
+								} catch (Exception e) {
+									Log.e(TAG, "Error Submitting Form For Move", e);
+								}
+			    				return null;
+			    			}
+
+			    			@Override
+			    		    protected void onPostExecute(Void result) {
+			    				ctx.getFragmentManager().popBackStack();
+			    				CategoryFragment cFrag = 
+			    						(CategoryFragment)((ThreadFragment)ctx).getParentCategory();
+			    				cFrag.refreshView();
+			    			}
+			    		};				
+			    		updaterTask.execute();
 		   				break;
 			    	case DialogInterface.BUTTON_NEGATIVE:
 			    		break;
@@ -112,11 +127,11 @@ public class MoveThreadDialog {
 		values.addAll(options.keySet());
 		
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-				ctx, android.R.layout.simple_spinner_item, values);
+				ctx.getActivity(), android.R.layout.simple_spinner_item, values);
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		destination.setAdapter(dataAdapter);
 		
-		LinearLayout ll = new LinearLayout(ctx);
+		LinearLayout ll = new LinearLayout(ctx.getActivity());
 		ll.setOrientation(LinearLayout.VERTICAL);
 		ll.addView(lbl_title);
 		ll.addView(title);

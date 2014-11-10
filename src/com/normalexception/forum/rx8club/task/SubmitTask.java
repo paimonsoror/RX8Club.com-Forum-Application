@@ -113,7 +113,7 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
 
 		FragmentTransaction transaction = 
 				sourceActivity.getFragmentManager().beginTransaction();
-		Fragment _frag = new ThreadFragment();
+		Fragment _frag = new ThreadFragment(((ThreadFragment)sourceActivity).getParentCategory());
 		_frag.setArguments(_args);
 		transaction.replace(R.id.content_frame, _frag);
 		transaction.addToBackStack("thread");
