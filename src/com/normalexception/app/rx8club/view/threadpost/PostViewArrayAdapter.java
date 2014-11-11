@@ -30,7 +30,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -48,10 +47,8 @@ import android.widget.TextView;
 
 import com.normalexception.app.rx8club.Log;
 import com.normalexception.app.rx8club.R;
-import com.normalexception.app.rx8club.fragment.category.CategoryFragment;
 import com.normalexception.app.rx8club.fragment.pm.NewPrivateMessageFragment;
 import com.normalexception.app.rx8club.fragment.thread.EditPostFragment;
-import com.normalexception.app.rx8club.fragment.thread.ThreadFragment;
 import com.normalexception.app.rx8club.handler.AvatarLoader;
 import com.normalexception.app.rx8club.handler.ForumImageHandler;
 import com.normalexception.app.rx8club.html.LoginFactory;
@@ -117,9 +114,9 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         	LayoutInflater vinf =
                     (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         	if(PreferenceHelper.isLinearThread(activity))
-        		vi = vinf.inflate(R.layout.view_newreply, null);
+        		vi = vinf.inflate(R.layout.view_newreply, parent, false);
         	else
-        		vi = vinf.inflate(R.layout.view_newreply_alt, null);
+        		vi = vinf.inflate(R.layout.view_newreply_alt, parent, false);
         }
         
         final PostView cv = data.get(position);

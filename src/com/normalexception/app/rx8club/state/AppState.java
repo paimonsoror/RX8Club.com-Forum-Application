@@ -25,7 +25,6 @@ package com.normalexception.app.rx8club.state;
  ************************************************************************/
 
 import android.support.v4.app.Fragment;
-import android.content.Intent;
 
 public class AppState {
 	

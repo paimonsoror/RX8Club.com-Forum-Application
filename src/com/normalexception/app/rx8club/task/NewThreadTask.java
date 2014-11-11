@@ -30,7 +30,6 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;

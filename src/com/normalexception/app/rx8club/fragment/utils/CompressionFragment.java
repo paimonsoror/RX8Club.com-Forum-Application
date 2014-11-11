@@ -25,12 +25,12 @@ package com.normalexception.app.rx8club.fragment.utils;
  ************************************************************************/
 
 import android.app.AlertDialog;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.ScrollView;
@@ -38,7 +38,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.normalexception.app.rx8club.MainApplication;
 import com.normalexception.app.rx8club.R;
+import com.normalexception.app.rx8club.state.AppState;
 import com.normalexception.app.rx8club.view.ViewHolder;
 
 /**
@@ -66,16 +68,14 @@ public class CompressionFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //super.setState(AppState.State.UTIL_COMPRESSION, this.getIntent());
-        
-        //setContentView(R.layout.activity_basiclist);
+        MainApplication.setState(AppState.State.UTIL_COMPRESSION, this);
         
         RelativeLayout rl = (RelativeLayout) getView().findViewById(R.id.content_frame);
         
-		v = getActivity().getLayoutInflater().inflate(R.layout.view_compression, null);
+		v = getActivity().getLayoutInflater().inflate(R.layout.view_compression, rl);
 		
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-	            LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+	            LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.BELOW, R.id.mainlisttitle);
 		
 		ScrollView sv = new ScrollView(getActivity());

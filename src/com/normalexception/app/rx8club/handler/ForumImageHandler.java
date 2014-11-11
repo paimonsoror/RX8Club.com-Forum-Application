@@ -125,7 +125,7 @@ public class ForumImageHandler implements ImageGetter {
             		newSize[1] /= 2;
             	}
             	bitmap = Bitmap.createScaledBitmap(bitmap, newSize[0], newSize[1], false);
-                BitmapDrawable d = new BitmapDrawable(bitmap);
+                BitmapDrawable d = new BitmapDrawable(c.getResources(), bitmap);
                 mDrawable.addLevel(1, 1, d);
                 mDrawable.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
                 mDrawable.setLevel(1);

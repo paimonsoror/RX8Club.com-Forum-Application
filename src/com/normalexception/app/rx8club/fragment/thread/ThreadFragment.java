@@ -102,15 +102,13 @@ public class ThreadFragment extends Fragment {
 
 	private List<String> bmapList;
 	
-	private boolean isPoll = false, isLocked = false;
+	private boolean isLocked = false;
 	
 	private ProgressDialog loadingDialog;
 	
 	private int threadId = 0;
 	
 	private final String MODERATION_TOOLS = "Moderation Tools";
-	
-	private boolean isAdmin = false;
 	
 	private ThreadFragmentListener tal = 
 			new ThreadFragmentListener(this);
@@ -131,7 +129,7 @@ public class ThreadFragment extends Fragment {
 
 		lv = (ListView) rootView.findViewById(R.id.mainlistview);
 		
-		adminContent = inflater.inflate(R.layout.view_newreply_header, null);
+		adminContent = inflater.inflate(R.layout.view_newreply_header, lv, false);
 		
 		// Inflate the header if we are an admin
 		//adminContent = inflater.inflate(R.layout.fragment_admin, null);
@@ -142,7 +140,7 @@ public class ThreadFragment extends Fragment {
 		lv.addHeaderView(adminContent);
 		
 		// Inflate the footer (pagination, styler, reply box)
-		View v = inflater.inflate(R.layout.view_newreply_footer, null);
+		View v = inflater.inflate(R.layout.view_newreply_footer, lv, false);
 		
 		getChildFragmentManager()
 			.beginTransaction()
@@ -217,8 +215,8 @@ public class ThreadFragment extends Fragment {
 						getArguments().getString("title");			
 				pageNumber = 
 						getArguments().getString("page");
-				isPoll = 
-						getArguments().getBoolean("poll", false);
+				//isPoll = 
+				//		getArguments().getBoolean("poll", false);
 				isLocked =
 						getArguments().getBoolean("locked", false);
 				
@@ -325,7 +323,6 @@ public class ThreadFragment extends Fragment {
 		Elements threadTools = doc.select("div[id=threadtools_menu] > form > table");
 		if(threadTools.text().contains(MODERATION_TOOLS)) {
 			Log.d(TAG, "<><> User has administrative rights here! <><>");
-			isAdmin = true;
 		} else {
 			//adminContent.setVisibility(View.GONE);
 			lv.removeHeaderView(adminContent);

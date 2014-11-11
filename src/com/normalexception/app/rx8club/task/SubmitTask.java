@@ -31,12 +31,11 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import android.app.Activity;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 
 import com.normalexception.app.rx8club.Log;
 import com.normalexception.app.rx8club.R;

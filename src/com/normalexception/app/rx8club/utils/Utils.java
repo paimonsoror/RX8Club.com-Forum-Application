@@ -291,6 +291,7 @@ public class Utils {
 	 * @return		The string that contains the file
 	 * @throws IOException
 	 */
+	@SuppressWarnings("resource")
 	public static String readFile(String file) throws IOException {
 		String content = 
 				new Scanner(new File(file)).useDelimiter("\\Z").next();

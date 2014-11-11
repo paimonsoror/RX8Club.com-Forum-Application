@@ -46,18 +46,19 @@ public class NavDrawerListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		Log.d(TAG, "Grabbing Slide Navigation View");
 		if(!navDrawerItems.get(position).isGuestEnabled() && 
         		LoginFactory.getInstance().isGuestMode()) {
 			convertView = null;
 			LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(R.layout.null_item, null);
+            convertView = mInflater.inflate(R.layout.null_item, parent, false);
             return convertView;
 		} else {
 			if (convertView == null) {
 	            LayoutInflater mInflater = (LayoutInflater)
 	                    context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	            convertView = mInflater.inflate(R.layout.drawer_list_item, null);
+	            convertView = mInflater.inflate(R.layout.drawer_list_item, parent, false);
 	        }
 	         
 	        ImageView imgIcon = (ImageView) ViewHolder.get(convertView, R.id.drawer_icon);

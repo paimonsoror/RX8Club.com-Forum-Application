@@ -27,10 +27,8 @@ package com.normalexception.app.rx8club.fragment.category;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import android.app.Activity;
-import android.support.v4.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,8 +41,6 @@ import com.normalexception.app.rx8club.Log;
 import com.normalexception.app.rx8club.R;
 import com.normalexception.app.rx8club.favorites.FavoriteFactory;
 import com.normalexception.app.rx8club.favorites.FavoriteThreads;
-import com.normalexception.app.rx8club.fragment.thread.ThreadFragment;
-import com.normalexception.app.rx8club.state.AppState;
 import com.normalexception.app.rx8club.view.thread.ThreadView;
 import com.normalexception.app.rx8club.view.thread.ThreadViewArrayAdapter;
 

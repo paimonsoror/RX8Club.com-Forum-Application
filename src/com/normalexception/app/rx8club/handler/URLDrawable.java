@@ -24,6 +24,8 @@ package com.normalexception.app.rx8club.handler;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -34,6 +36,10 @@ import android.graphics.drawable.Drawable;
 public class URLDrawable extends BitmapDrawable {
 
     protected Drawable drawable;
+    
+    public URLDrawable(Resources rsc, Bitmap bmp) {
+    	super(rsc, bmp);
+    }
 
     /*
      * (non-Javadoc)

@@ -32,12 +32,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -128,7 +127,39 @@ public class CategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
  
-        View rootView = inflater.inflate(R.layout.fragment_content, container, false);    	
+        View rootView = inflater.inflate(R.layout.fragment_content, container, false);    
+        
+        lv = (ListView)rootView.findViewById(R.id.mainlistview);
+        
+        //Get our click listener
+        CategoryFragmentListener cl = new CategoryFragmentListener();
+        
+        // If the user clicked "New Posts" then we need to
+        // handle things a little bit differently
+        isNewTopicActivity =
+				getArguments().getBoolean("isNewTopics", false);
+        
+        if(isNewTopicActivity)
+        	MainApplication.setState(AppState.State.NEW_POSTS, this);
+        else
+        	MainApplication.setState(AppState.State.CATEGORY, this);
+        
+        // We do not need to have a "New Thread" button if the
+        // user clicked New Posts.
+        if(!isNewTopicActivity && LoginFactory.getInstance().isLoggedIn()) {
+	        Button bv = new Button(getActivity());
+	        bv.setId(NEW_THREAD);
+	        bv.setOnClickListener(cl);
+	        bv.setText("New Thread");
+	        bv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
+	        lv.addHeaderView(bv);
+        }
+        
+        // Footer has pagination information
+        View v = inflater.inflate(R.layout.fragment_pagination, lv, false);
+    	FragmentUtils.registerHandlerToViewObjects(cl, (ViewGroup)v);
+    	lv.addFooterView(v);
+    	
         return rootView;
     }
 	/*
@@ -145,37 +176,6 @@ public class CategoryFragment extends Fragment {
 	        
 	        if(TimeoutFactory.getInstance().checkTimeout(this)) {
 		        threadlist = new ArrayList<ThreadView>();
-		        lv = (ListView)view.findViewById(R.id.mainlistview);
-		        
-		        // If the user clicked "New Posts" then we need to
-		        // handle things a little bit differently
-		        isNewTopicActivity =
-						getArguments().getBoolean("isNewTopics", false);
-		        
-		        if(isNewTopicActivity)
-		        	MainApplication.setState(AppState.State.NEW_POSTS, this);
-		        else
-		        	MainApplication.setState(AppState.State.CATEGORY, this);
-		        
-		        //Get our click listener
-		        CategoryFragmentListener cl = new CategoryFragmentListener();
-		        
-		        // We do not need to have a "New Thread" button if the
-		        // user clicked New Posts.
-		        if(!isNewTopicActivity && LoginFactory.getInstance().isLoggedIn()) {
-			        Button bv = new Button(getActivity());
-			        bv.setId(NEW_THREAD);
-			        bv.setOnClickListener(cl);
-			        bv.setText("New Thread");
-			        bv.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10);
-			        lv.addHeaderView(bv);
-		        }
-		        
-		        // Footer has pagination information
-		        ViewGroup v = (ViewGroup) getActivity()
-		        		.getLayoutInflater().inflate(R.layout.fragment_pagination, null);
-		    	FragmentUtils.registerHandlerToViewObjects(cl, v);
-		    	lv.addFooterView(v);
 		        
 		        if(savedInstanceState == null || 
 		        		(tva == null || tva.getCount() == 0))
@@ -572,7 +572,6 @@ public class CategoryFragment extends Fragment {
 	     */
 		@Override
 		public void onClick(View arg0) {
-			Intent _intent = null;
 			Log.v(TAG, String.format("%d Clicked...", arg0.getId()));
 			Fragment _fragment = null;
 			Bundle args = new Bundle();
