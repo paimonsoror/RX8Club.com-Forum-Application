@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    android:name="com.normalexception.forum.MainApplication"
-    package="com.normalexception.forum.rx8club"
+    android:name="com.normalexception.app.rx8club.MainApplication"
+    package="com.normalexception.app.rx8club"
     android:installLocation="auto"
     android:versionCode="20001"
     android:versionName="2.00" >
@@ -21,7 +21,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="MainApplication"
+        android:name="com.normalexception.app.rx8club.MainApplication"
         android:allowClearUserData="true"
         android:allowBackup="true"
         android:description="@string/app_description"
@@ -31,7 +31,7 @@
         android:theme="@android:style/Theme.Holo"
         android:vmSafeMode="false" >
         <activity 
-            android:name=".activities.MainActivity" 
+            android:name="com.normalexception.app.rx8club.activities.MainActivity"
             android:launchMode="singleInstance" 
             android:hardwareAccelerated="true"
             android:configChanges="orientation|screenSize">

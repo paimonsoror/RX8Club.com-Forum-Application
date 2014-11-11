@@ -7,7 +7,7 @@
     android:orientation="vertical" >
      <fragment
             android:id="@+id/fragment_pagination"
-            android:name="com.normalexception.forum.rx8club.fragment.PaginationFragment"
+            android:name="com.normalexception.app.rx8club.fragment.PaginationFragment"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
 			tools:layout="@layout/fragment_pagination"/>

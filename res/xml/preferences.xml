@@ -87,22 +87,17 @@
 			android:entries="@array/fontsizes"
 			android:entryValues="@array/fontsizevalue"/>
 	    <CheckBoxPreference
-	        android:title="Advertise Application"
+	        android:title="Display Application Signature"
 	        android:defaultValue="true"
 	        android:summary="Show 'Posted From' On thread posts"
-	        android:key="advertise" />  
+	        android:key="appSig" />  
 	    <Preference 
 	        android:title="Custom Mobile Signature"
 	        android:summary="Display your own custom mobile signature" 
-	        android:key="customAdvertise"/>
+	        android:key="customSig"/>
 	</PreferenceCategory>
     <PreferenceCategory
                 android:title="Misc Options">
-	    <CheckBoxPreference
-	        android:title="Hide Banner"
-	        android:defaultValue="false"
-	        android:summary="Hide banner to maximize realestate"
-	        android:key="hidebanner" />
 	    <Preference
 	        android:title="Clear Cache"
 	        android:key="appcache"
@@ -115,9 +110,5 @@
 	   	    android:title="Rate Application"
 	   	    android:key="rate"
 	   	    android:summary="Just Takes a Second!"/>
-	    <Preference 
-	        android:title="Donate!"
-	        android:key="donate"
-	        android:summary="Help Support My Work!"/>
     </PreferenceCategory>
 </PreferenceScreen>
