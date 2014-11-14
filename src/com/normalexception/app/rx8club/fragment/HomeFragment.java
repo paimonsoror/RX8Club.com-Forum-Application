@@ -401,7 +401,7 @@ public class HomeFragment extends Fragment {
 			Toast.makeText(getActivity(), 
 					R.string.connectionError, 
 					Toast.LENGTH_LONG).show();
-			FragmentUtils.returnToLoginPage(getActivity(), false, false);
+			FragmentUtils.returnToLoginPage(getActivity(), FragmentUtils.LogoutReason.ERROR);
 			return null;
 		} else {
 			return Jsoup.parse(output);

@@ -52,7 +52,7 @@ public class LogoffDialog {
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which){
 			    	case DialogInterface.BUTTON_POSITIVE:
-			    		FragmentUtils.returnToLoginPage(ctx, true, false);
+			    		FragmentUtils.returnToLoginPage(ctx, FragmentUtils.LogoutReason.USER);
 		   				break;
 		        }
 		    }
@@ -69,7 +69,7 @@ public class LogoffDialog {
 	 */
 	public void show() {
 		if(LoginFactory.getInstance().isGuestMode())
-			FragmentUtils.returnToLoginPage(_ctx, true, false);
+			FragmentUtils.returnToLoginPage(_ctx, FragmentUtils.LogoutReason.USER);
 		else
 			builder.show();
 	}

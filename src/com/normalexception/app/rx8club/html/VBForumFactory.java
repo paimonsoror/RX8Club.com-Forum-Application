@@ -134,7 +134,7 @@ public class VBForumFactory {
 							output.contains("You are not logged in")) {
 						Log.w(TAG, "Error Parsing Output!");
 						Log.w(TAG, output);
-						FragmentUtils.returnToLoginPage(src, false, false);
+						FragmentUtils.returnToLoginPage(src, FragmentUtils.LogoutReason.ERROR);
 					}
 				} catch (NullPointerException e) {		
 					notifyError(src, 
@@ -148,12 +148,12 @@ public class VBForumFactory {
 			}
 		} catch (Exception e) {
 			notifyError(src, "No Internet Connection...", e);
-			FragmentUtils.returnToLoginPage(src, false, false);
+			FragmentUtils.returnToLoginPage(src, FragmentUtils.LogoutReason.ERROR);
 		}
 		
 		if(output == null || output.length() == 0) {
 			notifyError(src, "No Internet Connection...", null);
-			FragmentUtils.returnToLoginPage(src, false, false);		
+			FragmentUtils.returnToLoginPage(src, FragmentUtils.LogoutReason.ERROR);		
 		}
 		
 		return output;

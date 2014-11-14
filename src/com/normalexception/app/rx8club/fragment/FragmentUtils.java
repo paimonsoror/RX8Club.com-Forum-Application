@@ -52,6 +52,12 @@ public class FragmentUtils {
 	
 	private static Logger TAG =  LogManager.getLogger(FragmentUtils.class);
 	
+	public static enum LogoutReason {
+		TIMEOUT,
+		USER,
+		ERROR
+	}
+	
 	/**
 	 * Dump arguments that were passed into a fragment for debug purposes
 	 * @param args	Fragment argument bundle
@@ -114,7 +120,11 @@ public class FragmentUtils {
 	 * @param clearPrefs	Clear preferences if true
 	 * @param timeout		True if timeout triggered
 	 */
-	public static void returnToLoginPage(Activity src, boolean clearPrefs, boolean timeout) {
+	public static void returnToLoginPage(Activity src, LogoutReason reason) {
+		boolean clearPrefs = 
+				(reason == LogoutReason.USER)? 
+						true : (reason == LogoutReason.TIMEOUT)? 
+								false : false;
 		LoginFactory.getInstance().logoff(clearPrefs);
 		FragmentUtils.fragmentTransaction((FragmentActivity)src, new LoginFragment(true), true, false);
 	}

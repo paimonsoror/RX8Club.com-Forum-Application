@@ -95,7 +95,7 @@ public class TimeoutFactory {
 		    		}
 				});
 				Log.d(TAG, "## PING TIME EXPIRED ##");
-				FragmentUtils.returnToLoginPage(src.getActivity(), false, false);
+				FragmentUtils.returnToLoginPage(src.getActivity(), FragmentUtils.LogoutReason.TIMEOUT);
 				return false;
 			}
 		}
