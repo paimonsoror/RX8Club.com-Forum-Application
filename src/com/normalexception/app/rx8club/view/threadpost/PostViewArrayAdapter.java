@@ -127,6 +127,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         ((TextView)ViewHolder.get(vi,R.id.nr_userPosts)).setText(cv.getUserPostCount());
         ((TextView)ViewHolder.get(vi,R.id.nr_userJoin)).setText(cv.getJoinDate());
         ((TextView)ViewHolder.get(vi,R.id.nr_postDate)).setText(cv.getPostDate());
+        ((ImageView)ViewHolder.get(vi,R.id.nr_reportbutton)).setVisibility(View.VISIBLE);
         
         TextView likeText = ((TextView)ViewHolder.get(vi,R.id.nr_likeText));
         if(PreferenceHelper.isShowLikes(sourceFragment.getActivity())) {
@@ -336,9 +337,6 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 			.setVisibility(isLoggedInUser? View.VISIBLE : View.GONE);
 		
 		((ImageView)ViewHolder.get(vi,R.id.nr_deleteButton))
-			.setVisibility(isLoggedInUser? View.VISIBLE : View.GONE);
-		
-		((ImageView)ViewHolder.get(vi, R.id.nr_reportbutton))
 			.setVisibility(isLoggedInUser? View.VISIBLE : View.GONE);
 	}
 }
