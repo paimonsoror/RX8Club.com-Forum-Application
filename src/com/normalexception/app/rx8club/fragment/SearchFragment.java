@@ -27,9 +27,8 @@ package com.normalexception.app.rx8club.fragment;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -126,19 +125,8 @@ public class SearchFragment extends Fragment implements OnClickListener {
 				args.putString("link", WebUrls.searchUrl + searchText);
 				args.putBoolean("isNewTopics", true);
 				Log.v(TAG, "Adding Link To Search: " + args.getString("link"));
-				
-				// Create new fragment and transaction
-				Fragment newFragment = new CategoryFragment();
-				newFragment.setArguments(args);
-				FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-				// Replace whatever is in the fragment_container view with this fragment,
-				// and add the transaction to the back stack
-				transaction.add(R.id.content_frame, newFragment);
-				transaction.addToBackStack("search");
-
-				// Commit the transaction
-				transaction.commit();
+				FragmentUtils.fragmentTransaction(this.getActivity(), new CategoryFragment(), false, true);
 			break;
 		}
 	}

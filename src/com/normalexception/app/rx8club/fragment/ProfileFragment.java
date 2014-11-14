@@ -32,10 +32,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,9 +100,10 @@ public class ProfileFragment extends Fragment {
     }
     
     private void updateList() {
+    	final Fragment _frag = this;
 		getActivity().runOnUiThread(new Runnable() {
             public void run() {
-		    	pva = new ProfileViewArrayAdapter(getActivity(), 0, stubs);
+		    	pva = new ProfileViewArrayAdapter(_frag, 0, stubs);
 				lv.setAdapter(pva);
             }
     	});

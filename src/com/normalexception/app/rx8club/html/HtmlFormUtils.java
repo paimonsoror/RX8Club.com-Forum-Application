@@ -322,6 +322,27 @@ public class HtmlFormUtils {
 	}
 	
 	/**
+	 * Report a post to the admin team
+	 * @param securitytoken	The security token for the user
+	 * @param postId		The post to report
+	 * @param reason		The reason for reporting
+	 * @return				True if success
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public static boolean reportPost(String securitytoken, String postId, String reason) 
+		throws ClientProtocolException, IOException {
+		
+		List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+		nvps.add(new BasicNameValuePair(VBulletinKeys.PostId.getValue(), postId));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.SecurityToken.getValue(), securitytoken));
+		nvps.add(new BasicNameValuePair(VBulletinKeys.ReportReason.getValue(), reason));
+    	nvps.add(new BasicNameValuePair(VBulletinKeys.Do.getValue(),"sendemail"));
+ 
+    	return formSubmit(WebUrls.postReportAddress + postId, nvps);
+	}
+	
+	/**
 	 * Submit a request to the server to delete the post
 	 * @param VBulletinKeys.SecurityToken.getValue()	The session security token
 	 * @param postNum		The post number to delete

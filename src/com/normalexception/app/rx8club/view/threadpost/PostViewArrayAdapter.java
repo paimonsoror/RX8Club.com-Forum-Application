@@ -26,14 +26,12 @@ package com.normalexception.app.rx8club.view.threadpost;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -47,6 +45,8 @@ import android.widget.TextView;
 
 import com.normalexception.app.rx8club.Log;
 import com.normalexception.app.rx8club.R;
+import com.normalexception.app.rx8club.dialog.ReportPostDialog;
+import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.fragment.pm.NewPrivateMessageFragment;
 import com.normalexception.app.rx8club.fragment.thread.EditPostFragment;
 import com.normalexception.app.rx8club.handler.AvatarLoader;
@@ -59,7 +59,7 @@ import com.normalexception.app.rx8club.view.ViewHolder;
  * Custom adapter to handle PostView objects
  */
 public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
-	private Context activity;
+	private Fragment sourceFragment;
 	private List<PostView> data;
 	private AvatarLoader imageLoader; 
 	private OnClickListener listener;
@@ -72,12 +72,12 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	 * @param textViewResourceId	The resource id
 	 * @param objects				The list of objects
 	 */
-	public PostViewArrayAdapter(Context context, int textViewResourceId,
+	public PostViewArrayAdapter(Fragment context, int textViewResourceId,
 			List<PostView> objects, OnClickListener listener) {
-		super(context, textViewResourceId, objects);
-		this.activity = context;
+		super(context.getActivity(), textViewResourceId, objects);
+		this.sourceFragment = context;
 		this.data = objects;
-		this.imageLoader=new AvatarLoader(activity.getApplicationContext());
+		this.imageLoader=new AvatarLoader(sourceFragment.getActivity().getApplicationContext());
 		this.threadId = 0;
 		this.listener = listener;
 	}
@@ -112,8 +112,9 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 		View vi = convertView;
         if(vi == null) {
         	LayoutInflater vinf =
-                    (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        	if(PreferenceHelper.isLinearThread(activity))
+                    (LayoutInflater)sourceFragment.getActivity()
+                    	.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        	if(PreferenceHelper.isLinearThread(sourceFragment.getActivity()))
         		vi = vinf.inflate(R.layout.view_newreply, parent, false);
         	else
         		vi = vinf.inflate(R.layout.view_newreply_alt, parent, false);
@@ -128,7 +129,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         ((TextView)ViewHolder.get(vi,R.id.nr_postDate)).setText(cv.getPostDate());
         
         TextView likeText = ((TextView)ViewHolder.get(vi,R.id.nr_likeText));
-        if(PreferenceHelper.isShowLikes(activity)) {
+        if(PreferenceHelper.isShowLikes(sourceFragment.getActivity())) {
 	        if(cv.getLikes().size() > 0) {
 		        String delim = "", likes = "Liked by: ";
 		        for(String like : cv.getLikes()) {
@@ -144,7 +145,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         }
         
         TextView postText = ((TextView)ViewHolder.get(vi,R.id.nr_postText));
-        ForumImageHandler fih = new ForumImageHandler(postText, threadId, activity);  
+        ForumImageHandler fih = new ForumImageHandler(postText, threadId, sourceFragment.getActivity());  
         postText.setMovementMethod(LinkMovementMethod.getInstance());
         
         // Lets make sure we remove any font formatting that was done within
@@ -153,7 +154,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         		cv.getUserPost().replaceAll("(?i)<(/*)font(.*?)>", "");
        
         // Show attachments if the preference allows it
-        if(PreferenceHelper.isShowAttachments(activity)) 
+        if(PreferenceHelper.isShowAttachments(sourceFragment.getActivity())) 
         	trimmedPost = appendAttachments(trimmedPost, cv.getAttachments());
         
         postText.setText(Html.fromHtml(trimmedPost, fih, null));
@@ -164,20 +165,22 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         // the dateline at the end of the file so that we aren't
         // creating multiple images for a user.  The image still
         // gets returned without a date
-        if(PreferenceHelper.isShowAvatars(activity)) {
+        if(PreferenceHelper.isShowAvatars(sourceFragment.getActivity())) {
 	        String nodate_avatar = 
 	        		cv.getUserImageUrl().indexOf('?') == -1? 
 	        				cv.getUserImageUrl() : 
 	        					cv.getUserImageUrl().substring(0, cv.getUserImageUrl().indexOf('?'));
-	        
-	        if(!nodate_avatar.isEmpty()) {
-	        	ImageView avatar = ((ImageView)ViewHolder.get(vi,R.id.nr_image));
+	       
+	        ImageView avatar = ((ImageView)ViewHolder.get(vi,R.id.nr_image));
+	        if(!nodate_avatar.isEmpty()) {	
 	        	imageLoader.DisplayImage(nodate_avatar, avatar);
+	        } else {
+	        	avatar.setImageResource(R.drawable.rotor_icon);
 	        }
         }
         
         // Set the text size based on our preferences
-        int font_size = PreferenceHelper.getFontSize(activity);
+        int font_size = PreferenceHelper.getFontSize(sourceFragment.getActivity());
         postText.setTextSize(font_size);
         
         // Display the right items if the user is logged in
@@ -193,6 +196,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
         	((ImageView)ViewHolder.get(vi,R.id.nr_editButton)).setVisibility(View.GONE);
         	((ImageView)ViewHolder.get(vi,R.id.nr_pmButton)).setVisibility(View.GONE);
         	((ImageView)ViewHolder.get(vi,R.id.nr_deleteButton)).setVisibility(View.GONE);
+        	((ImageView)ViewHolder.get(vi,R.id.nr_reportbutton)).setVisibility(View.GONE);
         } else {
 	        ((ImageView)ViewHolder.get(vi,R.id.nr_quoteButton))
 	        	.setOnClickListener(new OnClickListener() {
@@ -202,8 +206,8 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 					String txt = Html.fromHtml(cv.getUserPost()).toString();
 					String finalText = String.format("[quote=%s]%s[/quote]",
 							cv.getUserName(), txt);
-					((TextView)((Activity) activity).findViewById(R.id.postBox)).setText(finalText);
-					((TextView)((Activity) activity).findViewById(R.id.postBox)).requestFocus();
+					((TextView)sourceFragment.getActivity().findViewById(R.id.postBox)).setText(finalText);
+					((TextView)sourceFragment.getActivity().findViewById(R.id.postBox)).requestFocus();
 	        	}
 	        });
 	        
@@ -212,56 +216,40 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 	        	@Override
 	        	public void onClick(View arg0) {
 	        		Log.d(TAG, "Edit Clicked");
-	        		//Intent _intent = new Intent(activity, EditPostFragment.class); 
-	        		//_intent.putExtra("postid", cv.getPostId());
-					//_intent.putExtra("securitytoken", cv.getToken());
-					//activity.startActivity(_intent);
 	        		
 	        		// Create new fragment and transaction
 					Bundle args = new Bundle();
 					args.putString("postid", cv.getPostId());
 					args.putString("securitytoken", cv.getToken());
 					Fragment newFragment = new EditPostFragment();
-					newFragment.setArguments(args);
-					
-					FragmentTransaction transaction = 
-							((FragmentActivity)activity).getSupportFragmentManager().beginTransaction();
 
-					// Replace whatever is in the fragment_container view with this fragment,
-					// and add the transaction to the back stack
-					transaction.replace(R.id.content_frame, newFragment);
-					transaction.addToBackStack(null);
-
-					// Commit the transaction
-					transaction.commit();
+					FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
+							newFragment, true, true, args);
 	        	}
 	        });
+	        
+	        ((ImageView)ViewHolder.get(vi, R.id.nr_reportbutton))
+	        	.setOnClickListener(new OnClickListener() {
+	        		@Override
+		        	public void onClick(View arg0) {
+		        		Log.d(TAG, "Report Clicked");
+		        		new ReportPostDialog(sourceFragment.getActivity(), 
+		        				cv.getToken(), cv.getPostId()).show();	
+	        		}
+	        	});
 	        
 	        ((ImageView)ViewHolder.get(vi,R.id.nr_pmButton))
 	        	.setOnClickListener(new OnClickListener() {
 	        	@Override
 	        	public void onClick(View arg0) {
 	        		Log.d(TAG, "PM Clicked");
-	        		//Intent _intent =  new Intent(activity, NewPrivateMessageFragment.class);
-					//_intent.putExtra("user", cv.getUserName());
-					//activity.startActivity(_intent);
 	        		
 	        		// Create new fragment and transaction
 					Bundle args = new Bundle();
 					args.putString("user", cv.getUserName());
 					Fragment newFragment = new NewPrivateMessageFragment();
-					newFragment.setArguments(args);
-					
-					FragmentTransaction transaction = 
-							((FragmentActivity)activity).getSupportFragmentManager().beginTransaction();
-
-					// Replace whatever is in the fragment_container view with this fragment,
-					// and add the transaction to the back stack
-					transaction.add(R.id.content_frame, newFragment);
-					transaction.addToBackStack(null);
-
-					// Commit the transaction
-					transaction.commit();
+					FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
+							newFragment, false, true, args);
 	        	}
 	        });
 	    	
@@ -277,12 +265,6 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 					    public void onClick(DialogInterface dialog, int which) {
 					        switch (which){
 					        case DialogInterface.BUTTON_POSITIVE:  
-					        	//_intent.putExtra("postid", cv.getPostId());
-					        	//_intent.putExtra("securitytoken", cv.getToken());
-					        	//_intent.putExtra("delete", true);
-					        	//_intent.putExtra("deleteThread", isFirstPost && cv.isLoggedInUser());
-					        	//activity.startActivity(_intent);
-					        	
 					        	// Create new fragment and transaction
 								Bundle args = new Bundle();
 								args.putString("postid", cv.getPostId());
@@ -290,25 +272,15 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 								args.putBoolean("delete", true);
 								args.putBoolean("deleteThread", isFirstPost && cv.isLoggedInUser());
 								Fragment newFragment = new EditPostFragment();
-								newFragment.setArguments(args);
-								
-								FragmentTransaction transaction = 
-										((FragmentActivity)activity).getSupportFragmentManager().beginTransaction();
-
-								// Replace whatever is in the fragment_container view with this fragment,
-								// and add the transaction to the back stack
-								transaction.add(R.id.content_frame, newFragment);
-								transaction.addToBackStack(null);
-
-								// Commit the transaction
-								transaction.commit();
+								FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
+										newFragment, false, true, args);
 					            break;
 					        }
 					    }
 					};
 		
 					AlertDialog.Builder builder = 
-							new AlertDialog.Builder(activity);
+							new AlertDialog.Builder(sourceFragment.getActivity());
 					builder
 						.setMessage("Are you sure you want to delete your post?")
 						.setPositiveButton("Yes", dialogClickListener)
@@ -364,6 +336,9 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostView> {
 			.setVisibility(isLoggedInUser? View.VISIBLE : View.GONE);
 		
 		((ImageView)ViewHolder.get(vi,R.id.nr_deleteButton))
+			.setVisibility(isLoggedInUser? View.VISIBLE : View.GONE);
+		
+		((ImageView)ViewHolder.get(vi, R.id.nr_reportbutton))
 			.setVisibility(isLoggedInUser? View.VISIBLE : View.GONE);
 	}
 }

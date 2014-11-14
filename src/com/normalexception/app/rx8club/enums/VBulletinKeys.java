@@ -41,6 +41,7 @@ public enum VBulletinKeys {
 	SecurityToken   ("securitytoken"),
 	ForumId         ("f"),
 	Do 				("do"),
+	ReportReason    ("reason"),
 	
 	// Thread Form data
 	ThreadId        ("t"),

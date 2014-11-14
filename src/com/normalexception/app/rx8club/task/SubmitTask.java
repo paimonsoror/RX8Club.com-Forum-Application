@@ -35,10 +35,10 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 
 import com.normalexception.app.rx8club.Log;
 import com.normalexception.app.rx8club.R;
+import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.fragment.thread.ThreadFragment;
 import com.normalexception.app.rx8club.html.HtmlFormUtils;
 
@@ -110,13 +110,10 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
 			String.valueOf(Integer.parseInt(pageNumber)));
 		_args.putString("title", pageTitle);
 
-		FragmentTransaction transaction = 
-				sourceActivity.getFragmentManager().beginTransaction();
 		Fragment _frag = new ThreadFragment(((ThreadFragment)sourceActivity).getParentCategory());
-		_frag.setArguments(_args);
-		transaction.replace(R.id.content_frame, _frag);
-		transaction.addToBackStack("thread");
-		transaction.commit();
+
+		FragmentUtils.fragmentTransaction(sourceActivity.getActivity(), 
+				_frag, true, true, _args);
     }
 
 	/*

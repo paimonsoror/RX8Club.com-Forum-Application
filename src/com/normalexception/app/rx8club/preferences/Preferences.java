@@ -39,6 +39,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.preference.PreferenceFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -133,8 +135,19 @@ public class Preferences extends PreferenceFragment {
         threadFilter.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
         	@Override
         	public boolean onPreferenceClick(Preference arg0) {
-        		startActivity(
-            			new Intent(MainApplication.getAppContext(), ThreadFilterFragment.class));
+        		//startActivity(
+            	//		new Intent(MainApplication.getAppContext(), ThreadFilterFragment.class));
+        		// Create new fragment and transaction
+				Fragment newFragment = new ThreadFilterFragment();
+				FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+				// Replace whatever is in the fragment_container view with this fragment,
+				// and add the transaction to the back stack
+				transaction.add(R.id.content_frame, newFragment);
+				transaction.addToBackStack("threadfilter");
+
+				// Commit the transaction
+				transaction.commit();
         		return true;
         	}
         });

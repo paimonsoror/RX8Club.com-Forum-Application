@@ -34,6 +34,7 @@ import org.apache.log4j.Logger;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +60,7 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 	
 	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
-	private Context activity;
+	private Fragment sourceFragment;
     private List<ThreadView> data; 
     private boolean isNewThread = false;
     
@@ -79,10 +80,10 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
     private TextView vForum     = null;
     private LinearLayout vForumC= null;
  
-    public ThreadViewArrayAdapter(Context context, int textViewResourceId,
+    public ThreadViewArrayAdapter(Fragment context, int textViewResourceId,
 			List<ThreadView> objects) {
-		super(context, textViewResourceId, objects);
-		activity = context;
+		super(context.getActivity(), textViewResourceId, objects);
+		sourceFragment = context;
 		data = objects;
 	}
     
@@ -128,8 +129,9 @@ public class ThreadViewArrayAdapter extends ArrayAdapter<ThreadView> {
 		View vi = convertView;
         if(vi == null) {
         	LayoutInflater vinf =
-                    (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            vi = vinf.inflate(R.layout.view_thread, null);
+                    (LayoutInflater)sourceFragment.getActivity()
+                    	.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            vi = vinf.inflate(R.layout.view_thread, parent, false);
         }
  
         ThreadView m = new ThreadView();

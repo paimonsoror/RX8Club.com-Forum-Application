@@ -30,21 +30,21 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import com.normalexception.app.rx8club.Log;
+import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.fragment.pm.PrivateMessageInboxFragment;
 import com.normalexception.app.rx8club.html.HtmlFormUtils;
 
 public class PmTask extends AsyncTask<Void,Void,Void>{
 	private ProgressDialog mProgressDialog;
-	private Activity sourceActivity;
+	private Fragment sourceFragment;
 	
 	private String token, text, doType, recipients, title, pmid;
-	private Class<?> postClazz;
 
 	private Logger TAG =  LogManager.getLogger(this.getClass());
 
@@ -57,16 +57,15 @@ public class PmTask extends AsyncTask<Void,Void,Void>{
 	 * @param recipients
 	 * @param pmid
 	 */
-	public PmTask(Activity sourceActivity, String securityToken, String subject,
+	public PmTask(Fragment sourceActivity, String securityToken, String subject,
 			String toPost, String recipients, String pmid) {
-		this.sourceActivity = sourceActivity;
+		this.sourceFragment = sourceActivity;
 		this.token = securityToken;
 		this.text = toPost;
 		this.doType = "insertpm";
 		this.recipients = recipients;
 		this.title = subject;
 		this.pmid = pmid;
-		this.postClazz = PrivateMessageInboxFragment.class;
 	}
 
 	/*
@@ -81,11 +80,11 @@ public class PmTask extends AsyncTask<Void,Void,Void>{
 		} catch (Exception e) {
 			Log.w(TAG, e.getMessage());
 		}
-		
-		Intent _intent = new Intent(sourceActivity, postClazz);
-		_intent.putExtra("link", HtmlFormUtils.getResponseUrl());
-		sourceActivity.finish();
-		sourceActivity.startActivity(_intent);
+
+		Bundle args = new Bundle();
+		args.putString("link", HtmlFormUtils.getResponseUrl());
+		FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
+				new PrivateMessageInboxFragment(), false, false, args);
     }
 
 	/*
@@ -96,7 +95,7 @@ public class PmTask extends AsyncTask<Void,Void,Void>{
     protected void onPreExecute() {
     	
         mProgressDialog = 
-        		ProgressDialog.show(this.sourceActivity, "Sending...", "Sending PM...");
+        		ProgressDialog.show(sourceFragment.getActivity(), "Sending...", "Sending PM...");
     }
 
     /*

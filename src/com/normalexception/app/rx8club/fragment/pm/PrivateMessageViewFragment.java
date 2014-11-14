@@ -34,11 +34,11 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.AlertDialog;
-import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -99,7 +99,7 @@ public class PrivateMessageViewFragment extends Fragment {
 	        lv = (ListView)getView().findViewById(R.id.mainlistview);
 	        
 	        View v = getActivity().getLayoutInflater().inflate(R.layout.view_pmitem_footer, null);
-	    	v.setOnClickListener(new PrivateMessageViewListener());
+	    	v.setOnClickListener(new PrivateMessageViewListener(this));
 	    	lv.addFooterView(v);
 	        
 	        if(savedInstanceState == null || 
@@ -112,9 +112,10 @@ public class PrivateMessageViewFragment extends Fragment {
     }
     
     private void updateList() {
+    	final Fragment _frag = this;
     	getActivity().runOnUiThread(new Runnable() {
             public void run() {
-		    	pmva = new PMPostViewArrayAdapter(getActivity(), R.layout.view_newreply, pmlist);
+		    	pmva = new PMPostViewArrayAdapter(_frag, R.layout.view_newreply, pmlist);
 				lv.setAdapter(pmva);
             }
     	});
@@ -245,6 +246,11 @@ public class PrivateMessageViewFragment extends Fragment {
 	}
 	
 	class PrivateMessageViewListener implements OnClickListener {
+		private Fragment _src = null;
+		
+		public PrivateMessageViewListener(Fragment src) {
+			this._src = src;
+		}
     
 	    /*
 	   	 * (non-Javadoc)
@@ -259,7 +265,7 @@ public class PrivateMessageViewFragment extends Fragment {
 	   			String toPost = 
 						((TextView)getView().findViewById(R.id.pmitem_comment)).getText().toString();
 				PmTask sTask = 
-						new PmTask(getActivity(), securityToken, "Re: " + title, 
+						new PmTask(_src, securityToken, "Re: " + title, 
 								toPost, postUser, pmid);
 				sTask.execute();
 	   			break;
@@ -271,7 +277,7 @@ public class PrivateMessageViewFragment extends Fragment {
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which){
 					    	case DialogInterface.BUTTON_POSITIVE:
-					    		DeletePmTask dpm = new DeletePmTask(getActivity(), securityToken, pmid, false);
+					    		DeletePmTask dpm = new DeletePmTask(_src, securityToken, pmid, false);
 								dpm.execute();
 				   				break;
 				        }

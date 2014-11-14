@@ -30,10 +30,10 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.jsoup.nodes.Document;
 
-import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -104,6 +104,7 @@ public class NewPrivateMessageFragment extends Fragment {
 	 * Construct the view elements
 	 */
 	private void constructView() {
+		final Fragment _frag = this;
 		AsyncTask<Void,String,Void> updaterTask = new AsyncTask<Void,String,Void>() {
         	@Override
 		    protected void onPreExecute() {
@@ -137,7 +138,7 @@ public class NewPrivateMessageFragment extends Fragment {
 			    	
 			    	getActivity().runOnUiThread(new Runnable() {
 			            public void run() {
-					    	pva = new PMItemViewArrayAdapter(getActivity(), R.layout.view_newpm, tlist);
+					    	pva = new PMItemViewArrayAdapter(_frag, R.layout.view_newpm, tlist);
 							lv.setAdapter(pva);	
 			            }
 			    	});
@@ -159,6 +160,11 @@ public class NewPrivateMessageFragment extends Fragment {
 	}
 	
 	class NewPrivateMessageListener implements OnClickListener {
+		private Fragment _src = null;
+		
+		public NewPrivateMessageListener(Fragment src) {
+			this._src = src;
+		}
 		 /*
 	   	 * (non-Javadoc)
 	   	 * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -174,7 +180,7 @@ public class NewPrivateMessageFragment extends Fragment {
 		   		case R.id.newPmButton:
 		   			Log.v(TAG, "PM Submit Clicked");
 					PmTask sTask = 
-							new PmTask(getActivity(), securityToken, 
+							new PmTask(_src, securityToken, 
 									title, postText, recipients, pmid);
 					sTask.execute();
 		   			break;

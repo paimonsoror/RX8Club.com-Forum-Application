@@ -31,11 +31,11 @@ import java.security.NoSuchAlgorithmException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;

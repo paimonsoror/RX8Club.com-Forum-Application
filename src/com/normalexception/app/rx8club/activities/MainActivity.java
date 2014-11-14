@@ -32,12 +32,10 @@ import org.apache.log4j.Logger;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,6 +48,7 @@ import com.normalexception.app.rx8club.R;
 import com.normalexception.app.rx8club.dialog.FavoriteDialog;
 import com.normalexception.app.rx8club.dialog.LogoffDialog;
 import com.normalexception.app.rx8club.fragment.AboutFragment;
+import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.fragment.HomeFragment;
 import com.normalexception.app.rx8club.fragment.LoginFragment;
 import com.normalexception.app.rx8club.fragment.ProfileFragment;
@@ -152,6 +151,7 @@ public class MainActivity extends FragmentActivity {
 		navMenuIcons.recycle();
 
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
+		
 
 		// setting the nav drawer list adapter
 		adapter = new NavDrawerListAdapter(getApplicationContext(),
@@ -184,15 +184,15 @@ public class MainActivity extends FragmentActivity {
 
 	public void displayView(int position, boolean stack) {
 		Fragment _fragment = null;
+		Bundle args = new Bundle();
+		
 		switch(position) {
 		case 0:
 			_fragment = new HomeFragment();
 			break;
 		case 1:
-			Bundle args = new Bundle();
 			args.putBoolean("isNewTopics", true);
 			_fragment = new CategoryFragment();
-			_fragment.setArguments(args);
 			break;
 		case 2:
 			if(PreferenceHelper.isFavoriteAsDialog(this)) {
@@ -208,6 +208,7 @@ public class MainActivity extends FragmentActivity {
 			break;
 
 		case 4:
+			args.putBoolean(PrivateMessageInboxFragment.showOutboundExtra, false);
 			_fragment = new PrivateMessageInboxFragment();
 			break;
 		case 5:
@@ -235,7 +236,7 @@ public class MainActivity extends FragmentActivity {
 			_fragment = null;
 		}
 
-		if (_fragment != null) {
+		if (_fragment != null) {/*
 			FragmentManager fragmentManager = this.getSupportFragmentManager();
 			FragmentTransaction ft = fragmentManager.beginTransaction();
 
@@ -244,7 +245,8 @@ public class MainActivity extends FragmentActivity {
 				ft.add(R.id.content_frame, _fragment).commit();
 			} else {
 				ft.replace(R.id.content_frame,  _fragment).commit();
-			}
+			}*/
+			FragmentUtils.fragmentTransaction(this, _fragment, !stack, stack, args);
 
 			// update selected item and title, then close the drawer
 			mDrawerList.setItemChecked(position, true);

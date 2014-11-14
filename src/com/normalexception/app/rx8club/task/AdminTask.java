@@ -41,11 +41,10 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 
 import com.normalexception.app.rx8club.Log;
-import com.normalexception.app.rx8club.R;
 import com.normalexception.app.rx8club.dialog.MoveThreadDialog;
+import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.fragment.thread.ThreadFragment;
 import com.normalexception.app.rx8club.html.HtmlFormUtils;
 
@@ -189,20 +188,13 @@ public class AdminTask extends AsyncTask<Void,String,Void>{
 			Log.d(TAG, "Setting Thread Lock To: " + !isLocked);
 			args.putBoolean("locked", !isLocked);
 			
+			
 			// Create new fragment and transaction
 			Fragment newFragment = 
 					new ThreadFragment(((ThreadFragment)sourceFragment).getParentCategory());
-			newFragment.setArguments(args);
-			FragmentTransaction transaction = 
-					sourceFragment.getFragmentManager().beginTransaction();
 
-			// Replace whatever is in the fragment_container view with this fragment,
-			// and add the transaction to the back stack
-			transaction.replace(R.id.content_frame, newFragment);
-			transaction.addToBackStack("thread");
-
-			// Commit the transaction
-			transaction.commit();
+			FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
+					newFragment, true, true, args);
 		} else if (doType == MOVE_THREAD) {
 			MoveThreadDialog mtd = new MoveThreadDialog(
 					sourceFragment, token, thread, threadTitle, selectOptions);

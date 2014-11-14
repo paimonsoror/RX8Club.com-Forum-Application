@@ -40,7 +40,6 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -281,17 +280,17 @@ public class ThreadFragment extends Fragment {
 	 * Update our list with the contents
 	 */
 	private void updateList() {
-		final Fragment frag = this;
+		final Fragment _frag = this;
 		getActivity().runOnUiThread(new Runnable() {
 			public void run() {	
 				getView().findViewById(R.id.mainlisttitle).setVisibility(View.VISIBLE);
 				((TextView)getView().findViewById(R.id.mainlisttitle))
 					.setText(String.format("%s [Page %s]", 
 							currentPageTitle, pageNumber.equals("last")? finalPage : pageNumber));
-				pva = new PostViewArrayAdapter(getActivity(), R.layout.view_thread, postlist, tal);
+				pva = new PostViewArrayAdapter(_frag, R.layout.view_thread, postlist, tal);
 				pva.setThreadId(threadId);
 				lv.setAdapter(pva);
-				FragmentUtils.updatePagination(frag, thisPage, finalPage);
+				FragmentUtils.updatePagination(_frag, thisPage, finalPage);
 			}
 		});
 	}
@@ -509,10 +508,14 @@ public class ThreadFragment extends Fragment {
 						_args.putString("page", value);
 						_args.putString("title", currentPageTitle);
 
+						/*
 						__fragment.setArguments(_args);
 						FragmentTransaction transaction = getFragmentManager().beginTransaction();
 						transaction.add(R.id.content_frame, __fragment);
 						transaction.commit();
+						*/
+						FragmentUtils.fragmentTransaction(getActivity(), 
+								__fragment, false, false, _args);
 					}
 				}).setNegativeButton("Cancel", null).show();
 				break;
@@ -535,16 +538,7 @@ public class ThreadFragment extends Fragment {
 			}	
 	
 			if(_fragment != null) {
-				_fragment.setArguments(args);
-				FragmentTransaction transaction = getFragmentManager().beginTransaction();
-	
-				// Replace whatever is in the fragment_container view with this fragment,
-				// and add the transaction to the back stack
-				transaction.add(R.id.content_frame, _fragment);
-				transaction.addToBackStack(null);
-	
-				// Commit the transaction
-				transaction.commit();
+				FragmentUtils.fragmentTransaction(getActivity(), _fragment, false, false, args);
 			}
 		}
 	}

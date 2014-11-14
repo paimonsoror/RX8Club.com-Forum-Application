@@ -48,22 +48,23 @@ public class NavDrawerListAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Log.d(TAG, "Grabbing Slide Navigation View");
 		if(!navDrawerItems.get(position).isGuestEnabled() && 
-        		LoginFactory.getInstance().isGuestMode()) {
+        		(LoginFactory.getInstance().isGuestMode() || 
+        				!LoginFactory.getInstance().isLoggedIn())) {
+			Log.d(TAG, "Loading Guest Mode Menu Options");
 			convertView = null;
 			LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.null_item, parent, false);
             return convertView;
 		} else {
-			if (convertView == null) {
-	            LayoutInflater mInflater = (LayoutInflater)
-	                    context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	            convertView = mInflater.inflate(R.layout.drawer_list_item, parent, false);
-	        }
+			Log.d(TAG, "Loading User Mode Menu Options");
+	        LayoutInflater mInflater = (LayoutInflater)
+	                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	        convertView = mInflater.inflate(R.layout.drawer_list_item, parent, false);
 	         
 	        ImageView imgIcon = (ImageView) ViewHolder.get(convertView, R.id.drawer_icon);
 	        TextView txtTitle = (TextView) ViewHolder.get(convertView, R.id.drawer_title);
-	         
+	        
 	        imgIcon.setImageResource(navDrawerItems.get(position).getIcon());        
 	        txtTitle.setText(navDrawerItems.get(position).getTitle());
 	        

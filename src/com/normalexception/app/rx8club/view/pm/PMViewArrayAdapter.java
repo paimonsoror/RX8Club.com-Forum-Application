@@ -28,6 +28,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ import com.normalexception.app.rx8club.R;
 import com.normalexception.app.rx8club.view.ViewHolder;
 
 public class PMViewArrayAdapter extends ArrayAdapter<PMView> {
-	private Context activity;
+	private Fragment sourceFragment;
 	private List<PMView> data;
 
 	/**
@@ -48,10 +49,10 @@ public class PMViewArrayAdapter extends ArrayAdapter<PMView> {
 	 * @param textViewResourceId	The resource ID
 	 * @param objects				The objects in the list
 	 */
-	public PMViewArrayAdapter(Context context, int textViewResourceId,
+	public PMViewArrayAdapter(Fragment context, int textViewResourceId,
 			List<PMView> objects) {
-		super(context, textViewResourceId, objects);
-		activity = context;
+		super(context.getActivity(), textViewResourceId, objects);
+		sourceFragment = context;
 		data = objects;
 	}
 	
@@ -81,8 +82,9 @@ public class PMViewArrayAdapter extends ArrayAdapter<PMView> {
 		View vi = convertView;
         if(vi == null) {
         	LayoutInflater vinf =
-                    (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            vi = vinf.inflate(R.layout.view_pm, null);
+                    (LayoutInflater)sourceFragment.getActivity()
+                    	.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            vi = vinf.inflate(R.layout.view_pm, parent, false);
         }
         
         PMView pm = data.get(position);

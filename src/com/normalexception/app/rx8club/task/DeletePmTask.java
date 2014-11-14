@@ -30,22 +30,22 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import com.normalexception.app.rx8club.Log;
+import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.fragment.pm.PrivateMessageInboxFragment;
 import com.normalexception.app.rx8club.html.HtmlFormUtils;
 
 public class DeletePmTask extends AsyncTask<Void,Void,Void>{
 	private ProgressDialog mProgressDialog;
-	private Activity sourceActivity;
+	private Fragment sourceFragment;
 	
 	private String token, pmid;
 	private boolean outbound = false;
-	private Class<?> postClazz;
 
 	private Logger TAG =  LogManager.getLogger(this.getClass());
 
@@ -56,12 +56,11 @@ public class DeletePmTask extends AsyncTask<Void,Void,Void>{
 	 * @param pmid				The id of the PM to delete
 	 * @param outbound			True if showing sent items
 	 */
-	public DeletePmTask(Activity sourceActivity, String securityToken, 
+	public DeletePmTask(Fragment source, String securityToken, 
 			String pmid, boolean outbound) {
-		this.sourceActivity = sourceActivity;
+		this.sourceFragment = source;
 		this.token = securityToken;
 		this.pmid = pmid;
-		this.postClazz = PrivateMessageInboxFragment.class;
 		this.outbound = outbound;
 	}
 
@@ -77,12 +76,12 @@ public class DeletePmTask extends AsyncTask<Void,Void,Void>{
 		} catch (Exception e) {
 			Log.w(TAG, e.getMessage());
 		}
-		
-		Intent _intent = new Intent(sourceActivity, postClazz);
-		_intent.putExtra("link", HtmlFormUtils.getResponseUrl());
-		_intent.putExtra(PrivateMessageInboxFragment.showOutboundExtra, outbound);
-		sourceActivity.finish();
-		sourceActivity.startActivity(_intent);
+
+		Bundle args = new Bundle();
+		args.putString("link", HtmlFormUtils.getResponseUrl());
+		args.putBoolean(PrivateMessageInboxFragment.showOutboundExtra, outbound);
+		FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
+				new PrivateMessageInboxFragment(), false, false, args);
     }
 
 	/*
@@ -93,7 +92,7 @@ public class DeletePmTask extends AsyncTask<Void,Void,Void>{
     protected void onPreExecute() {
     	
         mProgressDialog = 
-        		ProgressDialog.show(this.sourceActivity, "Deleting...", "Deleting PM...");
+        		ProgressDialog.show(sourceFragment.getActivity(), "Deleting...", "Deleting PM...");
     }
 
     /*

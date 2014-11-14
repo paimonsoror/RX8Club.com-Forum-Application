@@ -11,9 +11,12 @@
     <string name="noPermission">Sorry, You Dont Have Permission To Do That (New User?)</string>
     <string name="youSure">You Sure&#8230;</string>
     <string name="desc_list_item_icon">Item Icon</string>
+    <string name="postReported">Thank You, This Post Has Been Reported</string>
+    <string name="pleaseEnterReport">Please Enter Report Text</string>
     
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="drawer_guest">Guest User</string>
     
     <!-- Admin Strings -->
     <string name="deleteReason">Reason?</string>
@@ -54,6 +57,7 @@
     <string name="nrUserTitle">User Title</string>
     <string name="nrPostDate">Post Date:\u0020</string>
     <string name="nrPostText">This is some random text oh man this is cool</string>
+    <string name="nrReportReason">Reason For Reporting?</string>
     
     <!-- Login Screen Strings -->
     <string name="loginPasswordInput">Password:\u0020</string>

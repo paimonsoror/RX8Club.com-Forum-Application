@@ -28,12 +28,13 @@ import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import com.normalexception.app.rx8club.Log;
+import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.fragment.UserCpFragment;
 import com.normalexception.app.rx8club.html.HtmlFormUtils;
 
@@ -43,12 +44,12 @@ public class ProfileTask extends AsyncTask<Void,Void,Void>{
 	private String token, customtext, homepage, 
 				   bio, location, interests, 
 				   occupation; 
-	private Activity sourceActivity;
+	private Fragment sourceFragment;
 	private String TAG = "ProfileTask";
 	
-	public ProfileTask(Activity source, String token, String title, String homepage, String bio, 
+	public ProfileTask(Fragment source, String token, String title, String homepage, String bio, 
 					   String location, String interests, String occupation) {
-		this.sourceActivity = source;
+		this.sourceFragment = source;
 		this.token = token;
 		this.customtext = title;
 		this.homepage = homepage;
@@ -70,11 +71,11 @@ public class ProfileTask extends AsyncTask<Void,Void,Void>{
 		} catch (Exception e) {
 			Log.w(TAG, e.getMessage());
 		}
-		
-		Intent _intent = new Intent(sourceActivity, UserCpFragment.class);
-		_intent.putExtra("link", HtmlFormUtils.getResponseUrl());
-		sourceActivity.finish();
-		sourceActivity.startActivity(_intent);
+
+		Bundle args = new Bundle();
+		args.putString("link", HtmlFormUtils.getResponseUrl());
+		FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
+				new UserCpFragment(), false, true, args);
     }
 
 	/*
@@ -85,7 +86,7 @@ public class ProfileTask extends AsyncTask<Void,Void,Void>{
     protected void onPreExecute() {
     	
         mProgressDialog = 
-        		ProgressDialog.show(this.sourceActivity, "Updating...", "Updating Profile...");
+        		ProgressDialog.show(sourceFragment.getActivity(), "Updating...", "Updating Profile...");
     }
 
     /*

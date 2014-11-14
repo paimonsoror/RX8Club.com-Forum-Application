@@ -294,11 +294,11 @@ public class HomeFragment extends Fragment {
 	 * @param contents	List of view rows
 	 */
 	private void updateList() {
-		//final Activity a = this;
+		final Fragment _frag = this;
 		getActivity().runOnUiThread(new Runnable() {
 			public void run() {	        
 				final ListView lv = (ListView)getView().findViewById(R.id.mainlistview);
-				cva = new CategoryViewArrayAdapter(getActivity(), R.layout.view_category, mainList);
+				cva = new CategoryViewArrayAdapter(_frag, R.layout.view_category, mainList);
 				lv.setAdapter(cva);
 				lv.setLongClickable(true);
 			}

@@ -215,4 +215,25 @@
 	        android:cacheColorHint="#00000000"
 	        android:scrollbars="none" />
 	</RelativeLayout>
+	
+	<RelativeLayout
+	    android:id="@+id/replyFooterContainer"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/postContainer"
+	    android:background="#444444"
+	    android:paddingBottom="5dp" >
+
+	    <ImageView
+	        android:id="@+id/nr_reportbutton"
+	        android:layout_width="24dip"
+	        android:layout_height="24dip"
+	        android:layout_alignParentLeft="false"
+	        android:layout_alignParentRight="true"
+	        android:layout_marginRight="5dp"
+	        android:focusable="false"
+	        android:paddingLeft="5dip"
+	        android:src="@drawable/report" />
+
+	</RelativeLayout>
 </RelativeLayout>

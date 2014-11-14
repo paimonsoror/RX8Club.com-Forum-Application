@@ -41,6 +41,8 @@ import com.normalexception.app.rx8club.Log;
 import com.normalexception.app.rx8club.R;
 import com.normalexception.app.rx8club.favorites.FavoriteFactory;
 import com.normalexception.app.rx8club.favorites.FavoriteThreads;
+import com.normalexception.app.rx8club.fragment.FragmentUtils;
+import com.normalexception.app.rx8club.fragment.thread.ThreadFragment;
 import com.normalexception.app.rx8club.view.thread.ThreadView;
 import com.normalexception.app.rx8club.view.thread.ThreadViewArrayAdapter;
 
@@ -81,13 +83,14 @@ public class FavoritesFragment extends Fragment {
 	 * Update the view's list with the appropriate data
 	 */
 	private void updateList() {
+		final Fragment _frag = this;
     	getActivity().runOnUiThread(new Runnable() {
             public void run() {
             	getView().findViewById(R.id.mainlisttitle).setVisibility(View.VISIBLE);
 				((TextView)getView().findViewById(R.id.mainlisttitle)).setText("Favorite Threads");
 				
             	threadlist = FavoriteFactory.getInstance().getFavorites();
-		    	tva = new ThreadViewArrayAdapter(getActivity(), R.layout.view_thread, threadlist);
+		    	tva = new ThreadViewArrayAdapter(_frag, R.layout.view_thread, threadlist);
 		    	
 				lv.setAdapter(tva);
 				lv.setOnItemClickListener(new OnItemClickListener() {
@@ -96,11 +99,13 @@ public class FavoritesFragment extends Fragment {
 		                    int position, long id) {
 		            	ThreadView itm = (ThreadView) parent.getItemAtPosition(position);
 		            	Log.v(TAG, "User clicked '" + itm.getTitle() + "'");
-						//Intent _intent = 
-						//		new Intent(FavoritesFragment.this, ThreadActivity.class);
-						//_intent.putExtra("link", itm.getLink());
-						//_intent.putExtra("title", itm.getTitle());
-						//startActivity(_intent);
+
+		            	Bundle args = new Bundle();
+		            	args.putString("link", itm.getLink());
+		            	args.putString("title", itm.getTitle());
+		            	FragmentUtils.fragmentTransaction(_frag.getActivity(), 
+		            			new ThreadFragment(((ThreadFragment)_frag).getParentCategory()), 
+		            			false, true, args);
 		            }
 		        });
             }

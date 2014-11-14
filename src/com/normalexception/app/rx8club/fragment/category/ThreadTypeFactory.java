@@ -26,13 +26,13 @@ package com.normalexception.app.rx8club.fragment.category;
 
 import java.util.HashMap;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import com.normalexception.app.rx8club.Log;
 import com.normalexception.app.rx8club.MainApplication;

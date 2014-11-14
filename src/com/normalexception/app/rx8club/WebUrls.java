@@ -52,6 +52,7 @@ public class WebUrls {
 	public static final String deletePostAddress =	rootUrl + "/editpost.php?do=deletepost&p=";
 	public static final String pmSubmitAddress = rootUrl + "/private.php?do=insertpm&pmid=";
 	public static final String postAttachmentAddress = rootUrl + "/newattachment.php?do=manageattach&p=";
+	public static final String postReportAddress = rootUrl + "/report.php?p=";
 	
 	public static final String userCpAddress = rootUrl + "/usercp.php";
 	public static final String editProfile = rootUrl + "/profile.php?do=editprofile";

@@ -24,34 +24,38 @@ package com.normalexception.app.rx8club.dialog;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import android.app.Activity;
+import java.io.IOException;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.text.InputType;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.normalexception.app.rx8club.Log;
+import com.normalexception.app.rx8club.MainApplication;
 import com.normalexception.app.rx8club.R;
-import com.normalexception.app.rx8club.filter.ThreadFilter;
-import com.normalexception.app.rx8club.filter.ThreadFilter.RuleType;
-import com.normalexception.app.rx8club.filter.ThreadFilterFactory;
+import com.normalexception.app.rx8club.html.HtmlFormUtils;
 
-public class FilterDialog {
-	
+/**
+ * Dialog used to report posts to admins
+ */
+public class ReportPostDialog {
 	private AlertDialog.Builder builder;
+	private final String TAG = "ReportPostDialog";
 	
 	/**
-	 * Create a dialog for the user to enter a thread filter
-	 * @param ctx	The source base activity
+	 * Create a dialog for the user to report a post
+	 * @param ctx			The source base activity
+	 * @param securitytoken	The security token for the user
+	 * @param postId		The id of the post to report
 	 */
-	public FilterDialog(final Context ctx) {
+	public ReportPostDialog(final Context ctx, final String securitytoken, final String postId) {
 		// Set up the input
-		final EditText input = new EditText(ctx);		
-		final Spinner  spinner = new Spinner(ctx);
+		final EditText input = new EditText(ctx);
+		input.setLines(2);
 		
 		// Lets make sure the user didn't accidentally click this
 		DialogInterface.OnClickListener dialogClickListener = 
@@ -60,18 +64,31 @@ public class FilterDialog {
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which){
 			    	case DialogInterface.BUTTON_POSITIVE:
-			    		RuleType rule = RuleType.values()[spinner.getSelectedItemPosition()];
-			    		String theInput = input.getText().toString();			    		
-		    			if(validate(theInput, rule)) {
-				    		ThreadFilterFactory.getInstance().addFilter(new ThreadFilter(
-				    				rule, theInput));
-				    		Activity a = (Activity)ctx;
-				    		a.finish();
-				    		a.startActivity(a.getIntent());
-		    			} else {
-		    				Toast.makeText(ctx, R.string.dialogFilterInvalid, 
-		    					Toast.LENGTH_LONG).show();
-		    			}
+			    		if(input.getText().toString().isEmpty()) {
+			    			Toast.makeText(MainApplication.getAppContext(), 
+			    					R.string.pleaseEnterReport, 
+			    					Toast.LENGTH_SHORT).show();
+			    		} else {
+				    		AsyncTask<Void,String,Void> reportTask = new AsyncTask<Void,String,Void>() {
+				            	@Override
+				    			protected Void doInBackground(Void... params) {	
+				    				try {
+										HtmlFormUtils.reportPost(securitytoken, postId, input.getText().toString());
+									} catch (IOException e) {
+										Log.e(TAG, "Error reporting post", e);
+									}
+				    		    	return null;
+				    			}
+				    			
+				    			@Override
+				    		    protected void onPostExecute(Void result) {
+				    				Toast.makeText(MainApplication.getAppContext(), 
+				    						R.string.postReported, 
+				    						Toast.LENGTH_SHORT).show();
+				    			}
+				            };
+				            reportTask.execute();
+			    		}
 		   				break;
 			    	case DialogInterface.BUTTON_NEGATIVE:
 			    		break;
@@ -79,47 +96,16 @@ public class FilterDialog {
 		    }
 		};
 		builder = new AlertDialog.Builder(ctx);
-		builder.setTitle(R.string.dialogFilter);
 		
 		// Specify the type of input expected 
 		input.setInputType(InputType.TYPE_CLASS_TEXT);
-		
-		// Create an ArrayAdapter using the string array and a default spinner layout
-		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(ctx,
-		        R.array.filterValues, android.R.layout.simple_spinner_item);
-		
-		// Specify the layout to use when the list of choices appears
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		
-		// Apply the adapter to the spinner
-		spinner.setAdapter(adapter);
-		
-		LinearLayout llay = new LinearLayout(ctx);
-		llay.setOrientation(LinearLayout.VERTICAL);
-		llay.addView(spinner);
-		llay.addView(input);
-		
-		builder.setView(llay);
+		input.setText("");
+		builder.setView(input);
 		
 		builder
+			.setTitle(R.string.nrReportReason)
 			.setPositiveButton(R.string.submit, dialogClickListener)
 		    .setNegativeButton(R.string.cancel, dialogClickListener);
-	}
-	
-	/**
-	 * Validate the input and ensure that the data is acceptable
-	 * @param input	The input text
-	 * @param rule	The selected rule
-	 * @return		True if the input is valid
-	 */
-	private boolean validate(String input, RuleType rule) {
-		boolean value = true;
-		
-		// Make sure the user entered a value
-		if(input.length() == 0)
-			value = false;
-		
-		return value;
 	}
 	
 	/**

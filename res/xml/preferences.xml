@@ -41,11 +41,6 @@
 	</PreferenceCategory>
 	<PreferenceCategory
                 android:title="Thread Options">
-	    <CheckBoxPreference 
-	        android:title="Linear View"
-	        android:summary="Display thread contents in linear view"
-	        android:key="linearthread"
-	        android:defaultValue="true"/>
 	    <ListPreference 
 	        android:title="Default Page"
 	        android:summary="Set the default page to open"

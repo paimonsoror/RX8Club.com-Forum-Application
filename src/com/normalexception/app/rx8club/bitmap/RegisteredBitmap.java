@@ -27,6 +27,7 @@ package com.normalexception.app.rx8club.bitmap;
 import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.net.MalformedURLException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,8 +44,9 @@ public class RegisteredBitmap {
 	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	private static Map<String, SoftReference<RegisteredBitmap>> archive = 
-			new HashMap<String, SoftReference<RegisteredBitmap>>(); 
-	
+            Collections.synchronizedMap(
+            		new HashMap<String, SoftReference<RegisteredBitmap>>());
+		
 	/**
 	 * Create a registered bitmap.  This is a container for a bitmap that 
 	 * links a bitmap to an ID.  The id is a random number that is associated
@@ -57,6 +59,7 @@ public class RegisteredBitmap {
 	 */
 	public RegisteredBitmap(int id, String source, boolean onlyOpaque) 
 			throws MalformedURLException, IOException {		
+				
 		SoftReference<RegisteredBitmap> temp = archive.get(source);
 		
 		// Check to see if a archived image exists

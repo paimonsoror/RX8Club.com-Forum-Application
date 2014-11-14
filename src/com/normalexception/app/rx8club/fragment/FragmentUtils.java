@@ -101,6 +101,7 @@ public class FragmentUtils {
 	public static void returnToLoginPage(Activity src, boolean clearPrefs, boolean timeout) {
 		LoginFactory.getInstance().logoff(clearPrefs);
 		
+		/*
 		Fragment newFragment = new LoginFragment(true);		
 		FragmentTransaction transaction = 
 				((FragmentActivity)src).getSupportFragmentManager().beginTransaction();
@@ -108,6 +109,35 @@ public class FragmentUtils {
 		// Replace whatever is in the fragment_container view with this fragment,
 		// and add the transaction to the back stack
 		transaction.replace(R.id.content_frame, newFragment);
+
+		// Commit the transaction
+		transaction.commit();
+		*/
+		FragmentUtils.fragmentTransaction((FragmentActivity)src, new LoginFragment(true), true, false);
+	}
+	
+	public static void fragmentTransaction(FragmentActivity source, Fragment destination, 
+			boolean replace, boolean backstack) {
+		FragmentUtils.fragmentTransaction(source, destination, replace, backstack, null);
+	}
+	
+	public static void fragmentTransaction(FragmentActivity source, Fragment destination, 
+			boolean replace, boolean backstack, Bundle args) {	
+		FragmentTransaction transaction = 
+				source.getSupportFragmentManager().beginTransaction();
+		
+		if(args != null)
+			destination.setArguments(args);
+
+		// Replace whatever is in the fragment_container view with this fragment,
+		// and add the transaction to the back stack
+		if(replace)
+			transaction.replace(R.id.content_frame, destination);
+		else
+			transaction.add(R.id.content_frame, destination);
+		
+		if(backstack)
+			transaction.addToBackStack(null);
 
 		// Commit the transaction
 		transaction.commit();

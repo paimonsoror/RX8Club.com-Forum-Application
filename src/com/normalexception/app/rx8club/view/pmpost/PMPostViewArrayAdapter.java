@@ -28,6 +28,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +46,7 @@ import com.normalexception.app.rx8club.view.ViewHolder;
 import com.normalexception.app.rx8club.view.threadpost.PostView;
 
 public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
-	private Context activity;
+	private Fragment sourceFragment;
 	private List<PMPostView> data;
 	private AvatarLoader imageLoader;
 
@@ -55,12 +56,12 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
 	 * @param textViewResourceId	The resource id
 	 * @param objects				The list of objects
 	 */
-	public PMPostViewArrayAdapter(Context context, int textViewResourceId,
+	public PMPostViewArrayAdapter(Fragment context, int textViewResourceId,
 			List<PMPostView> objects) {
-		super(context, textViewResourceId, objects);
-		activity = context;
+		super(context.getActivity(), textViewResourceId, objects);
+		sourceFragment = context;
 		data = objects;
-		imageLoader = new AvatarLoader(activity.getApplicationContext());
+		imageLoader = new AvatarLoader(sourceFragment.getActivity().getApplicationContext());
 	}
 	
 	/*
@@ -89,8 +90,8 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
 		View vi = convertView;
         if(vi == null) {
         	LayoutInflater vinf =
-                    (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            vi = vinf.inflate(R.layout.view_newreply, null);
+                    (LayoutInflater)sourceFragment.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            vi = vinf.inflate(R.layout.view_newreply, parent, false);
         }
         
         final PostView cv = data.get(position);
@@ -104,7 +105,7 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
         ((TextView) ViewHolder.get(vi,R.id.nr_postDate)).setText(cv.getPostDate());
         
         TextView postText = ((TextView) ViewHolder.get(vi,R.id.nr_postText));
-        ForumImageHandler fih = new ForumImageHandler(postText, Utils.randomInt(0, 9999), activity);        
+        ForumImageHandler fih = new ForumImageHandler(postText, Utils.randomInt(0, 9999), sourceFragment.getActivity());        
         postText.setText(Html.fromHtml(cv.getUserPost(), fih, null));
         
         // Lets make sure we remove any font formatting that was done within
@@ -113,7 +114,7 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
         		cv.getUserPost().replaceAll("(?i)<(/*)font(.*?)>", "");
        
         // Show attachments if the preference allows it
-        if(PreferenceHelper.isShowAttachments(activity)) 
+        if(PreferenceHelper.isShowAttachments(sourceFragment.getActivity())) 
         	trimmedPost = appendAttachments(trimmedPost, cv.getAttachments());
         
         postText.setText(Html.fromHtml(trimmedPost, fih, null));
@@ -121,14 +122,14 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
         postText.setLinkTextColor(Color.WHITE);
         
         // Set the text size based on our preferences
-        int font_size = PreferenceHelper.getFontSize(activity);
+        int font_size = PreferenceHelper.getFontSize(sourceFragment.getActivity());
         postText.setTextSize(font_size);
         
         // Load up the avatar of hte user, but remember to remove
         // the dateline at the end of the file so that we aren't
         // creating multiple images for a user.  The image still
         // gets returned without a date
-        if(PreferenceHelper.isShowAvatars(activity)) {
+        if(PreferenceHelper.isShowAvatars(sourceFragment.getActivity())) {
 	        String nodate_avatar = 
 	        		cv.getUserImageUrl().indexOf('?') == -1? 
 	        				cv.getUserImageUrl() : 

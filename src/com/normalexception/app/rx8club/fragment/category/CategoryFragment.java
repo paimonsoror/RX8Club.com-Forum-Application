@@ -36,7 +36,6 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -193,10 +192,10 @@ public class CategoryFragment extends Fragment {
 	 * Update the view's list with the appropriate data
 	 */
 	private void updateList() {
-		final Fragment frag = this;
+		final Fragment _frag = this;
     	getActivity().runOnUiThread(new Runnable() {
             public void run() {
-		    	tva = new ThreadViewArrayAdapter(getActivity(), R.layout.view_thread, threadlist);
+		    	tva = new ThreadViewArrayAdapter(_frag, R.layout.view_thread, threadlist);
 		    	tva.setIsNewThread(isNewTopicActivity);
 				lv.setAdapter(tva);
 				lv.setOnItemClickListener(new OnItemClickListener() {
@@ -224,19 +223,9 @@ public class CategoryFragment extends Fragment {
 							args.putBoolean("poll", itm.isPoll());
 							args.putBoolean("locked", itm.isLocked());
 							args.putString("title", itm.getTitle());
-							
-							// Create new fragment and transaction
-							Fragment newFragment = new ThreadFragment(frag);
-							newFragment.setArguments(args);
-							FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-							// Replace whatever is in the fragment_container view with this fragment,
-							// and add the transaction to the back stack
-							transaction.add(R.id.content_frame, newFragment);
-							transaction.addToBackStack("thread");
-
-							// Commit the transaction
-							transaction.commit();
+							FragmentUtils.fragmentTransaction(_frag.getActivity(), 
+									new ThreadFragment(_frag), false, true, args);
 		            	}
 		            }
 		        });
@@ -244,7 +233,7 @@ public class CategoryFragment extends Fragment {
 					registerForContextMenu(lv);
 				
 				
-				if(FragmentUtils.updatePagination(frag, thisPage, finalPage) == null)
+				if(FragmentUtils.updatePagination(_frag, thisPage, finalPage) == null)
 					getView().findViewById(R.id.paginationView).setVisibility(View.GONE);
 
 		        updateFilterizedInformation();
@@ -594,17 +583,7 @@ public class CategoryFragment extends Fragment {
 			}
 			
 			if(_fragment != null) {
-				// Create new fragment and transaction
-				_fragment.setArguments(args);
-				FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-				// Replace whatever is in the fragment_container view with this fragment,
-				// and add the transaction to the back stack
-				transaction.add(R.id.content_frame, _fragment);
-				transaction.addToBackStack("newpage");
-
-				// Commit the transaction
-				transaction.commit();
+				FragmentUtils.fragmentTransaction(getActivity(), _fragment, false, true, args);
 			}
 		}
     }
@@ -651,6 +630,7 @@ public class CategoryFragment extends Fragment {
 					args.putString("source", link);
 					args.putString("forumid", forumId);
 					
+					/*
 					// Create new fragment and transaction
 					Fragment newFragment = new NewThreadFragment();
 					newFragment.setArguments(args);
@@ -663,6 +643,9 @@ public class CategoryFragment extends Fragment {
 
 					// Commit the transaction
 					transaction.commit();
+					*/
+					FragmentUtils.fragmentTransaction(getActivity(), 
+							new NewThreadFragment(), false, true, args);
 				} else {
 					 Toast.makeText(getActivity(), R.string.noPermission, Toast.LENGTH_LONG).show();
 				}

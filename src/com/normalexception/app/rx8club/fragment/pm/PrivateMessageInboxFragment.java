@@ -35,12 +35,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.AlertDialog;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -58,6 +58,7 @@ import com.normalexception.app.rx8club.Log;
 import com.normalexception.app.rx8club.R;
 import com.normalexception.app.rx8club.TimeoutFactory;
 import com.normalexception.app.rx8club.WebUrls;
+import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.html.HtmlFormUtils;
 import com.normalexception.app.rx8club.html.VBForumFactory;
 import com.normalexception.app.rx8club.task.DeletePmTask;
@@ -125,20 +126,17 @@ public class PrivateMessageInboxFragment extends Fragment {
     }
     
     private void updateList() {
+    	final Fragment _frag = this;
     	getActivity().runOnUiThread(new Runnable() {
             public void run() {
-		    	pmva = new PMViewArrayAdapter(getActivity(), R.layout.view_pm, pmlist);
+		    	pmva = new PMViewArrayAdapter(_frag, R.layout.view_pm, pmlist);
 				lv.setAdapter(pmva);
 				lv.setOnItemClickListener(new OnItemClickListener() {
 		            @Override
 		            public void onItemClick(AdapterView<?> parent, View view,
 		                    int position, long id) {
 		            	PMView pm = (PMView) parent.getItemAtPosition(position);
-		            	//Intent intent = 
-						//		new Intent(PrivateMessageInboxActivity.this, 
-						//				PrivateMessageViewActivity.class);
-						//intent.putExtra("link", pm.getLink());
-						//startActivity(intent);
+
 		            	Bundle args = new Bundle();
 		            	args.putString("link", pm.getLink());
 		            	
@@ -237,11 +235,11 @@ public class PrivateMessageInboxFragment extends Fragment {
 			    
 				@Override
 				protected Void doInBackground(Void... params) {
-					//Intent intent = 
-					//		new Intent(PrivateMessageInboxActivity.this, 
-					//				PrivateMessageViewActivity.class);
-					//intent.putExtra("link", link);
-					//startActivity(intent);
+					
+					Bundle args = new Bundle();
+					args.putString("link", link);
+					FragmentUtils.fragmentTransaction(getActivity(), 
+							new PrivateMessageViewFragment(), false, true, args);
 					
 					return null;
 				}
@@ -277,7 +275,7 @@ public class PrivateMessageInboxFragment extends Fragment {
     		final String id = link.substring(link.lastIndexOf("id=") + 3);
 			Log.v(TAG, "User Clicked: " + id);
 
-			DeletePmTask dpm = new DeletePmTask(getActivity(), token, id, showOutbound);
+			DeletePmTask dpm = new DeletePmTask(this, token, id, showOutbound);
 			dpm.execute();
 		}
     }
@@ -305,8 +303,8 @@ public class PrivateMessageInboxFragment extends Fragment {
      * of the view then this is not called
      */
     private void constructView() {
-    	//this.showOutbound = 
-    	//		this.getIntent().getBooleanExtra(showOutboundExtra, false);
+    	this.showOutbound = 
+    			getArguments().getBoolean(showOutboundExtra, false);
     	
     	AsyncTask<Void,String,Void> updaterTask = new AsyncTask<Void,String,Void>() {
         	@Override
@@ -423,17 +421,8 @@ public class PrivateMessageInboxFragment extends Fragment {
 				args.putBoolean(showOutboundExtra, true);
 				break;
 			}
-			
-			_fragment.setArguments(args);
-			FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-			// Replace whatever is in the fragment_container view with this fragment,
-			// and add the transaction to the back stack
-			transaction.add(R.id.content_frame, _fragment);
-			transaction.addToBackStack(null);
-
-			// Commit the transaction
-			transaction.commit();
+			FragmentUtils.fragmentTransaction(getActivity(), _fragment, true, true, args);
 		}
     }
 }

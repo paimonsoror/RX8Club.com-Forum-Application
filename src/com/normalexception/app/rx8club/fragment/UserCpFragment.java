@@ -31,10 +31,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -80,7 +80,7 @@ public class UserCpFragment extends Fragment {
         super.onCreate(savedInstanceState);
         MainApplication.setState(AppState.State.USER_CP, this);
 
-        view.findViewById(R.id.submitUserCpButton).setOnClickListener(new UserCpClickListener());
+        view.findViewById(R.id.submitUserCpButton).setOnClickListener(new UserCpClickListener(this));
         
         if(TimeoutFactory.getInstance().checkTimeout(this)) {
         	constructView();
@@ -178,6 +178,11 @@ public class UserCpFragment extends Fragment {
     }
     
     class UserCpClickListener implements OnClickListener {
+    	private Fragment _src = null;
+    	
+    	public UserCpClickListener(Fragment src) {
+    		this._src = src;
+    	}
 	    /*
 		 * (non-Javadoc)
 		 * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -194,7 +199,7 @@ public class UserCpFragment extends Fragment {
 				interests = ((TextView)view.findViewById(R.id.interests)).getText().toString();
 				occupation = ((TextView)view.findViewById(R.id.occupation)).getText().toString();
 				
-				ProfileTask update = new ProfileTask(getActivity(), token, customTitle, homepageurl, 
+				ProfileTask update = new ProfileTask(_src, token, customTitle, homepageurl, 
 	    				biography, location, interests, occupation);
 				update.execute();
 				break;

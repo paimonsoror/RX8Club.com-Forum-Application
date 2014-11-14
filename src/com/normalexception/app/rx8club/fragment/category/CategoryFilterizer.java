@@ -32,8 +32,8 @@ import org.apache.log4j.Logger;
 
 import com.normalexception.app.rx8club.Log;
 import com.normalexception.app.rx8club.filter.ThreadFilter;
-import com.normalexception.app.rx8club.filter.ThreadFilterFactory;
 import com.normalexception.app.rx8club.filter.ThreadFilter.RuleType;
+import com.normalexception.app.rx8club.filter.ThreadFilterFactory;
 import com.normalexception.app.rx8club.view.thread.ThreadView;
 
 public class CategoryFilterizer {

@@ -26,10 +26,10 @@ package com.normalexception.app.rx8club.view.profile;
 
 import java.util.List;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.view.View;
@@ -38,10 +38,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.fragment.thread.ThreadFragment;
 
 public class ProfileViewArrayAdapter extends ArrayAdapter<ProfileView> {
-	private Context activity;
+	private Fragment sourceFragment;
 	private List<ProfileView> data;
 
 	/**
@@ -50,10 +51,10 @@ public class ProfileViewArrayAdapter extends ArrayAdapter<ProfileView> {
 	 * @param textViewResourceId	The resource ID
 	 * @param objects				The objects in the list
 	 */
-	public ProfileViewArrayAdapter(Context context, int textViewResourceId,
+	public ProfileViewArrayAdapter(Fragment context, int textViewResourceId,
 			List<ProfileView> objects) {
-		super(context, textViewResourceId, objects);
-		activity = context;
+		super(context.getActivity(), textViewResourceId, objects);
+		sourceFragment = context;
 		data = objects;
 	}
 
@@ -82,7 +83,7 @@ public class ProfileViewArrayAdapter extends ArrayAdapter<ProfileView> {
 	public View getView(int position, View convertView, ViewGroup parent) {		
 		View vi = convertView;
 		if(vi == null) {
-			vi = new TextView(activity);
+			vi = new TextView(sourceFragment.getActivity());
 		}
 
 		TextView tv = (TextView)vi;
@@ -101,11 +102,20 @@ public class ProfileViewArrayAdapter extends ArrayAdapter<ProfileView> {
 		tv.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
+				/*
 				Intent _intent = 
-						new Intent(activity, ThreadFragment.class);
+						new Intent(sourceFragment, ThreadFragment.class);
 				_intent.putExtra("link", pm.getLink());
 				_intent.putExtra("title", pm.getName());
-				activity.startActivity(_intent);
+				sourceFragment.startActivity(_intent);
+				*/
+				
+				Bundle args = new Bundle();
+				args.putString("link", pm.getLink());
+				args.putString("title",  pm.getName());
+				FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
+						new ThreadFragment(((ThreadFragment)sourceFragment).getParentCategory()), 
+						false, true, args);
 			}
 		});
 

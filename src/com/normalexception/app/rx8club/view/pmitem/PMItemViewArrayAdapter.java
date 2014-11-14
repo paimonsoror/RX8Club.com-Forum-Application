@@ -27,6 +27,7 @@ package com.normalexception.app.rx8club.view.pmitem;
 import java.util.List;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ import com.normalexception.app.rx8club.R;
 import com.normalexception.app.rx8club.view.ViewHolder;
 
 public class PMItemViewArrayAdapter extends ArrayAdapter<PMItemView> {
-	private Context activity;
+	private Fragment sourceFragment;
 	private List<PMItemView> data;
 
 	/**
@@ -46,10 +47,10 @@ public class PMItemViewArrayAdapter extends ArrayAdapter<PMItemView> {
 	 * @param textViewResourceId	The resource id
 	 * @param objects				The list of objects
 	 */
-	public PMItemViewArrayAdapter(Context context, int textViewResourceId,
+	public PMItemViewArrayAdapter(Fragment context, int textViewResourceId,
 			List<PMItemView> objects) {
-		super(context, textViewResourceId, objects);
-		activity = context;
+		super(context.getActivity(), textViewResourceId, objects);
+		sourceFragment = context;
 		data = objects;
 	}
 	
@@ -79,7 +80,8 @@ public class PMItemViewArrayAdapter extends ArrayAdapter<PMItemView> {
 		View vi = convertView;
         if(vi == null) {
         	LayoutInflater vinf =
-                    (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    (LayoutInflater)sourceFragment.getActivity()
+                    	.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             vi = vinf.inflate(R.layout.view_newpm, parent, false);
         }
         

@@ -30,8 +30,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,6 +40,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.normalexception.app.rx8club.R;
+import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.fragment.category.CategoryFragment;
 import com.normalexception.app.rx8club.utils.SpecialNumberFormatter;
 import com.normalexception.app.rx8club.view.ViewHolder;
@@ -50,7 +49,7 @@ import com.normalexception.app.rx8club.view.ViewHolder;
  * Custom category view array adapter
  */
 public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
-	private Context activity;
+	private Fragment sourceFragment;
 	private List<CategoryView> data;
 
 	/**
@@ -59,10 +58,10 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
 	 * @param textViewResourceId	The resource ID
 	 * @param objects				The objects in the list
 	 */
-	public CategoryViewArrayAdapter(Context context, int textViewResourceId,
+	public CategoryViewArrayAdapter(Fragment context, int textViewResourceId,
 			List<CategoryView> objects) {
-		super(context, textViewResourceId, objects);
-		activity = context;
+		super(context.getActivity(), textViewResourceId, objects);
+		sourceFragment = context;
 		data = objects;
 	}
 	
@@ -92,8 +91,9 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
 		View vi = convertView;
         if(vi == null) {
         	LayoutInflater vinf =
-                    (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            vi = vinf.inflate(R.layout.view_category, null);
+                    (LayoutInflater)sourceFragment.getActivity()
+                    	.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            vi = vinf.inflate(R.layout.view_category, parent, false);
         }
         
         final CategoryView cv = data.get(position);    
@@ -120,18 +120,8 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
 						Bundle args = new Bundle();
 						args.putString("link", cv.getLink());
 						Fragment newFragment = new CategoryFragment();
-						newFragment.setArguments(args);
-						
-						FragmentTransaction transaction = 
-								((FragmentActivity)activity).getSupportFragmentManager().beginTransaction();
-
-						// Replace whatever is in the fragment_container view with this fragment,
-						// and add the transaction to the back stack
-						transaction.replace(R.id.content_frame, newFragment);
-						transaction.addToBackStack(null);
-
-						// Commit the transaction
-						transaction.commit();
+						FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
+								newFragment, true, true, args);
 					}
 				}
         	});
@@ -145,7 +135,7 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
         	        @Override
         	        public boolean onLongClick(View v) {
         	        	SubCategoryDialog scd = 
-        	        			new SubCategoryDialog(activity, cv.getSubCategories());
+        	        			new SubCategoryDialog(sourceFragment.getActivity(), cv.getSubCategories());
         	        	scd.registerToExecute();
         	        	scd.show();
         	        	return true;
