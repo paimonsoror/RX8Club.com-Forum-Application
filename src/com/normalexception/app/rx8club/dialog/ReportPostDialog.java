@@ -26,6 +26,9 @@ package com.normalexception.app.rx8club.dialog;
 
 import java.io.IOException;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -44,7 +47,7 @@ import com.normalexception.app.rx8club.html.HtmlFormUtils;
  */
 public class ReportPostDialog {
 	private AlertDialog.Builder builder;
-	private final String TAG = "ReportPostDialog";
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	/**
 	 * Create a dialog for the user to report a post

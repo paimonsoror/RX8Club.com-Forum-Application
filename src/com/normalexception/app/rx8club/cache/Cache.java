@@ -27,8 +27,9 @@ package com.normalexception.app.rx8club.cache;
 import java.io.File;
 
 import android.content.Context;
+import android.os.Environment;
 
-import com.normalexception.app.rx8club.R;
+import com.normalexception.app.rx8club.utils.Utils;
 
 public class Cache {
 	protected File   cacheDir      = null;
@@ -70,12 +71,21 @@ public class Cache {
 		File cacheDir = null;
 		//Find the dir to save cached images
         if (android.os.Environment.getExternalStorageState().equals(
-        		android.os.Environment.MEDIA_MOUNTED))
-            cacheDir=new File(
-            		android.os.Environment.getExternalStorageDirectory(),
-            		context.getString(R.string.folder_rx8club));
-        else
+        		android.os.Environment.MEDIA_MOUNTED)) {
+            //cacheDir=new File(
+            //		android.os.Environment.getExternalStorageDirectory(),
+            //		context.getString(R.string.folder_rx8club));
+        	if (Utils.hasFroyo()) {
+                cacheDir = context.getExternalCacheDir();
+            } else {
+
+	            // Before Froyo we need to construct the external cache dir ourselves
+	            final String cDir = "/Android/data/" + context.getPackageName() + "/cache/";
+	            cacheDir = new File(Environment.getExternalStorageDirectory().getPath() + cDir);
+            }
+        } else
             cacheDir=context.getCacheDir();
+        
         if(!cacheDir.exists())
             cacheDir.mkdirs();
         

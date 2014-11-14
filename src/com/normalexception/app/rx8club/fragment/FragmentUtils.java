@@ -52,15 +52,25 @@ public class FragmentUtils {
 	
 	private static Logger TAG =  LogManager.getLogger(FragmentUtils.class);
 	
+	/**
+	 * Dump arguments that were passed into a fragment for debug purposes
+	 * @param args	Fragment argument bundle
+	 */
 	public static void dumpArgs(Bundle args) {
 		Set<String> k_args = args.keySet();
-		Log.v(TAG, "> Dumping Fragment Arguments");
+		Log.d(TAG, "> Dumping Fragment Arguments");
 		for(String key : k_args) {
-			Log.v(TAG, String.format("%s = %s", key, args.get(key)));
+			Log.d(TAG, String.format("%s = %s", key, args.get(key)));
 		}
-		Log.v(TAG, "> End Dump");
+		Log.d(TAG, "> End Dump");
 	}
 
+	/**
+	 * Convenient method to register an onclicklistener to all views within a 
+	 * viewgroup
+	 * @param och	The handler to assign
+	 * @param vh	The view group to assign to
+	 */
 	public static void registerHandlerToViewObjects(OnClickListener och, ViewGroup vh) {
 		View v = null;
 		Log.v(TAG, String.format("Registering %d Listening Objects", vh.getChildCount()));
@@ -98,29 +108,37 @@ public class FragmentUtils {
 		return result;
 	}
 	
+	/**
+	 * Convenient method for returning to the Login page of the application
+	 * @param src			The source activity requesting to return
+	 * @param clearPrefs	Clear preferences if true
+	 * @param timeout		True if timeout triggered
+	 */
 	public static void returnToLoginPage(Activity src, boolean clearPrefs, boolean timeout) {
 		LoginFactory.getInstance().logoff(clearPrefs);
-		
-		/*
-		Fragment newFragment = new LoginFragment(true);		
-		FragmentTransaction transaction = 
-				((FragmentActivity)src).getSupportFragmentManager().beginTransaction();
-
-		// Replace whatever is in the fragment_container view with this fragment,
-		// and add the transaction to the back stack
-		transaction.replace(R.id.content_frame, newFragment);
-
-		// Commit the transaction
-		transaction.commit();
-		*/
 		FragmentUtils.fragmentTransaction((FragmentActivity)src, new LoginFragment(true), true, false);
 	}
 	
+	/**
+	 * Perform a transaction to transition from one fragment to another
+	 * @param source		The source fragment
+	 * @param destination	The destination fragment
+	 * @param replace		If true, perform a replace, if false, add
+	 * @param backstack		If true, add to backstack
+	 */
 	public static void fragmentTransaction(FragmentActivity source, Fragment destination, 
 			boolean replace, boolean backstack) {
 		FragmentUtils.fragmentTransaction(source, destination, replace, backstack, null);
 	}
 	
+	/**
+	 * Perform a transaction to transition from one fragment to another
+	 * @param source		The source fragment
+	 * @param destination	The destination fragment
+	 * @param replace		If true, perform a replace, if false, add
+	 * @param backstack		If true, add to backstack
+	 * @param args			The bundle arguments to add
+	 */
 	public static void fragmentTransaction(FragmentActivity source, Fragment destination, 
 			boolean replace, boolean backstack, Bundle args) {	
 		FragmentTransaction transaction = 
