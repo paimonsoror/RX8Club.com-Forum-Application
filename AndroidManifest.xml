@@ -2,8 +2,8 @@
     android:name="com.normalexception.app.rx8club.MainApplication"
     package="com.normalexception.app.rx8club"
     android:installLocation="auto"
-    android:versionCode="20009"
-    android:versionName="2.01.1" >
+    android:versionCode="20019"
+    android:versionName="2.03.0" >
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -29,11 +29,11 @@
         android:label="@string/app_name"
         android:testOnly="false"
         android:theme="@android:style/Theme.Holo"
-        android:vmSafeMode="false" >
+        android:vmSafeMode="false"
+        android:hardwareAccelerated="true" >
         <activity 
             android:name="com.normalexception.app.rx8club.activities.MainActivity"
             android:launchMode="singleInstance" 
-            android:hardwareAccelerated="true"
             android:configChanges="orientation|screenSize">
             <intent-filter>
             	<action android:name="android.intent.action.MAIN" />

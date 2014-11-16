@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content" >
+     <!-- ListRow Left sied Thumbnail image -->
+
+    <LinearLayout
+        android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="5dip"
+        android:padding="1dip" >
+
+        <ImageView
+            android:id="@+id/cv_image"
+            android:layout_width="15dip"
+            android:layout_height="15dip"
+            android:src="@drawable/arrow_icon" />
+    </LinearLayout>
+
+    <!-- Title Of Thread -->
+
+    <TextView
+        android:id="@+id/cv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="@string/categoryName"
+        android:textColor="#040404"
+        android:textSize="14dip"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+    <RelativeLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cv_title"
+        android:orientation="horizontal"
+        android:padding="1dip" >
+
+        <TextView
+            android:id="@+id/cv_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="7dp"
+            android:text="@string/categoryDescription"
+            android:textColor="#040404"
+            android:textSize="10dip"
+            android:typeface="sans" />
+
+        <!-- Rightend Post Counts -->		
+        <TextView
+            android:id="@+id/cv_postCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dip"
+            android:layout_below="@+id/cv_desc"
+            android:layout_marginTop="2dp"
+            android:text="5:45"
+            android:textColor="#ffffff"
+            android:textSize="10dip"
+            android:textStyle="bold" />
+		<ImageView
+            android:id="@+id/cv_postCount_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/cv_postCount"
+            android:layout_below="@+id/cv_desc"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="2dp"
+            android:src="@drawable/posticon" />
+		
+		
+        <TextView
+            android:id="@+id/cv_threadCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cv_desc"
+            android:layout_toLeftOf="@+id/cv_postCount_label"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="5dip"
+            android:text="5:45"
+            android:textColor="#ffffff"
+            android:textSize="10dip"
+            android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/cv_threadCount_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/cv_threadCount"
+            android:layout_below="@+id/cv_desc"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="2dp"
+            android:src="@drawable/categoryicon" />
+	
+        
+  		<TextView
+            android:id="@+id/cv_subCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/cv_threadCount_label"
+            android:layout_below="@+id/cv_desc"
+            android:layout_marginTop="2dip"
+            android:layout_marginRight="5dip"
+            android:text="2"
+            android:textColor="#ffffff"
+            android:textSize="10dip"
+            android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/cv_subCount_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/cv_subCount"
+            android:layout_below="@+id/cv_desc"
+            android:layout_marginTop="2dp"
+            android:layout_marginRight="4dp"
+            android:src="@drawable/subicon"/>
+    </RelativeLayout>
+</merge>

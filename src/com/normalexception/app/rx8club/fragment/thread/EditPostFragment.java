@@ -49,7 +49,7 @@ import com.normalexception.app.rx8club.TimeoutFactory;
 import com.normalexception.app.rx8club.html.HtmlFormUtils;
 import com.normalexception.app.rx8club.state.AppState;
 import com.normalexception.app.rx8club.task.UpdateTask;
-import com.normalexception.app.rx8club.view.threaditem.ThreadItemView;
+import com.normalexception.app.rx8club.view.threaditem.ThreadItemModel;
 import com.normalexception.app.rx8club.view.threaditem.ThreadItemViewArrayAdapter;
 
 /**
@@ -72,7 +72,7 @@ public class EditPostFragment extends Fragment {
 
 	private ListView lv;
 
-	private ArrayList<ThreadItemView> tlist;
+	private ArrayList<ThreadItemModel> tlist;
 	private ThreadItemViewArrayAdapter pva;
 
 	private ProgressDialog loadingDialog;
@@ -113,7 +113,7 @@ public class EditPostFragment extends Fragment {
 			lv      = (ListView)getView().findViewById(R.id.mainlistview);
 			lv.setDescendantFocusability(ListView.FOCUS_AFTER_DESCENDANTS);
 			lv.setScrollContainer(false);
-			tlist   = new ArrayList<ThreadItemView>();
+			tlist   = new ArrayList<ThreadItemModel>();
 
 			constructView();
 		}
@@ -149,7 +149,7 @@ public class EditPostFragment extends Fragment {
 					if(delete)
 						deletePost();
 
-					ThreadItemView ti = new ThreadItemView();
+					ThreadItemModel ti = new ThreadItemModel();
 					ti.setPost(postMessage);
 					tlist.add(ti);
 

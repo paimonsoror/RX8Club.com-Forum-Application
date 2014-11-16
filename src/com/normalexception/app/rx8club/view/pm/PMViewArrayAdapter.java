@@ -26,22 +26,20 @@ package com.normalexception.app.rx8club.view.pm;
 
 import java.util.List;
 
-import android.content.Context;
-import android.graphics.Color;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.normalexception.app.rx8club.R;
-import com.normalexception.app.rx8club.view.ViewHolder;
+import com.normalexception.app.rx8club.Log;
 
-public class PMViewArrayAdapter extends ArrayAdapter<PMView> {
-	private Fragment sourceFragment;
-	private List<PMView> data;
+public class PMViewArrayAdapter extends ArrayAdapter<PMModel> {
+	private List<PMModel> data;
+	
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 
 	/**
 	 * A custom adapter that handles PM View objects
@@ -50,9 +48,8 @@ public class PMViewArrayAdapter extends ArrayAdapter<PMView> {
 	 * @param objects				The objects in the list
 	 */
 	public PMViewArrayAdapter(Fragment context, int textViewResourceId,
-			List<PMView> objects) {
+			List<PMModel> objects) {
 		super(context.getActivity(), textViewResourceId, objects);
-		sourceFragment = context;
 		data = objects;
 	}
 	
@@ -70,7 +67,7 @@ public class PMViewArrayAdapter extends ArrayAdapter<PMView> {
      * @see android.widget.ArrayAdapter#getItem(int)
      */
     @Override  
-    public PMView getItem(int position) {     
+    public PMModel getItem(int position) {     
         return data.get(position);  
     } 
     
@@ -79,48 +76,12 @@ public class PMViewArrayAdapter extends ArrayAdapter<PMView> {
 	 * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
 	 */
 	public View getView(int position, View convertView, ViewGroup parent) {		
-		View vi = convertView;
-        if(vi == null) {
-        	LayoutInflater vinf =
-                    (LayoutInflater)sourceFragment.getActivity()
-                    	.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            vi = vinf.inflate(R.layout.view_pm, parent, false);
+		PMView pmView = (PMView)convertView;
+        if (null == pmView) {
+        	Log.d(TAG, "Inflating New PMView");
+        	pmView = PMView.inflate(parent);
         }
-        
-        PMView pm = data.get(position);
-        
-        ((TextView) ViewHolder.get(vi,R.id.pm_subject)).setText(pm.getTitle());
-        
-        if(pm.getUser() == null || pm.getDate() == null) {
-        	setMode(vi, true);
-        } else {
-        	setMode(vi, false);
-        	((TextView) ViewHolder.get(vi,R.id.pm_from)).setText(pm.getUser());
-        	((TextView) ViewHolder.get(vi,R.id.pm_date)).setText(
-        			String.format("%s, %s", pm.getDate(), pm.getTime())
-        	);
-        }
-        
-        return vi;
-	}
-	
-	/**
-	 * Set the mode of the category line
-	 * @param vi		The view line
-	 * @param isTitle	If we are going to represent a title
-	 */
-	private void setMode(View vi, boolean isTitle) {
-		int showMode = isTitle? View.GONE : View.VISIBLE;
-		int colorMode= isTitle? Color.DKGRAY : Color.GRAY;
-		int textColor= isTitle? Color.WHITE : Color.BLACK;
-
-		((TextView) ViewHolder.get(vi,R.id.pm_from)).setVisibility(showMode);
-		((TextView) ViewHolder.get(vi,R.id.pm_fromlabel)).setVisibility(showMode);
-		((TextView) ViewHolder.get(vi,R.id.pm_date)).setVisibility(showMode);
-		((TextView) ViewHolder.get(vi,R.id.pm_datelabel)).setVisibility(showMode);
-		((ImageView) ViewHolder.get(vi,R.id.pm_image)).setVisibility(showMode);
-    	vi.setBackgroundColor(colorMode);
-    	
-    	((TextView) ViewHolder.get(vi,R.id.pm_subject)).setTextColor(textColor);
+        pmView.setPM(getItem(position));
+        return pmView;
 	}
 }

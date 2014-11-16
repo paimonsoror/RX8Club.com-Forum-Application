@@ -56,9 +56,9 @@ import com.normalexception.app.rx8club.html.LoginFactory;
 import com.normalexception.app.rx8club.html.VBForumFactory;
 import com.normalexception.app.rx8club.state.AppState;
 import com.normalexception.app.rx8club.user.UserProfile;
-import com.normalexception.app.rx8club.view.category.CategoryView;
+import com.normalexception.app.rx8club.view.category.CategoryModel;
 import com.normalexception.app.rx8club.view.category.CategoryViewArrayAdapter;
-import com.normalexception.app.rx8club.view.category.SubCategoryView;
+import com.normalexception.app.rx8club.view.category.SubCategoryModel;
 
 /**
  * Main activity for the application.  This is the main forum view that 
@@ -71,7 +71,7 @@ public class HomeFragment extends Fragment {
 
 	private Logger TAG =  LogManager.getLogger(this.getClass());
 
-	private ArrayList<CategoryView> mainList;
+	private ArrayList<CategoryModel> mainList;
 	private CategoryViewArrayAdapter cva;
 
 	// The Forum's Main Page Has The Following Column
@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment {
 	THREADS_CNT= 3,
 	POSTS_CNT  = 4;
 
-	private ViewListCache<CategoryView> hcache = null;
+	private ViewListCache<CategoryModel> hcache = null;
 	private UserProfileCache upcache = null;
 
 	private ProgressDialog loadingDialog;
@@ -116,7 +116,7 @@ public class HomeFragment extends Fragment {
 				// check to see if the cache is valid, if so, use it 
 				// so that we dont waste bandwidth
 				if(!LoginFactory.getInstance().isGuestMode()) {
-					hcache = new ViewListCache<CategoryView>(
+					hcache = new ViewListCache<CategoryModel>(
 							this.getActivity(), getString(R.string.file_homecache));
 					if(hcache.isCacheExpired()) {
 						Log.d(TAG, "Cache Expired, Creating Main");
@@ -125,8 +125,15 @@ public class HomeFragment extends Fragment {
 							constructView();
 						}
 					} else {
-						mainList = (ArrayList<CategoryView>) hcache.getCachedContents();
-						updateList();
+						mainList = (ArrayList<CategoryModel>) hcache.getCachedContents();
+						
+						// Just incase our cached content is corrupt
+						if(mainList != null)
+							updateList();
+						else {
+							Log.w(TAG, "Cached CategoryView was corrupt, constructing new");
+							constructView();
+						}
 					}
 				} else {
 					constructView();
@@ -244,7 +251,7 @@ public class HomeFragment extends Fragment {
 					publishProgress(getString(R.string.asyncDialogGrabForumContents));
 					doc 	 = getForum();
 
-					mainList = new ArrayList<CategoryView>();
+					mainList = new ArrayList<CategoryModel>();
 
 					publishProgress(getString(R.string.asyncDialogCategorySort));
 					getCategories(doc);
@@ -331,14 +338,14 @@ public class HomeFragment extends Fragment {
 		int catIndex = 0;
 		for(Element category : categorySections) {
 
-			CategoryView cv = new CategoryView();
+			CategoryModel cv = new CategoryModel();
 			cv.setTitle(categories.get(catIndex++).text());
 			mainList.add(cv);
 
 			Elements forums = category.select("tr[align=center]");
 			for(Element forum : forums) {
-				cv = new CategoryView();
-				List<SubCategoryView> scvList = cv.getSubCategories();
+				cv = new CategoryModel();
+				List<SubCategoryModel> scvList = cv.getSubCategories();
 
 				// Each forum object should have 5 columns
 				Elements columns = forum.select("tr[align=center] > td");
@@ -358,7 +365,7 @@ public class HomeFragment extends Fragment {
 					// Lets grab each subcategory
 					Elements subCats  = columns.select("tbody a");
 					for(Element subCat : subCats) {
-						SubCategoryView scv = new SubCategoryView();
+						SubCategoryModel scv = new SubCategoryModel();
 						scv.setLink(subCat.attr("href"));
 						scv.setTitle(subCat.text().toString());
 						scvList.add(scv);

@@ -42,7 +42,7 @@ public class SubCategoryDialog {
 
 	private Context ctx = null;
 	private AlertDialog.Builder builder = null;
-	private List<SubCategoryView> scv = null;
+	private List<SubCategoryModel> scv = null;
 
 	private DialogInterface.OnClickListener listener = null;
 	
@@ -54,7 +54,7 @@ public class SubCategoryDialog {
 	 * @param ctx	The source context
 	 * @param scv	The sub category list
 	 */
-	public SubCategoryDialog(Context ctx, List<SubCategoryView> scv) {	
+	public SubCategoryDialog(Context ctx, List<SubCategoryModel> scv) {	
 		this.ctx = ctx;
 		builder = new AlertDialog.Builder(ctx);
 		this.scv = scv;
@@ -71,7 +71,7 @@ public class SubCategoryDialog {
 	          	// The 'which' argument contains the index position
 	           	// of the selected item
 	    		
-	    		SubCategoryView tv = scv.get(which);
+	    		SubCategoryModel tv = scv.get(which);
 	    		/*Intent intent = 
 						new Intent(ctx, CategoryFragment.class);
 				intent.putExtra("link", tv.getLink());
@@ -103,7 +103,7 @@ public class SubCategoryDialog {
 	public void show() {
 		List<String> forums = new ArrayList<String>();
 		
-		for(SubCategoryView sc : scv)
+		for(SubCategoryModel sc : scv)
 			forums.add(sc.getTitle());
 		
 		// 2. Chain together various setter methods to set the dialog characteristics

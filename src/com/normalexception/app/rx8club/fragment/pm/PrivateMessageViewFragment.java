@@ -58,7 +58,7 @@ import com.normalexception.app.rx8club.task.DeletePmTask;
 import com.normalexception.app.rx8club.task.PmTask;
 import com.normalexception.app.rx8club.user.UserProfile;
 import com.normalexception.app.rx8club.utils.Utils;
-import com.normalexception.app.rx8club.view.pmpost.PMPostView;
+import com.normalexception.app.rx8club.view.pmpost.PMPostModel;
 import com.normalexception.app.rx8club.view.pmpost.PMPostViewArrayAdapter;
 
 public class PrivateMessageViewFragment extends Fragment {
@@ -70,7 +70,7 @@ public class PrivateMessageViewFragment extends Fragment {
 	private String pmid = null;
 	private String title = null;
 	
-	private ArrayList<PMPostView> pmlist;
+	private ArrayList<PMPostModel> pmlist;
 	private PMPostViewArrayAdapter pmva;
 	
 	private ListView lv;
@@ -95,7 +95,7 @@ public class PrivateMessageViewFragment extends Fragment {
         Log.v(TAG, "PM View Activity Started");
         
         if(TimeoutFactory.getInstance().checkTimeout(this)) {
-	        pmlist = new ArrayList<PMPostView>();
+	        pmlist = new ArrayList<PMPostModel>();
 	        lv = (ListView)getView().findViewById(R.id.mainlistview);
 	        
 	        View v = getActivity().getLayoutInflater().inflate(R.layout.view_pmitem_footer, null);
@@ -163,7 +163,7 @@ public class PrivateMessageViewFragment extends Fragment {
 					Elements postMessage = doc.select("div[id=post_message_]");
 
 					
-					PMPostView pv = new PMPostView();
+					PMPostModel pv = new PMPostModel();
 					pv.setUserName(userCp.select("div[id^=postmenu]").text());
 					pv.setIsLoggedInUser(
 							LoginFactory.getInstance().isLoggedIn()?

@@ -26,29 +26,20 @@ package com.normalexception.app.rx8club.view.pmpost;
 
 import java.util.List;
 
-import android.content.Context;
-import android.graphics.Color;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import android.support.v4.app.Fragment;
-import android.text.Html;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.normalexception.app.rx8club.R;
-import com.normalexception.app.rx8club.handler.AvatarLoader;
-import com.normalexception.app.rx8club.handler.ForumImageHandler;
-import com.normalexception.app.rx8club.preferences.PreferenceHelper;
-import com.normalexception.app.rx8club.utils.Utils;
-import com.normalexception.app.rx8club.view.ViewHolder;
-import com.normalexception.app.rx8club.view.threadpost.PostView;
+import com.normalexception.app.rx8club.Log;
 
-public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
-	private Fragment sourceFragment;
-	private List<PMPostView> data;
-	private AvatarLoader imageLoader;
+public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostModel> {
+	private List<PMPostModel> data;
+
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 
 	/**
 	 * Custom adapter to handle PMItemView's
@@ -57,11 +48,9 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
 	 * @param objects				The list of objects
 	 */
 	public PMPostViewArrayAdapter(Fragment context, int textViewResourceId,
-			List<PMPostView> objects) {
+			List<PMPostModel> objects) {
 		super(context.getActivity(), textViewResourceId, objects);
-		sourceFragment = context;
 		data = objects;
-		imageLoader = new AvatarLoader(sourceFragment.getActivity().getApplicationContext());
 	}
 	
 	/*
@@ -78,7 +67,7 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
      * @see android.widget.ArrayAdapter#getItem(int)
      */
     @Override  
-    public PMPostView getItem(int position) {     
+    public PMPostModel getItem(int position) {     
         return data.get(position);  
     } 
     
@@ -87,93 +76,13 @@ public class PMPostViewArrayAdapter extends ArrayAdapter<PMPostView> {
 	 * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
 	 */
 	public View getView(int position, View convertView, ViewGroup parent) {		
-		View vi = convertView;
-        if(vi == null) {
-        	LayoutInflater vinf =
-                    (LayoutInflater)sourceFragment.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            vi = vinf.inflate(R.layout.view_newreply, parent, false);
+		PMPostView postView = (PMPostView)convertView;
+        if (null == postView) {
+        	Log.d(TAG, "Inflating New PostView");
+        	postView = PMPostView.inflate(parent);
         }
-        
-        final PostView cv = data.get(position);
-        
-
-        ((TextView) ViewHolder.get(vi,R.id.nr_likeText)).setVisibility(View.GONE);
-        ((TextView) ViewHolder.get(vi,R.id.nr_username)).setText(cv.getUserName());
-        ((TextView) ViewHolder.get(vi,R.id.nr_userTitle)).setText(cv.getUserTitle());
-        ((TextView) ViewHolder.get(vi,R.id.nr_userPosts)).setText(cv.getUserPostCount());
-        ((TextView) ViewHolder.get(vi,R.id.nr_userJoin)).setText(cv.getJoinDate());
-        ((TextView) ViewHolder.get(vi,R.id.nr_postDate)).setText(cv.getPostDate());
-        
-        TextView postText = ((TextView) ViewHolder.get(vi,R.id.nr_postText));
-        ForumImageHandler fih = new ForumImageHandler(postText, Utils.randomInt(0, 9999), sourceFragment.getActivity());        
-        postText.setText(Html.fromHtml(cv.getUserPost(), fih, null));
-        
-        // Lets make sure we remove any font formatting that was done within
-        // the text
-        String trimmedPost = 
-        		cv.getUserPost().replaceAll("(?i)<(/*)font(.*?)>", "");
-       
-        // Show attachments if the preference allows it
-        if(PreferenceHelper.isShowAttachments(sourceFragment.getActivity())) 
-        	trimmedPost = appendAttachments(trimmedPost, cv.getAttachments());
-        
-        postText.setText(Html.fromHtml(trimmedPost, fih, null));
-        postText.setTextColor(Color.WHITE);
-        postText.setLinkTextColor(Color.WHITE);
-        
-        // Set the text size based on our preferences
-        int font_size = PreferenceHelper.getFontSize(sourceFragment.getActivity());
-        postText.setTextSize(font_size);
-        
-        // Load up the avatar of hte user, but remember to remove
-        // the dateline at the end of the file so that we aren't
-        // creating multiple images for a user.  The image still
-        // gets returned without a date
-        if(PreferenceHelper.isShowAvatars(sourceFragment.getActivity())) {
-	        String nodate_avatar = 
-	        		cv.getUserImageUrl().indexOf('?') == -1? 
-	        				cv.getUserImageUrl() : 
-	        					cv.getUserImageUrl().substring(0, cv.getUserImageUrl().indexOf('?'));
-	        
-	        if(!nodate_avatar.isEmpty()) {
-	        	ImageView avatar = ((ImageView)ViewHolder.get(vi,R.id.nr_image));
-	        	imageLoader.DisplayImage(nodate_avatar, avatar);
-	        }
-        }
-        
-        // Set click listeners
-        ((ImageView) ViewHolder.get(vi,R.id.nr_quoteButton)).setVisibility(View.GONE);
-        ((ImageView) ViewHolder.get(vi,R.id.nr_editButton)).setVisibility(View.GONE);
-        ((ImageView) ViewHolder.get(vi,R.id.nr_pmButton)).setVisibility(View.GONE);
-        ((ImageView) ViewHolder.get(vi,R.id.nr_deleteButton)).setVisibility(View.GONE);
-        
-        return vi;
-	}
-	
-	/**
-	 * Append attachments to the end of this post if they exist
-	 * @param trimmedPost	The current post
-	 * @param attachments	The attachments of the post
-	 * @return				An appended html string
-	 */
-	private String appendAttachments(String trimmedPost,
-			List<String> attachments) {
-		if(attachments == null || attachments.isEmpty())
-			return trimmedPost;
-		
-		// Create an html string for the attachments
-		String attachString = "";
-		for(String attachment : attachments)
-			attachString += 
-				String.format("<a href=\"%s\"><img src=\"%s\"></a>&nbsp;", 
-						attachment, attachment);
-		
-		// Now append to the original text
-		trimmedPost = 
-				String.format("%s<br><br><b>Attachments:</b><br>%s", 
-						trimmedPost, attachString);
-		
-		return trimmedPost;
+        postView.setPMPost(getItem(position));
+        return postView;
 	}
 	
 	/*

@@ -52,7 +52,7 @@ import com.normalexception.app.rx8club.handler.AvatarLoader;
 import com.normalexception.app.rx8club.html.VBForumFactory;
 import com.normalexception.app.rx8club.state.AppState;
 import com.normalexception.app.rx8club.user.UserProfile;
-import com.normalexception.app.rx8club.view.profile.ProfileView;
+import com.normalexception.app.rx8club.view.profile.ProfileModel;
 import com.normalexception.app.rx8club.view.profile.ProfileViewArrayAdapter;
 
 /**
@@ -67,7 +67,7 @@ public class ProfileFragment extends Fragment {
 	
 	private ProgressDialog loadingDialog;
 	
-	private ArrayList<ProfileView> stubs;	
+	private ArrayList<ProfileModel> stubs;	
 	private ProfileViewArrayAdapter pva;
 	private ListView lv;
 	
@@ -201,7 +201,7 @@ public class ProfileFragment extends Fragment {
      */
     private void getUserInformation(Document doc) {
     	final UserProfile upInstance = UserProfile.getInstance();
-    	stubs = new ArrayList<ProfileView>();
+    	stubs = new ArrayList<ProfileModel>();
     	
     	// Title
     	Elements userInfo = doc.select("div[id=main_userinfo]");
@@ -240,7 +240,7 @@ public class ProfileFragment extends Fragment {
     	if(doc != null) {
 	    	Elements threadlist = doc.select("table[id^=post]");
 	    	for(Element threadl : threadlist) {
-	    		ProfileView stub = new ProfileView();
+	    		ProfileModel stub = new ProfileModel();
 	    		Elements divs = threadl.getElementsByTag("div");
 	    		Elements div = divs.get(1).getElementsByTag("a");
 	    		stub.setLink(div.attr("href"));

@@ -34,7 +34,7 @@ import com.normalexception.app.rx8club.Log;
 import com.normalexception.app.rx8club.filter.ThreadFilter;
 import com.normalexception.app.rx8club.filter.ThreadFilter.RuleType;
 import com.normalexception.app.rx8club.filter.ThreadFilterFactory;
-import com.normalexception.app.rx8club.view.thread.ThreadView;
+import com.normalexception.app.rx8club.view.thread.ThreadModel;
 
 public class CategoryFilterizer {
 	
@@ -48,15 +48,15 @@ public class CategoryFilterizer {
 	 * @return				The filtered list (or the source list if no
 	 *                      filters exist)
 	 */
-	public static ArrayList<ThreadView> applyFilter(ArrayList<ThreadView> threadlist) {
+	public static ArrayList<ThreadModel> applyFilter(ArrayList<ThreadModel> threadlist) {
 		CategoryFilterizer.resetFilter();
 				
     	// Do we have any filters?  If so, lets filter out threads
     	if(ThreadFilterFactory.getInstance().hasFilters()) {
     		List<ThreadFilter> filters = 
     				ThreadFilterFactory.getInstance().getThreadFilters();
-    		ArrayList<ThreadView> filtered = new ArrayList<ThreadView>();
-    		for(ThreadView tv : threadlist) {
+    		ArrayList<ThreadModel> filtered = new ArrayList<ThreadModel>();
+    		for(ThreadModel tv : threadlist) {
     			boolean filterOut = false;
     			if(!tv.isStub()) { 
 	    			for(ThreadFilter tf : filters) {
@@ -91,7 +91,7 @@ public class CategoryFilterizer {
     		}
     		
     		// Now copy our filtered back to the main list
-    		return new ArrayList<ThreadView>(filtered);
+    		return new ArrayList<ThreadModel>(filtered);
     	} else {
     		return threadlist;
     	}

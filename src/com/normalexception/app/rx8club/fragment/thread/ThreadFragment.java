@@ -67,7 +67,7 @@ import com.normalexception.app.rx8club.task.SubmitTask;
 import com.normalexception.app.rx8club.user.UserProfile;
 import com.normalexception.app.rx8club.utils.Utils;
 import com.normalexception.app.rx8club.view.ViewHolder;
-import com.normalexception.app.rx8club.view.threadpost.PostView;
+import com.normalexception.app.rx8club.view.threadpost.PostModel;
 import com.normalexception.app.rx8club.view.threadpost.PostViewArrayAdapter;
 
 /**
@@ -95,7 +95,7 @@ public class ThreadFragment extends Fragment {
 	private String finalPage = "1";
 	private String thisPage = "1";
 	
-	private ArrayList<PostView> postlist;
+	private ArrayList<PostModel> postlist;
 	private PostViewArrayAdapter pva;
 	private ListView lv;
 
@@ -105,7 +105,7 @@ public class ThreadFragment extends Fragment {
 	
 	private ProgressDialog loadingDialog;
 	
-	private int threadId = 0;
+	//private int threadId = 0;
 	
 	private final String MODERATION_TOOLS = "Moderation Tools";
 	
@@ -164,6 +164,7 @@ public class ThreadFragment extends Fragment {
 		Log.v(TAG, "ThreadFragment view loaded");
         return rootView;
     }
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -174,12 +175,12 @@ public class ThreadFragment extends Fragment {
 			super.onCreate(savedInstanceState);
 			MainApplication.setState(AppState.State.THREAD, this);
 
-			threadId = Utils.randomInt(0, 9999);
+			//threadId = Utils.randomInt(0, 9999);
 			
 			Log.v(TAG, "Thread Activity Started");
 			
 			if(TimeoutFactory.getInstance().checkTimeout(this)) {
-				postlist = new ArrayList<PostView>();
+				postlist = new ArrayList<PostModel>();
 				bmapList = new ArrayList<String>();
 				if(savedInstanceState == null ||
 						(pva == null || pva.getCount() == 0))
@@ -288,7 +289,7 @@ public class ThreadFragment extends Fragment {
 					.setText(String.format("%s [Page %s]", 
 							currentPageTitle, pageNumber.equals("last")? finalPage : pageNumber));
 				pva = new PostViewArrayAdapter(_frag, R.layout.view_thread, postlist, tal);
-				pva.setThreadId(threadId);
+				//pva.setThreadId(threadId);
 				lv.setAdapter(pva);
 				FragmentUtils.updatePagination(_frag, thisPage, finalPage);
 			}
@@ -354,7 +355,7 @@ public class ThreadFragment extends Fragment {
 				Elements userAvatar = userDetail.select("img[alt$=Avatar]");
 	
 				// User Information
-				PostView pv = new PostView();
+				PostModel pv = new PostModel();
 				pv.setUserName(userCp.select("div[id^=postmenu]").text());
 				pv.setIsLoggedInUser(
 						LoginFactory.getInstance().isLoggedIn()?

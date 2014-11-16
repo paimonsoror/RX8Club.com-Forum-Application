@@ -40,7 +40,7 @@ import android.widget.Toast;
 import com.normalexception.app.rx8club.Log;
 import com.normalexception.app.rx8club.MainApplication;
 import com.normalexception.app.rx8club.R;
-import com.normalexception.app.rx8club.view.thread.ThreadView;
+import com.normalexception.app.rx8club.view.thread.ThreadModel;
 
 /**
  * A factory that handles all of the favorites that the user
@@ -137,7 +137,7 @@ public class FavoriteFactory {
 	 * Add a favorite to the list
 	 * @param thread	The thread to add
 	 */
-	public void addFavorite(ThreadView thread) {
+	public void addFavorite(ThreadModel thread) {
 		Log.v(TAG, String.format("Adding %s to favorites", thread.getTitle()));
 		_favorites.add(thread);
 		saveToMemory();
@@ -152,8 +152,8 @@ public class FavoriteFactory {
 	 * save the data
 	 * @param thread	The thread to remove
 	 */
-	public void removeFavorite(ThreadView thread) {
-		for(ThreadView thr : _favorites){
+	public void removeFavorite(ThreadModel thread) {
+		for(ThreadModel thr : _favorites){
 			if(thr.getTitle().equals(thread.getTitle())) {
 				_favorites.remove(thr);
 				break;

@@ -24,102 +24,108 @@ package com.normalexception.app.rx8club.view.pm;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-public class PMView {
-	private String title, user, date, time, link, token;
+import android.content.Context;
+import android.graphics.Color;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-	/**
-	 * Report the time of the PM
-	 * @return	The PM time
-	 */
-	public String getTime() {
-		return time;
+import com.normalexception.app.rx8club.R;
+import com.normalexception.app.rx8club.view.ViewHolder;
+
+public class PMView extends RelativeLayout {
+
+	private TextView pmSubject;
+	private TextView pmFrom;
+	private TextView pmDate;
+	
+	private TextView pmFromLabel;
+	private TextView pmDateLabel;
+	
+	private ImageView pmImage;
+
+	public PMView(Context context) {
+		super(context);
+		LayoutInflater.from(context).inflate(R.layout.view_pm_children, this, true);
+		setupChildren();
+	}
+
+	public PMView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		LayoutInflater.from(context).inflate(R.layout.view_pm_children, this, true);
+		setupChildren();
+	}
+
+	public PMView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+		LayoutInflater.from(context).inflate(R.layout.view_pm_children, this, true);
+		setupChildren();
 	}
 
 	/**
-	 * Set the time of the PM
-	 * @param time	The PM's received time
+	 * Setup the children we contain in this view
 	 */
-	public void setTime(String time) {
-		this.time = time;
+	private void setupChildren() {
+		pmSubject = (TextView) findViewById(R.id.pm_subject);
+		pmFrom    = (TextView) findViewById(R.id.pm_from);
+		pmDate    = (TextView) findViewById(R.id.pm_date);
+		pmFromLabel = (TextView) findViewById(R.id.pm_fromlabel);
+		pmDateLabel = (TextView) findViewById(R.id.pm_datelabel);
+		pmImage     = (ImageView)findViewById(R.id.pm_image);
 	}
 
 	/**
-	 * Report the security token for the post
-	 * @return	The security token
+	 * Inflate the view, this technically only gets called the first time the
+	 * view is accessed
+	 * @param parent	The parent of the view
+	 * @return			An inflated object
 	 */
-	public String getToken() {
-		return token;
+	public static PMView inflate(ViewGroup parent) {
+		PMView pmView = (PMView)LayoutInflater.from(parent.getContext())
+				.inflate(R.layout.view_pm, parent, false);
+		return pmView;
+	}
+	
+	/**
+	 * Setup our view here.  After the view has been inflated and all of the
+	 * view objects have been initialized, we can inflate our view here
+	 * @param pm	The model we are going to use to populate the view
+	 */
+	public void setPM(final PMModel pm) {
+		pmSubject.setText(pm.getTitle());
+
+		if(pm.getUser() == null || pm.getDate() == null) {
+			setMode(this, true);
+		} else {
+			setMode(this, false);
+			pmFrom.setText(pm.getUser());
+			pmDate.setText(
+				String.format("%s, %s", pm.getDate(), pm.getTime())
+			);
+		}
 	}
 
 	/**
-	 * Set the security token	
-	 * @param token	The security token
+	 * Set the mode of the category line
+	 * @param vi		The view line
+	 * @param isTitle	If we are going to represent a title
 	 */
-	public void setToken(String token) {
-		this.token = token;
-	}
+	private void setMode(View vi, boolean isTitle) {
+		int showMode = isTitle? View.GONE : View.VISIBLE;
+		int colorMode= isTitle? Color.DKGRAY : Color.GRAY;
+		int textColor= isTitle? Color.WHITE : Color.BLACK;
 
-	/**
-	 * Report the PM Link
-	 * @return	The PM Link
-	 */
-	public String getLink() {
-		return link;
-	}
+		pmFrom.setVisibility(showMode);
+		pmFromLabel.setVisibility(showMode);
+		pmDate.setVisibility(showMode);
+		pmDateLabel.setVisibility(showMode);
+		pmImage.setVisibility(showMode);
+		vi.setBackgroundColor(colorMode);
 
-	/**
-	 * Set the PM Link
-	 * @param link	The PM Link
-	 */
-	public void setLink(String link) {
-		this.link = link;
-	}
-
-	/**
-	 * Report the PM Title
-	 * @return	The PM Title
-	 */
-	public String getTitle() {
-		return title;
-	}
-
-	/**
-	 * Set the PM Title
-	 * @param title	The PM Title
-	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	/**
-	 * Report the user
-	 * @return	The pm user
-	 */
-	public String getUser() {
-		return user;
-	}
-
-	/**
-	 * Set the user that sent the PM
-	 * @param user	The PM sender
-	 */
-	public void setUser(String user) {
-		this.user = user;
-	}
-
-	/**
-	 * Get the received date of the PM
-	 * @return	The PM date
-	 */
-	public String getDate() {
-		return date;
-	}
-
-	/**
-	 * Set the date the PM was received
-	 * @param date	The PM date
-	 */
-	public void setDate(String date) {
-		this.date = date;
+		((TextView) ViewHolder.get(vi,R.id.pm_subject)).setTextColor(textColor);
 	}
 }

@@ -73,7 +73,7 @@
 	        android:key="threadimagesize"
 	        android:defaultValue="Small"
 	        android:entries="@array/threadImageSize" 
-	        android:entryValues="@array/threadImageSizeValues" />
+	        android:entryValues="@array/threadImagePercentValues" />
 	   	<ListPreference
 	        android:title="Font Size"
 			android:summary="Set the application's font size"

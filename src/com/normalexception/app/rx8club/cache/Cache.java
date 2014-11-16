@@ -63,12 +63,28 @@ public class Cache {
 	}
 	
 	/**
-	 * Report the location of the external cache
+	 * Report the location of the external cache and create it
+	 * if it doesn't already exist
 	 * @param context	The source context
 	 * @return			The location of the external cache
 	 */
 	protected File getExternalCache() {
+		File cacheDir = Cache.getExternalCacheDir(context);
+        
+        if(!cacheDir.exists())
+            cacheDir.mkdirs();
+        
+        return cacheDir;
+	}
+	
+	/**
+	 * Report the location of the external cache
+	 * @param ctx	The source context
+	 * @return		The location of the external cache
+	 */
+	public static File getExternalCacheDir(Context ctx) {
 		File cacheDir = null;
+		
 		//Find the dir to save cached images
         if (android.os.Environment.getExternalStorageState().equals(
         		android.os.Environment.MEDIA_MOUNTED)) {
@@ -76,18 +92,15 @@ public class Cache {
             //		android.os.Environment.getExternalStorageDirectory(),
             //		context.getString(R.string.folder_rx8club));
         	if (Utils.hasFroyo()) {
-                cacheDir = context.getExternalCacheDir();
+                cacheDir = ctx.getExternalCacheDir();
             } else {
 
 	            // Before Froyo we need to construct the external cache dir ourselves
-	            final String cDir = "/Android/data/" + context.getPackageName() + "/cache/";
+	            final String cDir = "/Android/data/" + ctx.getPackageName() + "/cache/";
 	            cacheDir = new File(Environment.getExternalStorageDirectory().getPath() + cDir);
             }
         } else
-            cacheDir=context.getCacheDir();
-        
-        if(!cacheDir.exists())
-            cacheDir.mkdirs();
+            cacheDir = ctx.getCacheDir();
         
         return cacheDir;
 	}

@@ -1,6 +1,4 @@
-package com.normalexception.app.rx8club.view.category;
-
-import java.io.Serializable;
+package com.normalexception.app.rx8club.view.threaditem;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -26,44 +24,39 @@ import java.io.Serializable;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-/**
- * Container for simple sub category data
- */
-public class SubCategoryView implements Serializable {
+public class ThreadItemModel {
+	private String name, post, token, id;
 
-	private static final long serialVersionUID = 1L;
-	private String title, link;
-
-	/**
-	 * Report sub category title
-	 * @return	Sub category title
-	 */
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
 
-	/**
-	 * Set sub category title
-	 * @param title	Sub category title
-	 */
-	public void setTitle(String title) {
-		this.title = title;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	/**
-	 * Report the link
-	 * @return	The link
-	 */
-	public String getLink() {
-		return link;
+	public String getPost() {
+		return post;
 	}
 
-	/**
-	 * Set the link
-	 * @param link	The link
-	 */
-	public void setLink(String link) {
-		this.link = link;
+	public void setPost(String post) {
+		this.post = post;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 }

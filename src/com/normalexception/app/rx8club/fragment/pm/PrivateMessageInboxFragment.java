@@ -62,7 +62,7 @@ import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.html.HtmlFormUtils;
 import com.normalexception.app.rx8club.html.VBForumFactory;
 import com.normalexception.app.rx8club.task.DeletePmTask;
-import com.normalexception.app.rx8club.view.pm.PMView;
+import com.normalexception.app.rx8club.view.pm.PMModel;
 import com.normalexception.app.rx8club.view.pm.PMViewArrayAdapter;
 
 public class PrivateMessageInboxFragment extends Fragment {
@@ -71,7 +71,7 @@ public class PrivateMessageInboxFragment extends Fragment {
 
 	private String token;
 	
-	private ArrayList<PMView> pmlist;
+	private ArrayList<PMModel> pmlist;
 	private PMViewArrayAdapter pmva;
 	
 	private ListView lv;
@@ -98,7 +98,7 @@ public class PrivateMessageInboxFragment extends Fragment {
     	//super.setState(AppState.State.PMINBOX, this.getIntent());
         
         if(TimeoutFactory.getInstance().checkTimeout(this)) {
-	        pmlist = new ArrayList<PMView>();
+	        pmlist = new ArrayList<PMModel>();
 	        lv = (ListView)view.findViewById(R.id.mainlistview);
 	        
 	        ViewGroup header = 
@@ -135,7 +135,7 @@ public class PrivateMessageInboxFragment extends Fragment {
 		            @Override
 		            public void onItemClick(AdapterView<?> parent, View view,
 		                    int position, long id) {
-		            	PMView pm = (PMView) parent.getItemAtPosition(position);
+		            	PMModel pm = (PMModel) parent.getItemAtPosition(position);
 
 		            	Bundle args = new Bundle();
 		            	args.putString("link", pm.getLink());
@@ -169,7 +169,7 @@ public class PrivateMessageInboxFragment extends Fragment {
     	AdapterContextMenuInfo info = 
 				(AdapterContextMenuInfo) menuInfo;
         int position = info.position;
-        PMView pmv = (PMView)lv.getItemAtPosition(position);
+        PMModel pmv = (PMModel)lv.getItemAtPosition(position);
 		menu.setHeaderTitle(pmv.getTitle());
 		if(!this.showOutbound)
 			menu.add(0, position, 0, R.string.reply);
@@ -182,8 +182,8 @@ public class PrivateMessageInboxFragment extends Fragment {
      */
     @Override
 	public boolean onContextItemSelected(final MenuItem item) {
-    	final PMView pmv = 
-    			(PMView)lv.getItemAtPosition(item.getItemId());
+    	final PMModel pmv = 
+    			(PMModel)lv.getItemAtPosition(item.getItemId());
        	if(item.getTitle().equals(getString(R.string.reply))) {
        		replyPm(pmv);
        	}
@@ -218,7 +218,7 @@ public class PrivateMessageInboxFragment extends Fragment {
      * Handler for replying to a private message
      * @param arg0	The view associated with the private message
      */
-    private void replyPm(PMView pmv) {
+    private void replyPm(PMModel pmv) {
     	Log.v(TAG, "Reply PM Clicked");
 		final String link = pmv.getLink();
 		if(link != null && !link.equals("")) {
@@ -267,7 +267,7 @@ public class PrivateMessageInboxFragment extends Fragment {
      * Handler for deleting a private message
      * @param arg0	The view associated with the private message
      */
-    private void deletePm(PMView pmv) {
+    private void deletePm(PMModel pmv) {
     	Log.v(TAG, "Delete PM Clicked");
     	final String link = pmv.getLink(); //tv.getText().toString());
     	
@@ -351,7 +351,7 @@ public class PrivateMessageInboxFragment extends Fragment {
 	 							String[] timeTimeUserSplit = timeTimeUser.split(" ", 3);
 	 							
 	 							// Create new pm
-	 							PMView pm = new PMView();
+	 							PMModel pm = new PMModel();
 	 							pm.setDate(dateSubjectSplit[0]);
 	 							
 	 							// Check the month before we go further
@@ -359,7 +359,7 @@ public class PrivateMessageInboxFragment extends Fragment {
 	    								Integer.parseInt(pm.getDate().split("-")[0]));
 	 							if(!current_month.equals(this_month)) {
 	 								current_month = this_month;
-	 								PMView pm_m = new PMView();
+	 								PMModel pm_m = new PMModel();
 	 								pm_m.setTitle(String.format("%s - %s", 
 	 										this_month, showOutbound? "Sent Items" : "Inbox"));
 	 								pmlist.add(pm_m);

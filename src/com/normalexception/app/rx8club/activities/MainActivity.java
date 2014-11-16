@@ -31,11 +31,13 @@ import org.apache.log4j.Logger;
 
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -84,6 +86,8 @@ public class MainActivity extends FragmentActivity {
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private NavDrawerListAdapter adapter;
 	
+	private int[] windowSizeW_H;
+	
 	enum MenuState {
 		USER,
 		GUEST
@@ -117,13 +121,32 @@ public class MainActivity extends FragmentActivity {
 		mTitle = mDrawerTitle = getTitle();
 
 		constructNavMenu();
-
+		
+		// Get our screen size
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int width = size.x;
+		int height = size.y;
+		windowSizeW_H = new int[]{width, height};
+		
 		if (savedInstanceState == null) {
 			// Initial display
 			displayView(7, false);
 		}
 	}
 	
+	/**
+	 * Report the window size of the device
+	 * @return	Array containing window size, formatted in width and height
+	 */
+	public int[] getWindowSize() {
+		return windowSizeW_H;
+	}
+	
+	/**
+	 * Create our slide out navigation window
+	 */
 	private void constructNavMenu() {
 
 		// load slide menu items

@@ -51,7 +51,7 @@ import com.normalexception.app.rx8club.html.HtmlFormUtils;
 import com.normalexception.app.rx8club.html.VBForumFactory;
 import com.normalexception.app.rx8club.state.AppState;
 import com.normalexception.app.rx8club.task.PmTask;
-import com.normalexception.app.rx8club.view.pmitem.PMItemView;
+import com.normalexception.app.rx8club.view.pmitem.PMItemModel;
 import com.normalexception.app.rx8club.view.pmitem.PMItemViewArrayAdapter;
 
 public class NewPrivateMessageFragment extends Fragment {
@@ -67,7 +67,7 @@ public class NewPrivateMessageFragment extends Fragment {
 	
 	private ListView lv;
 	
-	private ArrayList<PMItemView> tlist;
+	private ArrayList<PMItemModel> tlist;
 	private PMItemViewArrayAdapter pva;
 	
 	private ProgressDialog loadingDialog;
@@ -93,7 +93,7 @@ public class NewPrivateMessageFragment extends Fragment {
 	        lv      = (ListView)getView().findViewById(R.id.mainlistview);
 	        lv.setDescendantFocusability(ListView.FOCUS_AFTER_DESCENDANTS);
 	        lv.setScrollContainer(false);
-	        tlist   = new ArrayList<PMItemView>();
+	        tlist   = new ArrayList<PMItemModel>();
 	    
 		    if(savedInstanceState == null)
 		    	constructView();
@@ -131,7 +131,7 @@ public class NewPrivateMessageFragment extends Fragment {
 					postUser = 
 							getArguments().getString("user");    	
 					
-					PMItemView pm = new PMItemView();
+					PMItemModel pm = new PMItemModel();
 					if(validateInputs(postUser))
 						pm.setName(postUser);
 					tlist.add(pm);

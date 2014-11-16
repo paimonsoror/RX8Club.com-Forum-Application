@@ -1,7 +1,5 @@
 package com.normalexception.app.rx8club.view.thread;
 
-import java.io.Serializable;
-
 /************************************************************************
  * NormalException.net Software, and other contributors
  * http://www.normalexception.net
@@ -26,291 +24,246 @@ import java.io.Serializable;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-public class ThreadView implements Serializable {
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-	private static final long serialVersionUID = 1L;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.text.Html;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.normalexception.app.rx8club.Log;
+import com.normalexception.app.rx8club.MainApplication;
+import com.normalexception.app.rx8club.R;
+import com.normalexception.app.rx8club.fragment.category.ThreadTypeFactory;
+import com.normalexception.app.rx8club.html.LoginFactory;
+import com.normalexception.app.rx8club.utils.DateDifference;
+import com.normalexception.app.rx8club.utils.SpecialNumberFormatter;
+
+public class ThreadView extends RelativeLayout {
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
-	private String title;
-	private String postCount, viewCount, myPosts;
-	private String startUser, lastUser;
-	private String link, lastLink, lastPostTime;
-	private String forum;
-	private boolean isAnnouncement, isSticky, isLocked, isFavorite, isPoll, hasAttachment = false;
-	private boolean isStub = false;
-	
-	public ThreadView() {
-		this.isStub = false;
+    private TextView vTitle 	= null;
+    private TextView vPostCount = null;
+    private TextView vPostCountL= null;
+    private TextView vPostUser 	= null;
+    private TextView vLastUser 	= null;
+    private TextView vLastUserL = null;
+    private TextView vLastDate  = null;
+    private TextView vMyCount 	= null;
+    private TextView vMyCountL  = null;
+    private TextView vViewCount = null;
+    private TextView vViewCountL= null;
+    private ImageView vImage 	= null;
+    private ImageView vAttachment = null;
+    private TextView vForum     = null;
+    private LinearLayout vForumC= null;
+    
+    private boolean isNewThread = false;
+
+    public ThreadView(Context context) {
+		super(context);
+		LayoutInflater.from(context).inflate(R.layout.view_thread_children, this, true);
+		setupChildren();
 	}
-	
-	public ThreadView(boolean stub) {
-		this.isStub = stub;
+
+	public ThreadView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		LayoutInflater.from(context).inflate(R.layout.view_thread_children, this, true);
+		setupChildren();
 	}
-	
-	/**
-	 * Report if this is a stub thread.  Typically used for the end of new threads
-	 * @return	True if stub thread.
-	 */
-	public boolean isStub() {
-		return this.isStub;
-	}
-	
-	/**
-	 * Report if thread is an announcement
-	 * @return	True if announcement
-	 */
-	public boolean isAnnouncement() {
-		return this.isAnnouncement;
-	}
-	
-	/**
-	 * Set if thread is an announcement
-	 * @param ann	True if announcement
-	 */
-	public void setAnnouncement(boolean ann) {
-		this.isAnnouncement = ann;
-	}
-	
-	/**
-	 * Set the last post time
-	 * @param time	Set the last post time
-	 */
-	public void setLastPostTime(String time) {
-		this.lastPostTime = time;
-	}
-	
-	/**
-	 * Report the last post time
-	 * @return	The last post time
-	 */
-	public String getLastPostTime() {
-		return this.lastPostTime;
-	}
-	
-	/**
-	 * Report the forum of the thread
-	 * @return	Report the forum of the thread
-	 */
-	public String getForum() {
-		return forum;
-	}
-	
-	/**
-	 * Set the source forum
-	 * @param frm The source forum of the thread
-	 */
-	public void setForum(String frm) {
-		this.forum = frm;
-	}
-	
-	/**
-	 * Report if thread is a poll thread
-	 * @return	True if the thread has a poll
-	 */
-	public boolean isPoll() {
-		return isPoll;
-	}
-	
-	/**
-	 * Set if the thread is / has a poll
-	 * @param ip	True if the thread has a poll
-	 */
-	public void setPoll(boolean ip) {
-		this.isPoll = ip;
-	}
-	
-	/**
-	 * Report if thread has an attachment
-	 * @return	True if has attachment
-	 */
-	public boolean hasAttachment() {
-		return hasAttachment;
-	}
-	
-	/**
-	 * Set if thread has an attachment
-	 * @param attach	True if has attachment
-	 */
-	public void setHasAttachment(boolean attach) {
-		hasAttachment = attach;
-	}
-	
-	/**
-	 * Report if thread is favorite
-	 * @return	True if favorite
-	 */
-	public boolean isFavorite() {
-		return isFavorite;
-	}
-	
-	/**
-	 * Set if the thread is a favorite
-	 * @param fave	True if favorite
-	 */
-	public void setFavorite(boolean fave) {
-		isFavorite = fave;
+
+	public ThreadView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+		LayoutInflater.from(context).inflate(R.layout.view_thread_children, this, true);
+		setupChildren();
 	}
 
 	/**
-	 * Report if the thread is sticky
-	 * @return	True if sticky thread
+	 * Setup the children we contain in this view
 	 */
-	public boolean isSticky() {
-		return isSticky;
-	}
-
-	/**
-	 * Set if the thread is sticky
-	 * @param isSticky	True if sticky thread
-	 */
-	public void setSticky(boolean isSticky) {
-		this.isSticky = isSticky;
-	}
-
-	/**
-	 * Report if the thread is locked
-	 * @return	True if thread locked
-	 */
-	public boolean isLocked() {
-		return isLocked;
-	}
-
-	/**
-	 * Set if the thread is locked
-	 * @param isLocked	True if thread locked
-	 */
-	public void setLocked(boolean isLocked) {
-		this.isLocked = isLocked;
-	}
-
-	/**
-	 * Report the thread title
-	 * @return	The thread title
-	 */
-	public String getTitle() {
-		return title;
-	}
-
-	/**
-	 * Set the thread title
-	 * @param title	The thread title
-	 */
-	public void setTitle(String title) {
-		this.title = title;
+	private void setupChildren() {
+		vTitle 	   = (TextView) findViewById(R.id.tv_title);
+        vPostCount = (TextView) findViewById(R.id.tv_postCount);
+        vPostCountL= (TextView) findViewById(R.id.tv_postCount_label);
+        vPostUser  = (TextView) findViewById(R.id.tv_postUser);
+        vLastUser  = (TextView) findViewById(R.id.tv_lastUser);
+        vLastUserL = (TextView) findViewById(R.id.tv_lastUser_label);
+        vLastDate  = (TextView) findViewById(R.id.tv_lastUserDate);
+        vMyCount   = (TextView) findViewById(R.id.tv_myCount);
+        vMyCountL  = (TextView) findViewById(R.id.tv_myCount_label);
+        vViewCount = (TextView) findViewById(R.id.tv_viewCount);
+        vViewCountL= (TextView) findViewById(R.id.tv_viewCount_label);
+        vForum     = (TextView) findViewById(R.id.tv_forum);
+        vImage 	   = (ImageView) findViewById(R.id.tv_image);
+        vAttachment= (ImageView) findViewById(R.id.tv_attachment);
+        vForumC    = (LinearLayout) findViewById(R.id.tv_forum_details);
 	}
 	
 	/**
-	 * Report the number of posts the current user
-	 * has in the thread
-	 * @return	The current users post count within the thread
+	 * Inflate the view, this technically only gets called the first time the
+	 * view is accessed
+	 * @param parent	The parent of the view
+	 * @return			An inflated object
 	 */
-	public String getMyPosts() {
-		if(myPosts == null || myPosts.length() == 0)
-			return "0";
-		else
-			return myPosts;
+	public static ThreadView inflate(ViewGroup parent) {
+		ThreadView threadView = (ThreadView)LayoutInflater.from(parent.getContext())
+				.inflate(R.layout.view_thread, parent, false);
+		return threadView;
 	}
 	
 	/**
-	 * Set the number of posts the user has in the thread
-	 * @param myPosts	The number of posts the user has in the thread
+	 * Setup our view here.  After the view has been inflated and all of the
+	 * view objects have been initialized, we can inflate our view here
+	 * @param m			The model we are going to use to populate the view
+	 * @param newThread True if the thread is a newly updated thread view
 	 */
-	public void setMyPosts(String myPosts) {
-		this.myPosts = myPosts;
-	}
-
-	/**
-	 * Report the total posts in the thread
-	 * @return	The total posts in the thread
-	 */
-	public String getPostCount() {
-		return postCount;
-	}
-
-	/**
-	 * Set the total posts in the thread
-	 * @param postCount	The total posts in the thread
-	 */
-	public void setPostCount(String postCount) {
-		this.postCount = postCount;
-	}
-
-	/**
-	 * Report the view count for the thread
-	 * @return	The thread's view count
-	 */
-	public String getViewCount() {
-		return viewCount;
-	}
-
-	/**
-	 * Set the view count for the thread	
-	 * @param viewCount	The thread's view count
-	 */
-	public void setViewCount(String viewCount) {
-		this.viewCount = viewCount;
-	}
-
-	/**
-	 * Report the user that started the thread
-	 * @return	The user that started the thread
-	 */
-	public String getStartUser() {
-		return startUser;
-	}
-
-	/**
-	 * Set the user that started the thread
-	 * @param startUser	The user that started the thread
-	 */
-	public void setStartUser(String startUser) {
-		this.startUser = startUser;
-	}
-
-	/**
-	 * Report the last user to post in the thread
-	 * @return	The last user to post in the thread
-	 */
-	public String getLastUser() {
-		return lastUser;
-	}
-
-	/**
-	 * Set the last user that posted in the thread
-	 * @param lastUser	The last user that posted
-	 */
-	public void setLastUser(String lastUser) {
-		this.lastUser = lastUser;
+	public void setThread(final ThreadModel m, boolean newThread) {
+		this.isNewThread = newThread; 
+		
+		 // Set default text color
+        vTitle.setTextColor(Color.BLACK);
+        
+        // Set all display components to visible to start
+        hideThreadDetails(false);
+        
+        if(!m.isStub()) {
+	        // Check if the thread title is a for sale type thread
+	        String threadTitle = m.getTitle();
+	        Pattern pattern = Pattern.compile("(\\{\\s\\w*\\s\\})(.*)", Pattern.CASE_INSENSITIVE);
+	        Matcher matcher = pattern.matcher(threadTitle);
+	        
+	        if(matcher.matches()) {
+	        	Log.d(TAG, "Found a FS Type Thread...");
+	        	vTitle.setText(Html.fromHtml("<font color='red'>"
+	        			+ matcher.group(1) + "</font>" 
+	        			+ matcher.group(2)));
+	        } else {   
+	        	vTitle.setText(       threadTitle);
+	        }
+	        vPostUser.setText(    m.getStartUser());
+	        vLastUser.setText(    m.getLastUser());
+	        
+	        String differenceTime = DateDifference.getPrettyDate(m.getLastPostTime());
+	        vLastDate.setText(   differenceTime);
+	
+	        vPostCount.setText(   
+	        		SpecialNumberFormatter.collapseNumber(m.getPostCount()));
+	        vMyCount.setText(
+	        		SpecialNumberFormatter.collapseNumber(m.getMyPosts()));
+	        vViewCount.setText(
+	        		SpecialNumberFormatter.collapseNumber(m.getViewCount()));
+	        
+	        boolean hasPosts = !vMyCount.getText().equals("0");
+	        Bitmap scaledimg = 
+	    			ThreadTypeFactory.getBitmap(
+	    					null, 15, 13, m.isLocked(), m.isSticky(), hasPosts, 
+	    					m.isAnnouncement());
+	        vImage.setImageBitmap(scaledimg);      
+	        
+	        // Hide a few things if we are a guest
+	        if(LoginFactory.getInstance().isGuestMode()) {
+	        	vMyCountL.setVisibility(View.GONE);
+	        	vMyCount.setVisibility(View.GONE);
+	        }
+	        
+	        vForumC.setVisibility(this.isNewThread? View.VISIBLE : View.GONE);
+	        vForum.setText(m.getForum());
+			
+	        // Set up our color scheme for the threads if the
+	        // thread is a sticky or if it is locked.  Else
+	        // lets use the default
+			if (m.isSticky()) {
+				setMode(this, true, Color.CYAN);
+			} else if(m.isLocked())
+				setMode(this, false, Color.DKGRAY);
+			else 
+				setMode(this, false, Color.GRAY);
+			
+			// If this is a favorite view then just hide the 
+			// details.  We dont care
+			if (m.isFavorite())
+				hideThreadDetails(true);
+			
+			// If this is an announcement, then display without
+			// any particular details
+			if (m.isAnnouncement()) {
+				setMode(this, true, Color.CYAN);
+				hideThreadDetails(true);
+			}
+			
+			// Display the attachment icon if we have an attachment
+			if (!m.hasAttachment())
+				vAttachment.setVisibility(View.GONE);
+			else 
+				vAttachment.setVisibility(View.VISIBLE);
+        } else {
+        	// If it is a stub, then at this time it means that we have 
+        	// reached the end of our newest posts.  So show the user a 
+        	// message letting them know
+        	vTitle.setText(
+        		MainApplication.getAppContext().getString(R.string.constantNoUpdate));
+        	vTitle.setTextColor(Color.WHITE);
+        	setMode(this, true, Color.BLACK);
+        	hideThreadDetails(true);
+        }
 	}
 	
 	/**
-	 * Report the link to the thread
-	 * @return	The link to the thread
+	 * Hide the thread details, which is really only used on special
+	 * occasions like the favorites list
 	 */
-	public String getLink() {
-		return link;
+	public void hideThreadDetails(boolean hide) {
+		vPostCount .setVisibility(hide? View.GONE : View.VISIBLE);
+		vPostCountL.setVisibility(hide? View.GONE : View.VISIBLE);
+
+		vLastUser .setVisibility(hide? View.GONE : View.VISIBLE);
+		vLastUserL.setVisibility(hide? View.GONE : View.VISIBLE);
+		
+		vLastDate.setVisibility(hide? View.GONE : View.VISIBLE);
+		
+		vMyCount  .setVisibility(hide? View.GONE : View.VISIBLE);
+		vMyCountL .setVisibility(hide? View.GONE : View.VISIBLE);
+		
+		vViewCount .setVisibility(hide? View.GONE : View.VISIBLE);
+		vViewCountL.setVisibility(hide? View.GONE : View.VISIBLE);
+		
+		vForumC.setVisibility(hide? View.GONE : View.VISIBLE);
+		vAttachment.setVisibility(hide? View.GONE : View.VISIBLE);
+		
+		vImage.setVisibility(hide? View.GONE : View.VISIBLE);
 	}
 	
 	/**
-	 * Set the link to the thread
-	 * @param lnk	The link to the thread
+	 * Set the mode of the thread view object.  If the view is a 
+	 * special view, we want to set a different font color and 
+	 * background color
+	 * @param vi		The source view
+	 * @param isSpecial	If true, this is a special view
+	 * @param bgColor	The bg color to set
 	 */
-	public void setLink(String lnk) {
-		this.link = lnk;
-	}
-	
-	/**
-	 * Report the link to the last page of thread
-	 * @return	The link to the thread
-	 */
-	public String getLastLink() {
-		return lastLink;
-	}
-	
-	/**
-	 * Set the link to the last page of thread
-	 * @param lnk	The link to the thread
-	 */
-	public void setLastLink(String lnk) {
-		this.lastLink = lnk;
+	private void setMode(View vi, boolean isSpecial, int bgColor) {
+		vi.setBackgroundColor(bgColor);
+		vPostCount.setTextColor(isSpecial? Color.BLACK : Color.WHITE);
+		vPostUser .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
+		vLastUser .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
+		vMyCount  .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
+		vViewCount.setTextColor(isSpecial? Color.BLACK : Color.WHITE);
+		vForum    .setTextColor(isSpecial? Color.BLACK : Color.WHITE);
+		
+		// Get a bit fancy here to make the difference of last post 
+		// stand out a bit
+		vLastDate .setTextColor(isSpecial? Color.BLACK : Color.rgb(0,0,128));
 	}
 }

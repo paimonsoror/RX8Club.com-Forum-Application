@@ -1,4 +1,4 @@
-package com.normalexception.app.rx8club.favorites;
+package com.normalexception.app.rx8club.view.profile;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -24,30 +24,56 @@ package com.normalexception.app.rx8club.favorites;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
-import com.normalexception.app.rx8club.view.thread.ThreadModel;
-
-public class FavoriteThreads extends ArrayList<ThreadModel> implements Serializable {
-	
-	private static final long serialVersionUID = 1L;
+public class ProfileModel {
+	private String name, link, text;
 
 	/**
-	 * Simply an extension of an array list to make 
-	 * handling a list of threads more intuative
+	 * Report the name of the thread that the user posted on
+	 * @param name	The name of the thread
 	 */
-	protected FavoriteThreads() {
-		super();
+	public void setName(String name) { 
+		this.name = name; 
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ArrayList#add(java.lang.Object)
+	/**
+	 * Set the link of the thread the user posted on
+	 * @param link	The link of the thread
 	 */
-	@Override
-	public boolean add(ThreadModel tv) {
-		tv.setFavorite(true);
-		return super.add(tv);
+	public void setLink(String link) { 
+		this.link = link; 
 	}
+	
+	/**
+	 * Set the last snippet of text from the thread
+	 * @param txt	The snippet of text
+	 */
+	public void setText(String txt) { 
+		this.text = txt; 
+	}
+
+	/**
+	 * Report the name of the thread
+	 * @return	The name of the thread
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Report the link of the thread
+	 * @return	The link of the thread
+	 */
+	public String getLink() {
+		return link;
+	}
+
+	/**
+	 * Report the snippet of text
+	 * @return	The snippet of text
+	 */
+	public String getText() {
+		return text;
+	}
+
+	public String toString() { return name + ", " + link + ", " + text; }
 }

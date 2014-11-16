@@ -65,19 +65,19 @@ public class PreferenceHelper {
 	 * @param context	The source context
 	 * @return			The option value
 	 */
-	public static int getThreadImageSize(Context context) {
+	public static double getThreadImageSize(Context context) {
 		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
 		String defaultSize = 
-				context.getResources().getStringArray(R.array.threadImageSizeValues)[0];
+				context.getResources().getStringArray(R.array.threadImagePercentValues)[0];
 		try {
 			String prefsVal = prefs.getString("threadimagesize", defaultSize);
-			return Integer.parseInt(prefsVal);
+			return Double.parseDouble(prefsVal);
 		} catch (Throwable e) {
 			Log.w("Preferences", "Exception w/ Image Size, Resetting");
 			Editor prefsEditor = prefs.edit();
 	        prefsEditor.putString("threadimagesize", defaultSize);
 	        prefsEditor.commit();
-	        return Integer.parseInt(defaultSize);
+	        return Double.parseDouble(defaultSize);
 		}
 	}
 	

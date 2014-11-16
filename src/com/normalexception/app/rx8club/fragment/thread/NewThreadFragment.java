@@ -49,7 +49,7 @@ import com.normalexception.app.rx8club.html.HtmlFormUtils;
 import com.normalexception.app.rx8club.html.VBForumFactory;
 import com.normalexception.app.rx8club.state.AppState;
 import com.normalexception.app.rx8club.task.NewThreadTask;
-import com.normalexception.app.rx8club.view.threaditem.ThreadItemView;
+import com.normalexception.app.rx8club.view.threaditem.ThreadItemModel;
 import com.normalexception.app.rx8club.view.threaditem.ThreadItemViewArrayAdapter;
 
 /**
@@ -70,7 +70,7 @@ public class NewThreadFragment extends Fragment {
 	
 	private ListView lv;
 	
-	private ArrayList<ThreadItemView> tlist;
+	private ArrayList<ThreadItemModel> tlist;
 	private ThreadItemViewArrayAdapter pva;
 	
 	private ProgressDialog loadingDialog;
@@ -99,7 +99,7 @@ public class NewThreadFragment extends Fragment {
 	        lv      = (ListView)view.findViewById(R.id.mainlistview);
 	        lv.setDescendantFocusability(ListView.FOCUS_AFTER_DESCENDANTS);
 	        lv.setScrollContainer(false);
-	        tlist   = new ArrayList<ThreadItemView>();
+	        tlist   = new ArrayList<ThreadItemModel>();
 	        
         	if(savedInstanceState == null)
         		constructView();
@@ -132,7 +132,7 @@ public class NewThreadFragment extends Fragment {
 				    	f 			= HtmlFormUtils.getInputElementValueByName(doc, "f");
 				    	posthash 	= HtmlFormUtils.getInputElementValueByName(doc, "posthash");
 				    	
-				    	tlist.add(new ThreadItemView());
+				    	tlist.add(new ThreadItemModel());
 				    	
 				    	getActivity().runOnUiThread(new Runnable() {
 				            public void run() {

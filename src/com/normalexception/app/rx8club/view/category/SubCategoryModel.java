@@ -1,4 +1,6 @@
-package com.normalexception.app.rx8club.favorites;
+package com.normalexception.app.rx8club.view.category;
+
+import java.io.Serializable;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -24,30 +26,44 @@ package com.normalexception.app.rx8club.favorites;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import java.io.Serializable;
-import java.util.ArrayList;
+/**
+ * Container for simple sub category data
+ */
+public class SubCategoryModel implements Serializable {
 
-import com.normalexception.app.rx8club.view.thread.ThreadModel;
-
-public class FavoriteThreads extends ArrayList<ThreadModel> implements Serializable {
-	
 	private static final long serialVersionUID = 1L;
+	private String title, link;
 
 	/**
-	 * Simply an extension of an array list to make 
-	 * handling a list of threads more intuative
+	 * Report sub category title
+	 * @return	Sub category title
 	 */
-	protected FavoriteThreads() {
-		super();
+	public String getTitle() {
+		return title;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ArrayList#add(java.lang.Object)
+
+	/**
+	 * Set sub category title
+	 * @param title	Sub category title
 	 */
-	@Override
-	public boolean add(ThreadModel tv) {
-		tv.setFavorite(true);
-		return super.add(tv);
+	public void setTitle(String title) {
+		this.title = title;
 	}
+
+	/**
+	 * Report the link
+	 * @return	The link
+	 */
+	public String getLink() {
+		return link;
+	}
+
+	/**
+	 * Set the link
+	 * @param link	The link
+	 */
+	public void setLink(String link) {
+		this.link = link;
+	}
+
 }

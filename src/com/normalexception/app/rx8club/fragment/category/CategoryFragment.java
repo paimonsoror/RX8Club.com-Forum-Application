@@ -69,7 +69,7 @@ import com.normalexception.app.rx8club.html.VBForumFactory;
 import com.normalexception.app.rx8club.preferences.PreferenceHelper;
 import com.normalexception.app.rx8club.state.AppState;
 import com.normalexception.app.rx8club.utils.Utils;
-import com.normalexception.app.rx8club.view.thread.ThreadView;
+import com.normalexception.app.rx8club.view.thread.ThreadModel;
 import com.normalexception.app.rx8club.view.thread.ThreadViewArrayAdapter;
 
 /**
@@ -99,7 +99,7 @@ public class CategoryFragment extends Fragment {
 	
 	private boolean isNewTopicActivity = false;
 	
-	private ArrayList<ThreadView> threadlist;
+	private ArrayList<ThreadModel> threadlist;
 	private ThreadViewArrayAdapter tva;
 	
 	private ListView lv;
@@ -174,7 +174,7 @@ public class CategoryFragment extends Fragment {
 	        Log.v(TAG, "Category Activity Started");
 	        
 	        if(TimeoutFactory.getInstance().checkTimeout(this)) {
-		        threadlist = new ArrayList<ThreadView>();
+		        threadlist = new ArrayList<ThreadModel>();
 		        
 		        if(savedInstanceState == null || 
 		        		(tva == null || tva.getCount() == 0))
@@ -202,7 +202,7 @@ public class CategoryFragment extends Fragment {
 		            @Override
 		            public void onItemClick(AdapterView<?> parent, View view,
 		                    int position, long id) {
-		            	ThreadView itm = (ThreadView) parent.getItemAtPosition(position);
+		            	ThreadModel itm = (ThreadModel) parent.getItemAtPosition(position);
 		            	if(!itm.isStub()) {
 			            	Log.d(TAG, "User clicked '" + itm.getTitle() + "'");
 			            	Bundle args = new Bundle();
@@ -247,7 +247,7 @@ public class CategoryFragment extends Fragment {
 	 * @param itm	The item that was selected
 	 * @return		True if the user wants the last page
 	 */
-	private boolean getLastPage(ThreadView itm) {
+	private boolean getLastPage(ThreadModel itm) {
 		boolean val = false;
 		if(PreferenceHelper.getRecentlyUpdatedThreadPage(getActivity()).equals("Last") 
 				&& (itm.getLastLink() != null && !itm.getLastLink().equals("")))
@@ -365,7 +365,7 @@ public class CategoryFragment extends Fragment {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
-		ThreadView tv = (ThreadView) lv.getAdapter().getItem(info.position);
+		ThreadModel tv = (ThreadModel) lv.getAdapter().getItem(info.position);
 		
 		switch(item.getItemId()) {
 		case MENU_FAVE:
@@ -514,7 +514,7 @@ public class CategoryFragment extends Fragment {
     			// Add our thread to our list as long as the thread
     			// contains a title
     			if(!formattedTitle.equals("")) {
-		    		ThreadView tv = new ThreadView();
+		    		ThreadModel tv = new ThreadModel();
 		    		tv.setTitle(formattedTitle);
 		    		tv.setStartUser(threadUser);
 		    		tv.setLastUser(lastUser);
@@ -536,12 +536,12 @@ public class CategoryFragment extends Fragment {
     				Log.d(TAG, String.format(
     						"Found End of New Threads after %d threads...", threadlist.size()));
     				if(threadlist.size() > 0) {
-    					ThreadView ltv = threadlist.get(threadlist.size() - 1);
+    					ThreadModel ltv = threadlist.get(threadlist.size() - 1);
     					Log.d(TAG, String.format("Last New Thread '%s'", ltv.getTitle()));
     				}
     				
     				if(!PreferenceHelper.hideOldPosts(MainApplication.getAppContext()))
-    					threadlist.add(new ThreadView(true));
+    					threadlist.add(new ThreadModel(true));
     				else {
     					Log.d(TAG, "User Chose To Hide Old Threads");
     					break;

@@ -37,7 +37,7 @@ import com.normalexception.app.rx8club.R;
 import com.normalexception.app.rx8club.favorites.FavoriteFactory;
 import com.normalexception.app.rx8club.favorites.FavoriteThreads;
 import com.normalexception.app.rx8club.fragment.thread.ThreadFragment;
-import com.normalexception.app.rx8club.view.thread.ThreadView;
+import com.normalexception.app.rx8club.view.thread.ThreadModel;
 
 /**
  * Convenience class to create the dialog and register the handlers
@@ -65,7 +65,7 @@ public class FavoriteDialog {
 				new ContextThemeWrapper(ctx, R.style.AlertDialogCustom));
 		
 		List<String>    ls = new ArrayList<String>();
-		for(ThreadView tv : ft)
+		for(ThreadModel tv : ft)
 			ls.add(tv.getTitle());
 		cs_favoriteslist = 
 			ls.toArray(new CharSequence[ls.size()]);
@@ -98,7 +98,7 @@ public class FavoriteDialog {
 	    	public void onClick(DialogInterface dialog, int which) {
 	          	// The 'which' argument contains the index position
 	           	// of the selected item
-	    		ThreadView tv = ft.get(which);
+	    		ThreadModel tv = ft.get(which);
 	    		Intent _intent = 
 						new Intent(ctx, ThreadFragment.class);
 				_intent.putExtra("link", tv.getLink());

@@ -43,7 +43,7 @@ import com.normalexception.app.rx8club.favorites.FavoriteFactory;
 import com.normalexception.app.rx8club.favorites.FavoriteThreads;
 import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.fragment.thread.ThreadFragment;
-import com.normalexception.app.rx8club.view.thread.ThreadView;
+import com.normalexception.app.rx8club.view.thread.ThreadModel;
 import com.normalexception.app.rx8club.view.thread.ThreadViewArrayAdapter;
 
 public class FavoritesFragment extends Fragment {
@@ -97,7 +97,7 @@ public class FavoritesFragment extends Fragment {
 		            @Override
 		            public void onItemClick(AdapterView<?> parent, View view,
 		                    int position, long id) {
-		            	ThreadView itm = (ThreadView) parent.getItemAtPosition(position);
+		            	ThreadModel itm = (ThreadModel) parent.getItemAtPosition(position);
 		            	Log.v(TAG, "User clicked '" + itm.getTitle() + "'");
 
 		            	Bundle args = new Bundle();

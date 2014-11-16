@@ -60,10 +60,10 @@ public class BitmapDecoder {
 		Bitmap mBitmap = null;
 		try {
 			InputStream is = new URL(source).openStream();
-			final int sample_size = 
+			final double sample_size = 
 					PreferenceHelper.getThreadImageSize(MainApplication.getAppContext());
-	        mBitmap = decodeSampledBitmapFromResourceMemOpt(is, sample_size,
-	        		sample_size, useMin);
+	        mBitmap = decodeSampledBitmapFromResourceMemOpt(is, (int)sample_size,
+	        		(int)sample_size, useMin);
 	        try {
 	        	Log.d(TAG, String.format("Bitmap size %d bytes", 
 	        		mBitmap.getRowBytes() * mBitmap.getHeight()));

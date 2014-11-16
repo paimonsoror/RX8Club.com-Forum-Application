@@ -26,32 +26,24 @@ package com.normalexception.app.rx8club.view.category;
 
 import java.util.List;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.os.Bundle;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.normalexception.app.rx8club.R;
-import com.normalexception.app.rx8club.fragment.FragmentUtils;
-import com.normalexception.app.rx8club.fragment.category.CategoryFragment;
-import com.normalexception.app.rx8club.utils.SpecialNumberFormatter;
-import com.normalexception.app.rx8club.view.ViewHolder;
+import com.normalexception.app.rx8club.Log;
 
 /**
  * Custom category view array adapter
  */
-public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
-	private Fragment sourceFragment;
-	private List<CategoryView> data;
+public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryModel> {
+	private List<CategoryModel> data;
 
+	private Logger TAG =  LogManager.getLogger(this.getClass());
+	
 	/**
 	 * A custom adapter that handles Category View objects
 	 * @param context				The source context
@@ -59,9 +51,8 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
 	 * @param objects				The objects in the list
 	 */
 	public CategoryViewArrayAdapter(Fragment context, int textViewResourceId,
-			List<CategoryView> objects) {
+			List<CategoryModel> objects) {
 		super(context.getActivity(), textViewResourceId, objects);
-		sourceFragment = context;
 		data = objects;
 	}
 	
@@ -79,7 +70,7 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
      * @see android.widget.ArrayAdapter#getItem(int)
      */
     @Override  
-    public CategoryView getItem(int position) {     
+    public CategoryModel getItem(int position) {     
         return data.get(position);  
     } 
     
@@ -88,88 +79,12 @@ public class CategoryViewArrayAdapter extends ArrayAdapter<CategoryView> {
 	 * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
 	 */
 	public View getView(int position, View convertView, ViewGroup parent) {		
-		View vi = convertView;
-        if(vi == null) {
-        	LayoutInflater vinf =
-                    (LayoutInflater)sourceFragment.getActivity()
-                    	.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            vi = vinf.inflate(R.layout.view_category, parent, false);
+		CategoryView categoryView = (CategoryView)convertView;
+        if (null == categoryView) {
+        	Log.d(TAG, "Inflating New CategoryView");
+        	categoryView = CategoryView.inflate(parent);
         }
-        
-        final CategoryView cv = data.get(position);    
-        
-        ((TextView) ViewHolder.get(vi, R.id.cv_title)).setText(cv.getTitle());
-        ((TextView) ViewHolder.get(vi, R.id.cv_desc)).setText(cv.getDescription());
-        
-        if(cv.getPostCount() == null || cv.getThreadCount() == null) {
-        	setMode(vi, true);
-        } else {
-        	setMode(vi, false);
-        	((TextView) ViewHolder.get(vi, R.id.cv_postCount)).setText(
-        			SpecialNumberFormatter.collapseNumber(cv.getPostCount()));
-        	((TextView) ViewHolder.get(vi, R.id.cv_threadCount)).setText(
-        			SpecialNumberFormatter.collapseNumber(cv.getThreadCount()));
-        	
-        	// First we need to register a listener for a regular 
-        	// click.  We simply launch the link here
-        	vi.setOnClickListener(new OnClickListener() {
-    			@Override
-	            public void onClick(View v) {
-					if(cv.getLink() != null) {
-						// Create new fragment and transaction
-						Bundle args = new Bundle();
-						args.putString("link", cv.getLink());
-						Fragment newFragment = new CategoryFragment();
-						FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
-								newFragment, true, true, args);
-					}
-				}
-        	});
-        	
-        	// If the forum has sub forums, we can register a 
-        	// long click listener that will pop up a menu
-        	if(cv.getSubCategories().size() > 0) {
-        		((TextView) ViewHolder.get(vi, R.id.cv_subCount))
-        			.setText(Integer.toString(cv.getSubCategories().size()));
-        		vi.setOnLongClickListener(new OnLongClickListener() {
-        	        @Override
-        	        public boolean onLongClick(View v) {
-        	        	SubCategoryDialog scd = 
-        	        			new SubCategoryDialog(sourceFragment.getActivity(), cv.getSubCategories());
-        	        	scd.registerToExecute();
-        	        	scd.show();
-        	        	return true;
-        	        }
-        		});
-        	}
-        	else {
-        		((ImageView) ViewHolder.get(vi, R.id.cv_subCount_label)).setVisibility(View.GONE);
-        		((TextView) ViewHolder.get(vi, R.id.cv_subCount)).setVisibility(View.GONE);
-        	}
-        }
-        
-        return vi;
-	}
-	
-	/**
-	 * Set the mode of the category line
-	 * @param vi		The view line
-	 * @param isTitle	If we are going to represent a title
-	 */
-	private void setMode(View vi, boolean isTitle) {
-		int showMode = isTitle? View.GONE : View.VISIBLE;
-		int colorMode= isTitle? Color.DKGRAY : Color.GRAY;
-		int textColor= isTitle? Color.WHITE : Color.BLACK;
-
-		((TextView)  ViewHolder.get(vi, R.id.cv_postCount)).setVisibility(showMode);
-		((ImageView)  ViewHolder.get(vi, R.id.cv_postCount_label)).setVisibility(showMode);
-		((TextView)  ViewHolder.get(vi, R.id.cv_threadCount)).setVisibility(showMode);
-		((ImageView)  ViewHolder.get(vi, R.id.cv_threadCount_label)).setVisibility(showMode);
-		((TextView)  ViewHolder.get(vi, R.id.cv_subCount)).setVisibility(showMode);
-		((ImageView)  ViewHolder.get(vi, R.id.cv_subCount_label)).setVisibility(showMode);
-		((ImageView) ViewHolder.get(vi, R.id.cv_image)).setVisibility(showMode);
-    	vi.setBackgroundColor(colorMode);
-    	
-    	((TextView) ViewHolder.get(vi, R.id.cv_title)).setTextColor(textColor);
+        categoryView.setCategory(getItem(position));
+        return categoryView;
 	}
 }

@@ -39,16 +39,47 @@ import java.util.TimeZone;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 
 import com.normalexception.app.rx8club.Log;
 import com.normalexception.app.rx8club.WebUrls;
+import com.normalexception.app.rx8club.activities.MainActivity;
 import com.normalexception.app.rx8club.html.LoginFactory;
+import com.normalexception.app.rx8club.preferences.PreferenceHelper;
 
 public class Utils {
 	
 	private static Logger TAG =  LogManager.getLogger(Utils.class);
+	
+
+	/**
+	 * Format the post to contain some basic HTML formatting
+	 * @param trimmedPost	The post content
+	 * @return				Formatted post content
+	 */
+	public static String postFormatter(String trimmedPost, Context _ctx) {
+		// Grab our screen size
+		int[] windowSize = ((MainActivity)_ctx).getWindowSize();
+
+		final String fontColor = "white";
+		final int    fontPref  = PreferenceHelper.getFontSize(_ctx);
+		final String fontSize  = Integer.toString((int)(fontPref * 0.7)); //"8pt";
+		final double imgPref   = PreferenceHelper.getThreadImageSize(_ctx);
+		final String imgWidth  = Double.toString(windowSize[0] * imgPref);
+		final String imgAttach = Double.toString(windowSize[0] * 0.20);
+
+		String css = String.format("<style type='text/css'> " +
+				"body { color: %s; font-size: %spt; } " +
+				"img { max-width: %spx; }" +
+				"img .attachment { max-width:%spx; }" +
+				"</style>",
+				fontColor,fontSize,imgWidth,imgAttach);
+		trimmedPost = String.format("<html>%s<body>%s</body></html>", css, trimmedPost);
+
+		return trimmedPost;
+	}
 	
 	/**
 	 * Safely copy one stream into another.  This is useful when copying

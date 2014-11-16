@@ -1,4 +1,4 @@
-package com.normalexception.app.rx8club.favorites;
+package com.normalexception.app.rx8club.view.pmpost;
 
 /************************************************************************
  * NormalException.net Software, and other contributors
@@ -24,30 +24,15 @@ package com.normalexception.app.rx8club.favorites;
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  ************************************************************************/
 
-import java.io.Serializable;
-import java.util.ArrayList;
+import com.normalexception.app.rx8club.view.threadpost.PostModel;
 
-import com.normalexception.app.rx8club.view.thread.ThreadModel;
-
-public class FavoriteThreads extends ArrayList<ThreadModel> implements Serializable {
+public class PMPostModel extends PostModel {
 	
-	private static final long serialVersionUID = 1L;
-
 	/**
-	 * Simply an extension of an array list to make 
-	 * handling a list of threads more intuative
+	 * We will basically leverage off of the PostView class
+	 * since there isn't much difference at this point
 	 */
-	protected FavoriteThreads() {
+	public PMPostModel() {
 		super();
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ArrayList#add(java.lang.Object)
-	 */
-	@Override
-	public boolean add(ThreadModel tv) {
-		tv.setFavorite(true);
-		return super.add(tv);
 	}
 }

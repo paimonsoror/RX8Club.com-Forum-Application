@@ -1,5 +1,5 @@
 <resources>
-    <declare-styleable name="ThreadView">
+    <declare-styleable name="ThreadModel">
     	<attr name="threadviewtitle"     format="string" />
     	<attr name="postCount" format="string" />
     	<attr name="viewCount" format="string"/>

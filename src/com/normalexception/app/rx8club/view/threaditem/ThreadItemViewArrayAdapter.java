@@ -26,25 +26,23 @@ package com.normalexception.app.rx8club.view.threaditem;
 
 import java.util.List;
 
-import android.content.Context;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 
-import com.normalexception.app.rx8club.R;
-import com.normalexception.app.rx8club.fragment.thread.EditPostFragment;
-import com.normalexception.app.rx8club.fragment.thread.NewThreadFragment;
-import com.normalexception.app.rx8club.view.ViewHolder;
+import com.normalexception.app.rx8club.Log;
 
-public class ThreadItemViewArrayAdapter extends ArrayAdapter<ThreadItemView> {
+public class ThreadItemViewArrayAdapter extends ArrayAdapter<ThreadItemModel> {
 	private Fragment frag_;
-	private List<ThreadItemView> data;
+	private List<ThreadItemModel> data;
 	private OnClickListener ocl_;
+
+	private Logger TAG =  LogManager.getLogger(this.getClass());
 
 	/**
 	 * Custom adapter to handle PMItemView's
@@ -53,7 +51,7 @@ public class ThreadItemViewArrayAdapter extends ArrayAdapter<ThreadItemView> {
 	 * @param objects				The list of objects
 	 */
 	public ThreadItemViewArrayAdapter(Fragment frag, int textViewResourceId,
-			List<ThreadItemView> objects, OnClickListener ocl) {
+			List<ThreadItemModel> objects, OnClickListener ocl) {
 		super(frag.getActivity(), textViewResourceId, objects);
 		frag_ = frag;
 		data = objects;
@@ -74,7 +72,7 @@ public class ThreadItemViewArrayAdapter extends ArrayAdapter<ThreadItemView> {
      * @see android.widget.ArrayAdapter#getItem(int)
      */
     @Override  
-    public ThreadItemView getItem(int position) {     
+    public ThreadItemModel getItem(int position) {     
         return data.get(position);  
     } 
     
@@ -83,30 +81,13 @@ public class ThreadItemViewArrayAdapter extends ArrayAdapter<ThreadItemView> {
 	 * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
 	 */
 	public View getView(int position, View convertView, ViewGroup parent) {		
-		View vi = convertView;
-        if(vi == null) {
-        	LayoutInflater vinf =
-                    (LayoutInflater)frag_.getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            vi = vinf.inflate(R.layout.view_newthread, null);
+		ThreadItemView threadItemView = (ThreadItemView)convertView;
+        if (null == threadItemView) {
+        	Log.d(TAG, "Inflating New ThreadItemView");
+        	threadItemView = ThreadItemView.inflate(parent);
         }
-        
-        // Because we use this class when handling edits, we need to make
-        // sure that we cast this properly and then rename our submit button
-        if(frag_ instanceof NewThreadFragment) {
-        	((Button) ViewHolder.get(vi,R.id.newThreadButton))
-        		.setOnClickListener(ocl_);
-        } else if (frag_ instanceof EditPostFragment) {
-        	((Button) ViewHolder.get(vi,R.id.newThreadButton))
-    			.setOnClickListener(ocl_);
-        	((Button) ViewHolder.get(vi,R.id.newThreadButton))
-        		.setText("Submit Changes");
-        	
-        	ThreadItemView ti = getItem(position);
-        	((EditText) ViewHolder.get(vi,R.id.postPost))
-        		.setText(ti.getPost());
-        }
-               
-        return vi;
+        threadItemView.setThreadItem(getItem(position), frag_, ocl_);
+        return threadItemView;
 	}
 	
 	/*

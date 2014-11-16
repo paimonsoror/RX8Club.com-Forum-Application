@@ -41,9 +41,9 @@ import android.widget.TextView;
 import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.fragment.thread.ThreadFragment;
 
-public class ProfileViewArrayAdapter extends ArrayAdapter<ProfileView> {
+public class ProfileViewArrayAdapter extends ArrayAdapter<ProfileModel> {
 	private Fragment sourceFragment;
-	private List<ProfileView> data;
+	private List<ProfileModel> data;
 
 	/**
 	 * A custom adapter that handles PM View objects
@@ -52,7 +52,7 @@ public class ProfileViewArrayAdapter extends ArrayAdapter<ProfileView> {
 	 * @param objects				The objects in the list
 	 */
 	public ProfileViewArrayAdapter(Fragment context, int textViewResourceId,
-			List<ProfileView> objects) {
+			List<ProfileModel> objects) {
 		super(context.getActivity(), textViewResourceId, objects);
 		sourceFragment = context;
 		data = objects;
@@ -72,7 +72,7 @@ public class ProfileViewArrayAdapter extends ArrayAdapter<ProfileView> {
 	 * @see android.widget.ArrayAdapter#getItem(int)
 	 */
 	@Override  
-	public ProfileView getItem(int position) {     
+	public ProfileModel getItem(int position) {     
 		return data.get(position);  
 	} 
 
@@ -87,7 +87,7 @@ public class ProfileViewArrayAdapter extends ArrayAdapter<ProfileView> {
 		}
 
 		TextView tv = (TextView)vi;
-		final ProfileView pm = data.get(position);
+		final ProfileModel pm = data.get(position);
 		String text = String.format("%s\n%s", pm.getName(), pm.getText());
 		SpannableString spanString = new SpannableString(text);
 		spanString.setSpan(new StyleSpan(Typeface.BOLD), 

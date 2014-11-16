@@ -26,21 +26,21 @@ package com.normalexception.app.rx8club.view.pmitem;
 
 import java.util.List;
 
-import android.content.Context;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
-import com.normalexception.app.rx8club.R;
-import com.normalexception.app.rx8club.view.ViewHolder;
+import com.normalexception.app.rx8club.Log;
 
-public class PMItemViewArrayAdapter extends ArrayAdapter<PMItemView> {
-	private Fragment sourceFragment;
-	private List<PMItemView> data;
+public class PMItemViewArrayAdapter extends ArrayAdapter<PMItemModel> {
+	private List<PMItemModel> data;
 
+	private Logger TAG =  LogManager.getLogger(this.getClass());
+	
 	/**
 	 * Custom adapter to handle PMItemView's
 	 * @param context				The source context
@@ -48,9 +48,8 @@ public class PMItemViewArrayAdapter extends ArrayAdapter<PMItemView> {
 	 * @param objects				The list of objects
 	 */
 	public PMItemViewArrayAdapter(Fragment context, int textViewResourceId,
-			List<PMItemView> objects) {
+			List<PMItemModel> objects) {
 		super(context.getActivity(), textViewResourceId, objects);
-		sourceFragment = context;
 		data = objects;
 	}
 	
@@ -68,7 +67,7 @@ public class PMItemViewArrayAdapter extends ArrayAdapter<PMItemView> {
      * @see android.widget.ArrayAdapter#getItem(int)
      */
     @Override  
-    public PMItemView getItem(int position) {     
+    public PMItemModel getItem(int position) {     
         return data.get(position);  
     } 
     
@@ -76,22 +75,17 @@ public class PMItemViewArrayAdapter extends ArrayAdapter<PMItemView> {
 	 * (non-Javadoc)
 	 * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
 	 */
-	public View getView(int position, View convertView, ViewGroup parent) {		
-		View vi = convertView;
-        if(vi == null) {
-        	LayoutInflater vinf =
-                    (LayoutInflater)sourceFragment.getActivity()
-                    	.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            vi = vinf.inflate(R.layout.view_newpm, parent, false);
-        }
-        
+	public View getView(int position, View convertView, ViewGroup parent) {		        
         //((Button) ViewHolder.get(vi,R.id.newPmButton))
         //	.setOnClickListener((NewPrivateMessageActivity)activity);
         
-        ((TextView) ViewHolder.get(vi,R.id.pmRecipientsText))
-        	.setText(getItem(0).getName());
-               
-        return vi;
+        PMItemView pmView = (PMItemView)convertView;
+        if (null == pmView) {
+        	Log.d(TAG, "Inflating New PMItemView");
+        	pmView = PMItemView.inflate(parent);
+        }
+        pmView.setPMItem(getItem(position));
+        return pmView;
 	}
 	
 	/*
