@@ -28,6 +28,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,6 +37,7 @@ import com.normalexception.app.rx8club.R;
 public class PMItemView extends LinearLayout {
 	
 	private TextView pmRecipientsText;
+	private Button   pmSendButton;
 	
 	public PMItemView(Context context) {
 		super(context);
@@ -60,6 +62,7 @@ public class PMItemView extends LinearLayout {
 	 */	
 	private void setupChildren() {
 		pmRecipientsText = (TextView) findViewById(R.id.pmRecipientsText);
+		pmSendButton = (Button) findViewById(R.id.newPmButton);
 	}
 	
 	/**
@@ -71,6 +74,7 @@ public class PMItemView extends LinearLayout {
 	public static PMItemView inflate(ViewGroup parent) {
 		PMItemView pmItemView = (PMItemView)LayoutInflater.from(parent.getContext())
 				.inflate(R.layout.view_newpm, parent, false);
+		
 		return pmItemView;
 	}
 	
@@ -84,5 +88,15 @@ public class PMItemView extends LinearLayout {
         pmRecipientsText
         	.setText(pm.getName());
                
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see android.view.View#setOnClickListener(android.view.View.OnClickListener)
+	 */
+	@Override
+	public void setOnClickListener(OnClickListener _ocl) {
+		super.setOnClickListener(_ocl);
+		pmSendButton.setOnClickListener(_ocl);
 	}
 }

@@ -30,11 +30,19 @@ public class PostModel {
 	private String userName, userTitle, userLocation;
 	private String joinDate, postDate;
 	private String userPostCount, userPost;
-	private String postId, token;
+	private String postId, token, threadUrl;
 	private String userImageUrl;
 	private List<String> likes;
 	private List<String> attachments;
 	private boolean isLoggedInUser = false;
+	
+	public void setRootThreadUrl(String url) {
+		threadUrl = url;
+	}
+	
+	public String getRootThreadUrl() {
+		return threadUrl;
+	}
 	
 	public void setUserImageUrl(String url) {
 		userImageUrl = url;

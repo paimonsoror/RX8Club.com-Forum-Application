@@ -55,12 +55,14 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.normalexception.app.rx8club.Log;
+import com.normalexception.app.rx8club.MainApplication;
 import com.normalexception.app.rx8club.R;
 import com.normalexception.app.rx8club.TimeoutFactory;
 import com.normalexception.app.rx8club.WebUrls;
 import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.html.HtmlFormUtils;
 import com.normalexception.app.rx8club.html.VBForumFactory;
+import com.normalexception.app.rx8club.state.AppState;
 import com.normalexception.app.rx8club.task.DeletePmTask;
 import com.normalexception.app.rx8club.view.pm.PMModel;
 import com.normalexception.app.rx8club.view.pm.PMViewArrayAdapter;
@@ -95,7 +97,7 @@ public class PrivateMessageInboxFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
-    	//super.setState(AppState.State.PMINBOX, this.getIntent());
+    	MainApplication.setState(AppState.State.PMINBOX, this);
         
         if(TimeoutFactory.getInstance().checkTimeout(this)) {
 	        pmlist = new ArrayList<PMModel>();
@@ -289,10 +291,10 @@ public class PrivateMessageInboxFragment extends Fragment {
     	Calendar cal = Calendar.getInstance();
     	
     	// For API >9
-    	//cal.set(Calendar.MONTH, m - 1);
+    	cal.set(Calendar.MONTH, m - 1);
     	
     	// For API 9
-    	cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US);
+    	//cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US);
     	
     	return String.format(Locale.US,"%tB",cal);
     }

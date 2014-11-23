@@ -29,12 +29,6 @@
 	
 	    </EditText>
 	
-	    <Button
-	        android:id="@+id/searchSubmitButton"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:text="@string/searchSearchButton" />
-	
 	    <TextView
 	        android:id="@+id/textView2"
 	        android:layout_width="wrap_content"
@@ -87,6 +81,12 @@
 	        android:entries="@array/searchSortArray"
 	        android:textColor="@android:color/black"  />
 	
+	    	
+	    <Button
+	        android:id="@+id/searchSubmitButton"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="@string/searchSearchButton" />
 	</LinearLayout>
 
 </ScrollView>

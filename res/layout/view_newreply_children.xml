@@ -233,6 +233,15 @@
 	        android:focusable="false"
 	        android:paddingLeft="5dip"
 	        android:src="@drawable/report" />
-
+	    	    
+	    <ImageView
+	        android:id="@+id/nr_linkbutton"
+	        android:layout_width="24dip"
+	        android:layout_height="24dip"
+			android:layout_toLeftOf="@id/nr_reportbutton"
+	        android:layout_marginRight="5dp"
+	        android:focusable="false"
+	        android:paddingLeft="5dip"
+	        android:src="@drawable/link" />
 	</RelativeLayout>
 </merge>

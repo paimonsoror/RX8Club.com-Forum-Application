@@ -126,7 +126,8 @@ public class SearchFragment extends Fragment implements OnClickListener {
 				args.putBoolean("isNewTopics", true);
 				Log.v(TAG, "Adding Link To Search: " + args.getString("link"));
 
-				FragmentUtils.fragmentTransaction(this.getActivity(), new CategoryFragment(), false, true);
+				FragmentUtils.fragmentTransaction(this.getActivity(), 
+						new CategoryFragment(), false, true, args);
 			break;
 		}
 	}

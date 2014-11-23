@@ -31,14 +31,18 @@ import org.apache.log4j.Logger;
 
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 
 import com.normalexception.app.rx8club.Log;
+import com.normalexception.app.rx8club.R;
+import com.normalexception.app.rx8club.view.ViewHolder;
 
 public class PMItemViewArrayAdapter extends ArrayAdapter<PMItemModel> {
 	private List<PMItemModel> data;
-
+	private OnClickListener _ocl;
 	private Logger TAG =  LogManager.getLogger(this.getClass());
 	
 	/**
@@ -48,9 +52,10 @@ public class PMItemViewArrayAdapter extends ArrayAdapter<PMItemModel> {
 	 * @param objects				The list of objects
 	 */
 	public PMItemViewArrayAdapter(Fragment context, int textViewResourceId,
-			List<PMItemModel> objects) {
+			List<PMItemModel> objects, OnClickListener ocl) {
 		super(context.getActivity(), textViewResourceId, objects);
 		data = objects;
+		_ocl = ocl;
 	}
 	
 	/*
@@ -75,16 +80,14 @@ public class PMItemViewArrayAdapter extends ArrayAdapter<PMItemModel> {
 	 * (non-Javadoc)
 	 * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
 	 */
-	public View getView(int position, View convertView, ViewGroup parent) {		        
-        //((Button) ViewHolder.get(vi,R.id.newPmButton))
-        //	.setOnClickListener((NewPrivateMessageActivity)activity);
-        
+	public View getView(int position, View convertView, ViewGroup parent) {		                
         PMItemView pmView = (PMItemView)convertView;
         if (null == pmView) {
         	Log.d(TAG, "Inflating New PMItemView");
         	pmView = PMItemView.inflate(parent);
         }
         pmView.setPMItem(getItem(position));
+        pmView.setOnClickListener(_ocl);
         return pmView;
 	}
 	

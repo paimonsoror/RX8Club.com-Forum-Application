@@ -138,7 +138,8 @@ public class NewPrivateMessageFragment extends Fragment {
 			    	
 			    	getActivity().runOnUiThread(new Runnable() {
 			            public void run() {
-					    	pva = new PMItemViewArrayAdapter(_frag, R.layout.view_newpm, tlist);
+					    	pva = new PMItemViewArrayAdapter(_frag, R.layout.view_newpm, 
+					    			tlist, new NewPrivateMessageListener(_frag));
 							lv.setAdapter(pva);	
 			            }
 			    	});

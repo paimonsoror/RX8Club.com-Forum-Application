@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -49,6 +50,7 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.normalexception.app.rx8club.Log;
 import com.normalexception.app.rx8club.R;
@@ -75,6 +77,7 @@ public class PostView extends RelativeLayout {
 	private TextView postBox;
 
 	private ImageView reportbutton;
+	private ImageView linkbutton;
 	private ImageView downButton;
 	private ImageView avatar;
 	private ImageView quoteButton;
@@ -120,6 +123,7 @@ public class PostView extends RelativeLayout {
 		postBox = (TextView) findViewById(R.id.postBox);
 
 		reportbutton = (ImageView) findViewById(R.id.nr_reportbutton);
+		linkbutton = (ImageView) findViewById(R.id.nr_linkbutton);
 		avatar = (ImageView) findViewById(R.id.nr_image);
 		downButton = (ImageView) findViewById(R.id.nr_downButton);
 		quoteButton = (ImageView) findViewById(R.id.nr_quoteButton);
@@ -274,6 +278,23 @@ public class PostView extends RelativeLayout {
 		        		Log.d(TAG, "Report Clicked");
 		        		new ReportPostDialog(getContext(), 
 		        				post.getToken(), post.getPostId()).show();	
+	        		}
+	        	});
+	        
+	        linkbutton
+	        	.setOnClickListener(new OnClickListener() {
+	        		@Override
+	        		public void onClick(View arg0) {
+	        			Log.d(TAG, "Link Clicked");
+	        			ClipboardManager clipboard = 
+	        					(android.content.ClipboardManager) 
+	        					getContext().getSystemService(Context.CLIPBOARD_SERVICE); 
+	        		    android.content.ClipData clip = 
+	        		    		android.content.ClipData.newPlainText("thread link", post.getRootThreadUrl());
+	        		    clipboard.setPrimaryClip(clip);
+	        		    Toast.makeText(getContext(), 
+	        		    		"Thread Link Copied To Clipboard", 
+	        		    		Toast.LENGTH_LONG).show();
 	        		}
 	        	});
 	        
