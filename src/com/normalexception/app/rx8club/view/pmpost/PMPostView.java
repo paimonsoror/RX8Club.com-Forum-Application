@@ -26,9 +26,7 @@ package com.normalexception.app.rx8club.view.pmpost;
 
 import java.util.List;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
@@ -60,10 +58,7 @@ public class PMPostView extends RelativeLayout {
 	private TextView userJoin;
 	private TextView postDate;
 	private TextView likeText;
-	private TextView postBox;
 
-	private ImageView reportbutton;
-	private ImageView downButton;
 	private ImageView avatar;
 	private ImageView quoteButton;
 	private ImageView editButton;
@@ -103,11 +98,11 @@ public class PMPostView extends RelativeLayout {
 		userJoin = (TextView) findViewById(R.id.nr_userJoin);
 		postDate = (TextView) findViewById(R.id.nr_postDate);
 		likeText = (TextView) findViewById(R.id.nr_likeText);
-		postBox = (TextView) findViewById(R.id.postBox);
+		//postBox = (TextView) findViewById(R.id.postBox);
 
-		reportbutton = (ImageView) findViewById(R.id.nr_reportbutton);
+		//reportbutton = (ImageView) findViewById(R.id.nr_reportbutton);
 		avatar = (ImageView) findViewById(R.id.nr_image);
-		downButton = (ImageView) findViewById(R.id.nr_downButton);
+		//downButton = (ImageView) findViewById(R.id.nr_downButton);
 		quoteButton = (ImageView) findViewById(R.id.nr_quoteButton);
 		editButton = (ImageView) findViewById(R.id.nr_editButton);
 		pmButton = (ImageView) findViewById(R.id.nr_pmButton);
@@ -166,6 +161,7 @@ public class PMPostView extends RelativeLayout {
 		postText.getSettings().setDomStorageEnabled(false);
 		postText.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 		postText.setOnTouchListener(new View.OnTouchListener() {
+			@SuppressLint("ClickableViewAccessibility")
 			public boolean onTouch(View v, MotionEvent event) {
 				return (event.getAction() == MotionEvent.ACTION_MOVE);
 			}

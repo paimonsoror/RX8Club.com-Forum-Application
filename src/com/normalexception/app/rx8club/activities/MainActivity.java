@@ -112,6 +112,11 @@ public class MainActivity extends FragmentActivity {
 	    EasyTracker.getInstance(this).activityStop(this); // Add this method.
 	}
 
+	/**
+	 * On create method that will initialize our main layout and construct
+	 * our navigation menu.  We then call our Login fragment to get the 
+	 * application started
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -205,6 +210,11 @@ public class MainActivity extends FragmentActivity {
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 	}
 
+	/**
+	 * Start our display depending on what the user has clicked.
+	 * @param position	The position clicked on our menu
+	 * @param stack		If true, add to our backstack
+	 */
 	public void displayView(int position, boolean stack) {
 		Fragment _fragment = null;
 		Bundle args = new Bundle();
@@ -259,16 +269,7 @@ public class MainActivity extends FragmentActivity {
 			_fragment = null;
 		}
 
-		if (_fragment != null) {/*
-			FragmentManager fragmentManager = this.getSupportFragmentManager();
-			FragmentTransaction ft = fragmentManager.beginTransaction();
-
-			if(stack) {
-				ft.addToBackStack(null);
-				ft.add(R.id.content_frame, _fragment).commit();
-			} else {
-				ft.replace(R.id.content_frame,  _fragment).commit();
-			}*/
+		if (_fragment != null) {
 			FragmentUtils.fragmentTransaction(this, _fragment, !stack, stack, args);
 
 			// update selected item and title, then close the drawer
@@ -295,7 +296,10 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 	
-
+	/**
+	 * Handle our options item clicks.  These will typically correspond
+	 * to an available view in our application
+	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// toggle nav drawer on selecting action bar app icon/title
@@ -321,6 +325,10 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
+	/**
+	 * Inflate our options menu, and hide any items that should be 
+	 * hidden from guests
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
@@ -333,10 +341,16 @@ public class MainActivity extends FragmentActivity {
 		return true;
 	}
 	
+	/**
+	 * Set our menu mode to a user (logged in) mode
+	 */
 	public void setUserMenu() {
 		menu_mode = MenuState.USER;
 	}
 	
+	/**
+	 * Set our menu mode to a guest mode
+	 */
 	public void setGuestMenu() {
 		menu_mode = MenuState.GUEST;
 	}

@@ -1,6 +1,7 @@
 <resources>
 	<!-- App Specific Strings -->
     <string name="app_name">RX8Club</string>
+    <string name="log_name">rx8club.log</string>
     <string name="bug_contact">contact@normalexception.net</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">RX8Club.com</string>

@@ -28,11 +28,11 @@ import java.io.File;
 
 import android.content.Context;
 
+import com.normalexception.app.rx8club.R;
 import com.normalexception.app.rx8club.cache.Cache;
 
 public class LogFile extends Cache {
 	
-	private static final String FILENAME = "rx8club.log";
 	private static String logfile = null;
 
 	/**
@@ -46,7 +46,7 @@ public class LogFile extends Cache {
 			logfile = String.format("%s%s%s", 
 					external.getAbsolutePath(), 
 					File.separator,
-					FILENAME);
+					ctx.getResources().getString(R.string.log_name));
 		}
 	}
 	

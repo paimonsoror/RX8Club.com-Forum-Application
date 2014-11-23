@@ -116,6 +116,13 @@ public class ThreadFragment extends Fragment {
 	
 	private Fragment parentCategory = null;
 	
+	/**
+	 * Noarg constructor
+	 */
+	public ThreadFragment() {
+		
+	}
+	
 	public ThreadFragment(Fragment parentCategory) {
 		this.parentCategory = parentCategory;
 	}
@@ -365,6 +372,7 @@ public class ThreadFragment extends Fragment {
 				pv.setUserImageUrl(userAvatar.attr("src"));
 				pv.setPostDate(innerPost.select("td[class=thead]").first().text());
 				pv.setPostId(Utils.parseInts(post.attr("id")));
+				pv.setRootThreadUrl(currentPageLink);
 				
 				// get Likes if any exist
 				Elements eLikes = innerPost.select("div[class*=vbseo_liked] > a");
@@ -509,12 +517,6 @@ public class ThreadFragment extends Fragment {
 						_args.putString("page", value);
 						_args.putString("title", currentPageTitle);
 
-						/*
-						__fragment.setArguments(_args);
-						FragmentTransaction transaction = getFragmentManager().beginTransaction();
-						transaction.add(R.id.content_frame, __fragment);
-						transaction.commit();
-						*/
 						FragmentUtils.fragmentTransaction(getActivity(), 
 								__fragment, false, false, _args);
 					}
