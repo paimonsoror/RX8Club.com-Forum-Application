@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -108,6 +109,8 @@ public class FavoriteFactory {
 		} catch (FileNotFoundException e) {
 			// Its ok, first time there wont be a file
 			Log.v(TAG, "No favorites file cache exists");
+		} catch (InvalidClassException e) {
+			Log.w(TAG, "Old version of Favorites cache");
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage(), e);
 		}

@@ -394,6 +394,12 @@ public class ThreadFragment extends Fragment {
 	
 				// User Post Content
 				pv.setUserPost(formatUserPost(innerPost));
+				
+				// User signature
+				try {
+					Element userSig = innerPost.select("div[class=konafilter]").first();
+					pv.setUserSignature(userSig.html());
+				} catch (NullPointerException npe) {}
 	
 				Elements postAttachments = innerPost.select("a[id^=attachment]");
 				if(postAttachments != null && !postAttachments.isEmpty()) {
@@ -576,14 +582,26 @@ public class ThreadFragment extends Fragment {
 	}
 	*/
 	
+	/**
+	 * Report the thread number
+	 * @return	The thread number
+	 */
 	public String getThreadNumber() {
 		return threadNumber;
 	}
 	
+	/**
+	 * Report the security token for the user
+	 * @return	The security token for the user
+	 */
 	public String getSecurityToken() {
 		return this.securityToken;
 	}
 	
+	/**
+	 * Report the parent category
+	 * @return	The parent category
+	 */
 	public Fragment getParentCategory() {
 		return this.parentCategory;
 	}

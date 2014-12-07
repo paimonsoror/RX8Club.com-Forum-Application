@@ -184,6 +184,10 @@ public class PostView extends RelativeLayout {
 		// Show attachments if the preference allows it
 		if(PreferenceHelper.isShowAttachments(getContext())) 
 			trimmedPost = appendAttachments(trimmedPost, post.getAttachments());
+		
+		// Show signatures if the preference allows it
+		if(PreferenceHelper.isShowSignatures(getContext()) && post.getUserSignature() != null)
+			trimmedPost = appendSignature(trimmedPost, post.getUserSignature());
 
 		// Set html Font color
 		trimmedPost = Utils.postFormatter(trimmedPost, getContext());
@@ -348,6 +352,16 @@ public class PostView extends RelativeLayout {
 	        	}
 	        });
         }
+	}
+	
+	/**
+	 * Append the signature to the end of the user's post
+	 * @param trimmedPost	The user's post
+	 * @param signature		The signature to add
+	 * @return				A full user post
+	 */
+	private String appendSignature(String trimmedPost, String signature) {
+		return String.format("%s<br><br>%s", trimmedPost, signature);
 	}
 
 	/**

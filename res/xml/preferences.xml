@@ -63,6 +63,11 @@
 	        android:key="showattachments"
 	        android:defaultValue="true"/>
 	    <CheckBoxPreference
+	        android:title="Display Signatures" 
+	        android:summary="Show post signatures if they exist"
+	        android:key="showsignatures"
+	        android:defaultValue="true"/>
+	    <CheckBoxPreference
 	        android:title="Display Likes"
 	        android:summary="Show Likes on Posts"
 	        android:key="showlikes"

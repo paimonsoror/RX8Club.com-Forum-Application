@@ -363,7 +363,9 @@ public class PrivateMessageInboxFragment extends Fragment {
 	 								current_month = this_month;
 	 								PMModel pm_m = new PMModel();
 	 								pm_m.setTitle(String.format("%s - %s", 
-	 										this_month, showOutbound? "Sent Items" : "Inbox"));
+	 										this_month, showOutbound? 
+	 												getResources().getString(R.string.inboxSent) : 
+	 													getResources().getString(R.string.inboxInbox)));
 	 								pmlist.add(pm_m);
 	 							}
 	 							
