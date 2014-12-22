@@ -58,6 +58,7 @@ import com.normalexception.app.rx8club.fragment.AdminFragment;
 import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.fragment.PaginationFragment;
 import com.normalexception.app.rx8club.fragment.StylerFragment;
+import com.normalexception.app.rx8club.fragment.category.CategoryFragment;
 import com.normalexception.app.rx8club.html.HtmlFormUtils;
 import com.normalexception.app.rx8club.html.LoginFactory;
 import com.normalexception.app.rx8club.html.VBForumFactory;
@@ -105,8 +106,6 @@ public class ThreadFragment extends Fragment {
 	
 	private ProgressDialog loadingDialog;
 	
-	//private int threadId = 0;
-	
 	private final String MODERATION_TOOLS = "Moderation Tools";
 	
 	private ThreadFragmentListener tal = 
@@ -114,17 +113,19 @@ public class ThreadFragment extends Fragment {
 	
 	private View adminContent = null;
 	
-	private Fragment parentCategory = null;
+	private CategoryFragment parentCategory = null;
 	
-	/**
-	 * Noarg constructor
-	 */
-	public ThreadFragment() {
-		
+	public static ThreadFragment newInstance() {
+		ThreadFragment tf = new ThreadFragment();
+		return tf;
 	}
 	
-	public ThreadFragment(Fragment parentCategory) {
-		this.parentCategory = parentCategory;
+	/**
+	 * Report our registered onClickListener
+	 * @return	The thread's on click listener
+	 */
+	public ThreadFragmentListener getOnClickListener() {
+		return tal;
 	}
 
 	@Override
@@ -135,13 +136,15 @@ public class ThreadFragment extends Fragment {
 
 		lv = (ListView) rootView.findViewById(R.id.mainlistview);
 		
+		//this.parentCategory = (CategoryFragment) getArguments().getSerializable("parent");
+		this.parentCategory = (CategoryFragment) getParentFragment();
 		adminContent = inflater.inflate(R.layout.view_newreply_header, lv, false);
 		
 		// Inflate the header if we are an admin
 		//adminContent = inflater.inflate(R.layout.fragment_admin, null);
 		getChildFragmentManager()
 			.beginTransaction()
-			.replace(R.id.fragment_content_admin, new AdminFragment(this))
+			.replace(R.id.fragment_content_admin, AdminFragment.newInstance())
 			.commit();
 		lv.addHeaderView(adminContent);
 		
@@ -155,15 +158,8 @@ public class ThreadFragment extends Fragment {
 		
 		getChildFragmentManager()
 			.beginTransaction()
-			.replace(R.id.nr_pagination, new PaginationFragment(this.tal))
+			.replace(R.id.nr_pagination, PaginationFragment.newInstance(this.tal))
 			.commit();
-
-		// If the user is guest or if the thread is locked, 
-		// then hide the items that they generally wont be able to use
-		if(LoginFactory.getInstance().isGuestMode() || isLocked) {
-			ViewHolder.get(v, R.id.nr_replycontainer)
-			.setVisibility(View.GONE);
-		}
 
 		lv.addFooterView(v);
 		v.findViewById(R.id.submitButton).setOnClickListener(tal);
@@ -233,6 +229,22 @@ public class ThreadFragment extends Fragment {
 
 				Document doc = 
 						VBForumFactory.getInstance().get(getActivity(), currentPageLink);
+				
+				// First check to see if the title is null, this is possible if the user
+				// clicked a link on a thread and got here.
+				currentPageTitle = doc.select("title").text();
+				
+				// Now check if the page is locked, again, we should have already known 
+				// this, but if we got here by other means
+				isLocked = doc.select("img[src*=threadclosed]").first() != null;
+				
+				// If the user is guest or if the thread is locked, 
+				// then hide the items that they generally wont be able to use
+				if(LoginFactory.getInstance().isGuestMode() || isLocked) {
+					Log.d(TAG, "Thread Is Locked, Hiding Reply Container");
+					ViewHolder.get(getView(), R.id.nr_replycontainer)
+						.setVisibility(View.GONE);
+				}
 				
 				// Grab the canonical link if it exists.  This is the safest way to
 				// make sure that we got the actual URL of the page
@@ -451,7 +463,11 @@ public class ThreadFragment extends Fragment {
 		}
 	}
 
-	class ThreadFragmentListener implements OnClickListener {
+	/**
+	 * Listener that handles the clicks of buttons that are found on the thread
+	 * posts
+	 */
+	public class ThreadFragmentListener implements OnClickListener {
 		private Fragment src = null;
 		
 		public ThreadFragmentListener(Fragment _src) {
@@ -478,12 +494,12 @@ public class ThreadFragment extends Fragment {
 				lv.setSelection(lv.getCount());
 				break;
 			case R.id.previousButton:
-				_fragment = new ThreadFragment(parentCategory);
+				_fragment = ThreadFragment.newInstance();
 				args.putString("link", Utils.decrementPage(currentPageLink, pageNumber));
 				args.putString("page", String.valueOf(Integer.parseInt(pageNumber) - 1));
 				break;
 			case R.id.nextButton:
-				_fragment = new ThreadFragment(parentCategory);
+				_fragment = ThreadFragment.newInstance();
 				args.putString("link", Utils.incrementPage(currentPageLink, pageNumber));
 				args.putString("page", String.valueOf(Integer.parseInt(pageNumber) + 1));
 				break;
@@ -516,7 +532,7 @@ public class ThreadFragment extends Fragment {
 				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						String value = input.getText().toString();
-						Fragment __fragment = new ThreadFragment(parentCategory);
+						Fragment __fragment = ThreadFragment.newInstance();
 						
 						Bundle _args = new Bundle();
 						_args.putString("link", Utils.getPage(currentPageLink, value));
@@ -530,13 +546,13 @@ public class ThreadFragment extends Fragment {
 				break;
 	
 			case R.id.firstButton:
-				_fragment = new ThreadFragment(parentCategory);
+				_fragment = ThreadFragment.newInstance();
 				args.putString("link", Utils.getPage(currentPageLink, Integer.toString(1)));
 				args.putString("page", "1");
 				break;
 	
 			case R.id.lastButton:
-				_fragment = new ThreadFragment(parentCategory);
+				_fragment = ThreadFragment.newInstance();
 				args.putString("link", Utils.getPage(currentPageLink, finalPage));
 				args.putString("page", finalPage);
 				break;	

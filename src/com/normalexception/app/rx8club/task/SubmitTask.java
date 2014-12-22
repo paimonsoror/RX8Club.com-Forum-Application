@@ -110,7 +110,7 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
 			String.valueOf(Integer.parseInt(pageNumber)));
 		_args.putString("title", pageTitle);
 
-		Fragment _frag = new ThreadFragment(((ThreadFragment)sourceActivity).getParentCategory());
+		Fragment _frag = ThreadFragment.newInstance( );
 
 		FragmentUtils.fragmentTransaction(sourceActivity.getActivity(), 
 				_frag, true, true, _args);

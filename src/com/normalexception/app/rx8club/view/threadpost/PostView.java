@@ -34,7 +34,9 @@ import android.app.AlertDialog;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -47,12 +49,14 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.normalexception.app.rx8club.Log;
+import com.normalexception.app.rx8club.MainApplication;
 import com.normalexception.app.rx8club.R;
 import com.normalexception.app.rx8club.WebUrls;
 import com.normalexception.app.rx8club.cache.Cache;
@@ -60,6 +64,7 @@ import com.normalexception.app.rx8club.dialog.ReportPostDialog;
 import com.normalexception.app.rx8club.fragment.FragmentUtils;
 import com.normalexception.app.rx8club.fragment.pm.NewPrivateMessageFragment;
 import com.normalexception.app.rx8club.fragment.thread.EditPostFragment;
+import com.normalexception.app.rx8club.fragment.thread.ThreadFragment;
 import com.normalexception.app.rx8club.handler.AvatarLoader;
 import com.normalexception.app.rx8club.html.LoginFactory;
 import com.normalexception.app.rx8club.preferences.PreferenceHelper;
@@ -209,6 +214,36 @@ public class PostView extends RelativeLayout {
 			public boolean onTouch(View v, MotionEvent event) {
 				return (event.getAction() == MotionEvent.ACTION_MOVE);
 			}
+		});
+		postText.setWebViewClient(new WebViewClient() {
+		    @Override
+		    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+		        // Check if the URL for the site, and if it is a thread or a category
+		    	Log.d(TAG, "User Clicked Embedded url");
+		    	boolean isThread = false;
+		    	if(url.contains("rx8club.com")) {
+		    		isThread = url.matches(".*\\-\\d+\\/$");
+		    		Log.d(TAG, String.format("The Link (%s) is %sa thread", url, (isThread)? "" : "NOT "));
+		    		
+					Bundle args = new Bundle();
+					args.putString("link", url);
+					
+					if(isThread) {
+						FragmentUtils.fragmentTransaction(
+								(FragmentActivity)view.getContext(), 
+								ThreadFragment.newInstance(), 
+								false, true, args);
+						return true;
+					}
+		    	}
+
+		    	// Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs
+	            Intent intent = 
+	            		new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+	            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	            MainApplication.getAppContext().startActivity(intent);
+	            return true;
+		    }
 		});
 
 		postText.loadDataWithBaseURL(WebUrls.rootUrl, trimmedPost, "text/html", "utf-8", ""); 

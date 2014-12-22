@@ -83,7 +83,7 @@ public class NewThreadTask extends AsyncTask<Void,Void,Void> {
 		args.putString("page", "1");
 		
 		// Create new fragment and transaction
-		Fragment newFragment = new ThreadFragment(((ThreadFragment)sourceFragment).getParentCategory());
+		Fragment newFragment = ThreadFragment.newInstance();
 
 		FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
 				newFragment, true, true, args);

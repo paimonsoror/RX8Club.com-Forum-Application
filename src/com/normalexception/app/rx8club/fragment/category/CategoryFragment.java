@@ -82,7 +82,7 @@ import com.normalexception.app.rx8club.view.thread.ThreadViewArrayAdapter;
  * page - The current page number.  This is used for the pagination info
  */
 public class CategoryFragment extends Fragment {
-	
+
 	private Logger TAG =  LogManager.getLogger(this.getClass());
 	private static String link;
 	private ProgressDialog loadingDialog;
@@ -225,7 +225,8 @@ public class CategoryFragment extends Fragment {
 							args.putString("title", itm.getTitle());
 
 							FragmentUtils.fragmentTransaction(_frag.getActivity(), 
-									new ThreadFragment(_frag), false, true, args);
+									ThreadFragment.newInstance(), 
+									false, true, args);
 		            	}
 		            }
 		        });

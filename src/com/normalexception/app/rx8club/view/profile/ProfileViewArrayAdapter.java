@@ -102,19 +102,11 @@ public class ProfileViewArrayAdapter extends ArrayAdapter<ProfileModel> {
 		tv.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				/*
-				Intent _intent = 
-						new Intent(sourceFragment, ThreadFragment.class);
-				_intent.putExtra("link", pm.getLink());
-				_intent.putExtra("title", pm.getName());
-				sourceFragment.startActivity(_intent);
-				*/
-				
 				Bundle args = new Bundle();
 				args.putString("link", pm.getLink());
 				args.putString("title",  pm.getName());
 				FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
-						new ThreadFragment(((ThreadFragment)sourceFragment).getParentCategory()), 
+						ThreadFragment.newInstance(), 
 						false, true, args);
 			}
 		});

@@ -116,7 +116,7 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 		if(deleteThread) {
 			newFragment = new CategoryFragment();
 		} else {
-			newFragment = new ThreadFragment(((ThreadFragment)sourceFragment).getParentCategory());
+			newFragment = ThreadFragment.newInstance( );
 		}
 		
 		FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 

@@ -104,7 +104,7 @@ public class FavoritesFragment extends Fragment {
 		            	args.putString("link", itm.getLink());
 		            	args.putString("title", itm.getTitle());
 		            	FragmentUtils.fragmentTransaction(_frag.getActivity(), 
-		            			new ThreadFragment(((ThreadFragment)_frag).getParentCategory()), 
+		            			ThreadFragment.newInstance(), 
 		            			false, true, args);
 		            }
 		        });

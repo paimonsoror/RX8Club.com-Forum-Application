@@ -50,8 +50,9 @@ public class AdminFragment extends Fragment implements OnClickListener {
 	
 	private	ThreadFragment ta = null;
 	
-	public AdminFragment(ThreadFragment tf) {
-		this.ta = tf;
+	public static AdminFragment newInstance() {
+		AdminFragment af = new AdminFragment();
+		return af;
 	}
     
 	/*
@@ -61,7 +62,8 @@ public class AdminFragment extends Fragment implements OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	// Inflate our fragment
-        View view = inflater.inflate(R.layout.fragment_admin, container, false);        
+        View view = inflater.inflate(R.layout.fragment_admin, container, false);
+        ta = (ThreadFragment) getParentFragment();
         return view;
     }
 

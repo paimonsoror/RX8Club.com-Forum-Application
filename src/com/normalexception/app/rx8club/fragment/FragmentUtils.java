@@ -126,7 +126,8 @@ public class FragmentUtils {
 						true : (reason == LogoutReason.TIMEOUT)? 
 								false : false;
 		LoginFactory.getInstance().logoff(clearPrefs);
-		FragmentUtils.fragmentTransaction((FragmentActivity)src, new LoginFragment(true), true, false);
+		FragmentUtils.fragmentTransaction((FragmentActivity)src, 
+				LoginFragment.getInstance(true), true, false);
 	}
 	
 	/**

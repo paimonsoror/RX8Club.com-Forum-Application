@@ -32,15 +32,16 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.normalexception.app.rx8club.R;
+import com.normalexception.app.rx8club.fragment.thread.ThreadFragment;
 import com.normalexception.app.rx8club.view.ViewHolder;
 
 public class PaginationFragment extends Fragment {
 	private OnClickListener _ocl = null;
 	
-	public PaginationFragment(OnClickListener ocl) {
-		this._ocl = ocl;
+	public static PaginationFragment newInstance(OnClickListener ocl) {
+		PaginationFragment pf = new PaginationFragment();
+		return pf;
 	}
-	
 	/*
 	 * (non-Javadoc)
 	 * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
@@ -49,6 +50,8 @@ public class PaginationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	// Inflate our fragment
         View view = inflater.inflate(R.layout.fragment_pagination, container, false); 
+        _ocl = ((ThreadFragment)getParentFragment()).getOnClickListener();
+        
         // Setup the listeners for pagination clicks
         ViewHolder.get(view, R.id.firstButton)
         	.setOnClickListener(_ocl);
@@ -58,6 +61,7 @@ public class PaginationFragment extends Fragment {
     		.setOnClickListener(_ocl);
         ViewHolder.get(view, R.id.lastButton)
     		.setOnClickListener(_ocl);
+        
         return view;
     }
     

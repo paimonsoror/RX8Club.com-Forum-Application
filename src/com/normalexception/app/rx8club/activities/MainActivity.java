@@ -252,7 +252,7 @@ public class MainActivity extends FragmentActivity {
 			break;
 		case 7:
 			if(!stack) {
-				_fragment = new LoginFragment(stack);
+				_fragment = LoginFragment.getInstance(stack);
 			} else {
 				LogoffDialog ld = new LogoffDialog(this);
            		ld.show();

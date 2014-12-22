@@ -191,7 +191,7 @@ public class AdminTask extends AsyncTask<Void,String,Void>{
 			
 			// Create new fragment and transaction
 			Fragment newFragment = 
-					new ThreadFragment(((ThreadFragment)sourceFragment).getParentCategory());
+					ThreadFragment.newInstance();
 
 			FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
 					newFragment, true, true, args);

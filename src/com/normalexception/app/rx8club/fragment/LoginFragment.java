@@ -69,8 +69,12 @@ public class LoginFragment extends Fragment implements OnClickListener, OnChecke
 	private ProgressDialog loadingDialog;
 	private boolean userClick = false;
 	
-	public LoginFragment(boolean userClicked) {
-		this.userClick = userClicked;
+	public static LoginFragment getInstance(boolean userClicked) {
+		LoginFragment lf = new LoginFragment();
+		Bundle args = new Bundle(1);
+		args.putBoolean("userclick", userClicked);
+		lf.setArguments(args);
+		return lf;
 	}
 	
 	@Override
@@ -89,6 +93,7 @@ public class LoginFragment extends Fragment implements OnClickListener, OnChecke
     	try {
 	        super.onCreate(savedInstanceState);
 	        MainApplication.setState(AppState.State.LOGIN, this);
+	        this.userClick = getArguments().getBoolean("userclick");
 
 	        // First, check to see if we are already logged in,
 	        // we could be still in memory so lets reuse the 
