@@ -2,8 +2,8 @@
     android:name="com.normalexception.app.rx8club.MainApplication"
     package="com.normalexception.app.rx8club"
     android:installLocation="auto"
-    android:versionCode="20030"
-    android:versionName="2.04.0" >
+    android:versionCode="20031"
+    android:versionName="2.04.1" >
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -34,7 +34,9 @@
         <activity 
             android:name="com.normalexception.app.rx8club.activities.MainActivity"
             android:launchMode="singleInstance" 
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize" 
+            android:alwaysRetainTaskState="false" 
+            android:clearTaskOnLaunch="true">
             <intent-filter>
             	<action android:name="android.intent.action.MAIN" />
             	<category android:name="android.intent.category.LAUNCHER" />

@@ -107,7 +107,7 @@ public class ProfileViewArrayAdapter extends ArrayAdapter<ProfileModel> {
 				args.putString("title",  pm.getName());
 				FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
 						ThreadFragment.newInstance(), 
-						false, true, args);
+						false, true, args, "thread");
 			}
 		});
 

@@ -226,7 +226,7 @@ public class CategoryFragment extends Fragment {
 
 							FragmentUtils.fragmentTransaction(_frag.getActivity(), 
 									ThreadFragment.newInstance(), 
-									false, true, args);
+									false, true, args, "thread");
 		            	}
 		            }
 		        });
@@ -631,20 +631,6 @@ public class CategoryFragment extends Fragment {
 					args.putString("source", link);
 					args.putString("forumid", forumId);
 					
-					/*
-					// Create new fragment and transaction
-					Fragment newFragment = new NewThreadFragment();
-					newFragment.setArguments(args);
-					FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-					// Replace whatever is in the fragment_container view with this fragment,
-					// and add the transaction to the back stack
-					transaction.add(R.id.content_frame, newFragment);
-					transaction.addToBackStack("newthread");
-
-					// Commit the transaction
-					transaction.commit();
-					*/
 					FragmentUtils.fragmentTransaction(getActivity(), 
 							new NewThreadFragment(), false, true, args);
 				} else {

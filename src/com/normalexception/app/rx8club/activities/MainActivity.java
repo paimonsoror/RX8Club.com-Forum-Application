@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Point;
@@ -47,6 +48,7 @@ import android.widget.ListView;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.normalexception.app.rx8club.Log;
 import com.normalexception.app.rx8club.R;
+import com.normalexception.app.rx8club.WebUrls;
 import com.normalexception.app.rx8club.dialog.FavoriteDialog;
 import com.normalexception.app.rx8club.dialog.LogoffDialog;
 import com.normalexception.app.rx8club.fragment.AboutFragment;
@@ -63,6 +65,7 @@ import com.normalexception.app.rx8club.navigation.NavDrawerItem;
 import com.normalexception.app.rx8club.navigation.NavDrawerListAdapter;
 import com.normalexception.app.rx8club.preferences.PreferenceHelper;
 import com.normalexception.app.rx8club.preferences.Preferences;
+import com.normalexception.app.rx8club.task.ApplicationUpdateTask;
 
 public class MainActivity extends FragmentActivity {
 
@@ -85,6 +88,8 @@ public class MainActivity extends FragmentActivity {
 
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private NavDrawerListAdapter adapter;
+	
+	private static Context _ctx = null;
 	
 	private int[] windowSizeW_H;
 	
@@ -135,10 +140,25 @@ public class MainActivity extends FragmentActivity {
 		int height = size.y;
 		windowSizeW_H = new int[]{width, height};
 		
+		_ctx = this;
+		
+		if(PreferenceHelper.isCheckForUpdates(this))
+			checkForUpdates(false);
+		
 		if (savedInstanceState == null) {
 			// Initial display
 			displayView(7, false);
 		}
+	}
+	
+	/**
+	 * Check the web for an update to the application
+	 * @param	ctx		The application context
+	 * @param	user	True if user requested check
+	 */
+	public static void checkForUpdates(boolean user) {
+		final String updateUrl = WebUrls.UPDATE_CHECK;
+		new ApplicationUpdateTask(_ctx).execute(updateUrl, Boolean.toString(user));
 	}
 	
 	/**

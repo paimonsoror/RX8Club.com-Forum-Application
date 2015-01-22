@@ -175,7 +175,6 @@ public class ThreadFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
 		try{
-			super.onCreate(savedInstanceState);
 			MainApplication.setState(AppState.State.THREAD, this);
 
 			//threadId = Utils.randomInt(0, 9999);
@@ -540,7 +539,7 @@ public class ThreadFragment extends Fragment {
 						_args.putString("title", currentPageTitle);
 
 						FragmentUtils.fragmentTransaction(getActivity(), 
-								__fragment, false, false, _args);
+								__fragment, true, false, _args, "thread");
 					}
 				}).setNegativeButton("Cancel", null).show();
 				break;
@@ -563,7 +562,7 @@ public class ThreadFragment extends Fragment {
 			}	
 	
 			if(_fragment != null) {
-				FragmentUtils.fragmentTransaction(getActivity(), _fragment, false, false, args);
+				FragmentUtils.fragmentTransaction(getActivity(), _fragment, true, false, args, "thread");
 			}
 		}
 	}

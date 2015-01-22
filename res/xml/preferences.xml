@@ -106,9 +106,14 @@
 	        android:title="Export Log File"
 	        android:key="exportLog"
 	        android:summary="Export the application log file"/>
-	   	<Preference
-	   	    android:title="Rate Application"
-	   	    android:key="rate"
-	   	    android:summary="Just Takes a Second!"/>
+	   	<CheckBoxPreference
+	        android:title="Check For Update on Startup"
+	        android:defaultValue="true"
+	        android:summary="Checks for updates on startup"
+	        android:key="updateStart" />  
+	    <Preference
+	        android:title="Check For Update Now"
+	        android:key="updateNow"
+	        android:summary="Check to see if an update is available" />
     </PreferenceCategory>
 </PreferenceScreen>

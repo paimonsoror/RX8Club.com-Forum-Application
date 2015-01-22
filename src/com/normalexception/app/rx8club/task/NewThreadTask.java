@@ -86,7 +86,7 @@ public class NewThreadTask extends AsyncTask<Void,Void,Void> {
 		Fragment newFragment = ThreadFragment.newInstance();
 
 		FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
-				newFragment, true, true, args);
+				newFragment, true, true, args, "thread");
     }
 
 	/*

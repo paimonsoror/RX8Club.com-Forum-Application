@@ -113,7 +113,7 @@ public class SubmitTask extends AsyncTask<Void,String,Void>{
 		Fragment _frag = ThreadFragment.newInstance( );
 
 		FragmentUtils.fragmentTransaction(sourceActivity.getActivity(), 
-				_frag, true, true, _args);
+				_frag, true, true, _args, "thread");
     }
 
 	/*

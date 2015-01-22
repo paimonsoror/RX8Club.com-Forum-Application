@@ -35,12 +35,15 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.normalexception.app.rx8club.Log;
@@ -82,8 +85,24 @@ public class FragmentUtils {
 		Log.v(TAG, String.format("Registering %d Listening Objects", vh.getChildCount()));
         for(int i = 0; i < vh.getChildCount(); i++) {
             v = vh.getChildAt(i);
-            if(v instanceof Button) v.setOnClickListener(och);
-            if(v instanceof ImageView) v.setOnClickListener(och);
+            if(v instanceof Button) {
+            	v.setOnClickListener(och);
+            	break;
+            }
+            if(v instanceof ImageView) {
+            	v.setOnClickListener(och);
+            	break;
+            }
+            if(v instanceof LinearLayout) {
+            	Log.v(TAG, "Linear Layout Found, Recurse");
+            	registerHandlerToViewObjects(och, (ViewGroup) v);
+            	break;
+            }
+            if(v instanceof RelativeLayout) {
+            	Log.v(TAG, "Relative Layout Found, Recurse");
+            	registerHandlerToViewObjects(och, (ViewGroup) v);
+            	break;
+            }
         }
 	}
 	
@@ -142,6 +161,11 @@ public class FragmentUtils {
 		FragmentUtils.fragmentTransaction(source, destination, replace, backstack, null);
 	}
 	
+	public static void fragmentTransaction(FragmentActivity source, Fragment destination, 
+			boolean replace, boolean backstack, Bundle args) {
+		FragmentUtils.fragmentTransaction(source, destination, replace, backstack, args, null);
+	}
+	
 	/**
 	 * Perform a transaction to transition from one fragment to another
 	 * @param source		The source fragment
@@ -151,7 +175,7 @@ public class FragmentUtils {
 	 * @param args			The bundle arguments to add
 	 */
 	public static void fragmentTransaction(FragmentActivity source, Fragment destination, 
-			boolean replace, boolean backstack, Bundle args) {	
+			boolean replace, boolean backstack, Bundle args, String name) {	
 		FragmentTransaction transaction = 
 				source.getSupportFragmentManager().beginTransaction();
 		
@@ -165,8 +189,15 @@ public class FragmentUtils {
 		else
 			transaction.add(R.id.content_frame, destination);
 		
+		if(name != null)
+			source.getSupportFragmentManager().popBackStack(name, 
+					FragmentManager.POP_BACK_STACK_INCLUSIVE);
+		
 		if(backstack)
 			transaction.addToBackStack(null);
+		
+		Log.v(TAG, String.format("Total Backstack Count: %d", 
+				source.getSupportFragmentManager().getBackStackEntryCount()));
 
 		// Commit the transaction
 		transaction.commit();

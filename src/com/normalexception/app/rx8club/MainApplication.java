@@ -49,6 +49,8 @@ public class MainApplication extends Application {
 	
 	private static final int LOG_LEVEL           = Log.DEBUG;
 	private static final boolean HTTP_CLIENT_LOG = false; 
+	
+	private static String version = null;
 
 	/*
 	 * (non-Javadoc)
@@ -69,10 +71,16 @@ public class MainApplication extends Application {
         super.onCreate();
         
         try {
-			Log.d(TAG, "Version Number: " + 
-						getPackageManager().getPackageInfo(
-								this.getPackageName(), 0).versionName);
+        	version = 
+				getPackageManager().getPackageInfo(
+						this.getPackageName(), 0).versionName;
+        
+			Log.d(TAG, "Version Number: " + version);
 		} catch (NameNotFoundException e) {	}
+    }
+    
+    public static String getVersion() {
+    	return version;
     }
 
 	/**

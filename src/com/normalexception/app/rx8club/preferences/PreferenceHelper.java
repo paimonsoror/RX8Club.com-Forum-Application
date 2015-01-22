@@ -40,6 +40,16 @@ public class PreferenceHelper {
 	public final static String PREFS_NAME = "app_prefs";
 	
 	/**
+	 * Report if the user wants the app to check for updates on startup
+	 * @param context	The source context
+	 * @return			The option value
+	 */
+	public static boolean isCheckForUpdates(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+		return prefs.getBoolean("updateStart", true);
+	}
+	
+	/**
 	 * Report if the user wants to hide or show signatures
 	 * @param context	The source context
 	 * @return			The option value

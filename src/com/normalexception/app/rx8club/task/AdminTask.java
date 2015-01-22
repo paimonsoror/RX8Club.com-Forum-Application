@@ -194,7 +194,7 @@ public class AdminTask extends AsyncTask<Void,String,Void>{
 					ThreadFragment.newInstance();
 
 			FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
-					newFragment, true, true, args);
+					newFragment, true, true, args, "thread");
 		} else if (doType == MOVE_THREAD) {
 			MoveThreadDialog mtd = new MoveThreadDialog(
 					sourceFragment, token, thread, threadTitle, selectOptions);

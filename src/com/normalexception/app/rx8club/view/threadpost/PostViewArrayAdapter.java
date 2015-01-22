@@ -82,7 +82,7 @@ public class PostViewArrayAdapter extends ArrayAdapter<PostModel> {
 	 * (non-Javadoc)
 	 * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
 	 */
-	public View getView(int position, View convertView, ViewGroup parent) {		
+	public View getView(int position, View convertView, ViewGroup parent) {	
         PostView postView = (PostView)convertView;
         if (null == postView) {
         	Log.d(TAG, "Inflating New PostView");

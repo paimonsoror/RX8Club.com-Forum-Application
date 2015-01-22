@@ -105,7 +105,7 @@ public class FavoritesFragment extends Fragment {
 		            	args.putString("title", itm.getTitle());
 		            	FragmentUtils.fragmentTransaction(_frag.getActivity(), 
 		            			ThreadFragment.newInstance(), 
-		            			false, true, args);
+		            			false, true, args, "thread");
 		            }
 		        });
             }

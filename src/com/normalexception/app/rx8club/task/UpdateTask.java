@@ -120,7 +120,7 @@ public class UpdateTask extends AsyncTask<Void,Void,Void> {
 		}
 		
 		FragmentUtils.fragmentTransaction(sourceFragment.getActivity(), 
-				newFragment, true, true, args);
+				newFragment, true, true, args, "thread");
 	}
 	
 	/*

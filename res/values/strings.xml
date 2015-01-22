@@ -14,6 +14,7 @@
     <string name="desc_list_item_icon">Item Icon</string>
     <string name="postReported">Thank You, This Post Has Been Reported</string>
     <string name="pleaseEnterReport">Please Enter Report Text</string>
+    <string name="newVersionAvailable">A New Version Is Available!</string>
     
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -155,6 +156,8 @@
     <string name="threadTitlePlaceholder">Thread Title</string>
     <string name="preferencesLabel">Application Preferences</string>
     <string name="addToFavorites">Add To Favorites</string>
+    <string name="ok">OK</string>
+    <string name="download">Download</string>
     <string name="submit">Submit</string>
     <string name="delete">Delete</string>
     <string name="reply">Reply</string>

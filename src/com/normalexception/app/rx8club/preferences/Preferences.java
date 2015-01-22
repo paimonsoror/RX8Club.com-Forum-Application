@@ -31,7 +31,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -50,7 +49,7 @@ import android.widget.Toast;
 import com.normalexception.app.rx8club.Log;
 import com.normalexception.app.rx8club.MainApplication;
 import com.normalexception.app.rx8club.R;
-import com.normalexception.app.rx8club.WebUrls;
+import com.normalexception.app.rx8club.activities.MainActivity;
 import com.normalexception.app.rx8club.cache.Cache;
 import com.normalexception.app.rx8club.cache.FileCache;
 import com.normalexception.app.rx8club.cache.impl.LogFile;
@@ -89,6 +88,15 @@ public class Preferences extends PreferenceFragment {
         getPreferenceManager().setSharedPreferencesName(
                 PreferenceHelper.PREFS_NAME);
         addPreferencesFromResource(R.xml.preferences);
+        
+        Preference updateNow = (Preference)findPreference("updateNow");
+        updateNow.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				MainActivity.checkForUpdates(true);
+				return true;
+			}
+		});
         
         Preference shareLog = (Preference)findPreference("exportLog");
         shareLog.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {			
@@ -226,24 +234,6 @@ public class Preferences extends PreferenceFragment {
                 return true;
             }
         });
-        
-        Preference rate = (Preference)findPreference("rate");
-        rate.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference arg0) { 
-            	try {
-            		startActivity(
-            			new Intent(Intent.ACTION_VIEW, 
-            					Uri.parse(WebUrls.marketUrl + 
-            			MainApplication.APP_PACKAGE)));
-            	} catch (ActivityNotFoundException e) {
-            		// In the event that the market isn't installed
-            		// or is unavailable
-            		notifyError("Error Opening Market, Sorry!");
-            	}
-                return true;
-            }
-        }); 
         
         try {
         	Preference version = (Preference)findPreference("version");

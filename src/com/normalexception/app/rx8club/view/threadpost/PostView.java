@@ -225,14 +225,14 @@ public class PostView extends RelativeLayout {
 		    		isThread = url.matches(".*\\-\\d+\\/$");
 		    		Log.d(TAG, String.format("The Link (%s) is %sa thread", url, (isThread)? "" : "NOT "));
 		    		
-					Bundle args = new Bundle();
-					args.putString("link", url);
+		    		if(isThread) {
+		    			Bundle args = new Bundle();
+		    			args.putString("link", url);					
 					
-					if(isThread) {
 						FragmentUtils.fragmentTransaction(
 								(FragmentActivity)view.getContext(), 
 								ThreadFragment.newInstance(), 
-								false, true, args);
+								true, true, args, "thread");
 						return true;
 					}
 		    	}
